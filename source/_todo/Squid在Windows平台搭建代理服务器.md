@@ -1,0 +1,1 @@
+[Squid在Windows平台搭建代理服务器](http://blog.csdn.net/highth/article/details/38571831)

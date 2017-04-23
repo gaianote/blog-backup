@@ -73,8 +73,8 @@ gaianote.github.io
 | |-draft.md
 | |-page.md
 | |-post.md # 默认模板post
-|-source # 资源文件夹是存放用户资源的地方
-| |-_post # 文件箱，新建的文章存放在这里
+|-source # 资源文件夹是存放用户资源的地方，Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去
+| |-_post # 文件箱，新建的文章存放在这里,除 _posts 文件夹之外，开头命名为 _ (下划线)的文件/ 文件夹和隐藏的文件将会被忽略
 |-themes # 存放主题文件，Hexo 会根据主题来生成静态页面
 | |-landscape ：默认的主题文件夹
 |-_config.yml # 全局配置文件，每次更改要重启服务
