@@ -100,7 +100,7 @@ input("查看效果")
 browser.quit()
 ```
 
-##　参考文档
+## 参考文档
 
 [selinium设置请求头](https://www.zhihu.com/question/35547395)
 [盘点selenium phantomJS使用的坑](http://www.jianshu.com/p/9d408e21dc3a)
