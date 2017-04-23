@@ -228,6 +228,37 @@ hexo server --drafts
 
 因为 master 分支只保存了public 文件夹中的静态文件，所以需要创建一个分支来保存你的博客的源代码
 
+**使用git管理source分支**
+
+在github上新建一个分支source，并将source设置为默认分支，通过source分支使用git管理源文件
+
+配置好 .gitnore 文件，添加规则 public，因为public使用hexo deploy管理，无需重复添加
+
+将远程仓库克隆到本地，然后连接远程仓库
+
+```bash
+git clone https://github.com/gaianote/gaianote.github.io
+git remote add origin https://github.com/gaianote/gaianote.github.io
+```
+
+以后每次使用时，直接键入以下命令即可
+
+```bash
+git add .
+git commit -m "update"
+git push origin source
+```
+
+**使用 hexo deploy 管理master分支**
+
+使用 hexo deploy 管理master分支，直接将静态文件发布到master分支上(无需使用git切换到master分支)
+
+```bash
+hexo deploy
+```
+
+## 实现流程自动化
+
 
 ## 参考资料
 
