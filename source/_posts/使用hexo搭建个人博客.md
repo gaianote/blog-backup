@@ -259,6 +259,87 @@ hexo deploy
 
 ## 实现流程自动化
 
+hexo写博客非常享受，但是有可以改进的地方，比如每次新建文章时，都需要在post文件中查找新建立的文档，并且每次写完文章需要使用hexo和git备份两次，比较繁琐，我们可以使用shelljs实现自动化备份
+
+通过查阅Hexo文档 ，找到了Hexo的主要事件，见下表：
+
+|事件名         |事件发生时间         |
+|---------------|---------------------|
+|deployBefore   |在部署完成前发布     |
+|deployAfter    |在部署成功后发布     |
+|exit           |在 Hexo 结束前发布   |
+|generateBefore |在静态文件生成前发布 |
+|generateAfter  |在静态文件生成后发布 |
+|new            |在文章文件建立后发布 |
+
+于是我们就可以通过监听Hexo的 deployAfter 事件，待上传完成之后自动运行Git备份命令，从而达到自动备份的目的。
+
+通过监听Hexo 的 new 事件，新建文章同时使用编辑器打开文档
+
+首先，我们需要安装模块shelljs
+
+```bash
+npm install --save shelljs
+```
+
+待到模块安装完成，在博客根目录的 scripts 文件夹下新建一个js文件，文件名随意取；如果没有 scripts 目录，请新建一个。
+
+然后在脚本内键入以下内容
+
+```javascript
+require('shelljs/global');
+
+var path = require('path');
+
+/* hexo deploy 时自动执行git push */
+
+try {
+  hexo.on('deployAfter', function() {//当deploy完成后执行备份
+    run();
+  });
+} catch (e) {
+  console.log("产生了一个错误<(￣3￣)> !，错误详情为：" + e.toString());
+}
+
+function run() {
+
+  if (!which('git')) {
+    echo('Sorry, this script requires git');
+    exit(1);
+  } else {
+    echo("======================Auto Backup Begin===========================");
+    cd(process.cwd());
+    if (exec('git add --all').code !== 0) {
+      echo('Error: Git add failed');
+      exit(1);
+
+    }
+    if (exec('git commit -m "update"').code !== 0) {
+      echo('Error: Git commit failed');
+      exit(1);
+
+    }
+    if (exec('git push origin source').code !== 0) {
+      echo('Error: Git push failed');
+      exit(1);
+
+    }
+    echo("==================Auto Backup Complete============================")
+  }
+}
+
+/* 新建文章自动打开编辑器 */
+
+try {
+  hexo.on('new', function(data) {//当deploy完成后执行备份
+    exec(data.path)
+  });
+} catch (e) {
+  console.log("产生了一个错误<(￣3￣)> !，错误详情为：" + e.toString());
+}
+```
+
+这样，我们在使用Hexo命令时就可以自动触发git以及打开文章的操作了！
 
 ## 参考资料
 
@@ -267,4 +348,4 @@ hexo deploy
 [简洁轻便的博客平台: Hexo详解](http://www.tuicool.com/articles/ueI7naV)
 [20分钟教你使用hexo搭建github博客](http://www.jianshu.com/p/e99ed60390a8)
 [有哪些好看的 Hexo 主题？](https://www.zhihu.com/question/24422335)
-
+[自动备份Hexo博客源文件](http://www.tuicool.com/articles/EnaqAvV)

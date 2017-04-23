@@ -34,3 +34,12 @@ function run() {
     echo("==================Auto Backup Complete============================")
   }
 }
+
+/* 新建文章自动打开编辑器 */
+try {
+  hexo.on('new', function(data) {//当deploy完成后执行备份
+    exec(data.path)
+  });
+} catch (e) {
+  console.log("产生了一个错误<(￣3￣)> !，错误详情为：" + e.toString());
+}
