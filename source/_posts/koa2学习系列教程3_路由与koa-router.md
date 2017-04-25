@@ -9,18 +9,17 @@ tags:
 可以通过this.path属性，判断用户请求的路径，从而起到路由作用。
 
 ```javascript
-app.use(function* (next) {
-  if (this.path === '/') {
-    this.body = 'we are at home!';
+app.use(async (ctx,next)=>{
+  if (ctx.path === '/') {
+    ctx.body = 'we are at home!';
   } else {
-    yield next;
+    await next;
   }
 })
 ```
 
 ```javascript
 let koa = require('koa')
-
 let app = koa()
 
 // normal route

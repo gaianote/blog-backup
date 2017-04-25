@@ -34,6 +34,33 @@ app.listen(3000);
 * app.use方法用于向middleware数组添加相应函数。
 * listen方法指定监听端口，并启动当前应用。
 
+## 异步编程终极解决方案 async
+
+async是js异步执行的最佳方案，await无法单独出现，总是需要与async配合使用;
+
+```javascript
+const foo = async ()=>{
+  console.log('foo start')
+  await sub()
+  console.log('foo end')
+}
+const sub = ()=>{
+  console.log('sub')
+}
+```
+
+`async`表示这个函数是异步的
+
+`await func()` 表示等待func执行完毕,并返回结果后，继续向下执行
+
+输出结果如下：
+
+```
+foo start
+sub
+foo end
+```
+
 ## 中间件 (async需要node v7.6+)
 
 koa是一个可以使用两种函数作为中间件的中间件框架
@@ -42,25 +69,36 @@ koa是一个可以使用两种函数作为中间件的中间件框架
 * common function
 
 ```javascript
+//异步的
 app.use(async (ctx, next) => {
-  const start = new Date();
+  console.log('first middleware start')
   await next();
-  const ms = new Date() - start;
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+  await sub();
+  console.log('first middleware end')
 });
+//同步的
+app.use(()=>{
+  console.log('second middleware')
+})
+
+const sub = ()=>{
+  console.log('sub')
+}
 ```
 
-app.use方法的参数就是中间件，它是一个async函数
+输出结果如下：
 
-async函数是Generator函数的语法糖，当程序遇到await时，将程序的执行权转交给下一个中间件，即await next()，要等到下一个中间件返回结果，才会继续往下执行。
+```
+first middleware start
+second middleware
+sub
+first middleware end
+```
 
-上面四行代码运行顺序为：
+app.use的参数就是中间件，可以看出，通过`await next()`可以调用下一个中间件，通过`await func()`可以调用其他函数
 
-1.第一行赋值语句首先执行，开始计时
-2.第二行await语句将执行权交给下一个中间件，当前中间件就暂停执行。等到后面的中间件全部执行完成，执行权就回到原来暂停的地方，继续往下执行
-3.得到程序运行所花费的时间。
-4.第四行将这个时间打印出来。
 
+## 参考文档
 
 [koa 中文文档](https://github.com/guo-yu/koa-guide)
 [koa实战](http://book.apebook.org/minghe/koa-action/xtemplate/xtemplate.html)
