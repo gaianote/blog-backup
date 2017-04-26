@@ -28,7 +28,7 @@ E:\Users\lee
 gaian@DESKTOP-OTILKFV  ~
 $
 ```
-2. 在user目录下，新建一个 .bashsr 脚本，写入如下内容用
+2.在user目录下，新建一个 .bashsr 脚本，写入如下内容用
 
 ```bash
 blog() {
@@ -36,7 +36,7 @@ blog() {
 }
 ```
 
-3. 更新 .bashrc 使之立即生效
+3.更新 .bashrc 使之立即生效
 
 ```bash
 $ cd ~
