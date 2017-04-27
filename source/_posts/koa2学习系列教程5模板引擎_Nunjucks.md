@@ -1,5 +1,5 @@
 ---
-title: koa2学习系列教程5模板引擎Nunjucks
+title: koa2学习系列教程5模板引擎 Nunjucks
 date: 2017-04-27 17:27:43
 tags: nodejs
 ---
@@ -57,6 +57,7 @@ hello.html
 ```javascript
 var items = [{ title: "foo", id: 1 }, { title: "bar", id: 2}];
 ```
+
 ```html
 <h1>Posts</h1>
 <ul>
@@ -165,7 +166,15 @@ This is clild right content!
 </section>
 ```
 
+```
 可以看出，继承的使用方式为：使用 `{% block <blockname> %}{% endblock %}` 进行定义，使用 `{% extends "parent.html" %}` 进行继承，重新在子页面定义的内容将被重写
+```
+
+题外话
+
+```
+当文中出现 {% block <blockname> %}{% endblock %} 的时候，hexo g 报错，是因为 hexo 模板引擎的原因;所以我将上面那句话放到了代码块中
+```
 
 ## 参考资料
 
