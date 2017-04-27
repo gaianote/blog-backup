@@ -6,24 +6,24 @@ tags:
 
 ## 使用node切换命令行目录问题
 
-尝试使用nodejs写一个更改cmd命令行目录的小程序,保存一下日常使用的目录，方便进行目录切换，预想效果如下
+因为日常需要，打算使用nodejs写一个更改cmd命令行目录的小程序,保存一下日常使用的目录，方便进行目录切换，预想效果如下
 
 ```
 > E:\Users\gaian $ go project
 > D:\nodejs\demos\project
 > D:\nodejs\demos\project $ go blog
-> E:E:\Users\gaian\gaianote.github.io
+> E:\Users\gaian\gaianote.github.io
 ```
 
-本来以为很简单的几行代码就可以完成，后来发现这个需求无法实现，因为node的子进程无法更改父进程的工作目录
+本来以为很简单的几行代码就可以完成，后来发现这个需求居然无法实现，因为node的子进程无法更改父进程的工作目录
 
 ## 使用shell脚本进行功能实现
 
-什么是bash呢? 简单来讲，Linux发行版支持各种各样的GUI（graphical user interfaces），但在某些情况下，Linux的命令行接口(bash)仍然是简单快速的。Bash和Linux Shell需要输入命令来完成任务，因而被称为命令行接口。
+于是打算使用shell进行功能实现，那么什么shell是用户和Linux操作系统之间的接口。Linux中有多种shell，其中缺省使用的是Bash。什么是bash呢? 简单来讲，Linux发行版支持各种各样的GUI（graphical user interfaces），但在某些情况下，Linux的命令行接口(bash)仍然是简单快速的。Bash和Linux Shell需要输入命令来完成任务，因而被称为命令行接口。
 
 windows下具体步骤如下：
 
-1.下载一个支持bash的cmd命令行工具，我一直在使用[cmder](http://cmder.net/)，这款工具美观且功能强大，推荐大家尝试一下,在cmder中输入 `bash` ，就可以从windos的命令行更改为bash模式，非常方便
+1.下载一个支持bash的cmd命令行工具，我一直在使用[cmder](http://cmder.net/)，这款工具美观且功能强大，推荐大家尝试一下,在 cmder 中输入 `bash` ，就可以从 windows 的命令行模式更改为 bash 模式，非常方便
 
 ```
 # win
@@ -35,7 +35,24 @@ gaian@DESKTOP-OTILKFV  ~
 $
 ```
 
-2.在user目录下，新建一个 .bashsr 脚本，写入如下内容用
+其实我们可以通过设置 Cmder ，改为默认以 bash 模式启动 Cmder , 如果你不习惯 win 下的命令的话，可以进行以下设置：
+
+以管理员身份运行 Cmder ，在 Cmder 中选择 `Setting` ，然后在 `Startup` -> `Tasks` -> `{cmd::Cmder}` 中输入如下启动方式，这样就可以通过鼠标右键菜单打开 Bash 了，并且是在当前文件夹打开，同时也避免了在 Vim 中方向键失灵的问题。
+
+```
+cmd /k "%ConEmuDir%\..\init.bat"  -new_console:p:n%USERPROFILE% &bash
+```
+
+这样我们在打开 Cmder 后，便直接进入 Bash 模式
+
+```
+gaian@DESKTOP-OTILKFV  ~
+$
+```
+当我们每次关闭 Cmder 时都会弹出提示框提示 Confirm closing console? ，只需要在 `Setting` -> `Main` -> `Confirm` -> `Close confirmations` 中取消 When running process was detected 前面选中状态，就可以关闭提示框的弹出。
+
+
+2.在user目录下，新建一个 .bashsrc 脚本，写入如下内容用
 
 ```bash
 go(){
@@ -64,7 +81,55 @@ $ go post
 gaian@DESKTOP-OTILKFV  ~/gaianote.github.io/source/_posts
 ```
 
-## bash常用命令(win)
+## bash基本语法
+
+
+**变量**
+
+bash变量不需要定义，使用时添加$表示变量
+
+```bash
+STR="Hello World"
+echo $STR
+```
+
+**判断语句**
+
+```bash
+if [ "foo" = "foo" ]; then
+  echo 'nice'
+fi
+```
+
+**循环语句**
+
+```bash
+n=1
+while [ $n -le 10 ]
+do
+    echo $n
+    let n++
+done
+```
+
+break 语句可以让程序流程从当前循环体中完全跳出，而 continue 语句可以跳过当次循环的剩余部分并直接进入下一次循环
+
+**函数**
+
+bash 的函数不用传入参数，默认以 $1 $2 表示第一个变量，第二个变量...
+
+```bash
+foo() {
+echo $1
+}
+```
+
+```bash
+$ foo Hello
+Hello
+```
+
+## bash常用命令
 
 `ls` –List
 
@@ -186,51 +251,8 @@ shutdown用于关闭计算机，而shutdown -r用于重启计算机。
 
 以单独窗口运行程序，可以用来打开文件或文件夹,例如 `start .`打开当前文件夹
 
-## bash基本语法
 
-**变量**
 
-bash变量不需要定义，使用时添加$表示变量
-
-```
-STR="Hello World"
-echo $STR
-```
-
-**判断语句**
-
-```bash
-if [ "foo" = "foo" ]; then
-  echo 'nice'
-fi
-```
-
-**循环语句**
-
-```bash
-n=1
-while [ $n -le 10 ]
-do
-    echo $n
-    let n++
-done
-```
-
-break 语句可以让程序流程从当前循环体中完全跳出，而 continue 语句可以跳过当次循环的剩余部分并直接进入下一次循环
-
-**函数**
-
-```
-foo() {
-echo $1
-}
-```
-
-```bash
-$ foo Hello
-Hello
-```
-
-# 参考资料
+## 参考资料
 
 [bash编程之if……else条件判断](http://zhaochj.blog.51cto.com/368705/1315581)
