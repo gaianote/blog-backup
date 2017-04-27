@@ -7,7 +7,7 @@ title: 李云鹏的个人博客
 subtitle:
 description:
 author: 李云鹏
-language: zh-CN
+language: zh-Hans
 timezone:
 
 # URL
@@ -91,3 +91,9 @@ jsonContent:
     excerpt: false
     categories: false
     tags: true
+algolia:
+  applicationID: 'I64CMLFKUR'
+  apiKey: '98770a16536b68af40add2df362c7d06'
+  adminApiKey: '033dea79df671e5a478f7bad8423e587'
+  indexName: 'next'
+  chunkSize: 5000
