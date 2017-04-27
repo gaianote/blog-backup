@@ -331,7 +331,7 @@ function run() {
 /* 新建文章自动打开编辑器 */
 
 try {
-  hexo.on('new', function(data) {//当deploy完成后执行备份
+  hexo.on('new', function(data) {
     exec(data.path)
   });
 } catch (e) {
@@ -344,8 +344,8 @@ try {
 ## 参考资料
 
 [hexo官网](https://hexo.io/)
+[next官网](http://theme-next.iissnan.com/)
 [Hexo 入门指南](http://www.kancloud.cn/wizardforcel/markdown-simple-world/97380)
 [简洁轻便的博客平台: Hexo详解](http://www.tuicool.com/articles/ueI7naV)
 [20分钟教你使用hexo搭建github博客](http://www.jianshu.com/p/e99ed60390a8)
-[有哪些好看的 Hexo 主题？](https://www.zhihu.com/question/24422335)
 [自动备份Hexo博客源文件](http://www.tuicool.com/articles/EnaqAvV)

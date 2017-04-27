@@ -17,6 +17,7 @@
     "hexo-renderer-marked": "^0.2.10",
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.2.0",
+    "hexo-toc": "^1.0.8",
     "shelljs": "^0.7.7"
   }
 }
