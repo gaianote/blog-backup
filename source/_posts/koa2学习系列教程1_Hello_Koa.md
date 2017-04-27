@@ -38,20 +38,22 @@ app.listen(3000);
 
 async是js异步执行的最佳方案，await无法单独出现，总是需要与async配合使用;
 
+async 函数返回一个 Promise 对象，可以使用 then 方法添加回调函数。当函数执行的时候，一旦遇到 await 就会先返回，等到触发的异步操作完成，再接着执行函数体内后面的语句。
+
 ```javascript
-const foo = async ()=>{
+async function foo ()=>{
   console.log('foo start')
   await sub()
   console.log('foo end')
 }
-const sub = ()=>{
+async function sub ()=>{
   console.log('sub')
 }
 ```
 
 `async`表示这个函数是异步的
 
-`await func()` 表示等待func执行完毕,并返回结果后，继续向下执行
+`await sub()` 表示等待 `sub()` 执行完毕,并返回结果后，继续向下执行
 
 输出结果如下：
 
