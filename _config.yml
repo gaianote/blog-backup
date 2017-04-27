@@ -72,28 +72,11 @@ deploy:
   repo: git@github.com:gaianote/gaianote.github.io.git
   branch: master
 
-# theme-yiliya
-jsonContent:
-  meta: false
-  pages: false
-  posts:
-    title: true
-    date: true
-    path: true
-    text: false
-    raw: false
-    content: false
-    slug: false
-    updated: false
-    comments: false
-    link: false
-    permalink: false
-    excerpt: false
-    categories: false
-    tags: true
 algolia:
   applicationID: 'I64CMLFKUR'
   apiKey: '98770a16536b68af40add2df362c7d06'
   adminApiKey: '033dea79df671e5a478f7bad8423e587'
   indexName: 'next'
   chunkSize: 5000
+avatar:
+  '/rem.png'
