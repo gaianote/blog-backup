@@ -3,13 +3,15 @@
  * 当在bash输入 $ hexo g 时，自动执行 hexo d ; git add . ;git commit -m "update" ; git push
  */
 
+
+
 require('shelljs/global');
 
 var path = require('path');
 
 try {
 
-  hexo.on('generateAfter', function() {
+  hexo.on('deployAfter', function() {
 
     run();
 
@@ -30,11 +32,6 @@ function run() {
     echo("======================Auto Backup Begin===========================");
 
     cd(process.cwd());
-
-    if (exec('hexo d').code !== 0) {
-      echo('Error: hexo generate failed');
-      exit(1);
-    }
 
     if (exec('git add --all').code !== 0) {
       echo('Error: Git add failed');
