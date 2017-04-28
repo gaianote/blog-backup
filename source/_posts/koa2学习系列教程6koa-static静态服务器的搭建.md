@@ -1,7 +1,7 @@
 ---
-title: koa2学习系列教程6koa-static静态服务器的搭建
+title: koa2学习系列教程6 koa-static静态服务器的搭建
 date: 2017-04-28 13:44:34
-tags:
+tags: koa
 ---
 
 我们可以使用 koa-static 快速搭建静态服务器，用于访问 koa 服务器内的js，css，img等静态文件。
