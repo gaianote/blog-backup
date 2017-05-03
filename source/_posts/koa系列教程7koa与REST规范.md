@@ -6,6 +6,8 @@ tags: nodejs
 
 ## hello REST
 
+REST描述的是在网络中client和server的一种交互形式，它要求我们用 URL 定位资源，用 HTTP 动词（GET,POST,DELETE,DETC）描述操作。
+
 ```
 rest-hello
 |-controller
@@ -30,14 +32,14 @@ var products = [{
 }];
 
 module.exports = {
-
+    //获取商品信息
     'GET /api/products': async (ctx, next) => {
         ctx.response.type = 'application/json';
         ctx.response.body = {
             products: products
         };
     },
-
+    //新增商品
     'POST /api/products': async (ctx, next) => {
         var p = {
             name: ctx.request.body.name,
@@ -54,7 +56,12 @@ module.exports = {
 
 ### http请求规范
 
-REST规范定义了资源的通用访问格式，虽然它不是一个强制要求，但遵守该规范可以让人易于理解。
+REST 规范定义了资源的通用访问格式，虽然它不是一个强制要求，但遵守该规范可以让人易于理解。
+
+- GET 用于获取资源
+- POST 用于新建资源
+- PUT 用于更新资源
+- DELETE 用于删除资源
 
 例如，商品Product就是一种资源。获取所有Product的URL如下：
 
@@ -110,6 +117,8 @@ GET /api/products/123/reviews?page=2&size=10&sort=time
 
 ## 封装 ctx.rest() 输出 json 数据
 
+### 定义 rest.restify 中间件
+
 每次输出 json 数据时，都要使用 `ctx.response.type = 'application/json';` 不够又优雅，我们可以可以通过一个 middleware 给 ctx 添加一个 `rest()` 方法，直接输出JSON数据
 
 ```javascript
@@ -133,6 +142,17 @@ module.exports = {
 
 此后，输出json数据时，使用 `ctx.rest(data)` 即可
 
+### 使用 rest.restify 中间件
+
+在 app.js 中调用中间件
+
+```javascript
+const rest = require('./rest');
+app.use(rest.restify());
+```
+
+在 api.js 中使用 `ctx.rest(data)` 输出json数据
+
 ```javascript
 ctx.rest({products: products})
 //等价于
@@ -146,9 +166,13 @@ ctx.response.body = {products: products};
 
 在涉及到REST API的错误时，我们必须先意识到，客户端会遇到两种类型的REST API错误。
 
-- 403，404，500等错误，这些错误实际上是HTTP请求可能发生的错误。REST请求只是一种请求类型和响应类型均为JSON的HTTP请求，因此，这些错误在REST请求中也会发生。针对这种类型的错误，客户端除了提示用户“出现了网络错误，稍后重试”以外，并无法获得具体的错误信息。
+**403，404，500等错误**
 
-- 业务逻辑错误，例如，输入了不合法的Email地址，试图删除一个不存在的Product，等等。这种类型的错误完全可以通过JSON返回给客户端，这样，客户端可以根据错误信息提示用户“Email不合法”等，以便用户修复后重新请求API。
+这些错误实际上是HTTP请求可能发生的错误。REST请求只是一种请求类型和响应类型均为JSON的HTTP请求，因此，这些错误在REST请求中也会发生。针对这种类型的错误，客户端除了提示用户“出现了网络错误，稍后重试”以外，并无法获得具体的错误信息。
+
+**业务逻辑错误**
+
+例如，输入了不合法的Email地址，试图删除一个不存在的Product，等等。这种类型的错误完全可以通过JSON返回给客户端，这样，客户端可以根据错误信息提示用户“Email不合法”等，以便用户修复后重新请求API。
 
 ### 错误响应
 
@@ -158,7 +182,7 @@ ctx.response.body = {products: products};
 
 ```json
 {
-    "code": "400",
+    "code": "10000",
     "message": "Bad email address"
 }
 ```
@@ -260,11 +284,13 @@ module.exports = {
 
 最后，顺便把APIError这个对象export出去。
 
-**抛出错误
+**抛出错误**
+
 我们在 api.js 中，通过 `throw new APIError()` 返回错误：
 
-```
-'DELETE /api/products/:id': async (ctx, next) => {
+```javascript
+module.exports = {
+  'DELETE /api/products/:id': async (ctx, next) => {
         console.log(`delete product ${ctx.params.id}...`);
         var p = products.deleteProduct(ctx.params.id);
         if (p) {
@@ -272,5 +298,6 @@ module.exports = {
         } else {
             throw new APIError('product:not_found', 'product not found by id.');
         }
+  }
+}
 ```
-
