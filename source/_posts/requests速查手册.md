@@ -9,26 +9,45 @@ tags:
 
 import requests
 
-## get与post
+## get
+
+请求网址与传递参数
 
 ```python
-# 请求网址与传递参数
 payload = {'key1': 'value1', 'key2': 'value2'}
 r = requests.get(url, params=payload)
 ```
 
+定制请求头
+
 ```python
-# 定制请求头
 headers = {'user-agent': 'my-app/0.0.1'}
 r = requests.get(url, headers=headers)
 ```
 
+超时
+
 ```python
-# 超时
 r = requests.get(url, timeout=0.001)
 ```
 
-处理返回结果
+## post
+
+发送表单数据
+
+```python
+data = {'key':'value'}
+r = requests.post(url, data=data)
+```
+
+发送json数据
+
+```python
+# requests会自动序列化data
+data = {'key':'value'}
+r = requests.post(url, json=data)
+```
+## 处理返回结果
 
 ```python
 # 得到json
