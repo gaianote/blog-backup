@@ -1,7 +1,7 @@
 ---
 title: ssh原理及应用
 date: 2017-05-09 10:26:16
-tags:
+tags: linux
 ---
 
 ## 什么是SSH？
