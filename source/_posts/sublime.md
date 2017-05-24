@@ -1,3 +1,9 @@
+---
+title: sublime
+date: 2017-05-18 00:03:44
+tags: tool
+---
+
 ## 快捷键
 
 ### `Ctrl+P` ：Goto Anything
@@ -103,11 +109,34 @@
 
 ```json
 {
-    "terminal": "C:\\WINDOWS\\system32\\cmd.exe",
-    //"terminal": "C:\\Program Files\\cmder\\Cmder.exe",
+    "terminal": "F:\\Program Files\\cmder\\Cmder.exe",
     "parameters": ["/START", "%CWD%"]
 }
 ```
 
+### 在sublime下运行python程序
 
-然后人生就焕发了第二春 -。-（强烈建议大家去搜索使用被我注释掉的Cmder，这才是一个shell的样子嘛！）
+sublime 自带运行 python 程序功能，使用快捷键  `ctrl + B` 即可。
+
+更美观的界面或者进入命令行交互模式还需要插件的支持，这里推荐 `sublimeREPL` 插件
+
+在你写好的python文件的界面里(这点需要注意)，点击上方菜单栏的`tools`->`sublimeREPL`->`python`->`python run current file`，即可交互输入
+
+**使用快捷键运行程序**
+
+在 `preferences`--> `key binding`--> `user` 中输入以下内容:
+
+```json
+{ "keys": ["f5"], "caption": "Python - RUN current file",
+    "command": "repl_open", "args":
+    {
+      "type": "subprocess",
+      "encoding": "utf8",
+      "cmd": ["python", "-u", "$file_basename"],
+      "cwd": "$file_path",
+      "syntax": "Packages/Python/Python.tmLanguage",
+      "external_id": "python",
+      "extend_env": {"PYTHONIOENCODING": "utf-8"}
+    }
+}
+```

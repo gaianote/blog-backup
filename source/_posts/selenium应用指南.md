@@ -100,6 +100,17 @@ input("查看效果")
 browser.quit()
 ```
 
+## 超时设置
+
+```python
+from selenium import webdriver
+d= webdriver.PhantomJS()
+#这两种设置都进行才有效
+
+d.set_page_load_timeout(10)
+d.set_script_timeout(10)
+```
+
 ## 参考文档
 
 [selinium设置请求头](https://www.zhihu.com/question/35547395)
