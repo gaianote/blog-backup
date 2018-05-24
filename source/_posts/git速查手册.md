@@ -11,14 +11,14 @@ tags:
 1. 设置Git的user name和email：(如果是第一次的话)
 
 ```bash
-$ git config --global user.name "humingx"
-$ git config --global user.email "humingx@yeah.net"
+$ git config --global user.name "gaianote"
+$ git config --global user.email "gaianote@163.com"
 ```
 
 2. 生成密钥
 
 ```bash
-$ ssh-keygen -t rsa -C "humingx@yeah.net"
+$ ssh-keygen -t rsa -C "gaianote@163.com"
 ```
 
 连续3个回车。如果不需要密码的话。
@@ -60,7 +60,7 @@ Are you sure you want to continue connecting (yes/no)?
 选择 yes
 
 ```
-Hi humingx! You've successfully authenticated, but GitHub does not provide shell access.
+Hi gaianote! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 如果看到Hi后面是你的用户名，就说明成功了。
 
@@ -70,7 +70,7 @@ Hi humingx! You've successfully authenticated, but GitHub does not provide shell
 
 ```
     [remote "origin"]
-    url = https://github.com/humingx/humingx.github.io.git
+    url = https://github.com/gaianote/gaianote.github.io.git
     fetch = +refs/heads/*:refs/remotes/origin/*
 ```
 
@@ -78,7 +78,7 @@ Hi humingx! You've successfully authenticated, but GitHub does not provide shell
 
 ```
     [remote "origin"]
-    url = git@github.com:humingx/humingx.github.io.git
+    url = git@github.com:gaianote/gaianote.github.io.git
     fetch = +refs/heads/*:refs/remotes/origin/*
 ```
 ## 忽略不想提交的文件
