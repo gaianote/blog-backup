@@ -1,5 +1,5 @@
 ---
-title: requests速查手册
+title: difflib字符串相似性对比
 date: 2017-04-23 22:07:42
 tags: python
 ---
