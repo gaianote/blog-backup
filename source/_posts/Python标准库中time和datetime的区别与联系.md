@@ -1,7 +1,7 @@
 ---
 title: Python 标准库中 time 和 datetime 的区别与联系
 date: 2018-05-25 09:39:29
-tags: nodejs npm
+tags: python
 ---
 
 Python 中提供了对时间日期的多种多样的处理方式，主要是在 time 和 datetime 这两个模块里。今天稍微梳理一下这两个模块在使用上的一些区别和联系。

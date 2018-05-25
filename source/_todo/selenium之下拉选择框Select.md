@@ -19,7 +19,7 @@ from selenium.webdriver.support.ui import Select
 Select类提供了三种选择某一选项的方法：
 
 ```
-select_by_index(index)
+select_by_index(index) # 初始的序号是0
 select_by_value(value)
 select_by_visible_text(text)
 ```
