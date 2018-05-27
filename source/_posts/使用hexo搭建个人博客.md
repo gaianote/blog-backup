@@ -363,7 +363,7 @@ $ npm install hexo-generator-searchdb --save
 编辑站点配置文件
 在站点配置文件(Hexo根目录的配置文件)_config.yml中添加
 
-```
+```yaml
 search:
   path: search.xml
   field: post
@@ -376,7 +376,7 @@ search:
 
 ### Local search
 
-```
+```yaml
 local_search:
   enable: true
 ```

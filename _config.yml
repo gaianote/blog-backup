@@ -72,11 +72,15 @@ deploy:
   repo: git@github.com:gaianote/gaianote.github.io.git
   branch: master
 
-algolia:
-  applicationID: 'I64CMLFKUR'
-  apiKey: '98770a16536b68af40add2df362c7d06'
-  adminApiKey: '033dea79df671e5a478f7bad8423e587'
-  indexName: 'next'
-  chunkSize: 5000
+# search
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+
+local_search:
+  enable: true
+
 avatar:
   '/rem.png'
