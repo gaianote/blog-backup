@@ -72,15 +72,11 @@ deploy:
   repo: git@github.com:gaianote/gaianote.github.io.git
   branch: master
 
-# search
 search:
   path: search.xml
   field: post
   format: html
   limit: 10000
-
-local_search:
-  enable: true
 
 avatar:
   '/rem.png'
