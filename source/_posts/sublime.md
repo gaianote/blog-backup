@@ -4,7 +4,7 @@ date: 2017-05-18 00:03:44
 tags: tool
 ---
 
-## 快捷键
+## 快捷键与常用功能
 
 ### `Ctrl+P` ：Goto Anything
 
@@ -16,10 +16,15 @@ tags: tool
 `@`：+ 符号：`Ctrl+R` 定位到具体的符号，例如：JS函数名，CSS选择器名。
 `#`：+ 关键字：`Ctrl+;` 匹配到具体的匹配的关键字。主要是模糊匹配。
 
+### `Ctrl+shif+D` 复制一行
+
+### find in floder 批量修改替换
+
+右键点击相应的文件夹，选择find in floder，sublime会在文件夹内列出所有匹配到文字的所有文件，并替换为你所希望更换的内容。然后点击`File -> save all`，会保存所有被修改的文件。
 
 ## sublime配置文件
 
-个人正在使用的sublime配置文件，解决了文件名中文显示为□□□等问题
+个人正在使用的sublime配置文件，解决了文件名中文显示为□□□的问题，并且将制表符用4个空格代替，避免tab和space的混合使用(尤其针对python语言)
 
 ```json
 {
@@ -37,7 +42,7 @@ tags: tool
   "line_padding_top": 1,
   "save_on_focus_lost": true,
   "show_encoding": true,
-  "tab_size": 2,
+  "tab_size": 4,
   "translate_tabs_to_spaces": true,
   "trim_trailing_white_space_on_save": true,
   "word_wrap": false,
@@ -45,8 +50,6 @@ tags: tool
   "remember_open_files": false
 }
 ```
-## 常用功能
-
 
 ## 插件安装
 
