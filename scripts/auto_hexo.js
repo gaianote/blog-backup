@@ -9,18 +9,14 @@ require('shelljs/global');
 
 var path = require('path');
 
+/* hexo deploy 时自动执行git push */
+
 try {
-
-  hexo.on('deployAfter', function() {
-
+  hexo.on('deployAfter', function() {//当deploy完成后执行备份
     run();
-
   });
-
 } catch (e) {
-
   console.log("产生了一个错误<(￣3￣)> !，错误详情为：" + e.toString());
-
 }
 
 function run() {
@@ -30,9 +26,7 @@ function run() {
     exit(1);
   } else {
     echo("======================Auto Backup Begin===========================");
-
     cd(process.cwd());
-
     if (exec('git add --all').code !== 0) {
       echo('Error: Git add failed');
       exit(1);
@@ -53,11 +47,11 @@ function run() {
 }
 
 /* 新建文章自动打开编辑器 */
+
 try {
-  hexo.on('new', function(data) {//当deploy完成后执行备份
+  hexo.on('new', function(data) {
     exec(data.path)
   });
 } catch (e) {
   console.log("产生了一个错误<(￣3￣)> !，错误详情为：" + e.toString());
 }
-
