@@ -341,6 +341,48 @@ try {
 
 这样，我们在使用Hexo命令时就可以自动触发git以及打开文章的操作了！
 
+## 继承搜索服务
+
+Next官网–>第三方服务–>搜索服务 中已经有详细的介绍了,主题内置了4种搜索方式:
+
+- Swiftype
+- 微搜索
+- Local Search
+- Algolia
+
+由于自己的博客主要用于工作日志的记录,以及工作时的快速定位查询,因此选择了第三种方式Local Search,即本地搜索.
+
+### 安装搜索插件
+
+在Hexo根目录执行如下命令
+
+```
+$ npm install hexo-generator-searchdb --save
+```
+
+编辑站点配置文件
+在站点配置文件(Hexo根目录的配置文件)_config.yml中添加
+
+```
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+```
+
+编辑主题配置文件,启用本地搜索
+在主题配置文件(Next主题根目录的配置文件)_config.yml中启用
+
+### Local search
+
+```
+local_search:
+  enable: true
+```
+
+注:以上内容在Next官网本地搜索模块有详细介绍,在此只为记录.
+
 ## 参考资料
 
 [hexo官网](https://hexo.io/)
