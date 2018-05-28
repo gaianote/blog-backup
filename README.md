@@ -4,7 +4,7 @@
 
 1. 安装最新版本的 node.js ，注意安装时必须勾选 `add to path`
 2. 运行`npm install hexo-cli -g` 安装命令行工具
-3. 运行`git clone https://github.com/gaianote/gaianote.github.io`，将source分支clone到本地
+3. 运行`git clone git@github.com:gaianote/gaianote.github.io.git`，将source分支clone到本地
 4. cd到项目根目录，运行 `npm install` 安装相关依赖
 5. `hexo server` 启动服务器，可以在本地浏览blog
 
