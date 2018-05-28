@@ -88,7 +88,13 @@ tags: tool
 
 **markdown语法高亮**
 
-首先安装 `Markdown Extended` + `Monokai Extended` 这两个主题
+首先安装 `Markdown Extended` + `Monokai Extended` 这两个主题, 不知道为什么在package中无法搜索到这两个包，因此使用github下载
+
+
+```git
+git clone https://github.com/jonschlinkert/sublime-markdown-extended.git "sublime-markdown-extended"
+git clone https://github.com/jonschlinkert/sublime-monokai-extended.git "sublime-monokai-extended"
+```
 
 选择 `Preference` > `Color Scheme` > `Monokai Extended` 更换主题颜色为 `Monokai Extended`
 

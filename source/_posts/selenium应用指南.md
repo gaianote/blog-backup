@@ -111,6 +111,18 @@ d.set_page_load_timeout(10)
 d.set_script_timeout(10)
 ```
 
+## selenium中运行js
+
+注意两点
+
+1. 希望获得返回值需要js文件含有`return`关键字
+2. 希望在已经获取的元素上进行js操作，需要传入第二个参数elem
+
+```python
+driver = webdriver.Chrome()
+elem = driver.get_element_by_id("input_all")
+driver.execute_script('return arguments[0].checked',elem)
+```
 ## 参考文档
 
 [selinium设置请求头](https://www.zhihu.com/question/35547395)
