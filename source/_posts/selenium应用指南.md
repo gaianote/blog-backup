@@ -123,8 +123,37 @@ driver = webdriver.Chrome()
 elem = driver.get_element_by_id("input_all")
 driver.execute_script('return arguments[0].checked',elem)
 ```
-## 参考文档
+
+## selenium 文件上传
+
+首先，我们要区分出上传按钮的种类，大体上可以分为两种，一种是input框，另外一种就比较复杂，通过js、flash等实现，标签非input
+
+### input标签
+
+众所周知，input标签是可以直接`send_keys`的，这里也不例外，来看代码示例：
+
+示例网址： http://www.sahitest.com/demo/php/fileUpload.htm
+
+```python
+from selenium import webdriver
+
+driver = webdriver.Firefox()
+driver.get('http://sahitest.com/demo/php/fileUpload.htm')
+upload = driver.find_element_by_id('file')
+upload.send_keys('d:\\baidu.py')  # send_keys
+print upload.get_attribute('value')  # check value
+
+driver.quit()
+```
+结果：
+
+```python
+baidu.py
+```
+
+## 参考文档标签
 
 [selinium设置请求头](https://www.zhihu.com/question/35547395)
 [盘点selenium phantomJS使用的坑](http://www.jianshu.com/p/9d408e21dc3a)
 [selenium设置Chrome](http://www.cnblogs.com/TTyb/p/6128323.html)
+[selenium之文件上传所有方法整理总结](https://blog.csdn.net/huilan_same/article/details/52439546)

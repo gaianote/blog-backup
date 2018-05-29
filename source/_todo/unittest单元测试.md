@@ -1,4 +1,10 @@
+---
+title: unittest单元测试
+date: 2018-05-29 17:44:14
+tags: python
+---
 
+## 一个简单的测试
 
 ```python
 import unittest
@@ -28,7 +34,7 @@ if __name__ == '__main__':
     unittest.main()
 ```
 
-## 这就是一个简单的测试，有几点需要说明的：
+这就是一个简单的测试，有几点需要说明的：
 
 1. 在第一行给出了每一个用例执行的结果的标识，成功是 .，失败是 F，出错是 E，跳过是S。从上面也可以看出，测试的执行跟方法的顺序没有关系，test_divide写在了第4个，但是却是第2个执行的。
 
@@ -37,7 +43,7 @@ if __name__ == '__main__':
 3. 在unittest.main()中加 verbosity 参数可以控制输出的错误报告的详细程度，默认是 1，如果设为 0，则不输出每一用例的执行结果，即没有上面的结果中的第1行；如果设为 2，则输出详细的执行结果
 
 ## 用例顺序
- 
+
 ```python
 import unittest
 from test_mathfunc import TestMathFunc
@@ -112,3 +118,26 @@ def setUpModule():
 class simple_test(unittest.TestCase):
     ...
 ```
+
+## unittest断言
+
+### 断言使用示例
+
+```python
+class demoTest(unittest.TestCase):
+    def test1(self):
+        self.assertEqual(4 + 5,9)
+```
+
+### 常用断言
+
+|断言语法                | 解释                |
+|-----------------------|---------------------|
+|assertEqual(a, b)      | 判断a==b            |
+|assertNotEqual(a, b)   |  判断a！=b          |
+|assertTrue(x)          | bool(x) is True     |
+|assertFalse(x)         |bool(x) is False     |
+|assertIs(a, b)         | a is b              |
+|assertIsNot(a, b)      |  a is not b         |
+|assertIsNone(x)        | x is None           |
+|assertIsNotNone(x)     |  x is not None      |
