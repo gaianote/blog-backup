@@ -36,6 +36,6 @@ if (result == 1) or 2 or 3 or 4:
 这个表达式是恒成立的，如果希望达到所需设想，可以使用如下示例：
 
 ```python
-if (result == 1) or 2 or 3 or 4:
+if result in [1,2,3,4]:
     print('result is right')
 ```
