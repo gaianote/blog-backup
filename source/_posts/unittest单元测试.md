@@ -44,6 +44,8 @@ if __name__ == '__main__':
 
 ## 用例顺序
 
+### 人为指定用例顺序
+
 ```python
 import unittest
 from test_mathfunc import TestMathFunc
@@ -59,6 +61,33 @@ if __name__ == '__main__':
 ```
 https://blog.csdn.net/huilan_same/article/details/52944782
 
+### 默认顺序
+
+使用addTest的方法比较繁琐，而sunittest的默认顺序是按照文件名进行排序的，因此在实际使用过程中，可以数字作为序号的方式进行命名，从而达到排序的目的
+
+```python
+import unittest
+
+class TestMathFunc(unittest.TestCase):
+
+    def test_1_add(self):
+        """Test method add(a, b)"""
+        self.assertEqual(3, add(1, 2))
+        self.assertNotEqual(3, add(2, 2))
+
+    def test_2_minus(self):
+        """Test method minus(a, b)"""
+        self.assertEqual(1, minus(3, 2))
+
+    def test_3_multi(self):
+        """Test method multi(a, b)"""
+        self.assertEqual(6, multi(2, 3))
+
+    def test_4_divide(self):
+        """Test method divide(a, b)"""
+        self.assertEqual(2, divide(6, 3))
+        self.assertEqual(2.5, divide(5, 2))
+```
 ## setup与teardown
 
 ### 执行每条测试用例前调用一次
@@ -85,7 +114,7 @@ if __name__ == '__main__':
 
 ### 一个类全程只调用一次 setUp/tearDown
 
-那如果我们想全程只调用一次 setUp/tearDown 该怎么办呢？就是用 setUpClass() 和 tearDownClass() 类方法啦。注意使用这两个方法的时候一定要用 @classmethod 装饰器装饰起来：
+那如果我们想全程只调用一次 setUp/tearDown 该怎么办呢？就是用 `setUpClass()` 和 `tearDownClass()` 类方法。注意使用这两个方法的时候一定要用 @classmethod 装饰器装饰起来：
 
 ```python
 import unittest

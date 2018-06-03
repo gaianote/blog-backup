@@ -22,6 +22,19 @@ tags: tool
 
 右键点击相应的文件夹，选择find in floder，sublime会在文件夹内列出所有匹配到文字的所有文件，并替换为你所希望更换的内容。然后点击`File -> save all`，会保存所有被修改的文件。
 
+### 创建工程
+
+在菜单栏选择 `Project` -> `Save Project As` 会将sublime当前状态(包括边栏选择的文件夹，当前打开的文件等)保存为工程
+在菜单栏选择 `Project` -> `Quick Switch Project` 可以快速选择之前保存好的工程
+在菜单栏选择 `Preferences` -> `key Bindings`,为快速打开工程设置快捷键,之后可以使用`ctrl+alt+p`对工程快速进行选择
+
+```json
+[
+    {"keys": ["ctrl+alt+p"],"command": "prompt_select_workspace"}
+]
+```
+
+
 ## sublime配置文件
 
 个人正在使用的sublime配置文件，解决了文件名中文显示为□□□的问题，并且将制表符用4个空格代替，避免tab和space的混合使用(尤其针对python语言)
