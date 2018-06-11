@@ -47,9 +47,8 @@ Python 的 os 模块封装了常见的文件和目录操作，本文只列出部
 
 ### 下面是部分常见的用法：
 
-方法                 |  说明                 |
+|方法                 |  说明                 |
 |--------------------|-------------------------|
-
 |os.mkdir            |创建目录|
 |os.rmdir            |删除空目录|
 |os.rename           |重命名|
@@ -131,5 +130,7 @@ shutil.copymode('f1.log', 'f2.log')     # 仅拷贝权限,内容,用户,组不�
 shutil.copystat('f1.log', 'f2.log')     # 仅拷贝状态信息
 ```
 ### shutil.copy2(src, dst)
+
 ```python
 shutil.copy2('f1.log', 'f2.log')     # 拷贝文件和状态信息
+```
