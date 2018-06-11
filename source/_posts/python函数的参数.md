@@ -67,7 +67,7 @@ def printall(*words):
 'world'
 ```
 
-words 与 *words: *words代表的是传入的可变参数，例如1,2,3 而words表示有传入的可变参数组成的puple，比如 (1,2,3)
+words 与 `*words`: `*words`代表的是传入的可变参数，例如1,2,3 而words表示有传入的可变参数组成的puple，比如 (1,2,3)
 
 ```python
 def printall(*words):
