@@ -34,11 +34,11 @@ path =os.path.join(BASE_PATH,'driver','chromedriver.exe')
 
 **os.path.abspath**
 
-os.path.abspath(__file__) 获取所定义脚本的完整路径 # 需要再文件中执行，在控制台会报错
-os.path.abspath('.') 获取入口文件的目录路径(通常是工程目录)
-os.path.abspath('..') 获取入口文件的目录的父目录路径
+`os.path.abspath(__file__)` 获取所定义脚本的完整路径 # 需要再文件中执行，在控制台会报错
+`os.path.abspath('.')` 获取入口文件的目录路径(通常是工程目录)
+`os.path.abspath('..')` 获取入口文件的目录的父目录路径
 
-在config.py中书写os.path.abspath(__file__),和 os.path.abspath('.'),在main.py中执行，第一个得到了config的路径，第二个得到了project的路径
+在config.py中书写`os.path.abspath(__file__)`,和 `os.path.abspath('.')`,在main.py中执行，第一个得到了config的路径，第二个得到了BASE_PATH的路径
 
 
 ## os 模块
@@ -47,7 +47,7 @@ Python 的 os 模块封装了常见的文件和目录操作，本文只列出部
 
 ### 下面是部分常见的用法：
 
-方法                 |  说明
+方法                 |  说明                 |
 |--------------------|-------------------------|
 
 |os.mkdir            |创建目录|
