@@ -288,35 +288,37 @@ child_window(title="无标题 - 记事本", control_type="Window")
 
 对于一些特殊符号的快捷键，对应的码表如下:
 
-SHIFT                            +
-CTRL                             ^
-ALT                               %
-空格键                            {SPACE}
+|      按键名称     |          对应符号         |
+|-------------------|---------------------------|
+| SHIFT             | +                         |
+| CTRL              | ^                         |
+| ALT               | %                         |
+| SPACE             | {SPACE}                   |
+| BACKSPACE         | {BACKSPACE} {BS} or{BKSP} |
+| BREAK             | {BREAK}                   |
+| CAPS   LOCK       | {CAPSLOCK}                |
+| DEL   or   DELETE | {DELETE}   or   {DEL}     |
+| DOWN   ARROW      | {DOWN}                    |
+| END               | {END}                     |
+| ENTER             | {ENTER}   or   ~          |
+| ESC               | {ESC}                     |
+| HELP              | {HELP}                    |
+| HOME              | {HOME}                    |
+| INS   or   INSERT | {INSERT}   or   {INS}     |
+| LEFT   ARROW      | {LEFT}                    |
+| NUM   LOCK        | {NUMLOCK}                 |
+| PAGE   DOWN       | {PGDN}                    |
+| PAGE   UP         | {PGUP}                    |
+| PRINT   SCREEN    | {PRTSC}                   |
+| RIGHT   ARROW     | {RIGHT}                   |
+| SCROLL   LOCK     | {SCROLLLOCK}              |
+| TAB               | {TAB}                     |
+| UP   ARROW        | {UP}                      |
+| +                 | {ADD}                     |
+| -                 | {SUBTRACT}                |
+| *                 | {MULTIPLY}                |
+| /                 | {DIVIDE}                  |
 
-BACKSPACE                        {BACKSPACE}、{BS}   or   {BKSP}
-BREAK                            {BREAK}
-CAPS   LOCK                      {CAPSLOCK}
-DEL   or   DELETE                {DELETE}   or   {DEL}
-DOWN   ARROW                     {DOWN}
-END                              {END}
-ENTER                            {ENTER}   or   ~
-ESC                              {ESC}
-HELP                             {HELP}
-HOME                             {HOME}
-INS   or   INSERT                {INSERT}   or   {INS}
-LEFT   ARROW                     {LEFT}
-NUM   LOCK                       {NUMLOCK}
-PAGE   DOWN                      {PGDN}
-PAGE   UP                        {PGUP}
-PRINT   SCREEN                   {PRTSC}
-RIGHT   ARROW                    {RIGHT}
-SCROLL   LOCK                    {SCROLLLOCK}
-TAB                              {TAB}
-UP   ARROW                       {UP}
-+                                {ADD}
--                                {SUBTRACT}
-*                                {MULTIPLY}
-/                                {DIVIDE}
 
 ###  如何访问系统托盘（SysTray，通知区域）
 
@@ -395,47 +397,6 @@ app.close() 关闭窗口
 app.Check() 勾选复选框
 app.Uncheck() 取消勾选复选框
 
-## 按键组合
-
-使用快捷键进行选择
-可以看到，菜单的每个选项都对应着快捷键，可以使用组合的快捷键直接访问我们需要的选项。
-使用type_keys()函数，这里需要的快捷键是Alt+T+P:
-
-```
-app = app.window(title='屏幕录像专家 V2017')
-app.type_keys('%TP')
-```
-对于一些特殊符号的快捷键，对应的码表如下:
-
-SHIFT                            +
-CTRL                             ^
-ALT                               %
-空格键                            {SPACE}
-
-BACKSPACE                        {BACKSPACE}、{BS}   or   {BKSP}
-BREAK                            {BREAK}
-CAPS   LOCK                      {CAPSLOCK}
-DEL   or   DELETE                {DELETE}   or   {DEL}
-DOWN   ARROW                     {DOWN}
-END                              {END}
-ENTER                            {ENTER}   or   ~
-ESC                              {ESC}
-HELP                             {HELP}
-HOME                             {HOME}
-INS   or   INSERT                {INSERT}   or   {INS}
-LEFT   ARROW                     {LEFT}
-NUM   LOCK                       {NUMLOCK}
-PAGE   DOWN                      {PGDN}
-PAGE   UP                        {PGUP}
-PRINT   SCREEN                   {PRTSC}
-RIGHT   ARROW                    {RIGHT}
-SCROLL   LOCK                    {SCROLLLOCK}
-TAB                              {TAB}
-UP   ARROW                       {UP}
-+                                {ADD}
--                                {SUBTRACT}
-*                                {MULTIPLY}
-/                                {DIVIDE}
 
 [所有控件的官方文档](https://pywinauto.readthedocs.io/en/latest/controls_overview.html#all-controls)
 [python自动化工具之pywinauto](https://blog.csdn.net/shawpan/article/details/78170117)
