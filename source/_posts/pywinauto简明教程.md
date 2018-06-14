@@ -6,10 +6,6 @@ tags:
 
 ## 下载安装pywinauto
 
-离线情况下安装依赖pywin32 安装pywin32 要注意python版本，位数（要和系统统一），setutools版本等问题。[官方下载地址](https://github.com/mhammond/pywin32/releases)
-
-## 安装
-
 ### 直接使用pip安装
 
 `pip install --upgrade pywinauto` (Py2.7+, Py3.3+)
@@ -21,7 +17,9 @@ tags:
 * 下载 comtypes 并执行 python setup.py install来安装
 * 下载 the latest pywinauto 并执行 python setup.py install来安装
 
-* six，comtypes，pywinauto可以使用 pip download pywinauto 得到相应的包
+**注意事项**
+
+* six，comtypes，pywinauto可以使用 `pip download pywinauto` 得到相应的包
 * 离线情况下安装依赖pywin32 安装pywin32 要注意python版本，位数（要和系统统一），setutools版本等问题。[官方下载地址](https://github.com/mhammond/pywin32/releases)
 
 
@@ -84,19 +82,21 @@ app['确认另存为']['是'].click()
 
 ### 指定可用的Application实例
 
-一个`Application`实例是所有使用这个你正在自动化操作的应用程序的联系者。因此这个应用程序实例需要连接到进程中，有下面两种方法实现：
+像要操作某个窗口，必须先实例化这个窗口，实例化窗口有下面两种方法可以实现：
 
-`start （self ， cmd_line ， timeout = app_start_timeout ） `
+* `start （self ， cmd_line ， timeout = app_start_timeout ） `
 
-`connect （self ， ** kwargs ）  `
+* `connect （self ， ** kwargs ）  `
 
-`start()`被用来在这个程序没有运行但你需要启动它的时候
+#### `start()`启动程序并实例化
 
 `app = Application().start(r"c:\path\to\your\application -a -n -y --arguments")`
 
 其中超时参数是可选的，如果应用程序需要很长时间来启动，则只需要使用该参数。
 
-`connect()`是当自动化程序已经启动时来使用，要指定以运行的应用程序你需要指定以下选项之一：
+#### `connect()`实例化已经启动的程序：
+
+`connect()`是当自动化程序已经启动时来使用，可以传入以下几种参数进行绑定：
 
 - 进程： 应用的过程ID
 
@@ -110,17 +110,17 @@ app['确认另存为']['是'].click()
 
   `app  =  Application().connect （path = r “c：\ windows \ system32 \ notepad.exe” ）`
 
-或任何窗口参数的组合，都会传递给[`pywinauto.findwindows.find_elements()`](https://pywinauto.readthedocs.io/en/latest/code/pywinauto.findwindows.html#pywinauto.findwindows.find_elements)函数，例如：
+- 任何窗口参数的组合，都会传递给[`pywinauto.findwindows.find_elements()`](https://pywinauto.readthedocs.io/en/latest/code/pywinauto.findwindows.html#pywinauto.findwindows.find_elements)函数，例如：
 
-`app  =  Application().connect （title_re = “。* Notepad” ， class_name = “Notepad” ）`
+    `app  =  Application().connect （title_re = “。* Notepad” ， class_name = “Notepad” ）`
 
-注意：应用程序在你使用`connect()`之前必须准备好。在`start()`执行之后寻找应用程序，它是没有超时或重试的。因此，如果你在`pywinauto`之外启动程序，你需要睡眠或者编写一个循环等待来等待应用程序完全启动。
+注意：应用程序在你使用`connect()`之前窗口必须已经准备好。如果无法确定的话，你需要睡眠或者编写一个循环等待来等待应用程序完全启动。
 
 
 
-### 如何制定应用程序的对话框
+### 如何指定应用程序的对话框
 
-一旦应用程序实例知道了被连接的窗口在工作，那么就需要指定这个窗口。
+应用程序实例化完成之后，接着需要指定这个窗口。
 
 例如：
 
@@ -148,10 +148,14 @@ app['确认另存为']['是'].click()
 
 `app.window(handle=win)`
 
-**注意：如果对话框的标题很长，那么访问属性可能会是很长的类型，在此情况下，通常使用**
+**注意：如果对话框的标题很长，可以使用正则进行匹配**
 
 `app.window(title_re=".*Part of Title.*")`
 
+其中 title 和 title_re的区别是:
+
+* title参数：无法使用正则，需要完全匹配标题
+* title_re参数:支持正则表达式
 
 
 ### 如何在对话框上指定控件
@@ -162,10 +166,6 @@ app['确认另存为']['是'].click()
 app.dlg.control
 app['dlg']['control']
 ```
-
-对非英文的环境来说，需要传递`unicode`字符，则
-
-`app[u'your dlg title'][u'your ctrl title']`
 
 代码依据如下内容来构建多个标识符：
 
@@ -280,39 +280,43 @@ child_window(title="无标题 - 记事本", control_type="Window")
 
 ### 如何处理不按照预期进行响应的控件（例如OwnerDraw控件）
 
-一些控件不按照预期的方式响应事件。例如，如果你查看任何HLP文件，并转到索引选项（单击”搜索“按钮），您将会看见一个列表框。运行控件查看工具（spy++）你就发现它确实是一个列表，但是是`ownerdrawn`。这意味着开发人员以及告诉windows，它们会覆盖项目的显示方式。在这种情况下，这样的一些字符串无法被检索。
+对于非标准控件，无法定位到控件并对其进行操作。我们可以通过定位到其窗口，并模拟键盘操作的方式来操控它,使用上下箭头移动或则使用快捷键进行操作。
 
-这些问题是怎么导致的那？
+`dialog.type_keys("{HOME}{DOWN 2}{ENTER}ABC")`
 
-```python
-app.HelpTopics.ListBox.texts()                # 1
-app.HelpTopics.ListBox.select("ItemInList")   # 2
-```
+上面的例子表示模拟键盘依次键入了HOME DOWN DOWN ENTER A B C
 
-1. 这将返回空字符串的列表，这意味着`pywinauto`无法获取列表框中的字符串
-2. 这将因为`IndexError`而失败，因为`ListBox`中的`select（string）`模块查找文本中的项目去了解其索引。
+对于一些特殊符号的快捷键，对应的码表如下:
 
-应用此控件的解决方法：
+SHIFT                            +
+CTRL                             ^
+ALT                               %
+空格键                            {SPACE}
 
-`app.HelpTopics.ListBox.select(1)`
-
-这将选择列表框中的第二个项目，因为这不是正确的查找字符串。
-
-不幸的是，它永远不会工作。开发人员可以使其控制不响应事件，如`select`。在这种情况下，您可以使用`TypeKeys()`的键盘模拟来选择列表框中的项目。
-
-
-
-这允许您将任何按键发送到控件。所以选择第三个项目你应该使用
-
-`app.Helptopics.ListBox1.type_keys("{HOME}{DOWN 2}{ENTER}")`
-
-- `{HOME}` 将确保第一个项目被突出显示。
-- `{DOWN 2}` 然后将亮点向下移动两项
-- `{ENTER}` 将选择突出显示的项目
-
-如果你的应用程序广泛使用类似的控件类型，那么你可以通过从`ListBox`派生一个新类来简化使用，可以作为你特定程序的额外知识
-
-
+BACKSPACE                        {BACKSPACE}、{BS}   or   {BKSP}
+BREAK                            {BREAK}
+CAPS   LOCK                      {CAPSLOCK}
+DEL   or   DELETE                {DELETE}   or   {DEL}
+DOWN   ARROW                     {DOWN}
+END                              {END}
+ENTER                            {ENTER}   or   ~
+ESC                              {ESC}
+HELP                             {HELP}
+HOME                             {HOME}
+INS   or   INSERT                {INSERT}   or   {INS}
+LEFT   ARROW                     {LEFT}
+NUM   LOCK                       {NUMLOCK}
+PAGE   DOWN                      {PGDN}
+PAGE   UP                        {PGUP}
+PRINT   SCREEN                   {PRTSC}
+RIGHT   ARROW                    {RIGHT}
+SCROLL   LOCK                    {SCROLLLOCK}
+TAB                              {TAB}
+UP   ARROW                       {UP}
++                                {ADD}
+-                                {SUBTRACT}
+*                                {MULTIPLY}
+/                                {DIVIDE}
 
 ###  如何访问系统托盘（SysTray，通知区域）
 
