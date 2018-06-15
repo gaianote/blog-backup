@@ -47,22 +47,29 @@ Python 的 os 模块封装了常见的文件和目录操作，本文只列出部
 
 ### 下面是部分常见的用法：
 
-|方法                 |  说明                 |
-|--------------------|-------------------------|
-|os.mkdir            |创建目录|
-|os.rmdir            |删除空目录|
-|os.rename           |重命名|
-|os.remove           |删除文件|
-|os.getcwd           |获取当前工作路径|
-|os.walk             |遍历目录|
-|os.path.join        |连接目录与文件名|
-|os.path.split       |分割文件名与目录|
-|os.path.abspath     |获取绝对路径|
-|os.path.dirname     |获取路径(指包含文件的目录)|
-|os.path.basename    |获取文件名或文件夹名|
-|os.path.splitext    |分离文件名与扩展名|
-|os.path.isfile      |判断给出的路径是否是一个文件|
-|os.path.isdir       |判断给出的路径是否是一个目录|
+|       方法       |                                         说明                                         |
+|------------------|--------------------------------------------------------------------------------------|
+| os.name          | 指示你正在使用的工作平台。比如对于Windows，它是'nt'，而对于Linux/Unix用户，它是'posi |
+| os.getcwd()      | 得到当前工作目录，即当前python脚本工作的目录路径。                                   |
+| os.listdir()     | 返回指定目录下的所有**文件**和**目录名**                                             |
+| os.stat(file)    | 获取文件属性                                                                         |
+| os.mkdir()       | 创建目录                                                                             |
+| os.rmdir()       | 删除空目录或文件                                                                     |
+| os.system(shell) | 运行操作系统命令行                                                                   |
+| os.rename        | 重命名                                                                               |
+| os.remove        | 删除文件                                                                             |
+| os.getcwd        | 获取当前工作路径                                                                     |
+| os.walk          | 遍历目录                                                                             |
+| os.path.join     | 连接目录与文件名                                                                     |
+| os.path.split    | 分割文件名与目录                                                                     |
+| os.path.abspath  | 获取绝对路径                                                                         |
+| os.path.dirname  | 获取路径(指包含文件的目录)                                                           |
+| os.path.basename | 获取文件名或文件夹名                                                                 |
+| os.path.splitext | 分离文件名与扩展名                                                                   |
+| os.path.isfile   | 判断给出的路径是否是一个文件                                                         |
+| os.path.isdir    | 判断给出的路径是否是一个目录                                                         |
+
+
 
 ## 标准库shutil
 
