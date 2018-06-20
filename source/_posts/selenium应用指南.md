@@ -151,6 +151,9 @@ driver.quit()
 baidu.py
 ```
 
+## selenium 元素是否可点击
+
+
 ## 参考文档标签
 
 [selinium设置请求头](https://www.zhihu.com/question/35547395)

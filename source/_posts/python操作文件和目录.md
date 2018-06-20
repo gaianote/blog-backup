@@ -68,6 +68,8 @@ Python 的 os 模块封装了常见的文件和目录操作，本文只列出部
 | os.path.splitext | 分离文件名与扩展名                                                                   |
 | os.path.isfile   | 判断给出的路径是否是一个文件                                                         |
 | os.path.isdir    | 判断给出的路径是否是一个目录                                                         |
+| os.path.exits()  | 判断一个路径目录或者文件是否存在                                                     |
+
 
 
 
