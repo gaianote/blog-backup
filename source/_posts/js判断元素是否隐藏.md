@@ -1,3 +1,11 @@
+---
+title: js判断元素是否对于人眼可见
+date: 2018-06-20 22:07:42
+tags: python
+---
+
+
+
 jquery中通过  $("#id").is(":hidden"); 判断一个元素是否是隐藏状态，
 
 其最终调用的代码如下：
@@ -17,7 +25,7 @@ return elem.offsetWidth <= 0 && elem.offsetHeight <= 0;
 
 代码如下：
 
-```JavaScript
+```javascript
 function isElementVisible(el) {
         var rect = el.getBoundingClientRect(),
             vWidth = window.innerWidth || document.documentElement.clientWidth,
@@ -37,7 +45,7 @@ function isElementVisible(el) {
         if (rect.right < 0 || rect.bottom < 0
             || rect.left > vWidth || rect.top > vHeight)
             return false;
-  
+
         return (
             el.contains(efp(el, rect.left, rect.top))
             || el.contains(efp(el, rect.right, rect.top))
