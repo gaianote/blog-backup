@@ -161,6 +161,54 @@ tags:
 * 更多的工具，可以在`itertools`中寻找
 
 ## 第五章:文件与IO
+
+### 5.1 读写文本数据
+
+```python
+# Read the entire file as a single string
+with open('somefile.txt', 'rt') as f:
+    data = f.read()
+
+# Iterate over the lines of the file
+with open('somefile.txt', 'rt') as f:
+    for line in f:
+        # process line
+        ...
+```
+
+### 5.2 打印输出至文件中
+
+* print接受关键字参数file，可以将输出重定向到一个文件中去
+* 文件必须是文本文件，不能是二进制文件，否则会报错
+
+```python
+with open('d:/work/test.txt', 'wt') as f:
+    print('Hello World!', file=f)
+```
+### 5.3 使用其它分隔符或行终止符打印
+
+* print() 函数支持使用 `sep` 和 `end` 关键字参数，sep表示每个参数之间的分割符,end表示打印的结尾：`print('ACME', 50, 91.5, sep=',', end='!!\n')`
+
+### 5.4 读写字节数据
+
+* 读取或写入二进制数据需要使用模式为 `rb` 或 `wb` 的 `open()` 函数：`with open('somefile.bin', 'rb') as f:`
+* 二进制数据索引和迭代动作返回的是字节的值而不是字节字符串
+
+```python
+>>> b = b'Hello World'
+>>> b[0]
+72
+```
+
+* 从二进制模式的文件中读取或写入文本数据，必须确保先要进行解码和编码操作，不能直接进行操作
+* `decode()` 解码,将二进制文件转换为文本文件 `text = data.decode('utf-8')`
+* `encode()` 编码,将文本文件转换为二进制文件 `data = text.encode('utf-8')`
+
+## 5.5 文件不存在才能写入
+
+* 可以在 open() 函数中使用 x 模式来代替 w 模式的方法来解决这个问题。文件存在时程序会报错：`with open('somefile', 'xt') as f:`
+
+
 ## 第六章:数字据编码与处理
 ## 第七章:函数
 ## 第八章:类与对象
