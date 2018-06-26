@@ -50,3 +50,13 @@ print('{first} is as {second}. '.format(first=name, second='Wendy')) #别名替�
 print('My name is {0.name}'.format(open('out.txt', 'w'))) #调用方法 My name is out.txt
 print('My name is {0:8}.'.format('Fred')) #指定宽度 My name is Fred    .
 ```
+
+## 转义
+
+可以使用{}对{}进行转义
+
+```python
+>>>'{} world{{!}}'.format('hello')
+'hello world{!}'
+```
+然而，在大量存在{}时，比如js函数库的字符替换，这种方法比较繁琐，还要回退到%字符操作符的方式。

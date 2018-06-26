@@ -30,9 +30,17 @@ tags:
 * 通过key值获得新字典：`dict2 = {key: value for key, value in base_dict.items() if key in ["name","price"]}`
 
 ### 1.18 映射名称到序列元素
+
+* `namedtuple`的意义在于，直接通过下标index访问list中的数据，意义不清晰。namedtuple为常规的list增加了key值访问的方式。可以通过`namedtuple.key`和`namedtuple()[index]`两种方式读取nametuple中的值
 * `collections.namedtuple()`工厂函数生成的实例可以将tuple转换为nametuple，并通过名称去访问元组元素，为代码增加可读性。
 * `namedtuple()`跟元组类型是可交换的，支持所有的普通元组操作,和字典的区别主要在于命名元组是不可更改的
+* 基本使用如下，`namedtuple()`是一个构造函数，其中，第一个参数是类的名称，第二个参数是key值列表；然后在新类中传入value值列表，即形成了新的nametuple
 
+```python
+from collections import namedtuple
+Book = namedtuple('Book',['name','author','price'])
+book1 = Book('空之境界','奈须蘑菇','100')
+```
 ### 1.19 转换并同时计算数据
 * 生成器表达式 x * x for x in nums => result（for x in list）if ()=> 对列表中的每一个对象进行同样的操作，后面可以加if作为条件。返回result，形成新的列表
 * 生成器表达式返回的是一个`<generator object>` ,你可以使用`[x * x for x in nums]`,形成临时列表再去使用`sum()`调用它，或者直接使用`sum(x * x for x in nums)`,得出结果。后一种方案是更省内存的。
@@ -208,11 +216,150 @@ with open('d:/work/test.txt', 'wt') as f:
 
 * 可以在 open() 函数中使用 x 模式来代替 w 模式的方法来解决这个问题。文件存在时程序会报错：`with open('somefile', 'xt') as f:`
 
+## 5.19 创建临时文件和文件夹
+
+* tempfile 模块中有很多的函数可以完成这任务。 为了创建一个匿名的临时文件，可以使用 tempfile.TemporaryFile
+
+```python
+from tempfile import TemporaryFile
+
+with TemporaryFile('w+t') as f:
+    # Read/write to the file
+    f.write('Hello World\n')
+    f.write('Testing\n')
+
+    # Seek back to beginning and read the data
+    f.seek(0)
+    data = f.read()
+# Temporary file is destroyed
+```
+## 5.20 与串行端口的数据通信
+
+* 你想通过串行端口读写数据，典型场景就是和一些硬件设备打交道(比如一个机器人或传感器)。
+* 但对于串行通信最好的选择是使用 pySerial包(第三方)
+
+## 5.21 序列化Python对象
+
+* 所谓序列化是指Python对象(字典，数组)以特定格式转换为一个字节流，以便将它保存到一个文件用于日后读写。
+* 对于序列化最普遍的做法就是使用`pickle`模块，它可以将对象等转换为字节编码储存在文档中，但只有python支持，因此不推荐
+* 你最好使用更加标准的数据编码格式如XML，CSV或JSON来存储或是序列化数据
 
 ## 第六章:数字据编码与处理
+
+### 6.1 读写CSV数据
+* 对于大多数的CSV格式的数据读写问题，都可以使用 csv 库，而无需自己处理分隔符以及其它细节。
+* csv的默认分隔符是','，可以使用delimiter参数进行指定
+* 将这些数据读取为一个元组的序列:
+
+```python
+import csv
+with open('stocks.csv') as f:
+    f_csv = csv.reader(f,delimiter=',')
+    headers = next(f_csv) # 通常第一行是headers，通过next得到lsit
+    for row in f_csv:
+        # row is list
+```
+* 可以使用`csv.DictReader(file)`和`csv.DictWriter(file, headerlist)`方便的以字典的形式读取或写入
+
+### 6.2 读写JSON数据
+
+* python对象与JSON字符串互相转换,可以使用`json.dumps()` 和 `json.loads()`
+
+```python
+import json
+json_str = json.dumps(data)
+data = json.loads(json_str)
+```
+* 如果你要处理的是文件而不是字符串，你可以使用 `json.dump()` 和 `json.load()` 来编码和解码JSON数据
+
+```python
+# Writing JSON data
+with open('data.json', 'w') as f:
+    json.dump(data, f)
+
+# Reading data back
+with open('data.json', 'r') as f:
+    data = json.load(f)
+```
+
+* 可以使用`object_pairs_hook`或`object_hook`参数对传入的`json_str`进行处理,从而得到所需的数据类型
+
+```python
+data = json.loads(json_str, object_pairs_hook=OrderedDict)
+```
+
 ## 第七章:函数
 ## 第八章:类与对象
 ## 第九章:元编程
+
+### 9.1 在函数上添加装饰器
+
+* 装饰器的用途是为函数增加额外功能而不影响代码的整体结构的一种方法，而@function是装饰器的语法糖
+* 定义一个装饰器
+
+```python
+import time
+from functools import wraps
+
+def timethis(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(func.__name__, end-start)
+        return result
+    return wrapper
+```
+
+* 使用装饰器
+
+```python
+@timethis
+def countdown(n):
+    while n > 0:
+        n -= 1
+
+>>> countdown(100000)
+countdown 0.008917808532714844
+>>> countdown(10000000)
+countdown 0.87188299392912
+```
+
+### 9.2 创建装饰器时保留函数元信息
+
+
+* 任何时候你定义装饰器的时候，都应该使用 `functools` 库中的 `@wraps` 装饰器来注解底层包装函数。
+
+### 9.3 解除一个装饰器
+
+* 解除一个装饰器是指:一个装饰器已经作用在一个函数上，你想撤销它，直接访问原始的未包装的那个函数
+* 假设装饰器是通过 @wraps (参考9.2小节)来实现的，那么你可以通过访问 `__wrapped__` 属性来访问原始函数：`orig_func = new_func.__wrapped__`
+* 并不是所有的装饰器都使用了 @wraps ，因此这里的方案并不全部适用
+
+### 9.4 定义一个带参数的装饰器
+
+* 装饰器是可以使用参数的，关键点是包装器是可以使用传递给最外层的参数的
+* 带参数的装饰器分为三层，最外层为装饰器名称以及参数:`def logged(level, name=None, message=None):`，中层为`def decorate(func):`,内层为`@wraps(func)`
+
+### 9.5 可自定义属性的装饰器
+
+* 你想写一个装饰器来包装一个函数，并且允许用户提供参数在运行时控制装饰器行为
+
+### 9.6 带可选参数的装饰器
+
+* 你想写一个装饰器，既可以不传参数给它，比如 `@decorator` ，也可以传递可选参数给它，比如 `@decorator(x,y,z)`
+* 主要实现装饰器带或者不带括号都可以正常工作，实现编程一致性
+* 带参数与不带参数的装饰器区别是：初始化时，orig_func是否被传入
+    * `new_func = logged(orig_func)`
+    * `new_func = logged(level=logging.CRITICAL, name='example')(orig_func)`
+* 实现原理:
+    * 如果装饰器无参数，会传入`func`，跳过if语句内的`partial`方法
+    * 如果装饰器有参数，初始化时func为None，执行`partial`方法，导入其它参数并返回一个未完全初始化的自身，以确定除了`orig_func`之外其它参数。此时等价于无参装饰器。继续初始化执行`new_func = logged(orig_func)`
+
+### 9.21 避免重复的属性方法
+
+
 ## 第十章:模块与包
 ## 第十一章:网络与web编程
 ## 第十二章:并发编程
