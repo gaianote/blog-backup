@@ -348,17 +348,85 @@ countdown 0.87188299392912
 
 ### 9.6 带可选参数的装饰器
 
-* 你想写一个装饰器，既可以不传参数给它，比如 `@decorator` ，也可以传递可选参数给它，比如 `@decorator(x,y,z)`
+* 带可选参数的装饰器是指:你想写一个装饰器，既可以不传参数给它，比如 `@decorator` ，也可以传递可选参数给它，比如 `@decorator(x,y,z)`
 * 主要实现装饰器带或者不带括号都可以正常工作，实现编程一致性
 * 带参数与不带参数的装饰器区别是：初始化时，orig_func是否被传入
     * `new_func = logged(orig_func)`
     * `new_func = logged(level=logging.CRITICAL, name='example')(orig_func)`
 * 实现原理:
-    * 如果装饰器无参数，会传入`func`，跳过if语句内的`partial`方法
+    * 如果装饰器无参数，会传入`func`，跳过if语句内的`partial`方法,直接将orig_func传入
     * 如果装饰器有参数，初始化时func为None，执行`partial`方法，导入其它参数并返回一个未完全初始化的自身，以确定除了`orig_func`之外其它参数。此时等价于无参装饰器。继续初始化执行`new_func = logged(orig_func)`
 
-### 9.21 避免重复的属性方法
+### 9.7 利用装饰器强制函数上的类型检查
 
+* `inspect.signature(func)` 函数，它可以得到func函数的参数：
+
+```python
+from inspect import signature
+def func(x, y, z=42):
+    pass
+sig = signature(func)
+sig # (x, y, z=42)
+sig.parameters # mappingproxy(OrderedDict([('x', <Parameter at 0x10077a050 'x'>),('y', <Parameter at 0x10077a158 'y'>), ('z', <Parameter at 0x10077a1b0 'z'>)]))
+sig.parameters['z'].name # 'z'
+sig.parameters['z'].default # 42
+sig.parameters['z'].kind # <_ParameterKind: 'POSITIONAL_OR_KEYWORD'>
+```
+* sig.bind()方法
+    * `sig.bind(int, 2, 3).arguments`返回一个有序字典`OrderedDict([('x', int), ('y', 2), ('z', 3)])`,key值是被绑定的函数参数值,value是你指定的数据类型或者其他值。
+    * `sig.bind_partial(int,z=int)`允许忽略一部分参数，而`sig.bind`方法不允许
+
+* 核心原理：
+    1. 使用`sig.bind_partial(*ty_args, **ty_kwargs).arguments`使`bound_types`指定根据装饰器参数形成一个有序字典，指定函数类型
+    2. 使用`sig.bind(*args, **kwargs)arguments`方法使`bound_values`根据函数传入的值形成一个有序字典，为调用函数时传入的值
+    3. 通过对比做出判断，然而这种方法不能判断出默认参数(内部转换)是否符合要求，由于可变对象[]不应作为参数，所以默认参数需做判断:`if x == None：x = []`
+
+### 9.10 为类和静态方法提供装饰器
+
+* 为类的方法提供装饰器和为函数添加装饰器定义与使用方法是一致的
+* 如果类中方法存在装饰器  `@classmethod` 和 `@staticmethod` ，要把他们放在最上面，否则会报错
+
+### 9.13 使用元类控制实例的创建
+
+* 一个类可以在`__init_`中规定它的创建方式。
+* 我们希望通过**创建元类**改变实例创建方式来实现单例、缓存或其他类似的特性。
+* 我们可以通过定义元类中的 `__call__()` 方法规定类的创建方式。并在创建类时通过`metaclass`关键字参数确定创建方式:`class Spam(metaclass=NoInstances):...`
+
+### 9.22 定义上下文管理器的简单方法
+
+* with的基本概念
+    * with 语句适用于对资源进行访问的场合，确保不管使用过程中是否发生异常都会执行必要的“清理”操作。
+    * 有了上下文管理器，with 语句才能工作。
+    * 上下文管理器（Context Manager）：支持上下文管理协议的对象，这种对象实现了`__enter__()` 和 `__exit__()` 方法。
+    * 语句体（with-body）：with 语句包裹起来的代码块，在执行语句体之前会调用上下文管理器的 `__enter__()` 方法，执行完语句体之后会执行 `__exit__()` 方法。
+    * with语句遇到错误也会抛出异常，区别是它在遇到异常后仍可以执行清理操作。
+* 通常情况下，如果要写一个上下文管理器，你需要定义一个类，里面包含一个 `__enter__()` 和一个`__exit__()` 方法
+* 更好的方法是使用`contexlib` 模块中的 `@contextmanager` 装饰器
+* @contextmanager使用方法
+    * yield 之前的代码会在上下文管理器中作为 `__enter__()` 方法执行，
+    * yield 之后的代码会作为 `__exit__()` 方法执行。
+    * yield 后如果含有值，会返回as后面的内容，类似于return
+    * 如果希望执行`__exit__()`方法,就在yield前加`try:`,yield后加`finally`;否则不执行清理操作
+
+### 9.23 在局部变量域中执行代码(exec)
+
+* `exec('func_str')`在全局作用域中可以获取并改变全局作用域中的变量
+* `exec('func_str')`在局部作用域中无法改变局部变量或全局变量的值，它获得的时变量的字典拷贝。
+* 希望获得`exec('func_str')`在局部作用域中的运行结果，可以在`exec`之前使用`locals_dic = locals()`获得局部变量字典，这个字典的值是exec真正改变的值
+* 每次调用`locals()` 会获取局部变量值中的值并覆盖字典中相应的变量。如果在`exec`之后调用`locals()`将无法获得正确结果
+
+```python
+# exec在局部作用域中无法改变局部变量或全局变量的值
+a = 10
+def exec_test():
+    locals_dic = locals()
+    exec("a += 1")
+    print('exec:',locals_dic['a'],'glabal:',a)
+
+exec_test() # exec: 11 glabal: 10
+```
+
+### 9.25 拆解Python字节码
 
 ## 第十章:模块与包
 ## 第十一章:网络与web编程

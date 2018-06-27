@@ -18,6 +18,10 @@ tags: tool
 
 ### `Ctrl+shif+D` 复制一行
 
+### `Ctrl+B` 在sublime中执行python程序
+
+通常，我们将一个演示教程中的代码复制到终端时，会发生格式错乱导致示例代码无法运行。因此，复制到sublime中执行不失为一个好办法。输入快捷键`ctrl+B`可以快速的执行脚本并在sublime中观察到返回结果。
+
 ### find in floder 批量修改替换
 
 右键点击相应的文件夹，选择find in floder，sublime会在文件夹内列出所有匹配到文字的所有文件，并替换为你所希望更换的内容。然后点击`File -> save all`，会保存所有被修改的文件。

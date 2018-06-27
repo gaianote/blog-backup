@@ -128,7 +128,28 @@ matchObj.group(2) :  smarter
 
 group()方法可以得到匹配到的字符串，其中group()或group(0)表示整个compile(实例中为`(.*) are (.*?) .*`)匹配到的字符串，group(1)表示第一个()内的正则匹配到的字符串
 
+## 贪婪模式与非贪婪模式
 
+### 贪婪模式：(.*)
+* 如果没有限制(匹配分组后面接字符),贪婪模式会匹配到字符串的末尾
+* 如果有限制,贪婪模式会匹配到最后一个符合要求的字符
+
+### 非贪婪模式(.*?)
+
+* 如果没有限制,非贪婪模式不匹配任何内容 re.compile().search('hello world')
+* 如果有限制,贪婪模式会匹配到第一个符合要求的字符
+
+由于两种模式的区别,正确的使用匹配模式非常重要，示例如下:
+
+```python
+import re
+site = 'https://www.google.com'
+result_a = re.compile(r'(.*?):(.*)').search(site).group()
+result_b = re.compile(r'(.*?):(.*?)').search(site).group()
+print('贪婪:{0}\n非贪婪:{1}'.format(result_a,result_b))
+# 贪婪:https://www.google.com
+# 非贪婪:https:
+```
 ## 正则表达式模式
 
 模式字符串使用特殊的语法来表示一个正则表达式：
