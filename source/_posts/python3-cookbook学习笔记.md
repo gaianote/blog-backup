@@ -184,14 +184,43 @@ with open('somefile.txt', 'rt') as f:
         ...
 ```
 
+* 换行符的识别问题(自动处理)
+    * 在Unix和Windows中是不一样的(分别是 `\n` 和 `\r\n` )。
+    * 在读取文本的时候，Python可以识别所有的普通换行符并将其转换为单个 `\n` 字符。
+    * 在输出时会将换行符 `\n` 转换为系统默认的换行符。
+    * 二进制模式的时候，python不会自动转化
+
+* open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True)
+    * buffering的可取值有0，1， >1三个，0代表buffer关闭（只适用于二进制模式），1代表line buffer（只适用于文本模式），>1表示初始化的buffer大小；
+    * encoding表示的是返回的数据采用何种编码，一般采用utf8或者gbk；
+    * errors的取值一般有strict，ignore，当取strict的时候，字符编码出现问题的时候，会报错，当取ignore的时候，编码出现问题，程序会忽略而过，继续执行下面的程序。
+    * newline可以取的值有None, \n,  \r, '', ‘\r\n' ，用于区分换行符，但是这个参数只对文本模式有效；
+    * closefd的取值，是与传入的文件参数有关，默认情况下为True，传入的file参数为文件的文件名，取值为False的时候，file只能是文件描述符，什么是文件描述符，就是一个非负整数，在Unix内核的系统中，打开一个文件，便会返回一个文件描述符。
+
+* open参数mode
+    * mode参数决定了file的行为,如果在r模式下使用file.write(lines)就会报错
+    * r、w、a为打开文件的基本模式，对应着只读、只写、追加模式；
+    * b、t、+、U这四个字符，与以上的文件打开模式组合使用，二进制模式，文本模式，读写模式、通用换行符，根据实际情况组合使用、
+
+* open常见的mode取值组合
+    * r或rt    默认模式，文本模式读
+    * rb      二进制文件
+    * w或wt    文本模式写，打开前文件存储被清空
+    * wb    二进制写，文件存储同样被清空
+    * a   追加模式，只能写在文件末尾
+    * a+  可读写模式，写只能写在文件末尾
+    * w+ 可读写，与a+的区别是要清空文件内容
+    * r+   可读写，与a+的区别是可以写到文件任何位置
+
 ### 5.2 打印输出至文件中
 
-* print接受关键字参数file，可以将输出重定向到一个文件中去
+* print接受关键字参数file，可以将输出重定向到一个文件中去,此时print的作用和f.write()相同
 * 文件必须是文本文件，不能是二进制文件，否则会报错
+* 重定向后print的内容不会在控制台输出
 
 ```python
-with open('d:/work/test.txt', 'wt') as f:
-    print('Hello World!', file=f)
+with open('data.txt', 'w') as f:
+    print("hello world!",file = f)
 ```
 ### 5.3 使用其它分隔符或行终止符打印
 
@@ -207,16 +236,67 @@ with open('d:/work/test.txt', 'wt') as f:
 >>> b[0]
 72
 ```
+* 如果你想从二进制模式的文件中读取或写入**文本数据**，必须确保要进行解码(decode)和编码(encode)操作。
 
-* 从二进制模式的文件中读取或写入文本数据，必须确保先要进行解码和编码操作，不能直接进行操作
-* `decode()` 解码,将二进制文件转换为文本文件 `text = data.decode('utf-8')`
-* `encode()` 编码,将文本文件转换为二进制文件 `data = text.encode('utf-8')`
+```python
+with open('somefile.bin', 'rb') as f:
+    data = f.read(16) # 二进制格式
+    text = data.decode('utf-8') # 文本格式
 
-## 5.5 文件不存在才能写入
+with open('somefile.bin', 'wb') as f:
+    text = 'Hello World' # 文本格式
+    f.write(text.encode('utf-8')) # 二进制格式
+```
+
+### 5.5 文件不存在才能写入
 
 * 可以在 open() 函数中使用 x 模式来代替 w 模式的方法来解决这个问题。文件存在时程序会报错：`with open('somefile', 'xt') as f:`
 
-## 5.19 创建临时文件和文件夹
+### 5.6 字符串的I/O操作
+
+* 使用 `io.StringIO()` 和 `io.BytesIO()` 类来创建类文件对象操作字符串数据
+
+### 5.11 文件路径名的操作
+
+* 详见[python操作文件和目录](python操作文件和目录.md)
+
+### 5.12 测试文件是否存在(os.path)
+
+* 测试一个文件是否存在,返回布尔值
+    * `os.path.exists('/etc/passwd')`
+
+* 测试这个文件时什么类型的,返回布尔值
+    * `os.path.isfile('/etc/passwd')`
+    * `os.path.isdir('/etc/passwd')`
+    * `os.path.islink('/usr/local/bin/python3')`
+    * `os.path.realpath('/usr/local/bin/python3')`
+
+* 获取元数据(比如文件大小或者是修改日期)
+
+    * `os.path.getsize('/etc/passwd')`
+    * `os.path.getmtime('/etc/passwd')`
+
+### 5.13 获取文件夹中的文件列表
+
+* 得到某种类型的文件
+    * endswith进行匹配 `pyfiles = [name for name in os.listdir('somedir') if name.endswith('.py')]`
+    * 引入glob模块进行匹配: `pyfiles = glob.glob('somedir/*.py')`
+
+### 5.14 忽略文件名编码
+
+```python
+with open('jalape\xf1o.txt', 'w') as f:
+     f.write('Spicy!')
+
+import os
+os.listdir('.')
+['jalapeño.txt']
+
+os.listdir(b'.')
+[b'jalapen\xcc\x83o.txt']
+```
+
+### 5.19 创建临时文件和文件夹
 
 * tempfile 模块中有很多的函数可以完成这任务。 为了创建一个匿名的临时文件，可以使用 tempfile.TemporaryFile
 
@@ -233,12 +313,12 @@ with TemporaryFile('w+t') as f:
     data = f.read()
 # Temporary file is destroyed
 ```
-## 5.20 与串行端口的数据通信
+### 5.20 与串行端口的数据通信
 
 * 你想通过串行端口读写数据，典型场景就是和一些硬件设备打交道(比如一个机器人或传感器)。
 * 但对于串行通信最好的选择是使用 pySerial包(第三方)
 
-## 5.21 序列化Python对象
+### 5.21 序列化Python对象
 
 * 所谓序列化是指Python对象(字典，数组)以特定格式转换为一个字节流，以便将它保存到一个文件用于日后读写。
 * 对于序列化最普遍的做法就是使用`pickle`模块，它可以将对象等转换为字节编码储存在文档中，但只有python支持，因此不推荐
@@ -270,7 +350,8 @@ import json
 json_str = json.dumps(data)
 data = json.loads(json_str)
 ```
-* 如果你要处理的是文件而不是字符串，你可以使用 `json.dump()` 和 `json.load()` 来编码和解码JSON数据
+* 如果你要处理的是文件而不是字符串，你可以使用 `json.dump(data,file)` 和 `json.load(file)` 来编码和解码JSON数据
+* json.dump()在序列化的同时写入了文件。 等价于`data = json.dumps(data) file.write(data)`
 
 ```python
 # Writing JSON data
@@ -287,10 +368,246 @@ with open('data.json', 'r') as f:
 ```python
 data = json.loads(json_str, object_pairs_hook=OrderedDict)
 ```
+###6.8 与关系型数据库的交互
+
+* 你可以使用Python标准库中的 sqlite3 模块
+* 不要使用Python字符串格式化操作符(如%)或者 .format() 方法来创建这样的字符串。否则很有可能遭受SQL注入攻击。
+* 与sqlite3交互步骤
+    1. 链接数据库,得到数据库实例 `db = sqlite3.connect('database.db')`
+    2. 创建游标 `cursor = db.cursor()`
+    3. 执行语句`cursor.execute('create table portfolio (symbol text, shares integer, price real)')`
+    4. 提交语句`db.commit()`
+
+### 6.10 编码解码Base64数据
+
+* Base64编码仅仅用于面向字节的数据比如字节字符串和字节数组。
+* 编码为base64:base64.b64encode( data)
+* 解码为二进制字节:base64.b64decode(base64data)
+
+
+```python
+# Some byte data
+s = b'hello'
+import base64
+# Encode as Base64
+a = base64.b64encode(s) # b'aGVsbG8='
+# Decode from Base64
+base64.b64decode(a) # b'hello'
+```
+
+### 6.13 数据的累加与统计操作
+
+* 于任何涉及到统计、时间序列以及其他相关技术的数据分析问题，都可以考虑使用Pandas库 。
+
 
 ## 第七章:函数
+
+### 7.1 可接受任意数量参数的函数
+
+* 为了能让一个函数接受任意数量的位置参数，可以使用一个以`*`开头的参数,这个参数是个tuple
+* 为了接受任意数量的关键字参数，使用一个以`**`开头的参数,这个参数是个dict
+* 一个`*`参数只能出现在函数定义中最后一个位置参数后面，而 `**`参数只能出现在最后一个参数。
+* 有一点要注意的是，在`*`参数后面仍然可以定义其他参数。这种参数就是我们所说的强制关键字参数
+
+### 7.2 只接受关键字参数的函数
+
+* 将强制关键字参数放到某个`*`位置参数或者单个`*`后面就能达到强制使用关键字参数传递
+* 如果你还希望某个函数能同时接受任意数量的位置参数和关键字参数，可以同时使用*和**
+
+```python
+def anyargs(*args, **kwargs):
+    print(args) # A tuple
+    print(kwargs) # A dict
+```
+### 7.3 给函数参数增加元信息
+
+* 函数的注解方法`def add(x:int, y:int) -> int:`
+* 注解和注释类似,python解释器不会对这些注解添加任何的语义,他们仅用于提示作用
+* 函数注解只存储在函数的 `__annotations__` 属性中,`add.__annotations__`
+
+### 7.4 返回多个值的函数
+
+* `return a,b,c`返回的是一个元组
+* 我们使用的是逗号来生成一个元组，而不是用括号 `b = 1,2,3 => b == (1,2,3)`
+
+### 7.5 定义有默认参数的函数
+
+* 测试默认参数`None`时不能使用:`if not b:`而要使用`if b is None:`以排除`0`,`''`等
+* 默认参数的值仅仅在函数定义的时候赋值一次,比如将变量作为参数传入进去，实际传入的是变量的值的拷贝
+
+### 7.6 定义匿名或内联函数
+
+* lambda x, y: x + y lambda 定义一个匿名函数，`:`之前是函数的参数`:`之后是函数返回的值
+
+```python
+add = lambda x, y: x + y
+add(2,3)
+```
+* lambda表达式中的x是一个自由变量， 在运行时绑定值，而不是定义时就绑定
+* 如果需要在定义时确认值，只需给相应的参数提供默认值即可:`[lambda x, n=n: x+n for n in range(5)]`
+
+* `[lambda x, n=n: x+n for n in range(5)]`解析：
+    * 生成器表达式：`for n in range(5)`生成包含5个匿名函数的列表列表 lambda x,n=n:x+n
+    * `lambda x, n=n: x+n`,由于n有默认值，所以在定义时确定n值，n值分别为0,1,2,3,4
+    * 列表结果为(相似)：[lambda x: x+0,lambda x: x+1,lambda x: x+2,lambda x: x+3,lambda x: x+4]
+    * 如果n没有默认值,则n=4,即迭代的最后一个值
+
+### 7.8 减少可调用对象的参数个数
+
+* `new_func = partial(func,*params)` 给一个或多个参数设置固定的值，减少接下来被调用时的参数个数。
+* `partial(func,*params)`的意义是在调用其它函数库接受的回调函数时用来微调参数个数。
+* 很多时候 `partial()` 能实现的效果，lambda表达式也能实现,但是稍显臃肿
+* `list_obj.sort(key=partial(distance,pt))`
+* 列表的 `list_obj.sort()` 方法
+    * 接受一个回调函数`key = func()`的返回值作为新的列表排序依据， 但是它只能接受一个单个参数的函数，参数是列表的每个子元素
+
+### 7.9 将单方法的类转换为函数
+
+* 通常是为了保存额外状态来给函数使用，详见7.10
+
+### 7.10 带额外状态信息的回调函数
+
+* 有三种方式可以在回调函数的内部保存变量值
+    * 创建一个类，使需要保存的变量在类内部传递。回调函数是有对象实例化的一个方法。
+    * 创建一个闭包，使需要保存的变量在函数内部传递。回调函数是这个函数return的闭包。需要为变量声明nonlocal
+    * 创建一个协程，使需要保存的变量在协程内部传递。回调函数是这个协程启动的send方法。
+
+```python
+def apply_async(func, args, *, callback):
+    result = func(*args)
+    callback(result)
+
+def add(x, y):
+    return x + y
+
+# 创建一个类保存变量
+class ResultHandler:
+    def __init__(self):
+        self.sequence = 0
+    def handler(self, result):
+        self.sequence += 1
+        print('[{}] Got: {}'.format(self.sequence, result))
+r = ResultHandler()
+apply_async(add, (2, 3), callback=r.handler)
+
+# 创建一个闭包保存变量
+def make_handler():
+    sequence = 0
+    def handler(result):
+        nonlocal sequence
+        sequence += 1
+        print('[{}] Got: {}'.format(sequence, result))
+    return handler
+
+handler = make_handler()
+apply_async(add, (2, 3), callback=handler)
+
+
+# 创建一个协程保存变量
+def make_handler():
+    sequence = 0
+    while True:
+        result = yield
+        sequence += 1
+        print('[{}] Got: {}'.format(sequence, result))
+
+handler = make_handler()
+next(handler) # Advance to the yield
+apply_async(add, (2, 3), callback=handler.send)
+```
+
+* 协程解析
+    * 协程通过yield关键字实现,他实际上是个generator
+    * 对于协程,第一次必须运行一次next(generator)启动它(进入到while True中,这才是协程运行的部分)，直接使用send方法会报错
+    * 协程 `param = yield result`对于yield来说,`=`并不是赋值的意思。等号前的值generator通过send方法传入的参数，使其内部读取,yield后的值是其返回给外界的值
+    * generator每次执行后，遇到yield就会中断执行，直到使用`next(generator)`或`generator.send(param)`再次调用它，才会继续执行。
+
+
+
 ## 第八章:类与对象
+
+### 8.1 改变对象的字符串显示
+
+* `__repr__()` 方法返回一个实例的代码表示形式，通常用来重新构造这个实例。 内置的 repr() 函数返回这个字符串，跟我们使用交互式解释器显示的值是一样的。
+* `__str__()` 方法将实例转换为一个字符串，使用 `str()` 或 `print()` 函数会输出这个字符串。
+* 为了更方便的调试代码，我们可以自定义类的 `__repr__()` 和 `__str__()`方法
+
+### 8.3 让对象支持上下文管理协议
+
+* 为了让一个对象兼容 with 语句，你需要实现 `__enter__()` 和 `__exit__()` 方法
+
+```python
+from socket import socket, AF_INET, SOCK_STREAM
+
+class LazyConnection:
+    def __init__(self, address, family=AF_INET, type=SOCK_STREAM):
+        self.address = address
+        self.family = family
+        self.type = type
+        self.sock = None
+
+    def __enter__(self):
+        if self.sock is not None:
+            raise RuntimeError('Already connected')
+        self.sock = socket(self.family, self.type)
+        self.sock.connect(self.address)
+        return self.sock
+
+    def __exit__(self, exc_ty, exc_val, tb):
+        self.sock.close()
+        self.sock = None
+```
+### 8.5 在类中封装属性名(私有属性)
+
+* 第一个约定是任何以单下划线_开头的名字都应该是内部实现(私有属性或方法)。
+* Python并不会真的阻止别人访问内部名称,但是应该尽量去避免调用内部方法
+* 双下划线__开头的属性或方法通过继承是无法被覆盖或者修改
+* 有时候你定义的一个变量和某个保留关键字冲突，这时候可以使用单下划线作为后缀:`lambda_ = 2.0`
+* 大多数而言，你应该让你的非公共名称以单下划线开头。但是，如果你清楚你的代码会涉及到子类， 并且有些内部属性应该在子类中隐藏起来，那么才考虑使用双下划线方案。
+
+### 8.6 创建可管理的属性
+
+* 你想给某个实例attribute增加除访问与修改之外的其他处理逻辑，比如类型检查或合法性验证。
+
+```python
+class Person:
+    def __init__(self, first_name):
+        self.first_name = first_name
+
+    # Getter function
+    @property
+    def first_name(self):
+        return self._first_name
+
+    # Setter function
+    @first_name.setter
+    def first_name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self._first_name = value
+
+    # Deleter function (optional)
+    @first_name.deleter
+    def first_name(self):
+        raise AttributeError("Can't delete attribute")
+```
+
+### 8.25 创建缓存实例
+
+* 在创建一个类的对象时，如果之前使用同样参数创建过这个对象， 你想返回它的缓存引用
+* 详细实现请见9.13小节
+
+### 8.9 创建新的类或实例属性(描述器)
+
+* 定义描述器`__get__` `__set__` `__delete__`三种方法在类中
+* 为了使用一个描述器，需将这个描述器的实例作为类属性放到一个类的定义中:`x = Integer('x')`
+* 描述器可实现大部分Python类特性中的底层魔法， 包括 @classmethod 、@staticmethod 、@property
+
 ## 第九章:元编程
+
+* 按照默认习惯，metaclass的类名总是以Metaclass结尾，以便清楚地表示这是一个metaclass
+* metaclass用来控制类的创建行为。当我们在类中传入关键字参数metaclass时，魔术就生效了。
+* metaclass可以隐式地继承到子类，但子类自己却感觉不到。
 
 ### 9.1 在函数上添加装饰器
 
@@ -392,7 +709,42 @@ sig.parameters['z'].kind # <_ParameterKind: 'POSITIONAL_OR_KEYWORD'>
 * 我们希望通过**创建元类**改变实例创建方式来实现单例、缓存或其他类似的特性。
 * 我们可以通过定义元类中的 `__call__()` 方法规定类的创建方式。并在创建类时通过`metaclass`关键字参数确定创建方式:`class Spam(metaclass=NoInstances):...`
 
-### 9.22 定义上下文管理器的简单方法
+
+* 定义只能创建唯一的实例的元类Singleton
+
+```python
+class Singleton(type):
+    def __init__(self, *args, **kwargs):
+        self.__instance = None
+        super().__init__(*args, **kwargs)
+
+    def __call__(self, *args, **kwargs):
+        if self.__instance is None:
+            self.__instance = super().__call__(*args, **kwargs)
+            return self.__instance
+        else:
+            return self.__instance
+
+# Example
+class Spam(metaclass=Singleton):
+    def __init__(self):
+
+        print('Creating Spam')
+```
+* 详细解析
+    * 元类Singleton(type)需要传入父类type(元类定义皆为如此)
+    * 元类中`def __call__`方法定义了类实例化时的行为
+    * Singleton在Spam定义(解释器扫描到`metaclass=Singleton`)时被初始化，此时`self.__instance = None`
+    * 当Spam第一次实例化时，`self.__instance == None`返回`super().__call__(*args, **kwargs)`,即Spam的实例
+    * 当Spam第二次实例化时，由于`self.__instance`等于Spam第一次返回的实例，这个值直接被返回了。
+    * 注意的是,当Spam第二次实例化时,由于`super().__call__`方法根本没有执行，所以他的`__init__`方法也不会被调用了
+    * 由此便实现了只能初始化一次的元类方法
+
+### 9.21 避免重复的属性方法
+
+* 本节展示了对类进行类型检查的三种方式，并逐步简化的过程
+
+### 9.22 定义上下文管理器的简单方法(with)
 
 * with的基本概念
     * with 语句适用于对资源进行访问的场合，确保不管使用过程中是否发生异常都会执行必要的“清理”操作。
@@ -402,7 +754,7 @@ sig.parameters['z'].kind # <_ParameterKind: 'POSITIONAL_OR_KEYWORD'>
     * with语句遇到错误也会抛出异常，区别是它在遇到异常后仍可以执行清理操作。
 * 通常情况下，如果要写一个上下文管理器，你需要定义一个类，里面包含一个 `__enter__()` 和一个`__exit__()` 方法
 * 更好的方法是使用`contexlib` 模块中的 `@contextmanager` 装饰器
-* @contextmanager使用方法
+* `@contextmanager`使用方法
     * yield 之前的代码会在上下文管理器中作为 `__enter__()` 方法执行，
     * yield 之后的代码会作为 `__exit__()` 方法执行。
     * yield 后如果含有值，会返回as后面的内容，类似于return
@@ -429,6 +781,107 @@ exec_test() # exec: 11 glabal: 10
 ### 9.25 拆解Python字节码
 
 ## 第十章:模块与包
+
+### 10.1 构建一个模块的层级包
+
+* 一个文件夹内如果存在`__init__.py`,这个文件夹就成为了一个包
+* 大部分情况下`__init__.py`文件为空即可
+* 如果在子包的`__init__.py`中写入`from . import jpg`父模块便可以自动加载子模块jpg.py了
+
+### 10.2 控制模块被全部导入的内容
+
+* 强烈反对使用 `from module import *`
+* 如果你不做任何事, 这样的导入将会导入所有不以下划线开头的。
+* 如果在模块中定义了 `__all__` , 那么只有被列举出的东西会被导出:`__all__ = ['spam', 'grok']`
+
+### 10.3 使用相对路径名导入包中子模块
+
+文件结构如下
+
+```
+mypackage/
+  |-__init__.py
+  |-A/
+    |-__init__.py
+    |-spam.py
+    |-grok.py
+  |-B/
+    |-__init__.py
+    |-bar.py
+```
+在spam中引入grok和bar,只需如此操作：
+
+```python
+from . import grok
+from ..B import bar
+```
+
+### 10.4 将模块分割成多个文件
+### 10.5 利用命名空间导入目录分散的代码
+
+* 不同的目录有着相同的模块名称,希望将同名模块统一成唯一的模块直接引入
+* 前提是在任何一个目录里都没有`__init__.py`文件。
+
+```python
+import sys
+sys.path.extend(['foo-package', 'bar-package'])
+import spam.blah
+import spam.grok
+```
+
+### 10.6 重新加载模块
+### 10.7 运行目录或压缩文件
+
+* 如果`__main__.py`存在于顶层目录，你可以简单地在顶级目录运行这个文件: `python dirname`
+
+### 10.8 读取位于包中的数据文件
+
+* 可以使用pkgutil.get_data来读取包中的文件
+* 在包中尽量不使用I/O操作,1是I/O操作需要使用绝对文件名;二是包通常安装作为.zip或.egg文件,open方法此时不会工作
+
+```python
+import pkgutil
+data = pkgutil.get_data(__package__, 'somedata.dat')
+```
+
+### 10.9 将文件夹加入到sys.path
+### 10.10 通过字符串名导入模块
+
+* 你想导入一个模块，但是模块的名字在字符串里。你想对字符串调用导入命令。
+
+```python
+import importlib
+math = importlib.import_module('math')
+```
+### 10.11 通过钩子远程加载模块
+### 10.12 导入模块的同时修改模块
+### 10.13 安装私有的包
+
+* Python有一个用户安装目录，通常类似”~/.local/lib/python3.3/site-packages”。 要强制在这个目录中安装包，可使用安装选项“–user”
+
+```bash
+python3 setup.py install --user
+# or
+pip install --user packagename
+```
+
+* 通常包会被安装到系统的site-packages目录中去
+    * 路径类似“/usr/local/lib/python3.3/site-packages”。
+    * 不过，这样做需要有管理员权限并且使用sudo命令。
+    * 就算你有这样的权限去执行命令，使用sudo去安装一个新的，可能没有被验证过的包有时候也不安全。
+    * 安装包到用户目录中通常是一个有效的方案，它允许你创建一个自定义安装。
+
+### 10.14 创建新的Python环境
+### 10.15 分发包
+
+`install_requires`:指定了在安装这个包的过程中, 需要哪些其他包。 如果条件不满足, 则会自动安装依赖的库。
+
+```python
+setup(install_requires=["requests"]) # example1
+setup(install_requires=["numpy >= 1.8.1", "pandas >= 0.14.1"]) # example2
+```
+[python核心 - 打包与发布](https://www.xncoding.com/2015/10/26/python/setuptools.html)
+
 ## 第十一章:网络与web编程
 ## 第十二章:并发编程
 ## 第十三章:脚本编程与系统管理
