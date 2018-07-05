@@ -36,3 +36,63 @@ def get_file_list(dir_path = '.',file_types = '.*'):
     file_data_list = [File_data(file_name,file_path,file_type) for file_name,file_path,file_type in file_data_list if file_type and file_type in file_types]
     return file_data_list
 ```
+
+## 数据库
+
+### 封装sqlite3常用方法,使其调用简单
+
+```python
+import sqlite3
+from functools import wraps
+
+def cursor(func):
+    @wraps(func)
+    def wrapper(self,*args, **kwargs):
+        self.conn = sqlite3.connect(self.tablebase)
+        self.cursor = self.conn.cursor()
+        result = func(self,*args, **kwargs)
+        self.cursor.close()
+        self.conn.commit()
+        self.conn.close()
+        return result
+    return wrapper
+
+class SQlite():
+    def __init__(self,tablebase):
+        self.tablebase = tablebase
+
+    @cursor
+    def create_table(self,tablename,**kw):
+      header = ','.join(['{0} {1}'.format(key,kw[key]) for key in kw.keys()])
+      sql = 'CREATE TABLE {tablename}({header})'.format(tablename = tablename,header = header)
+      print(sql)
+      self.cursor.execute(sql)
+
+    @cursor
+    def insert(self,tablename,**kw):
+        header = ','.join(kw.keys())
+        value = ','.join(["'{0}'".format(key) if isinstance(key,str) else str(key) for key in kw.values()])
+        sql = "INSERT INTO {tablename} ({header}) VALUES ({value})".format(tablename = tablename,header = header,value = value)
+        self.cursor.execute(sql)
+        print(sql)
+
+    def _select(self,tablename,*keys,where = ''):
+        headers = ','.join(keys)
+        sql = "SELECT {0} from {1} {2}".format(headers,tablename,where)
+        result = self.cursor.execute(sql)
+        return result
+    @cursor
+    def update(self):
+        self.cursor.execute("UPDATE COMPANY set SALARY = 25000.00 where ID=1")
+    @cursor
+    def delete(self):
+        self.cursor.execute("DELETE from COMPANY where ID=2;")
+    @cursor
+    def fetchall(self,tablename,*keys,where = ''):
+        result = self._select(tablename,*keys,where = where)
+        return result.fetchall()
+    @cursor
+    def fetchone(self,tablename,*keys,where = ''):
+        result = self._select(tablename,*keys,where = where)
+        return result.fetchone()
+```

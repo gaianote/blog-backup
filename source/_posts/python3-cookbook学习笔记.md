@@ -702,6 +702,31 @@ sig.parameters['z'].kind # <_ParameterKind: 'POSITIONAL_OR_KEYWORD'>
 
 * 为类的方法提供装饰器和为函数添加装饰器定义与使用方法是一致的
 * 如果类中方法存在装饰器  `@classmethod` 和 `@staticmethod` ，要把他们放在最上面，否则会报错
+* 如果希望装饰器访问类的属性，需做如下修改：
+    1. 在wrapper传入参数self
+    2. 类方法`origin_func(self, *args, **kwargs)`传入参数self
+
+```python
+def catch_exception(origin_func):
+    def wrapper(self, *args, **kwargs):
+        try:
+            u = origin_func(self, *args, **kwargs)
+            return u
+        except Exception:
+            self.revive() #不用顾虑，直接调用原来的类的方法
+            return 'an Exception raised.'
+    return wrapper
+class Test(object):
+    def __init__(self):
+        pass
+    def revive(self):
+        print('revive from exception.')
+        # do something to restore
+    @catch_exception
+    def read_value(self):
+        print('here I will do something.')
+        # do something.
+```
 
 ### 9.13 使用元类控制实例的创建
 
@@ -787,6 +812,9 @@ exec_test() # exec: 11 glabal: 10
 * 一个文件夹内如果存在`__init__.py`,这个文件夹就成为了一个包
 * 大部分情况下`__init__.py`文件为空即可
 * 如果在子包的`__init__.py`中写入`from . import jpg`父模块便可以自动加载子模块jpg.py了
+    * 自动加载是指对于lib/jpg.py：`import lib` 之后,直接使用`lib.jpg`即可
+    * 否则需要`from lib import jpg`之后才能使用`lib.jpg`
+* 直接使用文件夹内的函数
 
 ### 10.2 控制模块被全部导入的内容
 
