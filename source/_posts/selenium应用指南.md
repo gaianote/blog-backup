@@ -254,6 +254,14 @@ driver.switch_to.default_content()
 
 [frame,我们来谈一谈](https://www.villainhr.com/page/2016/06/28/frame,%E6%88%91%E4%BB%AC%E6%9D%A5%E8%B0%88%E4%B8%80%E8%B0%88)
 
+## selenium屏幕截图
+
+```python
+driver.get_screenshot_as_base64()            截屏保存为base64适用于HTML中嵌入的图片
+driver.get_screenshot_as_file(filename)      截屏保存为一个文件，提供路径
+driver.get_screenshot_as_png()               截屏保存为一个二进制数据
+```
+
 ## 参考文档标签
 
 [selinium设置请求头](https://www.zhihu.com/question/35547395)
