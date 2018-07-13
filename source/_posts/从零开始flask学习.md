@@ -44,3 +44,5 @@ index.html
 ```html
 <link href="{{demo_css}}" rel="stylesheet" type="text/css" />
 ```
+
+## flask项目脚手架

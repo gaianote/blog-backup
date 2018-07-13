@@ -21,7 +21,7 @@ document.getElementsByClassName(classname);  //返回带有指定class名称的�
 ### 创建节点/属性
 
 ```javascript
-document.createElement(eName);　　//创建一个节点
+document.createElement(tagName);　　//创建一个节点
 
 document.createAttribute(attrName); //对某个节点创建属性
 
