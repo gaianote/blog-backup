@@ -36,6 +36,8 @@ Avocado主要是用Python编写的，因此标准的Python安装是可行的，�
 
 最简单的安装方法是通过pip。 在大多数可用Python 2.7和pip的POSIX系统上，只需一个命令即可执行安装：
 
+>>> 译者注:虽然python2.7是可用的，但是已经逐渐被淘汰了，因此建议使用python3.6+以及其相对应的pip进行安装
+
 ```bash
 pip install --user avocado-framework
 ```
@@ -70,7 +72,7 @@ pip install avocado-framework
 
 * [avocado-framework-plugin-robot](https://pypi.python.org/pypi/avocado-framework-plugin-robot): 执行Robot Framework测试
 
-* [avocado-framework-plugin-varianter-yaml-to-mux](https://pypi.python.org/pypi/avocado-framework-plugin-varianter-yaml-to-mux): 将YAML文件解析为变体
+* [avocado-framework-plugin-varianter-yaml-to-mux](https://pypi.python.org/pypi/avocado-framework-plugin-varianter-yaml-to-mux): 将YAML文件解析为变量
 
 #### 从包安装
 
@@ -319,6 +321,171 @@ Test results available in $HOME/avocado/job-results/job-2015-06-02T10.45-f9ea174
 Avocado功能也可以中断测试。一个例子是使用GDB调试GDB调试功能。
 
 对于自定义交互，还可以使用其他方法，如pdb或pydevd Avocado开发提示断点。请注意，不能在测试中使用STDIN（除非使用黑暗魔法）。
+
+## 书写Avocado测试
+
+我们将用Python编写Avocado测试，我们将继承avocado.Test。 这使得该测试成为所谓的仪器测试。
+
+### 基本示例
+
+```python
+import time
+
+from avocado import Test
+
+class SleepTest(Test):
+
+    def test(self):
+        sleep_length = self.params.get('sleep_length', default=1)
+        self.log.debug("Sleeping for %.2f seconds", sleep_length)
+        time.sleep(sleep_length)
+```
+
+这是您可以为Avocado编写的最简单的测试，同时仍然可以利用其API功能。
+
+#### 什么是Avocado测试
+
+从上面的示例中可以看出，Avocado测试是一种从继承自avocado.Test的类开始的测试方法。
+
+#### 多个测试和命名约定
+
+您可以在一个类中进行多个测试。
+
+为此，只需给出以test开头的方法名称，比如`test_foo`，`test_bar`等等。 我们建议您遵循此命名样式，如PEP8函数名称部分中所定义。
+
+对于类名，您可以选择任何您喜欢的名称，但我们也建议它遵循CamelCase约定，也称为CapWords，在类名称下的PEP 8文档中定义。
+
+
+#### 便利属性
+
+* 可以通过`self.log`访问测试的即用型日志机制。 它允许您记录调试，信息，错误和警告消息。
+* 可以通过`self.params`访问的参数传递系统（和提取系统）。 这与Varianter有关，您可以在Testary参数中找到更多信息。
+* 还有更多（参见avocado.core.test.Test）
+
+为了最大限度地减少意外冲突，我们将公共冲突定义为属性，因此如果您看到类似`AttributeError: can't set attribute`就不要覆盖这些属性。
+
+### 测试状态
+
+Avocado支持最常见的退出状态:
+
+* `PASS` - 测试通过，没有未经处理的例外情况
+* `WARN` - PASS的一种变体，用于跟踪最终不会影响测试结果的值得注意的事件。 一个例子可能是dmesg输出中存在的软锁定。 它与测试结果无关，除非测试失败，否则意味着该功能可能按预期工作，但有一些条件可能很好审查。 （某些结果插件不支持此功能并报告PASS）
+* `SKIP` - 测试的先决条件不满足且测试的主体未被执行（也没有执行setUp（）和tearDown）。
+* `CANCEL` - 在setUp（），测试方法或tearDown（）期间某处取消了测试。 执行setUp（）和tearDown方法。
+* `FAIL` - 测试未达到预期结果。 失败指向测试对象中的（可能的）错误，而不是测试脚本本身。 当测试（及其）执行中断时，报告ERROR而不是FAIL。
+* `ERROR` - 这可能（可能）指向测试本身的一个错误，而不是在被测试的对象中。它通常是由未捕获的异常引起的，这种失败需要彻底探索并且应该导致测试修改以避免这种失败或者 使用self.fail以及描述测试中的对象如何无法执行它的任务。
+* `INTERRUPTED` - 此结果无法由测试编写者设置，只有在超时或用户在执行此测试时按下`CTRL + C`时才会出现。
+* other - 还有其他一些内部测试状态，但你应该不会遇到它们。
+
+
+正如您所看到的那样，如果正确开发了测试，则FAIL是一个整洁的状态。在编写测试时，总要考虑它的`setUp`应该是什么，`test body`是什么，并且在测试中预计会出错。为了支持您，Avocado支持以下几种方法：
+
+
+#### 测试方法
+
+设置状态的最简单方法是直接从test中使用`self.fail`，`self.error`或`self.cancel`。
+
+要记录警告，只需写入`self.log.warning`日志即可。这不会中断测试执行，但会记住条件，如果没有失败，则会将测试报告为`WARN`。
+
+#### 将错误转化为失败
+
+Python代码上的错误通常以抛出异常的形式发出信号。当Avocado运行测试时，任何未处理的异常都将被视为测试错误，而不是失败。
+
+尽管如此，依赖库通常会引发自定义（或内置）异常。这些异常通常会导致错误，但如果您确定这是测试对象的奇怪行为，您应该捕获异常并解释self.fail方法中的失败：
+
+```python
+try:
+    process.run("stress_my_feature")
+except process.CmdError as details:
+    self.fail("The stress comamnd failed: %s" % details)
+```
+
+如果你的测试组件有很多执行而你无法在其他情况下得到这个异常然后预期失败，你可以使用`fail_on`装饰器来简化代码：
+
+```python
+@avocado.fail_on(process.CmdError)
+def test(self):
+    process.run("first cmd")
+    process.run("second cmd")
+    process.run("third cmd")
+```
+
+
+再次，让您的测试脚本保持最新并区分`FAIL`和`ERROR`的区别,将在查看测试结果时节省大量时间。
+
+### 保存测试生成的（自定义）数据
+
+每个测试实例都提供一个所谓的`whiteboard`。它可以通过self.whiteboard访问。这个`whiteboard`只是一个字符串，在测试结束后会自动保存到测试结果中（在执行过程中没有同步，所以当机器或python严重崩溃时可能不存在，并且应该使用direct io直接输出到关键数据的输出）。如果您选择将二进制数据保存到`whiteboard`，则您有责任首先对其进行编码（base64是显而易见的选择）。
+
+在之前演示的`sleeptest`测试的基础上，假设您想要保存`sleep length`以供其他一些脚本或数据分析工具使用：
+
+```python
+def test(self):
+    sleep_length = self.params.get('sleep_length', default=1)
+    self.log.debug("Sleeping for %.2f seconds", sleep_length)
+    time.sleep(sleep_length)
+    self.whiteboard = "%.2f" % sleep_length
+```
+
+`whiteboard`可以并且应该由可用的测试结果插件生成的文件公开。 results.json文件已包含每个测试的`whiteboard`。此外，为方便起见，我们将`whiteboard`内容的原始副本保存在名为whiteboard的文件中，与result.json文件位于同一级别（也许您希望直接使用基准测试结果与自定义脚本分析特定的基准测试结果）。
+
+如果需要附加多个输出文件，还可以使用`self.outputdir`，它指向`$RESULTS/test-results/$ TEST_ID/data`位置，并保留用于任意测试结果数据。
+
+### 访问测试数据文件
+
+某些测试可能依赖于测试文件本身外部的数据文件。 Avocado提供了一个测试API，可以很容易地访问这些文件：`get_data（）` 。
+
+对于Avocado测试（即INSTRUMENTED测试），`get_data（）`允许从最多三个源访问测试数据文件：
+
+* 文件级数据目录：以测试文件命名但以.data结尾的目录。对于测试文件`/home/user/test.py`，文件级数据目录是`/home/user/test.py.data/`。
+
+* 测试级别数据目录：以测试文件和特定测试名称命名的目录。当同一文件的不同测试部分需要不同的数据文件（具有相同或不同名称）时，这些功能非常有用。考虑到之前的`/home/user/test.py`示例，并假设它包含两个测试，`MyTest.test_foo`和`MyTest.test_bar`，测试级数据目录将是`/home/user/test.py.data/MyTest.test_foo/`和`home/user/test.py.data/MyTest.test_bar/`
+
+* 变量级数据目录：如果在测试期间使用变量执行时，也会考虑以变量命名的目录寻找测试数据文件。对于测试文件`/home/user/test.py`，并测试`MyTest.test_foo`，带有变量`debug-ffff`，数据目录路径将是`/home/user/test.py.data/MyTest.test_foo/debug-ffff/`。
+
+>>> 与INSTRUMENTED测试不同，SIMPLE测试仅定义`file`和`variant` 数据目录，因此是最具体的数据目录可能看起来像`/bin/echo.data/debug-ffff /`。
+
+
+Avocado按照定义的顺序查找数据文件[`DATA_SOURCES`](api/core/avocado.core.html＃avocado.core.test.TestData.DATA_SOURCES)，这是从最具体的一个到最通用的一个。这意味着，如果是变体正在使用，首先使用variant目录。然后测试尝试测试级别目录，最后是文件级目录。
+
+另外，你可以使用`get_data（filename，must_exist = False）`来获取可能不存在的文件的预期位置，这在当你打算创建它的情况下很有用。
+
+>>> 运行测试时，您可以使用`--log-test-data-directories`命令行选项记录将使用的测试数据目录
+对于特定的测试和执行条件（例如使用或没有变种）。在测试日志中查找“测试数据目录”。
+
+>>>以前存在的API`avocado.core.test.Test.datadir`，用于允许基于测试文件访问数据目录仅限位置。此API已被删除。无论出于何种原因，您仍然只需要根据测试文件位置访问数据目录，可以使用`get_data（filename =''，source ='file'，must_exist = False）`。
+
+### 访问测试参数
+
+每个测试都有一组可以访问的参数`self.params.get（$ name，$ path = None，$ default = None）`其中：
+
+* name - 参数名称（键）
+* path - 查找此参数的位置（未指定时使用mux-path）
+* default - 未找到param时返回的内容
+
+路径是有点棘手。 Avocado使用树来表示参数。 在简单的场景中，您不必担心，您将在默认情况下找到所有值的路径，但最终你可能想要查询Test parameters来理解细节。
+
+假设您的测试收到以下参数（您将在下一节中学习如何执行它们）：
+
+```
+$ avocado variants -m examples/tests/sleeptenmin.py.data/sleeptenmin.yaml --variants 2
+...
+Variant 1:    /run/sleeptenmin/builtin, /run/variants/one_cycle
+    /run/sleeptenmin/builtin:sleep_method => builtin
+    /run/variants/one_cycle:sleep_cycles  => 1
+    /run/variants/one_cycle:sleep_length  => 600
+...
+```
+
+在测试中你可以通过以下方式访问这些参数：
+
+```python
+self.params.get("sleep_method")    # returns "builtin"
+self.params.get("sleep_cycles", '*', 10)    # returns 1
+self.params.get("sleep_length", "/*/variants/*")  # returns 600
+```
+
+>>> 在可能发生冲突的复杂场景中，该路径很重要，因为当存在多个具有相同键匹配值的值时，Avocado会引发异常。如上所述，您可以通过使用特定路径或通过定义允许指定解析层次结构的自定义mux-path来避免这些路径。 更多细节可以在测试参数中找到。
 
 ## 原文档
 
