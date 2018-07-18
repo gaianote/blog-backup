@@ -487,6 +487,78 @@ self.params.get("sleep_length", "/*/variants/*")  # returns 600
 
 >>> 在可能发生冲突的复杂场景中，该路径很重要，因为当存在多个具有相同键匹配值的值时，Avocado会引发异常。如上所述，您可以通过使用特定路径或通过定义允许指定解析层次结构的自定义mux-path来避免这些路径。 更多细节可以在测试参数中找到。
 
+### 测试的环境变量
+
+Avocado将一些信息（包括测试参数）作为环境变量导出到正在运行的测试中。
+
+虽然这些变量可用于所有测试，但它们通常对SIMPLE测试更有意义。 原因是SIMPLE测试无法直接使用Avocado API。 INSTRUMENTED测试通常会有更强大的方法来访问相同的信息。
+
+* `AVOCADO_VERSION`: Avocado测试运行器的版本
+* `VOCADO_TEST_BASEDIR`:Avocado测试的基本目录
+* `AVOCADO_TEST_WORKDIR`:测试的工作目录
+* `AVOCADO_TESTS_COMMON_TMPDIR`:teststmpdir插件创建的临时目录。该目录在同一个Job中的整个测试中是持久的
+* `AVOCADO_TEST_LOGDIR`：日志目录
+* `AVOCADO_TEST_LOGFILE`: 测试的日志文件
+* `AVOCADO_TEST_OUTPUTDIR`:测试的输出目录
+* `AVOCADO_TEST_SYSINFODIR`：系统信息目录
+* `***`: 来自-mux-yaml的所有变量
+>>> `AVOCADO_TEST_SRCDIR`存在于早期版本中，但在版本60.0上已弃用，在版本62.0上已删除。请改用`AVOCADO_TEST_WORKDIR`。
+
+>>> `AVOCADO_TEST_DATADIR`存在于早期版本中，但在版本60.0上已弃用，在版本62.0上已删除。现在，测试数据文件（和目录）已动态评估，不可用作环境变量
+
+### SIMPLE测试BASH扩展
+
+用shell编写的SIMPLE测试可以使用一些Avocado实用程序。 在shell代码中，检查库是否可用，例如：
+
+```
+AVOCADO_SHELL_EXTENSIONS_DIR=$(avocado exec-path 2>/dev/null)
+```
+如果可用，将包含这些实用程序的目录注入shell使用的PATH，使这些实用程序易于访问：
+
+```
+if [ $? == 0 ]; then
+  PATH=$AVOCADO_SHELL_EXTENSIONS_DIR:$PATH
+fi
+```
+有关实用程序的完整列表，请查看目录返回通过`avocado exec-path`（如果有的话）。 另外，示例测试`examples/tests/ simplewarning.sh`可以提供进一步的灵感。
+
+>>> 这些扩展可以作为单独的包提供。 对于RPM包，请查找bash子包。
+
+### 简单的测试状态
+
+通过SIMPLE测试，Avocado会检查测试的退出代码，以确定测试是否已通过或已失败。
+
+如果您的测试以退出代码0退出，但您仍希望在某些条件下设置不同的测试状态，则Avocado可以在测试输出中搜索给定的正则表达式，并在此基础上将状态设置为WARN或SKIP。
+
+要使用该功能，您必须在配置文件中设置正确的密钥。 例如，当测试输出类似：'11：08：24 Test Skipped'：所示的行时，将测试状态设置为SKIP
+
+```
+[simpletests.output]
+skip_regex = ^\d\d:\d\d:\d\d Test Skipped$
+```
+该配置将使Avocado在stdout和stderr上搜索Python正则表达式。 如果您只想限制其中一个搜索，那么该配置还有另一个键：
+
+```
+[simpletests.output]
+skip_regex = ^\d\d:\d\d:\d\d Test Skipped$
+skip_location = stderr
+```
+
+WARN状态存在相同的设置。 例如，如果要在测试输出以字符串WARNING开头的行时将测试状态设置为WARN，则配置文件将如下所示：
+
+```
+[simpletests.output]
+skip_regex = ^\d\d:\d\d:\d\d Test Skipped$
+skip_location = stderr
+warn_regex = ^WARNING:
+warn_location = all
+```
+
+### 本文小节
+
+我们建议您查看一下中的示例测试`examples/tests`目录，这个目录包含一些样本以从中获取灵感。。 除了包含示例之外，该目录也被使用Avocado自测套件可对Avocado进行功能测试。
+也可以查看[https://github.com/avocado-framework-tests](https://github.com/avocado-framework-tests),它允许人们分享他们的基本系统测试,以从中获取灵感。
+
 ## 原文档
 
 [原文档](https://avocado-framework.readthedocs.io/en/63.0/Introduction.html)
