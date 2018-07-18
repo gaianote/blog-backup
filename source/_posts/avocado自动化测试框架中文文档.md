@@ -41,7 +41,8 @@ pip install --user avocado-framework
 ```
 这将从PyPI存储库中获取Avocado包（可能还有一些依赖项），并尝试将其安装在用户的主目录中（通常在〜/ .local下）。
 
->>> 如果要执行系统范围的安装，请删除 --user项。
+>>> 如果要执行系统范围的安装，请删除 --user删除。
+>>> 译者:如果希望在命令行启用 avocado 命令的话，安装时不能使用 --user 参数
 
 如果您想要更多隔离，Avocado也可以安装在Python虚拟环境中。 除了创建和激活虚拟环境本身之外没有其他步骤：
 
@@ -55,7 +56,7 @@ pip install avocado-framework
 
 许多Avocado功能都作为非核心插件分发，也可作为PyPI上的附加软件包提供。 你应该能够通过`pip search avocado-framework-plugin | grep avocado-framework-plugin`找到它们。其中一些列在下面：
 
-[avocado-framework-plugin-result-html](https://pypi.python.org/pypi/avocado-framework-plugin-result-html): HTML报告
+* [avocado-framework-plugin-result-html](https://pypi.python.org/pypi/avocado-framework-plugin-result-html): HTML报告
 
 * [avocado-framework-plugin-resultsdb](https://pypi.python.org/pypi/avocado-framework-plugin-resultsdb): 将作业结果传播到Resultsdb
 
@@ -177,6 +178,147 @@ $ chmod +x /tmp/simple_test.sh
 ```
 
 請注意，該文件具有可執行權限，這是Avocado將其視為簡單測試的要求。 另請注意，腳本以狀態代碼0退出，這表示Avocado成功結果。
+
+#### 运行更复杂的测试工作
+
+您可以按任意顺序运行任意数量的测试，以及混合和匹配仪器化测试和简单测试：
+
+```
+$ avocado run failtest.py sleeptest.py synctest.py failtest.py synctest.py /tmp/simple_test.sh
+JOB ID    : 86911e49b5f2c36caeea41307cee4fecdcdfa121
+JOB LOG   : $HOME/avocado/job-results/job-2014-08-12T15.42-86911e49/job.log
+ (1/6) failtest.py:FailTest.test: FAIL (0.00 s)
+ (2/6) sleeptest.py:SleepTest.test: PASS (1.00 s)
+ (3/6) synctest.py:SyncTest.test: PASS (2.43 s)
+ (4/6) failtest.py:FailTest.test: FAIL (0.00 s)
+ (5/6) synctest.py:SyncTest.test: PASS (2.44 s)
+ (6/6) /tmp/simple_test.sh.1: PASS (0.02 s)
+RESULTS    : PASS 4 | ERROR 0 | FAIL 2 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 5.98 s
+JOB HTML  : $HOME/avocado/job-results/job-2014-08-12T15.42-86911e49/html/results.html
+```
+
+#### 在第一次失败的测试中中断作业（failfast）
+
+Avocado运行命令具有选项`--failfast on`以在遇到第一次失败的测试时退出测试,后面的用例不再继续执行：
+
+```
+$ avocado run --failfast on /bin/true /bin/false /bin/true /bin/true
+JOB ID     : eaf51b8c7d6be966bdf5562c9611b1ec2db3f68a
+JOB LOG    : $HOME/avocado/job-results/job-2016-07-19T09.43-eaf51b8/job.log
+ (1/4) /bin/true: PASS (0.01 s)
+ (2/4) /bin/false: FAIL (0.01 s)
+Interrupting job (failfast).
+RESULTS    : PASS 1 | ERROR 0 | FAIL 1 | SKIP 2 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.12 s
+JOB HTML   : /home/apahim/avocado/job-results/job-2016-07-19T09.43-eaf51b8/html/results.html
+```
+
+在重新运行`--failfast on`执行的作业时，也可以使用`--failfast off`强制禁用failfast模式。
+
+#### 忽略缺少的测试引用
+
+当您提供测试参考列表时，Avocado将尝试将所有测试参考解析为测试。如果无法将一个或多个测试引用解析为测试，则不会创建作业。例：
+
+```
+$ avocado run passtest.py badtest.py
+Unable to resolve reference(s) 'badtest.py' with plugins(s) 'file', 'robot', 'external', try running 'avocado list -V badtest.py' to see the details.
+```
+但是如果你无论如何都想要执行这项测试，使用可以解决的测试，你可以使用`--ignore-missing-references on`。 UI中将显示相同的消息，但将执行这个测试：
+
+```
+$ avocado run passtest.py badtest.py --ignore-missing-references on
+Unable to resolve reference(s) 'badtest.py' with plugins(s) 'file', 'robot', 'external', try running 'avocado list -V badtest.py' to see the details.
+JOB ID     : 85927c113074b9defd64ea595d6d1c3fdfc1f58f
+JOB LOG    : $HOME/avocado/job-results/job-2017-05-17T10.54-85927c1/job.log
+ (1/1) passtest.py:PassTest.test: PASS (0.02 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.11 s
+JOB HTML   : $HOME/avocado/job-results/job-2017-05-17T10.54-85927c1/html/results.html
+```
+#### 使用外部运行器运行测试
+
+在大多数软件项目中使用有机增长的测试套件是很常见的。这些通常包括一个定制的，非常具体的测试运行器，它知道如何查找和运行自己的测试
+
+尽管如此，由于各种原因，在Avocado中运行这些测试可能是一个好主意，包括能够以不同的人机和机器可读格式获得结果，收集系统信息以及这些测试（Avocado的sysinfo功能）等等
+
+Avocado 通过其"external runner"功能实现了这一目标。最基本的使用方法是：
+
+```bash
+$ avocado run --external-runner=/path/to/external_runner foo bar baz
+```
+在此示例中，Avocado将报告测试foo，bar和baz的各个测试结果。实际结果将基于`/path/to/external_runner foo`，`/path/to/external_runner bar`和`/path/to/external_runner baz`的单独执行的返回代码。其中`/path/to/external_runner`是你的外部解释器的路径。
+
+
+作为另一种解释该功能如何工作的方法，可以将"external runner"视为某种解释器，并将个体测试视为此解释器识别并能够执行的任何内容。一个UNIX shell，比如`/bin/sh`可以被认为是一个外部运行器，带有shell代码的文件可以被认为是测试：
+
+```bash
+$ echo "exit 0" > /tmp/pass
+$ echo "exit 1" > /tmp/fail
+$ avocado run --external-runner=/bin/sh /tmp/pass /tmp/fail
+JOB ID     : 4a2a1d259690cc7b226e33facdde4f628ab30741
+JOB LOG    : /home/<user>/avocado/job-results/job-<date>-<shortid>/job.log
+(1/2) /tmp/pass: PASS (0.01 s)
+(2/2) /tmp/fail: FAIL (0.01 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.11 s
+JOB HTML   : /home/<user>/avocado/job-results/job-<date>-<shortid>/html/results.html
+```
+
+这个例子非常明显，可以通过给/tmp/pass和/tmp/fail "shebangs"（#!/bin/sh）来实现，使它们可执行（chmod+x /tmp/pass /tmp/fail并将它们作为"SIMPLE"测试运行。
+
+#### 但现在考虑以下示例：
+
+```bash
+$ avocado run --external-runner=/bin/curl http://local-avocado-server:9405/jobs/ \
+                                       http://remote-avocado-server:9405/jobs/
+JOB ID     : 56016a1ffffaba02492fdbd5662ac0b958f51e11
+JOB LOG    : /home/<user>/avocado/job-results/job-<date>-<shortid>/job.log
+(1/2) http://local-avocado-server:9405/jobs/: PASS (0.02 s)
+(2/2) http://remote-avocado-server:9405/jobs/: FAIL (3.02 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 3.14 s
+JOB HTML   : /home/<user>/avocado/job-results/job-<date>-<shortid>/html/results.html
+```
+
+这有效地使`/bin/curl`成为"外部测试运行器"，负责尝试获取这些URL，并为每个URL报告PASS或FAIL。
+
+### 调试测试
+
+#### 显示测试输出
+
+在开发新测试时，您经常希望直接查看作业日志，而无需切换屏幕或不必“拖尾”作业日志。
+
+为了实现它，你可以使用`avocado --show test run ...` 或者 `avocado run --show-job-log`选项
+
+```bash
+$ avocado --show test run examples/tests/sleeptest.py
+...
+Job ID: f9ea1742134e5352dec82335af584d1f151d4b85
+
+START 1-sleeptest.py:SleepTest.test
+
+PARAMS (key=timeout, path=*, default=None) => None
+PARAMS (key=sleep_length, path=*, default=1) => 1
+Sleeping for 1.00 seconds
+PASS 1-sleeptest.py:SleepTest.test
+
+Test results available in $HOME/avocado/job-results/job-2015-06-02T10.45-f9ea174
+```
+
+如您所见，UI输出被抑制，只显示作业日志，这使其成为测试开发和调试的有用功能。
+
+
+#### 中断测试执行
+
+要中断作业执行，用户可以按`ctrl + c`，在单次按下后将SIGTERM发送到主测试的进程并等待它完成。如果这没有帮助，用户可以再次按`ctrl + c`（2s宽限期后），这会非常有效地破坏测试过程并安全地完成作业执行，始终提供测试结果。
+
+要暂停测试执行，用户可以使用`ctrl + z`将SIGSTOP发送到从测试的PID继承的所有进程。我们尽力停止所有进程，但操作不是原子操作，可能无法停止某些新进程。再次按下`ctrl + z`将SIGCONT发送到测试的PID继承执行的所有进程。请注意，测试执行时间（关于测试超时）仍然在测试进程停止时运行。
+
+
+Avocado功能也可以中断测试。一个例子是使用GDB调试GDB调试功能。
+
+对于自定义交互，还可以使用其他方法，如pdb或pydevd Avocado开发提示断点。请注意，不能在测试中使用STDIN（除非使用黑暗魔法）。
 
 ## 原文档
 
