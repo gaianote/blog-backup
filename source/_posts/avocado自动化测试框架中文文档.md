@@ -369,7 +369,7 @@ class SleepTest(Test):
 Avocado支持最常见的退出状态:
 
 * `PASS` - 测试通过，没有未经处理的例外情况
-* `WARN` - PASS的一种变体，用于跟踪最终不会影响测试结果的值得注意的事件。 一个例子可能是dmesg输出中存在的软锁定。 它与测试结果无关，除非测试失败，否则意味着该功能可能按预期工作，但有一些条件可能很好审查。 （某些结果插件不支持此功能并报告PASS）
+* `WARN` - PASS的一种变量，用于跟踪最终不会影响测试结果的值得注意的事件。 一个例子可能是dmesg输出中存在的软锁定。 它与测试结果无关，除非测试失败，否则意味着该功能可能按预期工作，但有一些条件可能很好审查。 （某些结果插件不支持此功能并报告PASS）
 * `SKIP` - 测试的先决条件不满足且测试的主体未被执行（也没有执行setUp（）和tearDown）。
 * `CANCEL` - 在setUp（），测试方法或tearDown（）期间某处取消了测试。 执行setUp（）和tearDown方法。
 * `FAIL` - 测试未达到预期结果。 失败指向测试对象中的（可能的）错误，而不是测试脚本本身。 当测试（及其）执行中断时，报告ERROR而不是FAIL。
@@ -446,7 +446,7 @@ def test(self):
 >>> 与INSTRUMENTED测试不同，SIMPLE测试仅定义`file`和`variant` 数据目录，因此是最具体的数据目录可能看起来像`/bin/echo.data/debug-ffff /`。
 
 
-Avocado按照定义的顺序查找数据文件[`DATA_SOURCES`](api/core/avocado.core.html＃avocado.core.test.TestData.DATA_SOURCES)，这是从最具体的一个到最通用的一个。这意味着，如果是变体正在使用，首先使用variant目录。然后测试尝试测试级别目录，最后是文件级目录。
+Avocado按照定义的顺序查找数据文件[`DATA_SOURCES`](api/core/avocado.core.html＃avocado.core.test.TestData.DATA_SOURCES)，这是从最具体的一个到最通用的一个。这意味着，如果是变量正在使用，首先使用variant目录。然后测试尝试测试级别目录，最后是文件级目录。
 
 另外，你可以使用`get_data（filename，must_exist = False）`来获取可能不存在的文件的预期位置，这在当你打算创建它的情况下很有用。
 
@@ -486,6 +486,231 @@ self.params.get("sleep_length", "/*/variants/*")  # returns 600
 ```
 
 >>> 在可能发生冲突的复杂场景中，该路径很重要，因为当存在多个具有相同键匹配值的值时，Avocado会引发异常。如上所述，您可以通过使用特定路径或通过定义允许指定解析层次结构的自定义mux-path来避免这些路径。 更多细节可以在测试参数中找到。
+
+### 运行多个测试变量
+
+在上一节中，我们描述了如何处理参数。 现在，让我们看看如何生成它们并使用不同的参数执行测试。
+
+变量子系统允许创建多个参数变量,并使用这些参数变量执行测试。此子系统是可插入的，因此您可以使用自定义插件来生成变量。为了简单起见，让我们使用Avocado的初步实施，称为`yaml_to_mux`。
+
+`yaml_to_mux`插件接受YAML文件。 这些将创建树状结构，将变量存储为参数并使用自定义标记将位置标记为`multiplex`域。
+
+让我们使用`examples/tests/sleeptenmin.py.data/sleeptenmin.yaml`文件作为例子：
+
+```yaml
+sleeptenmin: !mux
+    builtin:
+        sleep_method: builtin
+    shell:
+        sleep_method: shell
+variants: !mux
+    one_cycle:
+        sleep_cycles: 1
+        sleep_length: 600
+    six_cycles:
+        sleep_cycles: 6
+        sleep_length: 100
+    one_hundred_cycles:
+        sleep_cycles: 100
+        sleep_length: 6
+    six_hundred_cycles:
+        sleep_cycles: 600
+        sleep_length: 1
+```
+
+其中产生以下结构和参数：
+
+```bash
+$ avocado variants -m examples/tests/sleeptenmin.py.data/sleeptenmin.yaml --summary 2 --variants 2
+Multiplex tree representation:
+ ┗━━ run
+      ┣━━ sleeptenmin
+      ┃    ╠══ builtin
+      ┃    ║     → sleep_method: builtin
+      ┃    ╚══ shell
+      ┃          → sleep_method: shell
+      ┗━━ variants
+           ╠══ one_cycle
+           ║     → sleep_length: 600
+           ║     → sleep_cycles: 1
+           ╠══ six_cycles
+           ║     → sleep_length: 100
+           ║     → sleep_cycles: 6
+           ╠══ one_hundred_cycles
+           ║     → sleep_length: 6
+           ║     → sleep_cycles: 100
+           ╚══ six_hundred_cycles
+                 → sleep_length: 1
+                 → sleep_cycles: 600
+
+Multiplex variants (8):
+
+Variant builtin-one_cycle-f659:    /run/sleeptenmin/builtin, /run/variants/one_cycle
+    /run/sleeptenmin/builtin:sleep_method => builtin
+    /run/variants/one_cycle:sleep_cycles  => 1
+    /run/variants/one_cycle:sleep_length  => 600
+
+Variant builtin-six_cycles-723b:    /run/sleeptenmin/builtin, /run/variants/six_cycles
+    /run/sleeptenmin/builtin:sleep_method => builtin
+    /run/variants/six_cycles:sleep_cycles => 6
+    /run/variants/six_cycles:sleep_length => 100
+
+Variant builtin-one_hundred_cycles-633a:    /run/sleeptenmin/builtin, /run/variants/one_hundred_cycles
+    /run/sleeptenmin/builtin:sleep_method         => builtin
+    /run/variants/one_hundred_cycles:sleep_cycles => 100
+    /run/variants/one_hundred_cycles:sleep_length => 6
+
+Variant builtin-six_hundred_cycles-a570:    /run/sleeptenmin/builtin, /run/variants/six_hundred_cycles
+    /run/sleeptenmin/builtin:sleep_method         => builtin
+    /run/variants/six_hundred_cycles:sleep_cycles => 600
+    /run/variants/six_hundred_cycles:sleep_length => 1
+
+Variant shell-one_cycle-55f5:    /run/sleeptenmin/shell, /run/variants/one_cycle
+    /run/sleeptenmin/shell:sleep_method  => shell
+    /run/variants/one_cycle:sleep_cycles => 1
+    /run/variants/one_cycle:sleep_length => 600
+
+Variant shell-six_cycles-9e23:    /run/sleeptenmin/shell, /run/variants/six_cycles
+    /run/sleeptenmin/shell:sleep_method   => shell
+    /run/variants/six_cycles:sleep_cycles => 6
+    /run/variants/six_cycles:sleep_length => 100
+
+Variant shell-one_hundred_cycles-586f:    /run/sleeptenmin/shell, /run/variants/one_hundred_cycles
+    /run/sleeptenmin/shell:sleep_method           => shell
+    /run/variants/one_hundred_cycles:sleep_cycles => 100
+    /run/variants/one_hundred_cycles:sleep_length => 6
+
+Variant shell-six_hundred_cycles-1e84:    /run/sleeptenmin/shell, /run/variants/six_hundred_cycles
+    /run/sleeptenmin/shell:sleep_method           => shell
+    /run/variants/six_hundred_cycles:sleep_cycles => 600
+    /run/variants/six_hundred_cycles:sleep_length => 1
+```
+
+您可以看到它创建了每个Multiplex域的所有可能变量，这些变量由YAML文件中的！mux标记定义，并在树视图中显示为单行（与具有值的单个节点的双行比较）。 总共它会产生每种测试的8种变量：
+
+```
+$ avocado run --mux-yaml examples/tests/sleeptenmin.py.data/sleeptenmin.yaml -- passtest.py
+JOB ID     : cc7ef22654c683b73174af6f97bc385da5a0f02f
+JOB LOG    : /home/medic/avocado/job-results/job-2017-01-22T11.26-cc7ef22/job.log
+ (1/8) passtest.py:PassTest.test;builtin-one_cycle-f659: PASS (0.01 s)
+ (2/8) passtest.py:PassTest.test;builtin-six_cycles-723b: PASS (0.01 s)
+ (3/8) passtest.py:PassTest.test;builtin-one_hundred_cycles-633a: PASS (0.01 s)
+ (4/8) passtest.py:PassTest.test;builtin-six_hundred_cycles-a570: PASS (0.01 s)
+ (5/8) passtest.py:PassTest.test;shell-one_cycle-55f5: PASS (0.01 s)
+ (6/8) passtest.py:PassTest.test;shell-six_cycles-9e23: PASS (0.01 s)
+ (7/8) passtest.py:PassTest.test;shell-one_hundred_cycles-586f: PASS (0.01 s)
+ (8/8) passtest.py:PassTest.test;shell-six_hundred_cycles-1e84: PASS (0.01 s)
+RESULTS    : PASS 8 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.16 s
+```
+### 高级日志记录功能
+
+Avocado在测试运行时提供高级日志记录功能。 这些可以在测试中与标准Python库API结合使用。
+
+一个常见的例子是需要在更长或更复杂的测试中遵循特定的进展。 让我们看一个非常简单的测试示例，但在单个测试中有一个多个明确的阶段：
+
+```python
+import logging
+import time
+
+from avocado import Test
+
+progress_log = logging.getLogger("progress")
+
+class Plant(Test):
+
+    def test_plant_organic(self):
+        rows = self.params.get("rows", default=3)
+
+        # Preparing soil
+        for row in range(rows):
+            progress_log.info("%s: preparing soil on row %s",
+                              self.name, row)
+
+        # Letting soil rest
+        progress_log.info("%s: letting soil rest before throwing seeds",
+                          self.name)
+        time.sleep(2)
+
+        # Throwing seeds
+        for row in range(rows):
+            progress_log.info("%s: throwing seeds on row %s",
+                              self.name, row)
+
+        # Let them grow
+        progress_log.info("%s: waiting for Avocados to grow",
+                          self.name)
+        time.sleep(5)
+
+        # Harvest them
+        for row in range(rows):
+            progress_log.info("%s: harvesting organic avocados on row %s",
+                              self.name, row)
+```
+
+从现在开始，您可以要求Avocado显示您的日志记录流，无论是独占还是其他内置流：
+
+```bash
+$ avocado --show app,progress run plant.py
+```
+结果应类似于：
+
+```
+JOB ID     : af786f86db530bff26cd6a92c36e99bedcdca95b
+JOB LOG    : /home/cleber/avocado/job-results/job-2016-03-18T10.29-af786f8/job.log
+ (1/1) plant.py:Plant.test_plant_organic: progress: 1-plant.py:Plant.test_plant_organic: preparing soil on row 0
+progress: 1-plant.py:Plant.test_plant_organic: preparing soil on row 1
+progress: 1-plant.py:Plant.test_plant_organic: preparing soil on row 2
+progress: 1-plant.py:Plant.test_plant_organic: letting soil rest before throwing seeds
+-progress: 1-plant.py:Plant.test_plant_organic: throwing seeds on row 0
+progress: 1-plant.py:Plant.test_plant_organic: throwing seeds on row 1
+progress: 1-plant.py:Plant.test_plant_organic: throwing seeds on row 2
+progress: 1-plant.py:Plant.test_plant_organic: waiting for Avocados to grow
+\progress: 1-plant.py:Plant.test_plant_organic: harvesting organic avocados on row 0
+progress: 1-plant.py:Plant.test_plant_organic: harvesting organic avocados on row 1
+progress: 1-plant.py:Plant.test_plant_organic: harvesting organic avocados on row 2
+PASS (7.01 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 7.11 s
+JOB HTML   : /home/cleber/avocado/job-results/job-2016-03-18T10.29-af786f8/html/results.html
+```
+
+自定义`progress`流与应用程序输出结合在一起,可能适合或可能不适合您的需要或喜好。 如果你为了清楚和持久性，想把`progress`流将发送到一个单独的文件，你可以像这样运行Avocado：
+
+```bash
+$ avocado run plant.py --store-logging-stream progress
+```
+结果是，除了通常生成的所有其他日志文件之外，还会在作业结果目录中有另一个名为progress.INFO的日志文件。 在测试运行期间，可以通过以下方式观察进度：
+
+```
+$ tail -f ~/avocado/job-results/latest/progress.INFO
+10:36:59 INFO | 1-plant.py:Plant.test_plant_organic: preparing soil on row 0
+10:36:59 INFO | 1-plant.py:Plant.test_plant_organic: preparing soil on row 1
+10:36:59 INFO | 1-plant.py:Plant.test_plant_organic: preparing soil on row 2
+10:36:59 INFO | 1-plant.py:Plant.test_plant_organic: letting soil rest before throwing seeds
+10:37:01 INFO | 1-plant.py:Plant.test_plant_organic: throwing seeds on row 0
+10:37:01 INFO | 1-plant.py:Plant.test_plant_organic: throwing seeds on row 1
+10:37:01 INFO | 1-plant.py:Plant.test_plant_organic: throwing seeds on row 2
+10:37:01 INFO | 1-plant.py:Plant.test_plant_organic: waiting for Avocados to grow
+10:37:06 INFO | 1-plant.py:Plant.test_plant_organic: harvesting organic avocados on row 0
+10:37:06 INFO | 1-plant.py:Plant.test_plant_organic: harvesting organic avocados on row 1
+10:37:06 INFO | 1-plant.py:Plant.test_plant_organic: harvesting organic avocados on row 2
+```
+
+这个非常相似的progress logger，可以跨多个测试方法和多个测试模块使用。在给出的示例中，测试名称用于提供额外的上下文。
+
+
+### unittest.TestCase继承
+### Setup和cleanup方法
+### 运行第三方测试套件
+### 获取资产文件
+### 测试输出检查和输出记录模式
+### 在本机Avocado模块中测试日志，stdout和stderr
+### 设置测试超时
+### 跳过测试
+### 取消测试
+### Docstring指令
+### Python unittest兼容性限制和警告
 
 ### 测试的环境变量
 
