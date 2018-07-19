@@ -123,6 +123,51 @@ book1 = Book('空之境界','奈须蘑菇','100')
 * `html.escape(base_str)`会将`<` 转换为 `&lt;`
 
 ### 字符串令牌解析
+
+#### 使用示例
+
+1. 命名捕获组的正则表达式来定义所有可能的令牌，包括空格
+
+```python
+import re
+NAME = r'(?P<NAME>[a-zA-Z_][a-zA-Z_0-9]*)'
+NUM = r'(?P<NUM>\d+)'
+PLUS = r'(?P<PLUS>\+)'
+TIMES = r'(?P<TIMES>\*)'
+EQ = r'(?P<EQ>=)'
+WS = r'(?P<WS>\s+)'
+
+pat = re.compile('|'.join([NAME, NUM, PLUS, TIMES, EQ, WS]))
+```
+2. 实现一个生成器
+
+```python
+from collections import namedtuple
+def generate_tokens(pat, text):
+    Token = namedtuple('Token', ['type', 'value'])
+    scanner = pat.scanner(text)
+    for m in iter(scanner.match, None):
+        yield Token(m.lastgroup, m.group())
+```
+
+3. 调用并处理token
+
+```python
+for tok in generate_tokens(master_pat, 'foo = 42'):
+    print(tok)
+# Produces output
+# Token(type='NAME', value='foo')
+# Token(type='WS', value=' ')
+# Token(type='EQ', value='=')
+# Token(type='WS', value=' ')
+# Token(type='NUM', value='42')
+```
+
+#### 要点:
+
+1. 如果一个re匹配模式恰好是另一个更长模式的子字符串，那么你需要确定长模式写在前面。('|'.join的顺序)
+2. scanner.match从字符串开头扫描到结尾，如果遇到不满足re匹配模式的地方立刻停止扫描，因此，需要考虑所有的情况，比如空白字符。
+
 ### 实现一个简单的递归下降分析器
 
 ## 第三章 数字日期和时间

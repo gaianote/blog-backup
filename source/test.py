@@ -1,28 +1,46 @@
-def dic_to_str(dic,split = ','):
-    list_ = []
-    split = ' {} '.format(split)
-    for key,value in dic.items():
-        value = "'{}'".format(value.replace("'","''")) if isinstance(value,str) else str(value)
-        list_.append(key + " = " + value)
-    return split.join(list_)
-def _select(self,tablename,*keys,where = '',**kw):
-    headers = ','.join(keys)
-    # kw存在的时候省略where：fetchone('table','id',name = 'lee')
-    if kw:
-        where = dic_to_str(kw,'AND')
-        sql ="SELECT {0} FROM {1} WHERE {2}".format(headers,tablename,where)
-    elif not where:
-        sql = "SELECT {0} from {1}".format(headers,tablename)
-    else:
-        # 处理字符串内的单引号
-        base_str = re.compile(r"'(.*?)'(?: AND|$)").findall(where)
-        for str_ in base_str:
-            where = where.replace(str_,str_.replace("'","''"))
-        sql = "SELECT {0} from {1} WHERE {2}".format(headers,tablename,where)
-        import os
-        from lib.config import DATA_PATH
-        with open(os.path.join(DATA_PATH,'text.text'),'w') as f:
-            f.write(sql)
+str_ = """简直完美,a = "1,2 ",b,hah,"c,2",c=5,e = 'a =c  ',15,简直完美,dlll"""
+import re
+from collections import namedtuple
 
-    print(sql)
-_select('a','d','c',id= 100,page = 'x',nice = "'fdfdf{}kw'")
+def res_param(str_):
+    KEY = r'(?P<KEY>[a-zA-Z_][a-zA-Z_0-9]*(?:\s.*?=|=))'
+    STR = r"""(?P<STR>".*?"|'.*?')"""
+    WS = r'(?P<WS>\s+)'
+    NUM = r'(?P<NUM>\d+)'
+    SPLIT = r'(?P<SPLIT>,)'
+    VALUE = r'(?P<VALUE>\S+?(?=,|$))'
+    master_pat = re.compile('|'.join([KEY,STR,SPLIT,NUM,WS,VALUE]))
+
+    def generate_tokens(pat, text):
+        Token = namedtuple('Token', ['type', 'value'])
+        scanner = pat.scanner(text)
+        for m in iter(scanner.match, None):
+            yield Token(m.lastgroup, m.group())
+    result = ''
+    for tok in generate_tokens(master_pat, str_):
+        print(tok)
+        if tok.type == 'VALUE':
+            result += '"'+ tok.value + '"'
+        else:
+            result += tok.value
+    return result
+
+res_param(str_)
+# for s in scanner:
+#     print(s)
+
+# re.compile('|'.join())
+# def res_param(str_):
+#     list_ = str_.split(",")
+#     new_list = []
+#     for i in range(len(list_)):
+#         if list_[i].startswith('"') or list_[i].startswith("'"):
+#             pass
+#         elif list_[i].endswith('"') or list_[i].endswith("'"):
+#             new_list.append(list_[i-1] + ',' + list_[i])
+#         else:
+#             new_list.append(list_[i])
+
+#     return list_,new_list
+
+# print(res_param(str_))

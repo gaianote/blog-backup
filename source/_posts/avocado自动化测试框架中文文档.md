@@ -20,11 +20,11 @@ Avocado由以下组成：
 
 Avocado是建立在Autotest积累的经验基础上，同时改善其弱点和缺点。
 
-鳄梨尽可能地遵守标准的Python测试技术。 使用Avocado API编写的测试来自unittest类，同时添加了适用于功能和性能测试的其他方法。 测试运行器旨在帮助人们在提供各种系统和日志记录工具的同时运行他们的测试，并且如果您需要更多功能，那么您可以逐步开始使用API功能。
+Avocado尽可能地遵守标准的Python测试技术。 使用Avocado API编写的测试来自unittest类，同时添加了适用于功能和性能测试的其他方法。 测试运行器旨在帮助人们在提供各种系统和日志记录工具的同时运行他们的测试，并且如果您需要更多功能，那么您可以逐步开始使用API功能。
 
 ## 入门
 
-那些喜欢视频介绍的人，请看看其他资源。 无论哪种方式，使用鳄梨的第一步显然是安装它。
+那些喜欢视频介绍的人，请看看其他资源。 无论哪种方式，使用Avocado的第一步显然是安装它。
 
 ### 安装Avocado
 
@@ -116,6 +116,8 @@ JOB HTML   : /tmp/avocado-dry-runSeWniM/job-2015-10-16T15.46-0000000/html/result
 它支持所有运行参数，模拟运行甚至列出测试参数。
 
 另一种方法是使用list子命令列出发现的测试如果没有提供参数，Avocado会为每个插件列出“默认”测试。 输出可能如下所示：
+
+>>> 译者: `avocado list .` 列出当前目录的avocado测试,直接使用`avocado list`未返回结果。
 
 ```
 $ avocado list
@@ -701,15 +703,454 @@ $ tail -f ~/avocado/job-results/latest/progress.INFO
 
 
 ### unittest.TestCase继承
+
+由于Avocado测试继承了unittest.TestCase，所以可以使用其父级的所有断言方法。
+代码示例使用 assertEqual, assertTrue 和 assertIsInstace:
+
+```python
+from avocado import Test
+
+class RandomExamples(Test):
+    def test(self):
+        self.log.debug("Verifying some random math...")
+        four = 2 * 2
+        four_ = 2 + 2
+        self.assertEqual(four, four_, "something is very wrong here!")
+
+        self.log.debug("Verifying if a variable is set to True...")
+        variable = True
+        self.assertTrue(variable)
+
+        self.log.debug("Verifying if this test is an instance of test.Test")
+        self.assertIsInstance(self, test.Test)
+```
+#### 在其它单元测试下运行测试脚本
+
+nose是另一个Python测试框架，它也与unittest兼容。
+因此，您可以使用nosetest应用程序运行Avocado测试：
+
+```
+$ nosetests examples/tests/sleeptest.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 1.004s
+
+OK
+```
+
+相反，您也可以使用标准unittest.main()入口点运行Avocado测试。检查下面的代码，以保存为dummy.py：
+
+```python
+from avocado import Test
+from unittest import main
+
+class Dummy(Test):
+    def test(self):
+        self.assertTrue(True)
+
+if __name__ == '__main__':
+    main()
+```
+
+使用:
+
+```python
+$ python dummy.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+```
+
 ### Setup和cleanup方法
+
+在测试之前或之后执行setUp操作，您可以使用setUp和tearDown方法,tearDown方法总是在安装失败时执行，所以不要忘记在setUp过程中初始化变量。使用示例在下一节运行第三方测试套件中。
+
 ### 运行第三方测试套件
+
+在测试自动化工作负载中使用第三方开发的测试套件非常常见。通过在Avocado测试模块中封装执行代码，您可以访问框架提供的设施和API。假设你想用C写一个测试套件，它在一个tarball中，解压缩它，编译套件代码，然后执行测试。下面是一个例子：
+
+```python
+#!/usr/bin/env python
+
+import os
+
+from avocado import Test
+from avocado import main
+from avocado.utils import archive
+from avocado.utils import build
+from avocado.utils import process
+
+
+class SyncTest(Test):
+
+    """
+    Execute the synctest test suite.
+    """
+    def setUp(self):
+        """
+        Set default params and build the synctest suite.
+        """
+        sync_tarball = self.params.get('sync_tarball',
+                                       default='synctest.tar.bz2')
+        self.sync_length = self.params.get('sync_length', default=100)
+        self.sync_loop = self.params.get('sync_loop', default=10)
+        # Build the synctest suite
+        self.cwd = os.getcwd()
+        tarball_path = self.get_data(sync_tarball)
+        archive.extract(tarball_path, self.workdir)
+        self.workdir = os.path.join(self.workdir, 'synctest')
+        build.make(self.workdir)
+
+    def test(self):
+        """
+        Execute synctest with the appropriate params.
+        """
+        os.chdir(self.workdir)
+        cmd = ('./synctest %s %s' %
+               (self.sync_length, self.sync_loop))
+        process.system(cmd)
+        os.chdir(self.cwd)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+这里我们有一个setup方法的例子：这里我们通过`avocado.Test.get_data()` 得到测试套件代码（tarball）的位置。然后通过`avocado.utils.archive.extract()`解压缩
+一个API会解压缩tarball套件,`avocado.utils.build.make()`会建立则个套件。
+
+在这个例子中，测试方法刚刚进入编译的套件的基本目录，并使用`avocado.utils.process.system()`和适当的参数执行`./synctest`命令。
+
 ### 获取资产文件
 ### 测试输出检查和输出记录模式
+
+在很多情况下，你想变得简单：只需检查给定测试的输出是否匹配预期输出。为了帮助这个常见的用例，Avocado提供了`--output-check-record`选项
+
+
 ### 在本机Avocado模块中测试日志，stdout和stderr
+
+如果需要，可以直接从原生测试范围写入预期的stdout和stderr文件。区分以下实体是很重要的：
+
+* The test logs
+* The test expected stdout 期待的标准输出
+* The test expected stderr 期待的标准错误
+
+第一个是用于调试和输出信息的目的。另外，写入`self.log.warning`会导致测试被标记为dirty，当一切顺利时，测试以警告结束。这意味着测试通过了，但是在警告日志中描述了非相关的意外情况。
+
+您可以使用`avocado.test.log`类属性中的方法将一些日志记录到测试日志中。考虑这个例子：
+
+```python
+class output_test(Test):
+
+    def test(self):
+        self.log.info('This goes to the log and it is only informational')
+        self.log.warn('Oh, something unexpected, non-critical happened, '
+                      'but we can continue.')
+        self.log.error('Describe the error here and don\'t forget to raise '
+                       'an exception yourself. Writing to self.log.error '
+                       'won\'t do that for you.')
+        self.log.debug('Everybody look, I had a good lunch today...')
+```
+
+如果您需要直接写入测试stdout和stderr流，Avocado使两个预先配置的日志记录器可用于此目的，名为`avocado.test.stdout`和`avocado.test.stderr`。可以使用Python的标准日志API来对它们进行写入。例子：
+
+```python
+import logging
+
+class output_test(Test):
+
+    def test(self):
+        stdout = logging.getLogger('avocado.test.stdout')
+        stdout.info('Informational line that will go to stdout')
+        ...
+        stderr = logging.getLogger('avocado.test.stderr')
+        stderr.info('Informational line that will go to stderr')
+```
+Avocado将自动保存测试在STDUT中生成的任何东西到stdout文件中，在测试结果目录中找到。这同样适用于测试在STDRR上生成的任何东西，也就是说，它将被保存到同一个位置的stderr文件中。
+
+此外，当使用runner的输出记录特性，即` --output-check-record `参数值stdout, stderr或者all时，所有给这些记录器的所有内容都将保存到文`stdout.expected`和`stderr.expected`在测试数据目录中（与`job/test results`不同）。
+
 ### 设置测试超时
+
+有时您的测试套件/测试可能会被永久卡住，这可能会影响测试网格。您可以解释这种可能性，并为测试设置超时参数。测试超时可以通过测试参数来设置，如下所示。
+
+```
+sleep_length: 5
+timeout: 3
+```
+
+```
+$ avocado run sleeptest.py --mux-yaml /tmp/sleeptest-example.yaml
+JOB ID     : c78464bde9072a0b5601157989a99f0ba32a288e
+JOB LOG    : $HOME/avocado/job-results/job-2016-11-02T11.13-c78464b/job.log
+ (1/1) sleeptest.py:SleepTest.test: INTERRUPTED (3.04 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 1
+JOB TIME   : 3.14 s
+JOB HTML   : $HOME/avocado/job-results/job-2016-11-02T11.13-c78464b/html/results.html
+```
+
+```
+$ cat $HOME/avocado/job-results/job-2016-11-02T11.13-c78464b/job.log
+2016-11-02 11:13:01,133 job              L0384 INFO | Multiplex tree representation:
+2016-11-02 11:13:01,133 job              L0386 INFO |  \-- run
+2016-11-02 11:13:01,133 job              L0386 INFO |         -> sleep_length: 5
+2016-11-02 11:13:01,133 job              L0386 INFO |         -> timeout: 3
+2016-11-02 11:13:01,133 job              L0387 INFO |
+2016-11-02 11:13:01,134 job              L0391 INFO | Temporary dir: /var/tmp/avocado_PqDEyC
+2016-11-02 11:13:01,134 job              L0392 INFO |
+2016-11-02 11:13:01,134 job              L0399 INFO | Variant 1:    /run
+2016-11-02 11:13:01,134 job              L0402 INFO |
+2016-11-02 11:13:01,134 job              L0311 INFO | Job ID: c78464bde9072a0b5601157989a99f0ba32a288e
+2016-11-02 11:13:01,134 job              L0314 INFO |
+2016-11-02 11:13:01,345 sysinfo          L0107 DEBUG| Not logging /proc/pci (file does not exist)
+2016-11-02 11:13:01,351 sysinfo          L0105 DEBUG| Not logging /proc/slabinfo (lack of permissions)
+2016-11-02 11:13:01,355 sysinfo          L0107 DEBUG| Not logging /sys/kernel/debug/sched_features (file does not exist)
+2016-11-02 11:13:01,388 sysinfo          L0388 INFO | Commands configured by file: /etc/avocado/sysinfo/commands
+2016-11-02 11:13:01,388 sysinfo          L0399 INFO | Files configured by file: /etc/avocado/sysinfo/files
+2016-11-02 11:13:01,388 sysinfo          L0419 INFO | Profilers configured by file: /etc/avocado/sysinfo/profilers
+2016-11-02 11:13:01,388 sysinfo          L0427 INFO | Profiler disabled
+2016-11-02 11:13:01,394 multiplexer      L0166 DEBUG| PARAMS (key=timeout, path=*, default=None) => 3
+2016-11-02 11:13:01,395 test             L0216 INFO | START 1-sleeptest.py:SleepTest.test
+2016-11-02 11:13:01,396 multiplexer      L0166 DEBUG| PARAMS (key=sleep_length, path=*, default=1) => 5
+2016-11-02 11:13:01,396 sleeptest        L0022 DEBUG| Sleeping for 5.00 seconds
+2016-11-02 11:13:04,411 stacktrace       L0038 ERROR|
+2016-11-02 11:13:04,412 stacktrace       L0041 ERROR| Reproduced traceback from: $HOME/src/avocado/avocado/core/test.py:454
+2016-11-02 11:13:04,412 stacktrace       L0044 ERROR| Traceback (most recent call last):
+2016-11-02 11:13:04,413 stacktrace       L0044 ERROR|   File "/usr/share/doc/avocado/tests/sleeptest.py", line 23, in test
+2016-11-02 11:13:04,413 stacktrace       L0044 ERROR|     time.sleep(sleep_length)
+2016-11-02 11:13:04,413 stacktrace       L0044 ERROR|   File "$HOME/src/avocado/avocado/core/runner.py", line 293, in sigterm_handler
+2016-11-02 11:13:04,413 stacktrace       L0044 ERROR|     raise SystemExit("Test interrupted by SIGTERM")
+2016-11-02 11:13:04,414 stacktrace       L0044 ERROR| SystemExit: Test interrupted by SIGTERM
+2016-11-02 11:13:04,414 stacktrace       L0045 ERROR|
+2016-11-02 11:13:04,414 test             L0459 DEBUG| Local variables:
+2016-11-02 11:13:04,440 test             L0462 DEBUG|  -> self <class 'sleeptest.SleepTest'>: 1-sleeptest.py:SleepTest.test
+2016-11-02 11:13:04,440 test             L0462 DEBUG|  -> sleep_length <type 'int'>: 5
+2016-11-02 11:13:04,440 test             L0592 ERROR| ERROR 1-sleeptest.py:SleepTest.test -> TestError: SystemExit('Test interrupted by SIGTERM',): Test interrupted by SIGTERM
+```
+
+YAML文件定义了一个测试参数超时，它在运行程序结束之前，通过发送一个类`:signal.SIGTERM`到测试，raise错误`avocado.core.exceptions.TestTimeoutError`，从而提高了测试速度。
+
 ### 跳过测试
+
+要在Avocado中跳过测试，必须使用Avocado跳过装饰器中的一种：
+
+* `@avocado.skip(reason)`: 跳过测试.
+* `@avocado.skipIf(condition, reason)`: 跳过测试如果条件为`True`.
+* `@avocado.skipUnless(condition, reason)`: 跳过测试如果条件为 `False`
+
+这些装饰器可以同时使用`setup`方法和`Test*()`方法中使用。测试如下：
+
+```python
+import avocado
+
+class MyTest(avocado.Test):
+
+    @avocado.skipIf(1 == 1, 'Skipping on True condition.')
+    def test1(self):
+        pass
+
+    @avocado.skip("Don't want this test now.")
+    def test2(self):
+        pass
+
+    @avocado.skipUnless(1 == 1, 'Skipping on False condition.')
+    def test3(self):
+        pass
+```
+将产生以下结果：
+
+```python
+$ avocado run  test_skip_decorators.py
+JOB ID     : 59c815f6a42269daeaf1e5b93e52269fb8a78119
+JOB LOG    : $HOME/avocado/job-results/job-2017-02-03T17.41-59c815f/job.log
+ (1/3) test_skip_decorators.py:MyTest.test1: SKIP
+ (2/3) test_skip_decorators.py:MyTest.test2: SKIP
+ (3/3) test_skip_decorators.py:MyTest.test3: PASS (0.02 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 2 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.13 s
+JOB HTML   : $HOME/avocado/job-results/job-2017-02-03T17.41-59c815f/html/results.html
+```
+注意，由于提供的条件不是false，所以没有跳过Test3。
+
+使用跳过装饰器，实际上没有执行任何操作。我们将跳过`setup`方法、测试方法和`teardown`方法。
+
+>>> 任何skip装饰器都不能在teardown方法上使用,否则会出现错误,状态吗为`ERROR`
+
 ### 取消测试
+您可以在测试的任何阶段（`setup()`、测试方法或`teardown`）中调用`self.cancel()`取消测试。测试将以取消状态结束，并且不会使job以非0状态退出。例子：
+
+```python
+from avocado import Test
+from avocado import main
+
+from avocado.utils.process import run
+from avocado.utils.software_manager import SoftwareManager
+
+
+class CancelTest(Test):
+
+    """
+    Example tests that cancel the current test from inside the test.
+    """
+
+    def setUp(self):
+        sm = SoftwareManager()
+        self.pkgs = sm.list_all(software_components=False)
+
+    def test_iperf(self):
+        if 'iperf-2.0.8-6.fc25.x86_64' not in self.pkgs:
+            self.cancel('iperf is not installed or wrong version')
+        self.assertIn('pthreads',
+                      run('iperf -v', ignore_status=True).stderr)
+
+    def test_gcc(self):
+        if 'gcc-6.3.1-1.fc25.x86_64' not in self.pkgs:
+            self.cancel('gcc is not installed or wrong version')
+        self.assertIn('enable-gnu-indirect-function',
+                      run('gcc -v', ignore_status=True).stderr)
+
+if __name__ == "__main__":
+    main()
+```
+
+在缺少IPRF包但系统安装在正确版本中的系统中，结果将是：
+
+```
+JOB ID     : 39c1f120830b9769b42f5f70b6b7bad0b1b1f09f
+JOB LOG    : $HOME/avocado/job-results/job-2017-03-10T16.22-39c1f12/job.log
+ (1/2) /home/apahim/avocado/tests/test_cancel.py:CancelTest.test_iperf: CANCEL (1.15 s)
+ (2/2) /home/apahim/avocado/tests/test_cancel.py:CancelTest.test_gcc: PASS (1.13 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 1
+JOB TIME   : 2.38 s
+JOB HTML   : $HOME/avocado/job-results/job-2017-03-10T16.22-39c1f12/html/results.html
+```
+
+注意，使用`self.cancel()`将从该点取消其余的测试，但是`teardown()`仍将被执行。
+
+根据您所提到的结果格式，取消状态被映射到相应格式的有效状态。见下表：
+
+| Format | Corresponding Status |
+|--------|----------------------|
+| json   | cancel               |
+| xunit  | skipped              |
+| tap    | ok                   |
+| html   | CANCEL (warning)     |
+
 ### Docstring指令
+
+一些Avododo特性，通常只适用于仪器化测试，依赖于在测试类的DoScord中设置指令。DOXString指令由标记（`:avocado:`）组成，接着是自定义内容本身，如`:avocado: directive`。
+
+这与DoScript指令类似，例如`:param my_param: description`对于大多数Python开发人员来说，这应该不是一个意外。
+
+Avocado使用这些DOSCRON指令（而不是真正的Python代码）的原因是，在寻找测试时进行的检查不涉及代码的任何执行。
+
+有关DoScript格式的有效性的详细解释，请参阅我们关于DOSCSHIPE指令规则的章节。
+
+现在让我们继续使用一些DoScript指令示例。
+
+#### 显式启用或禁用测试
+
+如果您的测试是直接从`avocado.Test`继承的类中的一个方法，那么avocado会像预期的那样找到它。
+
+现在，可能需要更复杂的测试，使用更先进的Python特性，例如继承。对于那些不直接从`avocado.Test`中继承的测试，Avocado可能需要你的帮助，因为Avocado只使用静态分析来检查文件。
+
+例如，假设您定义了一个新的测试类，该类继承了avocado基础测试类，即`avocado.Test`，并将其放入`mylibrary.py`：
+
+```python
+from avocado import Test
+
+
+class MyOwnDerivedTest(Test):
+    def __init__(self, methodName='test', name=None, params=None,
+                 base_logdir=None, job=None, runner_queue=None):
+        super(MyOwnDerivedTest, self).__init__(methodName, name, params,
+                                               base_logdir, job,
+                                               runner_queue)
+        self.log('Derived class example')
+```
+然后在`mytest.py`中使用该派生类实现实际测试：
+
+```python
+import mylibrary
+
+
+class MyTest(mylibrary.MyOwnDerivedTest):
+
+    def test1(self):
+        self.log('Testing something important')
+
+    def test2(self):
+        self.log('Testing something even more important')
+```
+
+如果您试图列出该文件中的测试，这将是您将得到的：
+
+```
+scripts/avocado list mytest.py -V
+Type       Test      Tag(s)
+NOT_A_TEST mytest.py
+
+TEST TYPES SUMMARY
+==================
+ACCESS_DENIED: 0
+BROKEN_SYMLINK: 0
+EXTERNAL: 0
+FILTERED: 0
+INSTRUMENTED: 0
+MISSING: 0
+NOT_A_TEST: 1
+SIMPLE: 0
+VT: 0
+```
+
+你需要通过添加一个docstring指令来给Avocado一点帮助。docstring指令是：`:avocado: enable`。它告诉Avocado安全测试检测代码，将其视为Avocado试验，而不管检测代码对它的看法如何。让我们看看效果如何。添加docstring，如下所示：
+
+```python
+import mylibrary
+
+class MyTest(mylibrary.MyOwnDerivedTest):
+    """
+    :avocado: enable
+    """
+    def test1(self):
+        self.log('Testing something important')
+
+    def test2(self):
+        self.log('Testing something even more important')
+```
+再次尝试列出该文件中的测试：
+
+```
+scripts/avocado list mytest.py -V
+Type         Test                   Tag(s)
+INSTRUMENTED mytest.py:MyTest.test1
+INSTRUMENTED mytest.py:MyTest.test2
+
+TEST TYPES SUMMARY
+==================
+ACCESS_DENIED: 0
+BROKEN_SYMLINK: 0
+EXTERNAL: 0
+FILTERED: 0
+INSTRUMENTED: 2
+MISSING: 0
+NOT_A_TEST: 0
+SIMPLE: 0
+VT: 0
+```
+
+您还可以使用：`avocado:disable`的docstring指令，相反的工作方式：将被一个Avocado测试强制视为非avocado测试。
+
+`:avocado: disable`指令首先被Avocado评估,这意味着，如果`:avocado: disable` 和 `:avocado: enable`同时出现的话，测试将不会被列出。
+
+
+#### 递归发现测试
+
+除了`:avocado: disable` 和 `:avocado: enable`指令，Avocado还支持`:avocado: recursive`
+#### 分类测试
+
 ### Python unittest兼容性限制和警告
 
 ### 测试的环境变量
