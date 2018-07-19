@@ -828,7 +828,130 @@ if __name__ == "__main__":
 
 在很多情况下，你想变得简单：只需检查给定测试的输出是否匹配预期输出。为了帮助这个常见的用例，Avocado提供了`--output-check-record`选项
 
+如果启用这个选项，Avocado将会将测试生成的内容保存到标准（POSIX）流，即`STDOUT` 和 `STDERR`.根据所选的选项，您可能会记录不同的文件（我们称之为“参考文件”）：
 
+* `stdout`将生成一个名为`stdout.expected`的文件，该文件包含来自测试过程标准输出流（文件描述符1）的内容。
+* `stderr`将生成一个名为`stderr.expected`的文件，该文件包含来自测试过程标准错误流（文件描述符2）的内容。
+* `both`将生成一个名为`stdout.expected`和一个名为`stderr.expected`的文件
+* `combined`将生成一个名为`output.expected`的文件，其中包含测试过程标准输出和错误流（文件描述符1和2）的内容。
+* `none`将显式禁用测试生成的输出和生成内容的生成参考文件的所有记录
+
+参考文件将被记录在第一个（最特定的）测试数据文件夹（访问测试数据文件）中。让我们以测试`synctest.py`为例。检查Avocado源代码，您可以找到以下参考文件：
+
+```
+examples/tests/synctest.py.data/stderr.expected
+examples/tests/synctest.py.data/stdout.expected
+```
+
+在这两个文件中，只有stdout.expected有些内容
+
+```
+$ cat examples/tests/synctest.py.data/stdout.expected
+PAR : waiting
+PASS : sync interrupted
+```
+
+这意味着，在之前的测试执行期间，用`--output-check-record both`进行输出记录，并且仅在stdout流上生成内容：
+
+```
+$ avocado run --output-check-record both synctest.py
+JOB ID     : b6306504351b037fa304885c0baa923710f34f4a
+JOB LOG    : $JOB_RESULTS_DIR/job-2017-11-26T16.42-b630650/job.log
+ (1/1) examples/tests/synctest.py:SyncTest.test: PASS (2.03 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 2.26 s
+```
+在添加参考文件之后，检查过程是透明的，从某种意义上说，您不需要向test runner提供特殊标志。从这一点开始，在测试（一个带有参考文件记录的一个）完成运行之后，鳄梨将检查输出是否与参考文件内容匹配。如果它们不匹配，则测试将以失败状态结束。
+
+当引用文件存在时，你也可以对此测试运行程序禁用自动检查`--output-check=off`对此测试运行程序。
+
+这个过程还可以也可以在简单测试，也就是返回0 (PASSed) or != 0 (FAILed)的程序或或shell脚本工作的很好。让我们考虑例子：
+
+```
+$ cat output_record.sh
+#!/bin/bash
+echo "Hello, world!"
+```
+让我们记录下这个的输出：
+
+```
+$ scripts/avocado run output_record.sh --output-check-record all
+JOB ID    : 25c4244dda71d0570b7f849319cd71fe1722be8b
+JOB LOG   : $HOME/avocado/job-results/job-2014-09-25T20.49-25c4244/job.log
+ (1/1) output_record.sh: PASS (0.01 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.11 s
+```
+完成此操作后，您会注意到测试数据目录出现在我们的shell脚本的同一个级别，包含2个文件：
+
+```
+$ ls output_record.sh.data/
+stderr.expected  stdout.expected
+```
+让我们看看它们中的内容：
+
+```
+$ cat output_record.sh.data/stdout.expected
+Hello, world!
+$ cat output_record.sh.data/stderr.expected
+$
+```
+
+现在，每次测试运行时，程序都会自动对比记录的预期文件，我们不需要做任何其他操作。让我们看看如果把STDUT.期望的文件内容改为Hello,avocado 会发生什么呢？：
+
+```
+$ scripts/avocado run output_record.sh
+JOB ID    : f0521e524face93019d7cb99c5765aedd933cb2e
+JOB LOG   : $HOME/avocado/job-results/job-2014-09-25T20.52-f0521e5/job.log
+ (1/1) output_record.sh: FAIL (0.02 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.12 s
+```
+
+确认失败的原因：
+
+```
+$ cat $HOME/avocado/job-results/latest/job.log
+    2017-10-16 14:23:02,567 test             L0381 INFO | START 1-output_record.sh
+    2017-10-16 14:23:02,568 test             L0402 DEBUG| Test metadata:
+    2017-10-16 14:23:02,568 test             L0403 DEBUG|   filename: $HOME/output_record.sh
+    2017-10-16 14:23:02,596 process          L0389 INFO | Running '$HOME/output_record.sh'
+    2017-10-16 14:23:02,603 process          L0499 INFO | Command '$HOME/output_record.sh' finished with 0 after 0.00131011009216s
+    2017-10-16 14:23:02,602 process          L0479 DEBUG| [stdout] Hello, world!
+    2017-10-16 14:23:02,603 test             L1084 INFO | Exit status: 0
+    2017-10-16 14:23:02,604 test             L1085 INFO | Duration: 0.00131011009216
+    2017-10-16 14:23:02,604 test             L0274 DEBUG| DATA (filename=stdout.expected) => $HOME/output_record.sh.data/stdout.expected (found at file source dir)
+    2017-10-16 14:23:02,605 test             L0740 DEBUG| Stdout Diff:
+    2017-10-16 14:23:02,605 test             L0742 DEBUG| --- $HOME/output_record.sh.data/stdout.expected
+    2017-10-16 14:23:02,605 test             L0742 DEBUG| +++ $HOME/avocado/job-results/job-2017-10-16T14.23-8cba866/test-results/1-output_record.sh/stdout
+    2017-10-16 14:23:02,605 test             L0742 DEBUG| @@ -1 +1 @@
+    2017-10-16 14:23:02,605 test             L0742 DEBUG| -Hello, Avocado!
+    2017-10-16 14:23:02,605 test             L0742 DEBUG| +Hello, world!
+    2017-10-16 14:23:02,606 stacktrace       L0041 ERROR|
+    2017-10-16 14:23:02,606 stacktrace       L0044 ERROR| Reproduced traceback from: $HOME/git/avocado/avocado/core/test.py:872
+    2017-10-16 14:23:02,606 stacktrace       L0047 ERROR| Traceback (most recent call last):
+    2017-10-16 14:23:02,606 stacktrace       L0047 ERROR|   File "$HOME/git/avocado/avocado/core/test.py", line 743, in _check_reference_stdout
+    2017-10-16 14:23:02,606 stacktrace       L0047 ERROR|     self.fail('Actual test sdtout differs from expected one')
+    2017-10-16 14:23:02,606 stacktrace       L0047 ERROR|   File "$HOME//git/avocado/avocado/core/test.py", line 983, in fail
+    2017-10-16 14:23:02,607 stacktrace       L0047 ERROR|     raise exceptions.TestFail(message)
+    2017-10-16 14:23:02,607 stacktrace       L0047 ERROR| TestFail: Actual test sdtout differs from expected one
+    2017-10-16 14:23:02,607 stacktrace       L0048 ERROR|
+    2017-10-16 14:23:02,607 test             L0274 DEBUG| DATA (filename=stderr.expected) => $HOME//output_record.sh.data/stderr.expected (found at file source dir)
+    2017-10-16 14:23:02,608 test             L0965 ERROR| FAIL 1-output_record.sh -> TestFail: Actual test sdtout differs from expected one
+```
+
+正如预期的那样，测试失败了，因为我们改变了它的期望，因此记录了一个统一的差异。统一的差异也存在于文件`stdout.diff` 和 `stderr.diff`中，存在于测试结果目录中：
+
+```
+$ cat $HOME/avocado/job-results/latest/test-results/1-output_record.sh/stdout.diff
+--- $HOME/output_record.sh.data/stdout.expected
++++ $HOME/avocado/job-results/job-2017-10-16T14.23-8cba866/test-results/1-output_record.sh/stdout
+@@ -1 +1 @@
+-Hello, Avocado!
++Hello, world!
+```
+
+>>> 目前，stdout和stder都以文本方式存储。根据当前区域设置无法解码的数据将根据 https://docs.python.org/3/library/codecs.html#codecs.replace_errors 替换
 ### 在本机Avocado模块中测试日志，stdout和stderr
 
 如果需要，可以直接从原生测试范围写入预期的stdout和stderr文件。区分以下实体是很重要的：
