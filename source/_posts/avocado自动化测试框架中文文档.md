@@ -4,7 +4,7 @@ date: 2018-07-18 09:21:04
 tags:
 ---
 
-## 关于Avocado
+## [关于Avocado](https://avocado-framework.readthedocs.io/en/63.0/Introduction.html)
 
 Avocado是一套帮助自动化测试的工具和库。
 
@@ -22,7 +22,7 @@ Avocado是建立在Autotest积累的经验基础上，同时改善其弱点和�
 
 Avocado尽可能地遵守标准的Python测试技术。 使用Avocado API编写的测试来自unittest类，同时添加了适用于功能和性能测试的其他方法。 测试运行器旨在帮助人们在提供各种系统和日志记录工具的同时运行他们的测试，并且如果您需要更多功能，那么您可以逐步开始使用API功能。
 
-## 入门
+## [入门](https://avocado-framework.readthedocs.io/en/63.0/GetStartedGuide.html)
 
 那些喜欢视频介绍的人，请看看其他资源。 无论哪种方式，使用Avocado的第一步显然是安装它。
 
@@ -324,7 +324,7 @@ Avocado功能也可以中断测试。一个例子是使用GDB调试GDB调试功�
 
 对于自定义交互，还可以使用其他方法，如pdb或pydevd Avocado开发提示断点。请注意，不能在测试中使用STDIN（除非使用黑暗魔法）。
 
-## 书写Avocado测试
+## [书写Avocado测试](https://avocado-framework.readthedocs.io/en/63.0/WritingTests.html)
 
 我们将用Python编写Avocado测试，我们将继承avocado.Test。 这使得该测试成为所谓的仪器测试。
 
@@ -1347,6 +1347,35 @@ warn_location = all
 
 我们建议您查看一下中的示例测试`examples/tests`目录，这个目录包含一些样本以从中获取灵感。。 除了包含示例之外，该目录也被使用Avocado自测套件可对Avocado进行功能测试。
 也可以查看[https://github.com/avocado-framework-tests](https://github.com/avocado-framework-tests),它允许人们分享他们的基本系统测试,以从中获取灵感。
+
+## [结果格式化](https://avocado-framework.readthedocs.io/en/63.0/ResultFormats.html)
+## [配置](https://avocado-framework.readthedocs.io/en/63.0/Configuration.html)
+## [测试发现](https://avocado-framework.readthedocs.io/en/63.0/Loaders.html)
+## [日志系统](https://avocado-framework.readthedocs.io/en/63.0/LoggingSystem.html)
+## [sysinfo收集](https://avocado-framework.readthedocs.io/en/63.0/Sysinfo.html)
+## [实验参数](https://avocado-framework.readthedocs.io/en/63.0/TestParameters.html)
+## [工作重放](https://avocado-framework.readthedocs.io/en/63.0/Replay.html)
+## [工作差异](https://avocado-framework.readthedocs.io/en/63.0/Diff.html)
+## [Avocado子类](https://avocado-framework.readthedocs.io/en/63.0/SubclassingAvocado.html)
+## [使用GDB Debugging](https://avocado-framework.readthedocs.io/en/63.0/DebuggingWithGDB.html)
+## [远程运行测试](https://avocado-framework.readthedocs.io/en/63.0/RunningTestsRemotely.html)
+## [通过测试运行可执行包](https://avocado-framework.readthedocs.io/en/63.0/WrapProcess.html)
+## [插件系统](https://avocado-framework.readthedocs.io/en/63.0/Plugins.html)
+## [Utilities](https://avocado-framework.readthedocs.io/en/63.0/utils/index.html)
+## [可选插件](https://avocado-framework.readthedocs.io/en/63.0/optional_plugins/index.html)
+## [参考指南](https://avocado-framework.readthedocs.io/en/63.0/ReferenceGuide.html)
+## [贡献与社区指南](https://avocado-framework.readthedocs.io/en/63.0/ContributionGuide.html)
+## [Avocado发展要点](https://avocado-framework.readthedocs.io/en/63.0/DevelopmentTips.html)
+## [释放avocado](https://avocado-framework.readthedocs.io/en/63.0/MaintenanceGuide.html)
+## [其它资源](https://avocado-framework.readthedocs.io/en/63.0/OtherResources.html)
+## [测试API文档](https://avocado-framework.readthedocs.io/en/63.0/api/test/avocado.html)
+## [Utilities APIs](https://avocado-framework.readthedocs.io/en/63.0/api/utils/avocado.utils.html)
+## [内部（核心）API](https://avocado-framework.readthedocs.io/en/63.0/api/core/avocado.core.html)
+## [扩展（插件）API](https://avocado-framework.readthedocs.io/en/63.0/api/plugins/avocado.plugins.html)
+## [可选插件API](https://avocado-framework.readthedocs.io/en/63.0/api/optional-plugins/index.html)
+## [发行说明](https://avocado-framework.readthedocs.io/en/63.0/release_notes/index.html)
+## [征求意见稿(RFCS)](https://avocado-framework.readthedocs.io/en/63.0/rfcs/index.html)
+
 
 ## 原文档
 
