@@ -22,6 +22,8 @@ Avocado是建立在Autotest积累的经验基础上，同时改善其弱点和�
 
 Avocado尽可能地遵守标准的Python测试技术。 使用Avocado API编写的测试来自unittest类，同时添加了适用于功能和性能测试的其他方法。 测试运行器旨在帮助人们在提供各种系统和日志记录工具的同时运行他们的测试，并且如果您需要更多功能，那么您可以逐步开始使用API功能。
 
+<!-- more -->
+
 ## [入门](https://avocado-framework.readthedocs.io/en/63.0/GetStartedGuide.html)
 
 那些喜欢视频介绍的人，请看看其他资源。 无论哪种方式，使用Avocado的第一步显然是安装它。
@@ -861,7 +863,7 @@ JOB LOG    : $JOB_RESULTS_DIR/job-2017-11-26T16.42-b630650/job.log
 RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
 JOB TIME   : 2.26 s
 ```
-在添加参考文件之后，检查过程是透明的，从某种意义上说，您不需要向test runner提供特殊标志。从这一点开始，在测试（一个带有参考文件记录的一个）完成运行之后，鳄梨将检查输出是否与参考文件内容匹配。如果它们不匹配，则测试将以失败状态结束。
+在添加参考文件之后，检查过程是透明的，从某种意义上说，您不需要向test runner提供特殊标志。从这一点开始，在测试（一个带有参考文件记录的一个）完成运行之后，Avocado将检查输出是否与参考文件内容匹配。如果它们不匹配，则测试将以失败状态结束。
 
 当引用文件存在时，你也可以对此测试运行程序禁用自动检查`--output-check=off`对此测试运行程序。
 
@@ -1386,9 +1388,9 @@ JOB HTML  : $HOME/avocado/job-results/job-2014-08-12T15.57-5ffe4792/html/results
 
 #### xunit
 
-鳄梨默认的机器可读输出是xunit
+Avocado默认的机器可读输出是xunit
 
-xunit是以结构化形式包含测试结果的XML格式，并由其他测试自动化项目（Jenkins）使用。如果你想让鳄梨在runner的标准输出中生成xunit作为输出，可以简单地使用：
+xunit是以结构化形式包含测试结果的XML格式，并由其他测试自动化项目（Jenkins）使用。如果你想让Avocado在runner的标准输出中生成xunit作为输出，可以简单地使用：
 
 ```
 $ avocado run sleeptest.py failtest.py synctest.py --xunit -
@@ -1475,10 +1477,10 @@ $ avocado run sleeptest.py failtest.py synctest.py --json -
 }
 ```
 
-请记住，没有鳄梨JSON结果格式的文档标准。这意味着它可能会逐渐增加，以适应更新的鳄梨特性。适当的工作解析JSON构成的结果将不会破坏与应用程序的向后兼容性。
+请记住，没有AvocadoJSON结果格式的文档标准。这意味着它可能会逐渐增加，以适应更新的Avocado特性。适当的工作解析JSON构成的结果将不会破坏与应用程序的向后兼容性。
 
 #### TAP
-提供当前在V12版本的基本TAP（测试任何协议）结果。不像大多数现有鳄梨机器可读的输出，这一个是流线型（每个测试结果）：
+提供当前在V12版本的基本TAP（测试任何协议）结果。不像大多数现有Avocado机器可读的输出，这一个是流线型（每个测试结果）：
 
 ```
 $ avocado run sleeptest.py --tap -
@@ -1547,7 +1549,7 @@ Please set at least one of them to a file to avoid conflicts
 
 ### 退出码
 
-鳄梨退出代码试图代表在执行过程中可能发生的不同事情。这意味着退出代码作为一个单独的退出代码可以是和代码组合在一起。最后的退出代码可以取消绑定，这样用户就可以对工作发生的事情有一个很好的了解。
+Avocado退出代码试图代表在执行过程中可能发生的不同事情。这意味着退出代码作为一个单独的退出代码可以是和代码组合在一起。最后的退出代码可以取消绑定，这样用户就可以对工作发生的事情有一个很好的了解。
 
 示例如下:
 
@@ -1570,6 +1572,119 @@ f你的结果是一次生成的，基于完整的工作结果，你应该创建�
 你可以看看插件系统，了解更多关于如何编写插件的信息，这些插件将激活和执行新的结果格式。
 
 ## [配置](https://avocado-framework.readthedocs.io/en/63.0/Configuration.html)
+
+关于如何使用户喜欢使用他们的系统，Avocado有一些基于训练，合理的（我们希望）猜测的默认行为。
+
+当然，不同的人会有不同的需求和/或不喜欢我们的默认值，这就是为什么可以用配置系统来帮助这些案例的原因。
+
+Avocado配置文件格式是基于（非正式）INI文件的“规范”，它由Python的配置分析器实现。分段组成，格式简单明了，包含多个键和值。以一个基本的Avocado配置文件为例：
+
+```
+[datadir.paths]
+base_dir = /var/lib/avocado
+test_dir = /usr/share/doc/avocado/tests
+data_dir = /var/lib/avocado/data
+logs_dir = ~/avocado/job-results
+```
+
+datadir.paths部分包含多个键，它们都与测试工具使用的目录相关。`base_dir`是其他重要Avocado目录的基础目录，如日志、数据和测试目录。您还可以通过变量`test_dir`、`data_dir`和`logs_dir`选择设置其他重要目录。您可以通过简单编辑可用的配置文件来实现这一点。
+
+### 配置文件解析顺序
+
+Avocado开始解析它所称的系统范围配置文件`/etc/avocado/avocado.conf`，该文件被传输到全系统目录中的所有Avocado用户.然后，它将验证是否存在一个本地用户配置文件，该文件通常位于`~/.config/avocado/avocado.conf`.解析的顺序很重要，所以首先系统范围的文件被解析，然后用户配置文件最后被解析，这样用户可以随意重写值。还有另一个目录将被额外配置文件扫描，`/etc/avocado/conf.d`.该目录可能包含插件配置文件，以及系统管理员/Avocado开发人员可能判断需要放置的额外附加配置文件。
+
+请注意，对于基本目录，如果您选择了不能被Avocado正确使用的目录（一些目录需要读访问、其他读取和写入访问），Avocado将回落到一些默认值。因此，如果您的普通权限用户想将日志写入到` /root/avocado/logs`，Avocado将不能使用该目录，因为它无法将文件写入该位置。默认情况下，将选择一个新的位置`~/avocado/job-results`。
+
+本节中描述的文件顺序仅在Avocado安装在系统中才有效。对于使用Git仓库（通常是鳄梨开发人员）的鳄梨来说，并没有安装在系统中，请记住鳄梨将读取Git仓库中存在的配置文件，并且将忽略系统范围配置文件。执行`avocado config`会让你之道哪些config文件正在实际使用。
+
+### 插件配置文件
+
+插件也可以通过配置文件来配置。为了不干扰主鳄梨配置文件，如果希望的话，这些插件可以安装附加配置文件`/etc/avocado/conf.d/[pluginname].conf`这将在系统范围配置文件之后进行解析。用户也可以在本地配置文件级别上重写这些值。思考假想插件`salad`的配置：
+
+```
+[salad.core]
+base = ceasar
+dressing = ceasar
+```
+如果需要，可以通过在本地配置文件中简单地添加[salad.core]新部分来更改配置文件中的`dressing`，并在其中设置不同的值。
+
+### 解析顺序重述
+
+因此，文件解析顺序为：
+
+* `/etc/avocado/avocado.conf`
+* `/etc/avocado/conf.d/*.conf`
+* `~/.config/avocado/avocado.conf`
+
+按此顺序，意味着您在本地配置文件上设置的内容可以覆盖系统范围文件中定义的内容。
+
+>>> 请注意，如果鳄梨从Git 仓库中运行，这些文件将被忽略，并被配置树文件取代。这通常只会影响开发鳄梨的人，如果你有疑问，`avocado config`会告诉你确切的文件在任何特定的情况下都被使用。
+
+### 测试中使用的值的优先顺序
+
+由于可以使用配置系统来改变测试中使用的行为和值（例如，对测试程序的思考路径），所以我们建立了以下变量优先级顺序（从最小优先级到大多数）：
+
+* 缺省值（来自库或测试代码）
+* 全局配置文件
+* 本地（用户）配置文件
+* 命令行开关
+* 试验参数
+
+因此，最不重要的值来自库或测试代码默认值，一直到测试参数系统。
+
+### 配置插件
+
+一个配置插件被提供给希望快速查看在鳄梨配置的所有部分中定义的用户，在所有文件以正确的解析顺序解析之后。例子：
+
+```
+$ avocado config
+Config files read (in order):
+    /etc/avocado/avocado.conf
+    $HOME/.config/avocado/avocado.conf
+
+    Section.Key     Value
+    runner.base_dir /var/lib/avocado
+    runner.test_dir /usr/share/doc/avocado/tests
+    runner.data_dir /var/lib/avocado/data
+    runner.logs_dir ~/avocado/job-results
+```
+
+该命令还显示了解析配置文件的顺序，让您更好地了解正在发生的事情。关键术语在`git config --list output`得到启发。
+### 鳄梨数据目录
+
+当运行测试时，我们往往希望：
+
+* 定位测试
+* 将日志写入给定位置
+* 抓取对测试有用的文件，例如ISO文件或VM磁盘映像
+
+鳄梨拥有一个专门用于寻找这些路径的模块，以避免人们在以前的测试框架中不得不做的繁琐的路径操作。
+
+如果要列出所有有关测试的目录，可以使用鳄梨`avocado config --datadir`命令列出这些目录。执行它会给你一个类似于下面看到的输出：
+
+```
+$ avocado config --datadir
+Config files read (in order):
+    /etc/avocado/avocado.conf
+    $HOME/.config/avocado/avocado.conf
+
+Avocado replaces config dirs that can't be accessed
+with sensible defaults. Please edit your local config
+file to customize values
+
+Avocado Data Directories:
+    base  $HOME/avocado
+    tests $HOME/Code/avocado/examples/tests
+    data  $HOME/avocado/data
+    logs  $HOME/avocado/job-results
+```
+
+注意，虽然鳄梨将尽最大努力使用配置文件中提供的配置值，如果它不能将值写入所提供的位置，它将回落到（我们希望）合理的默认值，并且我们在命令的输出中通知用户。相关的API文档和每个数据目录的含义都是在`avocado.core.data_dir`中，所以强烈建议您查看一下。
+
+您可以通过将它们设置在鳄梨配置文件中来设置首选数据文件夹。这里的重要数据文件夹的唯一例外是鳄梨TMP DIR，用来放置测试所使用的临时文件。该目录将在正常情况下`/var/tmp/avocado_XXXXX`，（XXXXX实际上是一个随机字符串）安全地创建在`/var/tmp/`上，除非用户有$TMPDIR环境变量集，因为这是UNIX程序中惯用的。
+
+文档的下一部分说明了如何查看和设置修改Avocado实用工具和插件的行为的配置值。
+
 ## [测试发现](https://avocado-framework.readthedocs.io/en/63.0/Loaders.html)
 ## [日志系统](https://avocado-framework.readthedocs.io/en/63.0/LoggingSystem.html)
 ## [sysinfo收集](https://avocado-framework.readthedocs.io/en/63.0/Sysinfo.html)
