@@ -1886,7 +1886,7 @@ Avocado附带一个sysinfo插件，它自动收集每个系统的系统信息，
 
 job执行后，您可以在`$RESULTS/test-results/$TEST/sysinfo`的`$RESULTS/sysinfo`找到所收集的信息,它被分类为前、后和概要文件夹，文件名是安全地执行命令或文件名。当您启用HTML结果插件时,还可以在HTML结果中看到sysinfo。
 
->>> 如果使用源代码的鳄梨，则需要手动放置`commands/files/profilers`到`/etc/avocado/sysinfo`或者调整`$AVOCADO_SRC/etc/avocado/avocado.conf`的路径
+>>> 如果使用源代码的Avocado，则需要手动放置`commands/files/profilers`到`/etc/avocado/sysinfo`或者调整`$AVOCADO_SRC/etc/avocado/avocado.conf`的路径
 
 >>> 译者: 使用pip 安装的配置文件在诸如`/usr/lib/python3.6/site-packages/avocado/etc/avocado/avocado.conf`路径中,真实路径可以使用`avocado config`命令进行查询
 
@@ -1894,7 +1894,7 @@ job执行后，您可以在`$RESULTS/test-results/$TEST/sysinfo`的`$RESULTS/sys
 ## [工作重演](https://avocado-framework.readthedocs.io/en/63.0/Replay.html)
 
 为了使用相同的数据再现给定的job，我们可以使用`--replay`选项执行`run`命令,从原始job中得知hash id以实现重演.hash id可以只是一部分，只要所提供的部分对应于原始job id，并且它也足够独特。或者，代替jo
-b id，您可以使用最新的字符串，鳄梨将重演最新执行的job。
+b id，您可以使用最新的字符串，Avocado将重演最新执行的job。
 
 让我们来看一个例子。首先，用两个测试引用运行一个简单的job：
 
@@ -1970,7 +1970,7 @@ JOB HTML   : $HOME/avocado/job-results/job-2016-01-12T00.38-2e1dc41/html/results
 
 在重演用`--failfast on`选项执行的job时，可以使用`--failfast off`禁用`failfast` 选项重演job。
 
-为了能够重演job，鳄梨将job数据记录在同一个job结果目录中，在一个名为`replay`的子目录内。如果给定的job有一个非默认路径来记录日志，当重播时间到来时，我们需要通知日志在何处。见下面的例子：
+为了能够重演job，Avocado将job数据记录在同一个job结果目录中，在一个名为`replay`的子目录内。如果给定的job有一个非默认路径来记录日志，当重播时间到来时，我们需要通知日志在何处。见下面的例子：
 
 ```
 $ avocado run /bin/true --job-results-dir /tmp/avocado_results/
@@ -2002,7 +2002,7 @@ JOB HTML   : $HOME/avocado/job-results/job-2016-01-11T22.15-19c76ab/html/results
 ```
 ## [工作差异](https://avocado-framework.readthedocs.io/en/63.0/Diff.html)
 
-鳄梨diff插件允许用户轻松地比较两个给定的job的几个方面。基本用法是：
+Avocadodiff插件允许用户轻松地比较两个给定的job的几个方面。基本用法是：
 
 ```
 $ avocado diff 7025aaba 384b949c
@@ -2088,11 +2088,173 @@ $ diff -u /var/tmp/avocado_diff_7025aab_zQJjJh.txt /var/tmp/avocado_diff_384b949
 ...
 ```
 
-
-## [Avocado子类](https://avocado-framework.readthedocs.io/en/63.0/SubclassingAvocado.html)
-## [使用GDB Debugging](https://avocado-framework.readthedocs.io/en/63.0/DebuggingWithGDB.html)
 ## [远程运行测试](https://avocado-framework.readthedocs.io/en/63.0/RunningTestsRemotely.html)
+## [Avocado子类](https://avocado-framework.readthedocs.io/en/63.0/SubclassingAvocado.html)
+
+使用子类来扩展Avocado测试类的特性是非常直接的，它可能构成了一个非常有用的办法，在项目存储库中托管一些共享/递归代码。
+
+在本文档中，我们提出了一个项目组织，允许您创建和安装所谓的子框架。
+
+让我们举个例子，一个叫做Apricot Framework的项目。这里是提议的文件系统结构：
+
+```
+~/git/apricot (master)$ tree
+.
+├── apricot
+│   ├── __init__.py
+│   └── test.py
+├── README.rst
+├── setup.py
+├── tests
+│   └── test_example.py
+└── VERSION
+```
+在SETUP.PY中，将Avocado框架包指定为依赖项是很重要的：
+
+```
+from setuptools import setup, find_packages
+
+setup(name='apricot',
+      description='Apricot - Avocado SubFramwork',
+      version=open("VERSION", "r").read().strip(),
+      author='Apricot Developers',
+      author_email='apricot-devel@example.com',
+      packages=['apricot'],
+      include_package_data=True,
+      install_requires=['avocado-framework']
+      )
+```
+
+VERSION: 你希望的文件版本
+
+```
+1.0
+```
+`apricot/__init__.py`:使您的新测试类在您的模块根目录中可用：
+
+```
+__all__ = ['ApricotTest']
+
+from apricot.test import ApricotTest
+```
+
+`apricot/test.py`,在这里，您将基本上扩展Avocado测试类与您自己的方法和程序：
+
+```python
+from avocado import Test
+
+class ApricotTest(Test):
+    def setUp(self):
+        self.log.info("setUp() executed from Apricot")
+
+    def some_useful_method(self):
+        return True
+```
+
+`tests/test_example.py`:这就是测试的样子。这里最重要的一项是使用`:avocado: recursive`递归，所以Avocado测试加载器将能够识别您的测试类作为Avocado测试类：
+
+```python
+from apricot import ApricotTest
+
+class MyTest(ApricotTest):
+    """
+    :avocado: recursive
+    """
+    def test(self):
+        self.assertTrue(self.some_useful_method())
+```
+
+非侵入的安装你的模块:
+
+```
+~/git/apricot (master)$ python setup.py develop --user
+running develop
+running egg_info
+writing requirements to apricot.egg-info/requires.txt
+writing apricot.egg-info/PKG-INFO
+writing top-level names to apricot.egg-info/top_level.txt
+writing dependency_links to apricot.egg-info/dependency_links.txt
+reading manifest file 'apricot.egg-info/SOURCES.txt'
+writing manifest file 'apricot.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/apahim/.local/lib/python2.7/site-packages/apricot.egg-link (link to .)
+apricot 1.0 is already the active version in easy-install.pth
+
+Installed /home/apahim/git/apricot
+Processing dependencies for apricot==1.0
+Searching for avocado-framework==55.0
+Best match: avocado-framework 55.0
+avocado-framework 55.0 is already the active version in easy-install.pth
+
+Using /home/apahim/git/avocado
+Searching for stevedore==1.25.0
+Best match: stevedore 1.25.0
+Adding stevedore 1.25.0 to easy-install.pth file
+
+Using /usr/lib/python2.7/site-packages
+Searching for six==1.10.0
+Best match: six 1.10.0
+Adding six 1.10.0 to easy-install.pth file
+
+Using /usr/lib/python2.7/site-packages
+Searching for pbr==3.1.1
+Best match: pbr 3.1.1
+Adding pbr 3.1.1 to easy-install.pth file
+Installing pbr script to /home/apahim/.local/bin
+
+Using /usr/lib/python2.7/site-packages
+Finished processing dependencies for apricot==1.0
+```
+
+然后运行你的测试
+
+```
+~/git/apricot$ avocado run tests/test_example.py
+JOB ID     : 02c663eb77e0ae6ce67462a398da6972791793bf
+JOB LOG    : $HOME/avocado/job-results/job-2017-11-16T12.44-02c663e/job.log
+ (1/1) tests/test_example.py:MyTest.test: PASS (0.03 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.95 s
+JOB HTML   : $HOME/avocado/job-results/job-2017-11-16T12.44-02c663e/results.html
+```
+
+
+## [使用GDB Debugging](https://avocado-framework.readthedocs.io/en/63.0/DebuggingWithGDB.html)
+
 ## [通过测试运行可执行包](https://avocado-framework.readthedocs.io/en/63.0/WrapProcess.html)
+
+Avocado允许可执行文件的测试以易懂的方式运行。用户指定一个脚本（"包装器"），用于运行由测试调用的实际程序。
+
+如果测试脚本被正确实现，它不应该干扰测试行为。也就是说，包装器应该避免改变原始可执行文件的返回状态、标准输出和标准错误消息。
+
+用户可以指定要封装哪个程序（具有类似shell的Glob），或者如果省略了，将应用于测试调用的所有程序的全局包装器。
+
+这个特性是作为插件实现的，它将--wraper添加到Avocado运行命令中。
+
+作为包装器以易懂的方式运行strace的示例：
+
+```
+#!/bin/sh
+exec strace -ff -o $AVOCADO_TEST_LOGDIR/strace.log -- $@
+```
+
+让所有程序由test.py开始，用`~/bin/my-wrapper.sh`包装：
+
+```
+$ scripts/avocado run --wrapper ~/bin/my-wrapper.sh tests/test.py
+```
+
+只有我的`my-binary`文件用`~/bin/my-wrapper.sh`包装
+
+```
+$ scripts/avocado run --wrapper ~/bin/my-wrapper.sh:*my-binary tests/test.py
+```
+
+### 警示
+
+* 不可能用GDB（–gdb-run-bin）进行调试，同时使用包装器（-包装器）。这两个选项是互斥的。
+* 只能设置一个（全局）包装器。如果需要两个包装器中存在的功能，则必须将这些组合成单个包装器脚本。
+* 只有使用`avocado.utils.process`（以及使用它的其他API模块:avocado.utils.build）运行的可执行文件）才会受到此特性的影响。
 ## [插件系统](https://avocado-framework.readthedocs.io/en/63.0/Plugins.html)
 ## [Utilities](https://avocado-framework.readthedocs.io/en/63.0/utils/index.html)
 ## [可选插件](https://avocado-framework.readthedocs.io/en/63.0/optional_plugins/index.html)
@@ -2104,8 +2266,32 @@ $ diff -u /var/tmp/avocado_diff_7025aab_zQJjJh.txt /var/tmp/avocado_diff_384b949
 ## [测试API文档](https://avocado-framework.readthedocs.io/en/63.0/api/test/avocado.html)
 ## [Utilities APIs](https://avocado-framework.readthedocs.io/en/63.0/api/utils/avocado.utils.html)
 ## [内部（核心）API](https://avocado-framework.readthedocs.io/en/63.0/api/core/avocado.core.html)
+
+可能是Avocado 骇客感兴趣的内部API.
+
+>>> 译者:此节未翻译,更多内容请查看原文
+
 ## [扩展（插件）API](https://avocado-framework.readthedocs.io/en/63.0/api/plugins/avocado.plugins.html)
+
+扩展API可能是插件编写者兴趣所在.
+
+>>> 译者:此节未翻译,更多内容请查看原文
+
 ## [可选插件API](https://avocado-framework.readthedocs.io/en/63.0/api/optional-plugins/index.html)
+
+下面的页面记录了可选的Avocado插件的私有API。
+
+* [avocado_glib package](avocado_glib/avocado_glib.html)
+* [avocado_runner_docker package](avocado_runner_docker/avocado_runner_docker.html)
+* [avocado_resultsdb package](avocado_resultsdb/avocado_resultsdb.html)
+* [avocado_varianter_yaml_to_mux package](avocado_varianter_yaml_to_mux/avocado_varianter_yaml_to_mux.html)
+* [avocado_result_upload package](avocado_result_upload/avocado_result_upload.html)
+* [avocado_runner_remote package](avocado_runner_remote/avocado_runner_remote.html)
+* [avocado_robot package](avocado_robot/avocado_robot.html)
+* [avocado_loader_yaml package](avocado_loader_yaml/avocado_loader_yaml.html)
+* [avocado_varianter_pict package](avocado_varianter_pict/avocado_varianter_pict.html)
+* [avocado_golang package](avocado_golang/avocado_golang.html)
+
 ## [发行说明](https://avocado-framework.readthedocs.io/en/63.0/release_notes/index.html)
 ## [征求意见稿(RFCS)](https://avocado-framework.readthedocs.io/en/63.0/rfcs/index.html)
 
