@@ -1884,12 +1884,211 @@ Avocado附带一个sysinfo插件，它自动收集每个系统的系统信息，
 
 如果需要的话，也可以在命令行上通过`--sysinfo on|off`来启用/禁用sysinfo。
 
-作业执行后，您可以在`$RESULTS/test-results/$TEST/sysinfo`的`$RESULTS/sysinfo`找到所收集的信息,它被分类为前、后和概要文件夹，文件名是安全地执行命令或文件名。当您启用HTML结果插件时,还可以在HTML结果中看到sysinfo。
+job执行后，您可以在`$RESULTS/test-results/$TEST/sysinfo`的`$RESULTS/sysinfo`找到所收集的信息,它被分类为前、后和概要文件夹，文件名是安全地执行命令或文件名。当您启用HTML结果插件时,还可以在HTML结果中看到sysinfo。
 
 >>> 如果使用源代码的鳄梨，则需要手动放置`commands/files/profilers`到`/etc/avocado/sysinfo`或者调整`$AVOCADO_SRC/etc/avocado/avocado.conf`的路径
-## [实验参数](https://avocado-framework.readthedocs.io/en/63.0/TestParameters.html)
-## [工作重放](https://avocado-framework.readthedocs.io/en/63.0/Replay.html)
+
+>>> 译者: 使用pip 安装的配置文件在诸如`/usr/lib/python3.6/site-packages/avocado/etc/avocado/avocado.conf`路径中,真实路径可以使用`avocado config`命令进行查询
+
+## [测试参数](https://avocado-framework.readthedocs.io/en/63.0/TestParameters.html)
+## [工作重演](https://avocado-framework.readthedocs.io/en/63.0/Replay.html)
+
+为了使用相同的数据再现给定的job，我们可以使用`--replay`选项执行`run`命令,从原始job中得知hash id以实现重演.hash id可以只是一部分，只要所提供的部分对应于原始job id，并且它也足够独特。或者，代替jo
+b id，您可以使用最新的字符串，鳄梨将重演最新执行的job。
+
+让我们来看一个例子。首先，用两个测试引用运行一个简单的job：
+
+```
+$ avocado run /bin/true /bin/false
+JOB ID     : 825b860b0c2f6ec48953c638432e3e323f8d7cad
+JOB LOG    : $HOME/avocado/job-results/job-2016-01-11T16.14-825b860/job.log
+ (1/2) /bin/true: PASS (0.01 s)
+ (2/2) /bin/false: FAIL (0.01 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.12 s
+JOB HTML   : $HOME/avocado/job-results/job-2016-01-11T16.14-825b860/html/results.html
+```
+现在我们可以重新运行这个job：
+
+```
+$ avocado run --replay 825b86
+JOB ID     : 55a0d10132c02b8cc87deb2b480bfd8abbd956c3
+SRC JOB ID : 825b860b0c2f6ec48953c638432e3e323f8d7cad
+JOB LOG    : $HOME/avocado/job-results/job-2016-01-11T16.18-55a0d10/job.log
+ (1/2) /bin/true: PASS (0.01 s)
+ (2/2) /bin/false: FAIL (0.01 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.11 s
+JOB HTML   : $HOME/avocado/job-results/job-2016-01-11T16.18-55a0d10/html/results.html
+```
+
+回放功能将检索原始测试引用、变量和配置。让我们看看另一个例子，现在使用mux YAML文件：
+
+```
+$ avocado run /bin/true /bin/false --mux-yaml mux-environment.yaml
+JOB ID     : bd6aa3b852d4290637b5e771b371537541043d1d
+JOB LOG    : $HOME/avocado/job-results/job-2016-01-11T21.56-bd6aa3b/job.log
+ (1/4) /bin/true;first-c49a: PASS (0.01 s)
+ (2/4) /bin/true;second-f05f: PASS (0.01 s)
+ (3/4) /bin/false;first-c49a: FAIL (0.04 s)
+ (4/4) /bin/false;second-f05f: FAIL (0.04 s)
+RESULTS    : PASS 2 | ERROR 0 | FAIL 2 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.19 s
+JOB HTML   : $HOME/avocado/job-results/job-2016-01-11T21.56-bd6aa3b/html/results.html
+```
+
+我们可以使用`$ avocado run --replay latest`重新运行job,或者忽略变量运行job
+
+```
+$ avocado run --replay bd6aa3b --replay-ignore variants
+Ignoring variants from source job with --replay-ignore.
+JOB ID     : d5a46186ee0fb4645e3f7758814003d76c980bf9
+SRC JOB ID : bd6aa3b852d4290637b5e771b371537541043d1d
+JOB LOG    : $HOME/avocado/job-results/job-2016-01-11T22.01-d5a4618/job.log
+ (1/2) /bin/true: PASS (0.01 s)
+ (2/2) /bin/false: FAIL (0.01 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.12 s
+JOB HTML   : $HOME/avocado/job-results/job-2016-01-11T22.01-d5a4618/html/results.html
+```
+此外，可以只重演给定结果的变体，使用`--replay-test-status`选项,查看以下示例:
+
+```
+$ avocado run --replay bd6aa3b --replay-test-status FAIL
+JOB ID     : 2e1dc41af6ed64895f3bb45e3820c5cc62a9b6eb
+SRC JOB ID : bd6aa3b852d4290637b5e771b371537541043d1d
+JOB LOG    : $HOME/avocado/job-results/job-2016-01-12T00.38-2e1dc41/job.log
+ (1/4) /bin/true;first-c49a: SKIP
+ (2/4) /bin/true;second-f05f: SKIP
+ (3/4) /bin/false;first-c49a: FAIL (0.03 s)
+ (4/4) /bin/false;second-f05f: FAIL (0.04 s)
+RESULTS    : PASS 0 | ERROR 0 | FAIL 24 | SKIP 24 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.29 s
+JOB HTML   : $HOME/avocado/job-results/job-2016-01-12T00.38-2e1dc41/html/results.html
+```
+其中一个特殊的例子是`--replay-test-status INTERRUPTED`或`--replay-resume`，它跳过所执行的测试，只执行取消测试后取消或未执行的测试。这个特性即使在系统崩溃等严重中断时也可以工作。
+
+在重演用`--failfast on`选项执行的job时，可以使用`--failfast off`禁用`failfast` 选项重演job。
+
+为了能够重演job，鳄梨将job数据记录在同一个job结果目录中，在一个名为`replay`的子目录内。如果给定的job有一个非默认路径来记录日志，当重播时间到来时，我们需要通知日志在何处。见下面的例子：
+
+```
+$ avocado run /bin/true --job-results-dir /tmp/avocado_results/
+JOB ID     : f1b1c870ad892eac6064a5332f1bbe38cda0aaf3
+JOB LOG    : /tmp/avocado_results/job-2016-01-11T22.10-f1b1c87/job.log
+ (1/1) /bin/true: PASS (0.01 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.11 s
+JOB HTML   : /tmp/avocado_results/job-2016-01-11T22.10-f1b1c87/html/results.html
+```
+试图重演这项job，但失败了:
+
+```
+$ avocado run --replay f1b1
+can't find job results directory in '$HOME/avocado/job-results'
+```
+
+在这种情况下，我们必须通知工作结果目录位于何处：
+
+```
+$ avocado run --replay f1b1 --replay-data-dir /tmp/avocado_results
+JOB ID     : 19c76abb29f29fe410a9a3f4f4b66387570edffa
+SRC JOB ID : f1b1c870ad892eac6064a5332f1bbe38cda0aaf3
+JOB LOG    : $HOME/avocado/job-results/job-2016-01-11T22.15-19c76ab/job.log
+ (1/1) /bin/true: PASS (0.01 s)
+RESULTS    : PASS 1 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 0.11 s
+JOB HTML   : $HOME/avocado/job-results/job-2016-01-11T22.15-19c76ab/html/results.html
+```
 ## [工作差异](https://avocado-framework.readthedocs.io/en/63.0/Diff.html)
+
+鳄梨diff插件允许用户轻松地比较两个给定的job的几个方面。基本用法是：
+
+```
+$ avocado diff 7025aaba 384b949c
+--- 7025aaba9c2ab8b4bba2e33b64db3824810bb5df
++++ 384b949c991b8ab324ce67c9d9ba761fd07672ff
+@@ -1,15 +1,15 @@
+
+ COMMAND LINE
+-/usr/bin/avocado run sleeptest.py
++/usr/bin/avocado run passtest.py
+
+ TOTAL TIME
+-1.00 s
++0.00 s
+
+ TEST RESULTS
+-1-sleeptest.py:SleepTest.test: PASS
++1-passtest.py:PassTest.test: PASS
+
+ ...
+ ```
+Avocado Diff可以比较和创建一个统一的差异：
+
+* 命令行
+* 工作时间
+* 变量和参数
+* 测试结果
+* 配置
+* sysinfo前后
+
+结果中只包含不同内容的部分。还可以使用`--diff-filter`启用/禁用这些部分。请参阅`avocado diff --help`更多信息。
+
+可以通过jobs ID、结果目录或`latest`来标识job。示例：
+
+```
+$ avocado diff ~/avocado/job-results/job-2016-08-03T15.56-4b3cb5b/ latest
+--- 4b3cb5bbbb2435c91c7b557eebc09997d4a0f544
++++ 57e5bbb3991718b216d787848171b446f60b3262
+@@ -1,9 +1,9 @@
+
+ COMMAND LINE
+-/usr/bin/avocado run perfmon.py
++/usr/bin/avocado run passtest.py
+
+ TOTAL TIME
+-11.91 s
++0.00 s
+
+ TEST RESULTS
+-1-test.py:Perfmon.test: FAIL
++1-examples/tests/passtest.py:PassTest.test: PASS
+```
+与统一的差异，你也可以生成HTML（选项 `--html`）差异文件，并可选地，打开它在您的首选浏览器（选项 `--open browser`）：
+
+```
+$ avocado diff 7025aaba 384b949c --html /tmp/myjobdiff.html
+/tmp/myjobdiff.html
+```
+
+如果在没有`--html`的情况下使用 `--open browser`，我们将创建一个临时HTML文件。
+
+对于那些希望使用自定义DIFF工具而不是Avocado DIFF工具的人，我们提供了`--create-reports`选项，因此我们创建了两个具有相关内容的临时文件。打印文件名，用户可以复制/粘贴到自定义DIFF工具命令行：
+
+```
+$ avocado diff 7025aaba 384b949c --create-reports
+/var/tmp/avocado_diff_7025aab_zQJjJh.txt /var/tmp/avocado_diff_384b949_AcWq02.txt
+
+$ diff -u /var/tmp/avocado_diff_7025aab_zQJjJh.txt /var/tmp/avocado_diff_384b949_AcWq02.txt
+--- /var/tmp/avocado_diff_7025aab_zQJjJh.txt    2016-08-10 21:48:43.547776715 +0200
++++ /var/tmp/avocado_diff_384b949_AcWq02.txt    2016-08-10 21:48:43.547776715 +0200
+@@ -1,250 +1,19 @@
+
+ COMMAND LINE
+ ============
+-/usr/bin/avocado run sleeptest.py
++/usr/bin/avocado run passtest.py
+
+ TOTAL TIME
+ ==========
+-1.00 s
++0.00 s
+
+...
+```
+
+
 ## [Avocado子类](https://avocado-framework.readthedocs.io/en/63.0/SubclassingAvocado.html)
 ## [使用GDB Debugging](https://avocado-framework.readthedocs.io/en/63.0/DebuggingWithGDB.html)
 ## [远程运行测试](https://avocado-framework.readthedocs.io/en/63.0/RunningTestsRemotely.html)
