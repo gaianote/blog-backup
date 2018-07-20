@@ -242,7 +242,7 @@ JOB HTML   : $HOME/avocado/job-results/job-2017-05-17T10.54-85927c1/html/results
 ```
 #### 使用外部运行器运行测试
 
-在大多数软件项目中使用有机增长的测试套件是很常见的。这些通常包括一个定制的，非常具体的测试运行器，它知道如何查找和运行自己的测试
+在大多数软件项目中使用逐渐增加的测试套件是很常见的。这些通常包括一个定制的，非常具体的测试运行器，它知道如何查找和运行自己的测试
 
 尽管如此，由于各种原因，在Avocado中运行这些测试可能是一个好主意，包括能够以不同的人机和机器可读格式获得结果，收集系统信息以及这些测试（Avocado的sysinfo功能）等等
 
@@ -1349,6 +1349,226 @@ warn_location = all
 也可以查看[https://github.com/avocado-framework-tests](https://github.com/avocado-framework-tests),它允许人们分享他们的基本系统测试,以从中获取灵感。
 
 ## [结果格式化](https://avocado-framework.readthedocs.io/en/63.0/ResultFormats.html)
+
+测试脚本必须提供各种方法来清晰地将结果传达给相关方，无论是人还是机器。
+
+>>> 有几个可选的结果插件，你可以在Result Plugins中找到它们。
+
+### 人类可读结果
+
+Avocado有两种不同的结果格式，供人类使用：
+
+* 默认UI，它在命令行上显示基于文本UI的实况测试执行结果。
+* HTML报告，它是在测试任务完成后生成的。
+
+Avocado的命令行界面
+
+定期运行Avocado将以生动的方式呈现测试结果，也就是说，工作和测试结果不断更新：
+
+```
+$ avocado run sleeptest.py failtest.py synctest.py
+JOB ID    : 5ffe479262ea9025f2e4e84c4e92055b5c79bdc9
+JOB LOG   : $HOME/avocado/job-results/job-2014-08-12T15.57-5ffe4792/job.log
+ (1/3) sleeptest.py:SleepTest.test: PASS (1.01 s)
+ (2/3) failtest.py:FailTest.test: FAIL (0.00 s)
+ (3/3) synctest.py:SyncTest.test: PASS (1.98 s)
+RESULTS    : PASS 1 | ERROR 1 | FAIL 1 | SKIP 0 | WARN 0 | INTERRUPT 0
+JOB TIME   : 3.27 s
+JOB HTML  : $HOME/avocado/job-results/job-2014-08-12T15.57-5ffe4792/html/results.html
+```
+最重要的是要记住，程序不需要分析人的输出来确定测试工作运行的情况。
+
+### 机器可读结果
+
+另一种类型的结果是那些被其他应用程序解析的结果。测试社区中存在若干标准，Avocado在理论上可以支持几乎所有的结果标准。
+
+非常好，Avocado支持一些机器可读的结果。它们总是生成并存储在结果目录中。$Type文件，但是您也可以要求不同的位置。
+
+#### xunit
+
+鳄梨默认的机器可读输出是xunit
+
+xunit是以结构化形式包含测试结果的XML格式，并由其他测试自动化项目（Jenkins）使用。如果你想让鳄梨在runner的标准输出中生成xunit作为输出，可以简单地使用：
+
+```
+$ avocado run sleeptest.py failtest.py synctest.py --xunit -
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="avocado" tests="3" errors="0" failures="1" skipped="0" time="3.5769162178" timestamp="2016-05-04 14:46:52.803365">
+        <testcase classname="SleepTest" name="1-sleeptest.py:SleepTest.test" time="1.00204920769"/>
+        <testcase classname="FailTest" name="2-failtest.py:FailTest.test" time="0.00120401382446">
+                <failure type="TestFail" message="This test is supposed to fail"><![CDATA[Traceback (most recent call last):
+  File "/home/medic/Work/Projekty/avocado/avocado/avocado/core/test.py", line 490, in _run_avocado
+    raise test_exception
+TestFail: This test is supposed to fail
+]]></failure>
+                <system-out><![CDATA[14:46:53 ERROR|
+14:46:53 ERROR| Reproduced traceback from: /home/medic/Work/Projekty/avocado/avocado/avocado/core/test.py:435
+14:46:53 ERROR| Traceback (most recent call last):
+14:46:53 ERROR|   File "/home/medic/Work/Projekty/avocado/avocado/examples/tests/failtest.py", line 17, in test
+14:46:53 ERROR|     self.fail('This test is supposed to fail')
+14:46:53 ERROR|   File "/home/medic/Work/Projekty/avocado/avocado/avocado/core/test.py", line 585, in fail
+14:46:53 ERROR|     raise exceptions.TestFail(message)
+14:46:53 ERROR| TestFail: This test is supposed to fail
+14:46:53 ERROR|
+14:46:53 ERROR| FAIL 2-failtest.py:FailTest.test -> TestFail: This test is supposed to fail
+14:46:53 INFO |
+]]></system-out>
+        </testcase>
+        <testcase classname="SyncTest" name="3-synctest.py:SyncTest.test" time="2.57366299629"/>
+</testsuite>
+```
+最后的`-`是xunit的选项，表示xunit应该转到标准输出
+
+如果你的测试产生了很长的输出，你可以用 –xunit-max-test-log-chars 来限制嵌入字符的数量。如果日志文件中的输出较长，则只从最大值开始附加到最大测试日志字符，另一半从内容的结尾开始。
+
+#### JSON
+
+JSON是一种广泛使用的数据交换格式，JSON avocado插件使用类似于xunit使用方式
+
+```
+$ avocado run sleeptest.py failtest.py synctest.py --json -
+{
+    "cancel": 0,
+    "debuglog": "/home/cleber/avocado/job-results/job-2016-08-09T13.53-10715c4/job.log",
+    "errors": 0,
+    "failures": 1,
+    "job_id": "10715c4645d2d2b57889d7a4317fcd01451b600e",
+    "pass": 2,
+    "skip": 0,
+    "tests": [
+        {
+            "end": 1470761623.176954,
+            "fail_reason": "None",
+            "logdir": "/home/cleber/avocado/job-results/job-2016-08-09T13.53-10715c4/test-results/1-sleeptest.py:SleepTest.test",
+            "logfile": "/home/cleber/avocado/job-results/job-2016-08-09T13.53-10715c4/test-results/1-sleeptest.py:SleepTest.test/debug.log",
+            "start": 1470761622.174918,
+            "status": "PASS",
+            "id": "1-sleeptest.py:SleepTest.test",
+            "time": 1.0020360946655273,
+            "whiteboard": ""
+        },
+        {
+            "end": 1470761623.193472,
+            "fail_reason": "This test is supposed to fail",
+            "logdir": "/home/cleber/avocado/job-results/job-2016-08-09T13.53-10715c4/test-results/2-failtest.py:FailTest.test",
+            "logfile": "/home/cleber/avocado/job-results/job-2016-08-09T13.53-10715c4/test-results/2-failtest.py:FailTest.test/debug.log",
+            "start": 1470761623.192334,
+            "status": "FAIL",
+            "id": "2-failtest.py:FailTest.test",
+            "time": 0.0011379718780517578,
+            "whiteboard": ""
+        },
+        {
+            "end": 1470761625.656061,
+            "fail_reason": "None",
+            "logdir": "/home/cleber/avocado/job-results/job-2016-08-09T13.53-10715c4/test-results/3-synctest.py:SyncTest.test",
+            "logfile": "/home/cleber/avocado/job-results/job-2016-08-09T13.53-10715c4/test-results/3-synctest.py:SyncTest.test/debug.log",
+            "start": 1470761623.208165,
+            "status": "PASS",
+            "id": "3-synctest.py:SyncTest.test",
+            "time": 2.4478960037231445,
+            "whiteboard": ""
+        }
+    ],
+    "time": 3.4510700702667236,
+    "total": 3
+}
+```
+
+请记住，没有鳄梨JSON结果格式的文档标准。这意味着它可能会逐渐增加，以适应更新的鳄梨特性。适当的工作解析JSON构成的结果将不会破坏与应用程序的向后兼容性。
+
+#### TAP
+提供当前在V12版本的基本TAP（测试任何协议）结果。不像大多数现有鳄梨机器可读的输出，这一个是流线型（每个测试结果）：
+
+```
+$ avocado run sleeptest.py --tap -
+1..1
+# debug.log of sleeptest.py:SleepTest.test:
+#   12:04:38 DEBUG| PARAMS (key=sleep_length, path=*, default=1) => 1
+#   12:04:38 DEBUG| Sleeping for 1.00 seconds
+#   12:04:39 INFO | PASS 1-sleeptest.py:SleepTest.test
+#   12:04:39 INFO |
+ok 1 sleeptest.py:SleepTest.test
+```
+
+>>> 译者 debug.log不会显示在控制台,需要到debug.log中去查看
+>>> cat ~/avocado/job-results/latest/test-results/1-sleeptest.py_SleepTest.test/debug.log
+
+#### Silent result
+此结果禁用所有stdout日志记录（同时将错误消息打印到stderr）。然后，可以使用返回代码来了解结果：
+
+```
+$ avocado --silent run failtest.py
+$ echo $?
+1
+```
+在实践中，这通常会被脚本用来运行avocado，并检查其结果：
+
+```
+#!/bin/bash
+...
+$ avocado --silent run /path/to/my/test.py
+if [ $? == 0 ]; then
+   echo "great success!"
+elif
+   ...
+```
+关于退出代码中的退出代码的更多细节部分。
+
+### 一次获得多个结果
+
+只要只有一个使用标准输出，就可以同时拥有多个结果格式。例如，使用xunit结果输出到stdout并将json结果输出到文件：
+
+```
+$ avocado run sleeptest.py synctest.py --xunit - --json /tmp/result.json
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="avocado" tests="2" errors="0" failures="0" skipped="0" time="3.64848303795" timestamp="2016-05-04 17:26:05.645665">
+        <testcase classname="SleepTest" name="1-sleeptest.py:SleepTest.test" time="1.00270605087"/>
+        <testcase classname="SyncTest" name="2-synctest.py:SyncTest.test" time="2.64577698708"/>
+</testsuite>
+
+$ cat /tmp/result.json
+{
+     "debuglog": "/home/cleber/avocado/job-results/job-2016-08-09T13.55-1a94ad6/job.log",
+     "errors": 0,
+     ...
+}
+```
+
+但是如果没有传递给程序的 -json 项，您将无法做到这一点：
+
+```
+$ avocado run sleeptest.py synctest.py --xunit - --json -
+Options --json --xunit are trying to use stdout simultaneously
+Please set at least one of them to a file to avoid conflicts
+```
+
+这基本上是你需要遵循唯一,理智的的规则。
+
+### 退出码
+
+鳄梨退出代码试图代表在执行过程中可能发生的不同事情。这意味着退出代码作为一个单独的退出代码可以是和代码组合在一起。最后的退出代码可以取消绑定，这样用户就可以对工作发生的事情有一个很好的了解。
+
+示例如下:
+
+* `AVOCADO_ALL_OK (0)`
+* `AVOCADO_TESTS_FAIL (1)`
+* `AVOCADO_JOB_FAIL (2)`
+* `AVOCADO_FAIL (4)`
+* `AVOCADO_JOB_INTERRUPTED (8)`
+
+举个例子,如果一个作业以退出代码9结束，它意味着我们至少有一个测试失败了，而且我们在某个时候有一个作业中断，这可能是由于作业超时或CTRL+C造成的。
+
+### 实现其他结果格式
+
+如果你想实现一种新的机器或人类可读的输出格式，你可以参考`avocado.plugins.xunit`并使用它作为起点。
+
+f你的结果是一次生成的，基于完整的工作结果，你应该创建一个继承`avocado.core.plugin_interfaces.Result`接口的新类。并实现`avocado.core.plugin_interfaces.Result.render() `方法。
+
+但是，如果您的结果实现是在测试之前/期间/测试之后输出信息，就要看一看`avocado.core.plugin_interfaces.ResultEvents`. 它将要求您实现对作业和测试执行中的每个定义的事件执行操作（写入文件/流）的方法。
+
+你可以看看插件系统，了解更多关于如何编写插件的信息，这些插件将激活和执行新的结果格式。
+
 ## [配置](https://avocado-framework.readthedocs.io/en/63.0/Configuration.html)
 ## [测试发现](https://avocado-framework.readthedocs.io/en/63.0/Loaders.html)
 ## [日志系统](https://avocado-framework.readthedocs.io/en/63.0/LoggingSystem.html)
