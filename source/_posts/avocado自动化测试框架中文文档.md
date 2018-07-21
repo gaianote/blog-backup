@@ -1891,6 +1891,353 @@ job执行后，您可以在`$RESULTS/test-results/$TEST/sysinfo`的`$RESULTS/sys
 >>> 译者: 使用pip 安装的配置文件在诸如`/usr/lib/python3.6/site-packages/avocado/etc/avocado/avocado.conf`路径中,真实路径可以使用`avocado config`命令进行查询
 
 ## [测试参数](https://avocado-framework.readthedocs.io/en/63.0/TestParameters.html)
+
+本节详细介绍了哪些测试参数以及整个变体机制在Avocado中的工作原理。 如果您对基础知识感兴趣，请参阅Yaml_to_mux插件中的示例访问测试参数或实际视图。
+
+鳄梨允许将参数传递给测试，这有效地导致每个测试的几种不同变体。 这些参数在（test）的`self.params`中可用，并且是`avocado.core.varianter.AvocadoParams`类型。
+
+`self.params`的数据由`avocado.core.varianter.Varianter`提供，它会询问所有已注册的插件的变体，或者在没有定义变体时使用默认值。
+
+params处理如何工作的总体情况是：
+
+```
+    +-----------+
+    |           |  // Test使用variant来生成AvocadoParams
+    |   Test    |
+    |           |
+    +-----^-----+
+          |  // 将单个变量传递给测试
+          |
+    +-----------+
+    |  Runner   |  // 迭代测试和变量来运行所有
+    +-----^-----+  // 由“--execution-order”指定的所需组合
+          |
+          |
++-------------------+     提供变量      +-----------------------+
+|                   |<-----------------|                       |
+| Varianter API     |                  | Varianter plugins API |
+|                   |----------------->|                       |
++-------------------+    更新默认值     +-----------------------+
+          ^                                ^
+          |                                |
+          |  // 默认参数注入                |  // 调用所有插件
++--------------------------------------+   |  // 轮流
+| +--------------+ +-----------------+ |   |
+| | avocado-virt | | other providers | |   |
+| +--------------+ +-----------------+ |   |
++--------------------------------------+   |
+                                           |
+              +----------------------------+-----+
+              |                                  |
+              |                                  |
+              v                                  v
+    +--------------------+           +-------------------------+
+    | yaml_to_mux plugin |           | Other variant plugin(s) |
+    +-----^--------------+           +-------------------------+
+          |
+          |  // yaml 被解析为 MuxTree,
+          |  // multiplexed and yields variants
+    +---------------------------------+
+    | +------------+ +--------------+ |
+    | | --mux-yaml | | --mux-inject | |
+    | +------------+ +--------------+ |
+    +---------------------------------+
+```
+
+我们来介绍一下基本的关键词。
+
+### TreeNode
+
+`avocado.core.tree.TreeNode`
+
+节点对象是否允许使用parent-> multiple_children关系创建树状结构并存储参数。 它还可以报告它的环境，这是从根到此节点收集的一组参数。 这用于测试，而不是传递完整树，只传递叶节点，它们的环境代表树的所有值
+
+### AvocadoParams
+
+`avocado.core.varianter.AvocadoParams`
+
+在每个（instrumented）Avocado测试中存在params的“数据库”。 它是在avocado.core.test.Test的__init__期间,从变量中生成的。 它接受TreeNode对象列表; 测试名称`avocado.core.test.TestID`（用于记录目的）和默认路径列表（参数路径）。
+
+在测试中，它允许使用以下方法查询数据：
+
+```
+self.params.get($name, $path=None, $default=None)
+```
+
+* name - 参数名称（键）
+* path - 查找此参数的位置（未指定时使用mux-path）
+* default - 找不到param时返回的内容(默认值)
+
+每个变量都定义了一个层次结构，该层次结构会被保留，因此AvocadoParams跟随它以返回最合适的值或在出错时引发异常。
+
+### 参数路径 Parameter Paths
+
+由于测试参数在树中组织，因此可以在多个位置具有相同的变量。 当它们从同一个TreeNode生成时，它不是问题，但是当它们是不同的值时，无法区分应报告的内容。 一种方法是在询问参数时使用特定路径，但有时候，通常在组合上游和下游变体时，我们希望首先得到我们的值，然后在找不到它们时回退到上游值。
+
+例如，假设我们在`/upstream/sleeptest`中有上游值，并且在`/downstream/sleeptest`中也有值。 如果我们使用路径"*"询问值，则会引发异常，因为程序无法区分是否需要来自"/downstream"或"/upstream"的值。 我们可以将参数路径设置为["/downstream/*"，"/upstream/*"]以使所有相对调用（以*开头的路径）首先查看/downstream中的节点，如果未找到则查看/ upstream。
+
+### Variant
+
+Variant是由Varianter_s生成的一组参数，并由测试运行员作为“params”参数传递给测试。 最简单的变体是`None`，它仍然会生成一个空的`AvocadoParams`。 此外，变量也可以是元组（列表，路径）或只是带有参数的`avocado.core.tree.TreeNode`列表。
+
+### Dumping/Loading Variants
+
+根据参数的数量，生成变量可能非常耗费计算量。 由于变量是作为作业执行的一部分生成的，因此计算密集型任务将由被测系统执行，从而导致这些系统上可能不需要的CPU负载。
+
+为了避免这种情况，您可以获取由变量计算生成的生成的JSON序列化变体文件，并将该文件加载到将执行作业的系统上。
+
+有两种方法可以获取JSON序列化变体文件：
+
+* 使用avocado variants命令的--json-variants-dump选项：
+
+```
+$ avocado variants --mux-yaml examples/yaml_to_mux/hw/hw.yaml --json-variants-dump variants.json
+...
+
+$ file variants.json
+variants.json: ASCII text, with very long lines, with no line terminators
+```
+* 执行Avocado作业后获取自动生成的JSON序列化变体文件：
+
+```
+ avocado run passtest.py --mux-yaml examples/yaml_to_mux/hw/hw.yaml
+...
+
+$ file $HOME/avocado/job-results/latest/jobdata/variants.json
+$HOME/avocado/job-results/latest/jobdata/variants.json: ASCII text, with very long lines, with no line terminators
+```
+
+获得variants.json文件后，可以将其加载到将要执行作业的系统上：
+
+```
+$ avocado run passtest.py --json-variants-load variants.json
+JOB ID     : f2022736b5b89d7f4cf62353d3fb4d7e3a06f075
+JOB LOG    : $HOME/avocado/job-results/job-2018-02-09T14.39-f202273/job.log
+ (1/6) passtest.py:PassTest.test;intel-scsi-56d0: PASS (0.04 s)
+ (2/6) passtest.py:PassTest.test;intel-virtio-3d4e: PASS (0.02 s)
+ (3/6) passtest.py:PassTest.test;amd-scsi-fa43: PASS (0.02 s)
+ (4/6) passtest.py:PassTest.test;amd-virtio-a59a: PASS (0.02 s)
+ (5/6) passtest.py:PassTest.test;arm-scsi-1c14: PASS (0.03 s)
+ (6/6) passtest.py:PassTest.test;arm-virtio-5ce1: PASS (0.04 s)
+RESULTS    : PASS 6 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | CANCEL 0
+JOB TIME   : 0.51 s
+JOB HTML   : $HOME/avocado/job-results/job-2018-02-09T14.39-f202273/results.html
+```
+
+
+### Varianter
+
+`avocado.core.varianter.Varianter`是一个内部对象，用于与Avocado中的变体机制进行交互。 它的生命周期是两个阶段的复合。 首先，它允许核心/插件注入默认值，然后对其进行解析，只允许查询值，变体数量等。
+
+avocado run passtest.py -m example.yaml的示例工作流程是：
+
+```
+avocado run passtest.py -m example.yaml
+  |
+  + parser.finish -> Varianter.__init__  // dispatcher initializes all plugins
+  |
+  + $PLUGIN -> args.default_avocado_params.add_default_param  // could be used to insert default values
+  |
+  + job.run_tests -> Varianter.is_parsed
+  |
+  + job.run_tests -> Varianter.parse
+  |                     // processes default params
+  |                     // initializes the plugins
+  |                     // updates the default values
+  |
+  + job._log_variants -> Varianter.to_str  // prints the human readable representation to log
+  |
+  + runner.run_suite -> Varianter.get_number_of_tests
+  |
+  + runner._iter_variants -> Varianter.itertests  // Yields variants
+```
+为了允许强制更新Varianter，它支持ignore_new_data，可用于忽略新数据。 Job Replay使用它将当前运行的Varianter替换为从重放作业加载的Varianter。 ignore_new_data的工作流程可能如下所示：
+
+```
+avocado run --replay latest -m example.yaml
+  |
+  + $PLUGIN -> args.default_avocado_params.add_default_param  // could be used to insert default values
+  |
+  + replay.run -> Varianter.is_parsed
+  |
+  + replay.run  // Varianter object is replaced with the replay job's one
+  |             // Varianter.ignore_new_data is set
+  |
+  + $PLUGIN -> args.default_avocado_params.add_default_param  // is ignored as new data are not accepted
+  |
+  + job.run_tests -> Varianter.is_parsed
+  |
+  + job._log_variants -> Varianter.to_str
+  |
+  + runner.run_suite -> Varianter.get_number_of_tests
+  |
+  + runner._iter_variants -> Varianter.itertests
+```
+Varianter本身只能使用Default params生成一个空变量，但是它会调用所有Varianter插件，如果它们中的任何一个报告变量，它会生成它们而不是默认变量。
+
+### Default params
+
+Default params是一种在Varianter或Varianter插件中指定默认值的机制。 它们的目的通常是定义依赖于系统的值，这些值不应影响测试的结果。 一个例子是qemu二进制位置，它可能因主机而异，但最终它们应该导致qemu在测试中可执行。 因此，Default params不会影响测试的variant-id（至少不会影响官方的Varianter插件）。
+
+可以通过从args获取default_avocado_params并使用以下命令从plugin/core设置这些参数：
+
+```
+default_avocado_params.add_default_parma(self, name, key, value, path=None)
+```
+
+name - 注入数据的插件的名称（尚未用于任何内容，但我们计划允许白/黑列表）
+key - 参数的名称
+value - 参数的值
+path - 此参数的位置。 当路径尚不存在时，它是由TreeNode创建的。
+
+### Varianter plugins
+
+`avocado.core.plugin_interfaces.Varianter` 一个插件接口，可用于构建自定义插件，Varianter使用它来获取测试变体。 有关灵感，请参阅avocado_varianter_yaml_to_mux.YamlToMux这是一个可选的varianter插件。 有关此插件的详细信息，请访问Yaml_to_mux插件。
+
+### Multiplexer
+
+avocado.core.mux
+
+Multiplexer或简称Mux是一个抽象概念，它是树状参数结构背后的基本思想，支持产生所有可能的变体。 在创建自定义插件时可以使用基本构建块的核心实现。 在avocado_varianter_yaml_to_mux中有一个使用此概念的插件的演示版本，它添加了一个解析器，然后使用此多路复用器概念来定义一个avocado插件，以便从yaml（或json）文件生成变体。
+
+#### Multiplexer concept
+
+如前所述，这是构建块的内核实现，旨在基于定义了Multiplex域的树来编写Varianter插件。 可用的块是：
+
+* MuxTree - 表示树的一部分并处理多路复用的对象，这意味着从树状对象生成所有可能的变体。
+* MuxPlugin - 构建Varianter插件的基类
+* MuxTreeNode - 从TreeNode继承并添加对控制标志（MuxTreeNode.ctrl）和Multiplex域（MuxTreeNode.multiplex）的支持。
+
+### Multiplex domains
+
+带变量的默认AvocadoParams树可能如下所示：
+
+```
+Multiplex tree representation:
+ ┣━━ paths
+ ┃     → tmp: /var/tmp
+ ┃     → qemu: /usr/libexec/qemu-kvm
+ ┗━━ environ
+     → debug: False
+```
+
+多路复用器想要产生类似的结构，但也能够定义不仅一个变体，而是定义所有可能的组合，然后将切片报告为变体。 我们使用术语Multiplex域来定义此节点的子节点不仅仅是不同的路径，但它们是不同的值，我们一次只需要一个。 在表示中，我们使用双线来可视地区分正常关系和多路关系。 让我们稍微修改一下我们的例子：
+
+```
+Multiplex tree representation:
+ ┣━━ paths
+ ┃     → tmp: /var/tmp
+ ┃     → qemu: /usr/libexec/qemu-kvm
+ ┗━━ environ
+      ╠══ production
+      ║     → debug: False
+      ╚══ debug
+            → debug: True
+```
+
+不同之处在于environ现在是一个多重节点，它的子节点将一次产生一个，产生两个变体：
+
+```
+Variant 1:
+ ┣━━ paths
+ ┃     → tmp: /var/tmp
+ ┃     → qemu: /usr/libexec/qemu-kvm
+ ┗━━ environ
+      ┗━━ production
+            → debug: False
+Variant 2:
+ ┣━━ paths
+ ┃     → tmp: /var/tmp
+ ┃     → qemu: /usr/libexec/qemu-kvm
+ ┗━━ environ
+      ┗━━ debug
+            → debug: False
+```
+请注意，Multiplex仅与直接子项有关，因此变体中的叶数可能不同：
+
+```
+Multiplex tree representation:
+ ┣━━ paths
+ ┃     → tmp: /var/tmp
+ ┃     → qemu: /usr/libexec/qemu-kvm
+ ┗━━ environ
+      ╠══ production
+      ║     → debug: False
+      ╚══ debug
+           ┣━━ system
+           ┃     → debug: False
+           ┗━━ program
+                 → debug: True
+```
+使用/ paths和/ paths，/ environ / debug / system和/ environ / debug / program生成一个带/ paths和/ environ / production的变体和其他变体。
+
+如前所述，权力不是产生一种变体，而是定义具有所有可能变体的巨大情景。 通过使用具有多重域的树结构，您可以避免从Jenkin的稀疏矩阵作业中可能知道的大多数丑陋过滤器。 为了比较，我们来看看鳄梨中的相同例子：
+
+```
+Multiplex tree representation:
+ ┗━━ os
+      ┣━━ distro
+      ┃    ┗━━ redhat
+      ┃         ╠══ fedora
+      ┃         ║    ┣━━ version
+      ┃         ║    ┃    ╠══ 20
+      ┃         ║    ┃    ╚══ 21
+      ┃         ║    ┗━━ flavor
+      ┃         ║         ╠══ workstation
+      ┃         ║         ╚══ cloud
+      ┃         ╚══ rhel
+      ┃              ╠══ 5
+      ┃              ╚══ 6
+      ┗━━ arch
+           ╠══ i386
+           ╚══ x86_64
+```
+
+```
+Variant 1:    /os/distro/redhat/fedora/version/20, /os/distro/redhat/fedora/flavor/workstation, /os/arch/i386
+Variant 2:    /os/distro/redhat/fedora/version/20, /os/distro/redhat/fedora/flavor/workstation, /os/arch/x86_64
+Variant 3:    /os/distro/redhat/fedora/version/20, /os/distro/redhat/fedora/flavor/cloud, /os/arch/i386
+Variant 4:    /os/distro/redhat/fedora/version/20, /os/distro/redhat/fedora/flavor/cloud, /os/arch/x86_64
+Variant 5:    /os/distro/redhat/fedora/version/21, /os/distro/redhat/fedora/flavor/workstation, /os/arch/i386
+Variant 6:    /os/distro/redhat/fedora/version/21, /os/distro/redhat/fedora/flavor/workstation, /os/arch/x86_64
+Variant 7:    /os/distro/redhat/fedora/version/21, /os/distro/redhat/fedora/flavor/cloud, /os/arch/i386
+Variant 8:    /os/distro/redhat/fedora/version/21, /os/distro/redhat/fedora/flavor/cloud, /os/arch/x86_64
+Variant 9:    /os/distro/redhat/rhel/5, /os/arch/i386
+Variant 10:    /os/distro/redhat/rhel/5, /os/arch/x86_64
+Variant 11:    /os/distro/redhat/rhel/6, /os/arch/i386
+Variant 12:    /os/distro/redhat/rhel/6, /os/arch/x86_64
+```
+与Jenkin的稀疏矩阵对比：
+
+```
+os_version = fedora20 fedora21 rhel5 rhel6
+os_flavor = none workstation cloud
+arch = i386 x86_64
+
+filter = ((os_version == "rhel5").implies(os_flavor == "none") &&
+          (os_version == "rhel6").implies(os_flavor == "none")) &&
+         !(os_version == "fedora20" && os_flavor == "none") &&
+         !(os_version == "fedora21" && os_flavor == "none")
+```
+
+这仍然是一个相对简单的例子，但它随着内部依赖性而急剧增长。
+
+### MuxPlugin
+
+定义avocado.core.plugin_interfaces.Varianter所需的完整接口。 插件编写者应该从这个MuxPlugin继承，然后从Varianter继承并调用：
+
+`self.initialize_mux(root, paths, debug)`
+
+* root - 是params树的根（类似TreeNode节点的复合体）
+* paths - 是测试中使用的所有变体的参数路径
+* debug - 是否使用调试模式（要求传递的树是TreeNodeDebug类节点的复合，它存储变量/值/环境的来源作为列表用途的值，并且__NOT__用于测试执行。
+
+### MuxTree
+
+这是努力工作的核心功能。 当在搜索叶节点时到达另一个multiplex时，它遍历树并记住所有叶节点或使用MuxTree列表。
+
+当它被要求报告变体时，它组合了每个记忆项目的一个变体（叶子节点始终保持不变，但MuxTree圈出它的值），递归地产生不同多重域的所有可能变体。
+
 ## [工作重演](https://avocado-framework.readthedocs.io/en/63.0/Replay.html)
 
 为了使用相同的数据再现给定的job，我们可以使用`--replay`选项执行`run`命令,从原始job中得知hash id以实现重演.hash id可以只是一部分，只要所提供的部分对应于原始job id，并且它也足够独特。或者，代替jo
@@ -2264,6 +2611,196 @@ $ scripts/avocado run --wrapper ~/bin/my-wrapper.sh:*my-binary tests/test.py
 ## [释放avocado](https://avocado-framework.readthedocs.io/en/63.0/MaintenanceGuide.html)
 ## [其它资源](https://avocado-framework.readthedocs.io/en/63.0/OtherResources.html)
 ## [测试API文档](https://avocado-framework.readthedocs.io/en/63.0/api/test/avocado.html)
+
+这是用户在编写测试时应该使用并且可以依赖的最小API集。
+
+### `avocado.main`
+
+`avocado.core.job.TestProgram`的别名
+
+### `class avocado.Test(methodName='test', name=None, params=None, base_logdir=None, job=None, runner_queue=None)`
+
+测试类的基本实现。
+
+你将继承自己编写自己的测试。 通常，您需要在自己的测试中实现`setUp()`，`test*()`和`tearDown()`方法。
+
+初始化测试。
+
+参数：
+* `methodName` - 要运行的主方法的名称。 为了与原始unittest类兼容，您不应该设置它。
+* `name(avocado.core.test.TestID)` - 测试名称的漂亮名称。 对于使用鳄梨API编写的常规测试，不应设置此项。 这保留给内部Avocado使用，例如将随机可执行文件作为测试运行时。
+* `base_logdir` - 测试日志应该到达的目录。 如果提供None，则使用`avocado.data_dir.create_job_logs_dir()`。
+* `job` - 此测试所属的工作。
+
+#### `basedir`
+此测试（由文件支持）所在的目录
+
+#### `cache_dirs`
+返回配置文件中设置的缓存目录列表。
+
+#### `cancel(message=None)`
+
+取消测试。
+
+期望从测试方法调用此方法，而不是其他任何地方，因为根据定义，我们只能取消当前正在执行的测试。 如果在测试方法之外调用此方法，avocado会将测试状态标记为ERROR，并指示您在错误消息中修复测试。
+
+参数：message（str） - 将记录在日志中的可选消息
+
+#### `error(message=None)`
+
+使当前正在运行的测试状态为错误。
+
+调用此方法后，将终止测试并将其状态设置为ERROR。
+
+参数：message（str） - 将记录在日志中的可选消息
+
+#### fail(message=None)
+
+#### fail_class
+#### fail_reason
+#### fetch_asset（name，asset_hash = None，algorithm = None，locations = None，expire = None）
+
+方法o调用utils.asset以获取和支持散列检查，缓存和多个位置的资产文件。
+
+参数：
+    name - 资产文件名或URL
+    asset_hash - 资产哈希（可选）
+    algorithm - 哈希算法（可选，默认为avocado.utils.asset.DEFAULT_HASH_ALGORITHM）
+    locations - 可从中获取资产的URL列表（可选）
+    expire  - 资产到期的时间
+raise： EnvironmentError - 无法获取资产时
+EnvironmentError - 无法获取资产时
+返回：资产文件本地路径
+
+#### filename
+返回包含当前测试的文件（路径）的名称
+
+#### get_state()
+序列化表示测试状态的选定属性
+
+返回：包含相关测试状态数据的字典
+返回类型：字典
+
+#### job
+这项测试与之相关的工作
+
+#### log
+增强的测试日志
+
+#### logdir
+此测试的日志目录的路径
+
+#### logfile
+此测试的主要debug.log文件的路径
+
+#### name
+返回测试ID，其中包含测试名称
+
+返回类型：TestID
+#### outputdir
+可用于测试编写者将文件附加到结果的目录
+
+#### params
+此测试的参数（AvocadoParam实例）
+
+#### report_state()
+将当前测试状态发送到测试运行程序进程
+
+#### run_avocado()
+包装run方法，用于在鳄梨跑步者内执行。
+
+结果：未使用的参数，与unittest.TestCase的兼容性。
+#### runner_queue
+测试和测试运行器之间的通信通道
+
+#### running
+此测试目前是否正在执行
+
+#### set_runner_queue(runner_queue)
+覆盖runner_queue
+
+#### status
+此测试的结果状态
+
+#### teststmpdir
+返回临时目录的路径，该路径对于给定作业中的所有测试保持不变。
+
+#### time_elapsed = -1
+测试执行的持续时间（总是从time_end - time_start重新计算
+
+#### time_end = -1
+（unix）测试完成的时间（可能会被迫测试）
+
+#### time_start = -1
+（unix）测试开始的时间（可以强制进行测试）
+
+#### `timeout = None`
+测试超时（params的超时优先）
+
+#### `traceback`
+
+#### `whiteboard=`
+
+测试结束时将存储在`$logdir/whiteboard`位置的任意字符串。
+
+#### `workdir`
+
+此属性返回在整个测试执行期间存在的可写目录，但在测试完成后将清除该目录。
+
+它可以用于解压缩源代码压缩包，构建软件等任务。
+
+### avocado.fail_on(exceptions=None)
+
+当装饰函数产生指定类型的异常时，测试失败。
+
+（例如，我们的方法可能会在测试软件失败时引发IndexError。我们可以尝试/捕获它或使用此装饰器代替）
+
+参数：exceptions - 假定为测试失败的元组或单个异常[Exception]
+注意：self.error和self.cancel行为保持不变
+注意：为了允许简单使用，参数“exception”不能是可调用的
+
+
+### avocado.skip(message=None)
+
+跳过测试装饰器
+
+### avocado.skipIf(condition, message=None)
+
+如果条件为True，装饰器将跳过测试。
+
+### `avocado.skipUnless(condition, message=None)`
+
+如果条件为False，装饰器将跳过测试。
+
+### `exception avocado.TestError`
+
+基础：avocado.core.exceptions.TestBaseException
+
+表示测试未完全执行且发生错误。
+
+如果测试部分执行并且由于设置，配置或其他致命情况而无法完成，则会出现这种异常。
+
+`status ='ERROR'`
+
+### exception avocado.TestFail
+基础：avocado.core.exceptions.TestBaseException，exceptions.AssertionError
+
+表示测试失败。
+
+TestFail继承自AssertionError，以保持与vanilla python单元测试的兼容性（它们只考虑从AssertionError派生的失败）。
+
+`status ='FAIL'`
+
+### `exception avocado.TestCancel`
+
+基础：avocado.core.exceptions.TestBaseException
+
+表示测试已取消。
+
+使用cancel（）测试方法时应该抛出。
+
+`status = 'CANCEL'`
+
 ## [Utilities APIs](https://avocado-framework.readthedocs.io/en/63.0/api/utils/avocado.utils.html)
 ## [内部（核心）API](https://avocado-framework.readthedocs.io/en/63.0/api/core/avocado.core.html)
 
