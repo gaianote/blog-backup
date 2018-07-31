@@ -124,6 +124,8 @@ book1 = Book('空之境界','奈须蘑菇','100')
 
 ### 字符串令牌解析
 
+scanner.match是逐行匹配，匹配完第一行再匹配第二行。
+
 #### 使用示例
 
 1. 命名捕获组的正则表达式来定义所有可能的令牌，包括空格
@@ -153,14 +155,24 @@ def generate_tokens(pat, text):
 3. 调用并处理token
 
 ```python
-for tok in generate_tokens(master_pat, 'foo = 42'):
+text = '''foo = 42
+key = 100
+'''
+
+for tok in generate_tokens(master_pat, text):
     print(tok)
-# Produces output
 # Token(type='NAME', value='foo')
 # Token(type='WS', value=' ')
 # Token(type='EQ', value='=')
 # Token(type='WS', value=' ')
 # Token(type='NUM', value='42')
+# Token(type='WS', value='\n')
+# Token(type='NAME', value='key')
+# Token(type='WS', value=' ')
+# Token(type='EQ', value='=')
+# Token(type='WS', value=' ')
+# Token(type='NUM', value='100')
+# Token(type='WS', value='\n')
 ```
 
 #### 要点:
