@@ -104,3 +104,24 @@ learn-js
 ```bash
 git rm -r --cached node_moudles
 ```
+
+## git单次push内容过大
+
+http.postBuffer默认上限为1M,当你修改的内容超过这个上限时，git push 就会报错：
+
+```
+fatal: The remote end hung up unexpectedly
+```
+
+解决方法是在 `.git/config` 文件中加入:
+
+```
+[http]
+postBuffer = 524288000
+```
+
+或者:
+
+```bash
+git config http.postBuffer 524288000
+```
