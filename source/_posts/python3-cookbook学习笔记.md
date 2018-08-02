@@ -305,15 +305,23 @@ random 模块有大量的函数用来产生随机数和随机选择元素。
 
 ```python
 # Read the entire file as a single string
-with open('somefile.txt', 'rt') as f:
+with open('somefile.txt', 'a+',encoding = 'utf-8') as f:
     data = f.read()
 
 # Iterate over the lines of the file
-with open('somefile.txt', 'rt') as f:
+with open('somefile.txt', 'a+ ',encoding = 'utf-8') as f:
     for line in f:
         # process line
         ...
+# 复杂情况可以使用readline()逐行读取；while line：保证到最后一行时会退出读取 '\n != EOF'
+with open('somefile.txt', 'a+',encoding = 'utf-8') as f:
+    line = fh.readline()
+    while line:
+        print(line.strip())
+        line = f.readline()
 ```
+
+
 
 * 换行符的识别问题(自动处理)
     * 在Unix和Windows中是不一样的(分别是 `\n` 和 `\r\n` )。
@@ -464,7 +472,65 @@ with TemporaryFile('w+t') as f:
 ### 5.20 与串行端口的数据通信
 
 * 你想通过串行端口读写数据，典型场景就是和一些硬件设备打交道(比如一个机器人或传感器)。
-* 但对于串行通信最好的选择是使用 pySerial包(第三方)
+* 但对于串行通信最好的选择是使用 [pySerial](https://pythonhosted.org/pyserial/pyserial_api.html)包(第三方)
+
+#### 安装serial
+
+```
+pip install pyserial
+```
+
+#### 初始化Serial,其中支持的参数如下：
+
+```
+ser = serial.Serial(port = None，baudrate = 9600，bytesize = EIGHTBITS，parity = PARITY_NONE，stopbits = STOPBITS_ONE，timeout = None，xonxoff = False，rtscts = False，write_timeout = None，dsrdtr = False，inter_byte_timeout = None)
+```
+
+参数：
+
+* `port` - 设备名称或无。
+* `baudrate(int)` - 波特率，如9600或115200等。
+* `bytesize` - 数据位数。可能的值： `FIVEBITS`，`SIXBITS`，`SEVENBITS`， `EIGHBITS`
+* `parity` - 启用奇偶校验。可能的值： `PARITY_NONE`，`PARITY_EVEN`，`PARITY_ODD PARITY_MARK`，`PARITY_SPACE`
+* `stopbits` - 停止位数。可能的值： `STOPBITS_ONE`，`STOPBITS_ONE_POINT_FIVE`， `STOPBITS_TWO`
+* `timeout(float)` - 设置读取超时值。
+* `xonxoff(bool)` - 启用软件流控制。
+* `rtscts(bool)` - 启用硬件(RTS / CTS)流量控制。
+* `dsrdtr(bool)` - 启用硬件(DSR / DTR)流控制。
+* `write_timeout(float)` - 设置写超时值。
+* `inter_byte_timeout(float)` - 字符间超时，无禁用(默认）。
+
+#### 异常:
+
+* `ValueError` - 当参数超出范围时将引发，例如波特率，数据位。
+* `SerialException` - 如果找不到设备或无法配置设备。
+
+#### 实例方法：
+
+##### `ser.read(size=1)`
+
+Parameters: size – 需要读取的字节数.
+Returns: 从端口返回的字节
+Return type: byte
+
+从串行端口读取大小字节。如果设置了超时，则可以按要求返回较少的字符。在没有超时的情况下，它将被阻塞，直到读取请求的字节数为止。
+
+#### `ser.readline()`
+
+Returns: 从端口返回的字节
+Return type: byte
+
+从串口读取一行字节。如果设置了超时，则可以按要求返回较少的字符。在没有超时的情况下，它将被阻塞，直到读取请求的字节数为止。
+
+##### `write(data)`
+
+Parameters: data – 要发送的数据.
+Returns: 写入的字节数
+Return type: int
+
+向端口写入字节数据,Unicode字符串必须被编码,例如`ser.write('hello'.encode('utf-8'))`
+
+
 
 ### 5.21 序列化Python对象
 
