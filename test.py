@@ -1,28 +1,60 @@
-import serial
-import time
-# 打开串口
-ser = serial.Serial("COM3", 115200)
-def main():
-    while True:
-        # 获得接收缓冲区字符
-        ser.write('reset'.encode('utf-8'))
-        # ser.close()
-        # ser.open()
-        count = ser.inWaiting()
-        print(count)
-        if count != 0:
-            # 读取内容并回显
-            recv = ser.readlines()
-            print(recv)
-            ser.write(recv)
-        # 清空接收缓冲区
-        ser.flushInput()
-        # 必要的软件延时
-        time.sleep(0.1)
+
+import sys
+from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtWidgets import QMainWindow, QApplication
+
+
+class Communicate(QObject):
+
+    closeApp = pyqtSignal()
+
+
+class Example(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+
+        self.initUI()
+
+
+    def initUI(self):
+
+        self.c = Communicate()
+        self.c.closeApp.connect(self.close)
+
+        self.setGeometry(300, 300, 290, 150)
+        self.setWindowTitle('Emit signal')
+        self.show()
+
+
+    def mousePressEvent(self, event):
+
+        self.c.closeApp.emit()
+
+class Example2(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+
+        self.initUI()
+
+
+    def initUI(self):
+
+        self.c = Communicate()
+        self.c.closeApp.connect(self.close)
+
+        self.setGeometry(300, 300, 290, 150)
+        self.setWindowTitle('Emit signal')
+        self.show()
+
+
+    def mousePressEvent(self, event):
+
+        self.c.closeApp.emit()
 
 if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        if ser != None:
-            ser.close()
+
+    app = QApplication(sys.argv)
+    ex = Example()
+    sys.exit(app.exec_())

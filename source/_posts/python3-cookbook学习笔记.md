@@ -479,6 +479,31 @@ with TemporaryFile('w+t') as f:
 ```
 pip install pyserial
 ```
+#### 列出端口
+
+```bash
+python -m serial.tools.list_ports将打印可用端口列表。也可以添加regexp作为第一个参数，列表将只包含匹配的条目。
+```
+
+或
+
+```python
+import serial.tools.list_ports
+
+plist = list(serial.tools.list_ports.comports())
+
+if len(plist) <= 0:
+    print("没有发现端口!")
+else:
+    plist_0 = list(plist[0])
+    serialName = plist_0[0]
+    serialFd = serial.Serial(serialName, 9600, timeout=60)
+    print("可用端口名>>>", serialFd.name)
+```
+
+**注意**
+
+枚举可能不适用于所有操作系统。它可能不完整，列出不可用的端口或可能缺少端口的详细描述。
 
 #### 初始化Serial,其中支持的参数如下：
 
@@ -581,6 +606,25 @@ with open('data.json', 'r') as f:
 
 ```python
 data = json.loads(json_str, object_pairs_hook=OrderedDict)
+```
+
+### 读写ymal格式的文件
+
+对于读取yaml文件，我们可以使用pyymal第三方模块，而无需自己编写语法解析规则
+
+首先安装pyyaml
+
+```
+pip install pyyaml
+```
+
+然后读取并解析yaml
+
+```python
+import yaml
+
+with open(file_path,'r',encoding = "utf-8") as file:
+    dic = yaml.load(file).get(key)
 ```
 ###6.8 与关系型数据库的交互
 
