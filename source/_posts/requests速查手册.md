@@ -94,3 +94,14 @@ print (response.text)
 `encode` 的作用是将 `unicode` 编码转换成其他编码的字符串，如 `str2.encode('gb2312')`，表示将 `unicode` 编码的字符串 `str2` 转换成 `gb2312`编码。
 
 如果一个字符串已经是 `unicode` 了，再进行解码则将出错，因此通常要对其编码方式是否为 `unicode` 进行判断，用非 `unicode` 编码形式的str来 `encode` 会报错
+
+## 保存图片
+
+```python
+image_url = 'http://wiki.jikexueyuan.com/project/learn-road-qt/images/32.png'
+
+import requests
+response = requests.get(image_url)
+with open ('simple.png','wb') as file:
+    file.write(response.content)
+```

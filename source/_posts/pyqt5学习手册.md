@@ -103,8 +103,7 @@ sys.exit(app.exec_())
 
 程序预览：
 
-![img](https://maicss.gitbooks.io/pyqt5/content/images/1-simple.png)
-
+![img](/images/b04ef8edf2df447c9007ac4c1860a2db.png)
 ### 例2，面向对象编程
 
 ```python
@@ -178,8 +177,7 @@ if __name__ == '__main__':
 
 
 程序预览：
-![img](https://maicss.gitbooks.io/pyqt5/content/images/1-icon.png)
-
+![img](/images/dce8fd834a1049e3b9e42aff7ec810a9.png)
 ### 例3，提示框
 
 ```python
@@ -250,8 +248,7 @@ btn.move(50, 50)
 调整按钮大小，并让按钮在屏幕上显示出来，`sizeHint()`方法提供了一个默认的按钮大小。
 程序预览：
 
-！[img](https://maicss.gitbooks.io/pyqt5/content/images/1-tooltips.png)
-
+![img](/images/6ad746d0d0244e3986031b8e537b42bf.png)
 ### 例4，关闭窗口
 
 关闭一个窗口最直观的方式就是点击标题栏的那个叉，这个例子里，我们展示的是如何用程序关闭一个窗口。这里我们将接触到一点single和slots的知识。
@@ -319,9 +316,8 @@ qbtn.clicked.connect(QCoreApplication.instance().quit)
 事件传递系统在PyQt5内建的single和slot机制里面。点击按钮之后，信号会被捕捉并给出既定的反应。`QCoreApplication`包含了事件的主循环，它能添加和删除所有的事件，`instance()`创建了一个它的实例。`QCoreApplication`是在`QApplication`里创建的。 点击事件和能终止进程并退出应用的quit函数绑定在了一起。在发送者和接受者之间建立了通讯，发送者就是按钮，接受者就是应用对象。
 程序预览：
 
-![image](https://maicss.gitbooks.io/pyqt5/content/images/1-quitbutton.png)
-
-### 例5，消息盒子
+![image](/images/f112afbd15fb4ca5903c694531a25690.png)
+### 例5，消息盒子 QMessageBox
 
 默认情况下，我们点击标题栏的×按钮，QWidget就会关闭。但是有时候，我们修改默认行为。比如，如果我们打开的是一个文本编辑器，并且做了一些修改，我们就会想在关闭按钮的时候让用户进一步确认操作。
 
@@ -386,7 +382,98 @@ else:
 这里判断返回值，如果点击的是Yes按钮，我们就关闭组件和应用，否者就忽略关闭事件。
 程序预览：
 
-![img](https://maicss.gitbooks.io/pyqt5/content/images/1-messagebox.png)
+![img](/images/136a1644815c48b0b7d5718dda747073.png)
+```
+QMessageBox.information(NULL, "Title", "Content", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes);
+```
+
+下面是一个简单的例子：
+
+![img](/images/046f2b91373f41bca7f9517d8ba58cf4.png)
+
+现在我们从 API 中看看它的函数签名：
+
+```
+static StandardButton QMessageBox.information ( QWidget * parent, const QString &amp; title, const QString &amp; text, StandardButtons buttons = Ok, StandardButton defaultButton = NoButton );
+```
+
+首先，它是 static 的，所以我们能够使用类名直接访问到(怎么看都像废话…)；然后看它那一堆参数，第一个参数 parent，说明它的父组件；第二个参数 title，也就是对话框的标题；第三个参数 text，是对话框显示的内容；第四个参数 buttons，声明对话框放置的按钮，默认是只放置一个 OK 按钮，这个参数可以使用或运算，例如我们希望有一个 Yes 和一个 No 的按钮，可以使用 QMessageBox.Yes | QMessageBox.No，所有的按钮类型可以在 QMessageBox 声明的 StandarButton 枚举中找到；第五个参数 defaultButton 就是默认选中的按钮，默认值是 NoButton，也就是哪个按钮都不选中。这么多参数，豆子也是记不住的啊！所以，我们在用 QtCreator 写的时候，可以在输入QMessageBox.information 之后输入(，稍等一下，QtCreator 就会帮我们把函数签名显示在右上方了，还是挺方便的一个功能！
+
+#### 其它接口
+
+Qt 提供了五个类似的接口，用于显示类似的窗口。具体代码这里就不做介绍，只是来看一下样子吧！
+
+```python
+QMessageBox.critical(NULL, "critical", "Content", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes);
+```
+
+![img](/images/f2d5ef1f5b2545919954080e95bf046c.png)
+
+```python
+QMessageBox.warning(NULL, "warning", "Content", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes);
+```
+
+![img](/images/54291ffa6d99425b9d038fc5db4204d3.png)
+
+```python
+QMessageBox.question(NULL, "question", "Content", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes);
+```
+
+![img](/images/b8245ca6741747609f077112a0efd86c.png)
+
+```python
+QMessageBox.about(NULL, "About", "About this application");
+```
+
+![img](/images/90e4e0bc5ef34232b0262dd122f7451d.png)
+
+请注意，最后一个 about()函数是没有后两个关于 button 设置的按钮的！
+
+QMessageBox 对话框的文本信息时可以支持 HTML 标签的。例如：
+
+```
+QMessageBox.about(NULL, "About", "About this <font color='red'>application</font>");
+```
+
+运行效果如下：
+
+![img](/images/a239f1033ad545fa98e7b3529496f23e.png)
+
+如果我们想自定义图片的话，也是很简单的。这时候就不能使用这几个 static 的函数了，而是要我们自己定义一个 QMessagebox 来使用：
+
+```python
+message = QMessageBox(QMessageBox.NoIcon, "Title", "Content with icon.");
+message.setIconPixmap(QPixmap("icon.png"));
+message.exec();
+```
+
+这里我们使用的是 `exec()`函数，而不是 `show()`，因为这是一个模态对话框，需要有它自己的事件循环，否则的话，我们的对话框会一闪而过哦(感谢 laetitia 提醒).
+
+需要注意的是，同其他的程序类似，我们在程序中定义的相对路径都是要相对于运行时的.exe 文件的地址的。比如我们写"icon.png"，意思是是在.exe 的当前目录下寻找一个"icon.png"的文件。这个程序的运行效果如下：
+
+![img](/images/7cbdebeb087144eca585c8d028c6a23f.png)
+
+还有一点要注意，我们使用的是 png 格式的图片。因为 Qt 内置的处理图片格式是 png，所以这不会引起很大的麻烦，如果你要使用 jpeg 格式的图片的话，Qt 是以插件的形式支持的。在开发时没有什么问题，不过如果要部署的话，需要注意这一点。
+
+最后再来说一下怎么处理对话框的交互。我们使用 `QMessageBox` 类的时候有两种方式，一是使用`static``函数，另外是使用构造函数。
+
+首先来说一下 static 函数的方式。注意，static 函数都是要返回一个 `StandardButton`，我们就可以通过判断这个返回值来对用户的操作做出相应。
+
+```python
+replay = QMessageBox.question(NULL, "Show Qt", "Do you want to show Qt dialog?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes);
+if replay == QMessageBox.Yes:
+    print('you press yes')
+```
+
+如果要使用构造函数的方式，那么我们就要自己运行判断一下啦：
+
+```python
+ message = QMessageBox(QMessageBox.NoIcon, "Show Qt", "Do you want to show Qt dialog?", QMessageBox.Yes | QMessageBox.No, NULL);
+if message.exec() == QMessageBox.Yes:
+    QMessageBox.aboutQt(NULL, "About Qt");
+```
+
+其实道理上也是差不多的。
 
 ### 例6，窗口居中
 
@@ -484,7 +571,7 @@ QDialog类是对话框窗口的基类。
 
 对话框窗口是一个顶级窗体，主要用于短期任务以及和用户进行简要通讯。QDialog可以是模式的也可以是非模式的。QDialog支持扩展性并且可以提供返回值。它们可以有默认按钮。QDialog也可以有一个QSizeGrip在它的右下角，使用setSizeGripEnabled()。
 
-注意：QDialog（以及其它使用Qt::Dialog类型的widget）使用父窗口部件的方法和Qt中其它类稍微不同。对话框总是顶级窗口部件，但是如果它有一个父对象，它的默认位置就是父对象的中间。它也将和父对象共享工具条条目。
+注意：QDialog（以及其它使用Qt.Dialog类型的widget）使用父窗口部件的方法和Qt中其它类稍微不同。对话框总是顶级窗口部件，但是如果它有一个父对象，它的默认位置就是父对象的中间。它也将和父对象共享工具条条目。
 
 #### 模式对话框
 
@@ -502,7 +589,7 @@ QDialog类是对话框窗口的基类。
 
 调用setModal(true)或者setWindowModality()，然后show()。有别于exec()，show() 立即返回给控制调用者。
 
-对于进度对话框来说，调用setModal(true)是非常有用的，用户必须拥有与其交互的能力，例如：取消长时间运行的操作。如果使用show()和setModal(true)共同执行一个长时间操作，则必须定期在执行过程中调用QApplication::processEvents()，以使用户能够与对话框交互（可以参考QProgressDialog）。
+对于进度对话框来说，调用setModal(true)是非常有用的，用户必须拥有与其交互的能力，例如：取消长时间运行的操作。如果使用show()和setModal(true)共同执行一个长时间操作，则必须定期在执行过程中调用QApplication.processEvents()，以使用户能够与对话框交互（可以参考QProgressDialog）。
 
 ### QMainWindow
 
@@ -722,8 +809,7 @@ for position, name in zip(positions, names):
 
 程序预览：
 
-![img](https://maicss.gitbooks.io/pyqt5/content/images/3-calculator.png)
-
+![img](/images/acb70618e32e4f60b6de4f3f26a2417f.png)
 ### 跨行显示
 
 `grid.addWidget`支持五个参数，第一个是需要加入的组件，第二个和第三个分别是行和列的定位，第四个和第五个表示跨行和跨列数
@@ -786,8 +872,7 @@ if __name__ == '__main__':
 
 程序预览：
 
-![img](https://maicss.gitbooks.io/pyqt5/content/images/3-review.png)
-
+![img](/images/d087b9ae18714100818926583022e970.png)
 ## 事件和信号
 
 所有的应用都是事件驱动的。事件大部分都是由用户的行为产生的，当然也有其他的事件产生方式，比如网络的连接，窗口管理器或者定时器等。调用应用的exec_()方法时，应用会进入主循环，主循环会监听和分发事件。
@@ -892,8 +977,7 @@ def mouseMoveEvent(self, e):
 
 程序展示：
 
-![img](https://maicss.gitbooks.io/pyqt5/content/images/4-eventobject.png)
-
+![img](/images/e4827a0d4c9c418abf47c5ad5753d1b5.png)
 
 ### 事件发送
 
@@ -966,104 +1050,38 @@ def buttonClicked(self):
 
 程序展示：+
 
-![img](https://maicss.gitbooks.io/pyqt5/content/images/4-eventsender.png)
+![img](/images/ff0722a3b50e4425aa378607c32ec846.png)
 
 
-### 信号发送
+### 不同窗口的通信与信号发送
 
-`QObject`实例能发送事件信号。下面的例子是发送自定义的信号。
+A 类通过 `QObject` 实例定义一个信号并使用`emit()`广播它,B 类通过 `connect(self.method...)` 将自身的方法与该信号进行绑定，这就是一个信号槽机制
 
 ```python
-
-import sys
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
-
 class Communicate(QObject):
 
     closeApp = pyqtSignal()
 
+class A(QtWidgets):
 
-class Example(QMainWindow):
-
-    def __init__(self):
-        super().__init__()
-
-        self.initUI()
-
-
-    def initUI(self):
-
+    def __init__():
         self.c = Communicate()
-        self.c.closeApp.connect(self.close)
-
-        self.setGeometry(300, 300, 290, 150)
-        self.setWindowTitle('Emit signal')
-        self.show()
-
-
-    def mousePressEvent(self, event):
-
         self.c.closeApp.emit()
-
-
-if __name__ == '__main__':
-
-    app = QApplication(sys.argv)
-    ex = Example()
-    sys.exit(app.exec_())
-
-```
-
-我们创建了一个叫closeApp的信号，这个信号会在鼠标按下的时候触发，事件与`QMainWindow`绑定。+
-
-```python
-class Communicate(QObject):
-
-    closeApp = pyqtSignal()
-
-```
-
-`Communicate`类创建了一个`pyqtSignal()`属性的信号。+
-
-```python
-self.c = Communicate()
-self.c.closeApp.connect(self.close)
-
-```
-
-`closeApp`信号`QMainWindow`的`close()`方法绑定。+
-
-```python
-def mousePressEvent(self, event):
-
-    self.c.closeApp.emit()
-
-```
-
-点击窗口的时候，发送closeApp信号，程序终止。
-
-## 不同窗口的通信
-
-在B类中，通过QObject监听A产生的事件，从而达到通信的目的
-
-```python
-class Communicate(QObject):
-
-    closeApp = pyqtSignal()
 
 class B(QtWidgets):
     def __init__():
         a = A()
-        a.communicate.closeApp.connect(B.method(...))
+        a.c.closeApp.connect(B.method(...))
 ```
 
 ## 控件1
 
 控件就像是应用这座房子的一块块砖。PyQt5有很多的控件，比如按钮，单选框，滑动条，复选框等等。在本章，我们将介绍一些很有用的控件：`QCheckBox`，`ToggleButton`，`QSlider`，`QProgressBar`和`QCalendarWidget`。
 
-## QCheckBox
+### QCheckBox
 
 `QCheckBox`组件有俩状态：开和关。通常跟标签一起使用，用在激活和关闭一些选项的场景。+
 
@@ -1107,7 +1125,7 @@ if __name__ == '__main__':
     sys.exit(app.exec_())
 
 ```
-## 图片
+### 图片
 
 `QPixmap`是处理图片的组件。本例中，我们使用`QPixmap`在窗口里显示一张图片。+
 
@@ -1167,9 +1185,35 @@ lbl.setPixmap(pixmap)
 
 程序展示：
 
-![img](https://maicss.gitbooks.io/pyqt5/content/images/7-pixmap.png)
+![img](/images/d8624617c1b3451c9d239fdae05d6870.png)
+## 多线程
+
+默认情况下PyQt5的界面是阻塞的，当程序内部处理一些耗时的工作时，界面就会等待该工作处理完成才会响应其它事件(点击下一步的按钮)，这样就造成了程序卡顿。我们可以使用多线程处理耗时的工作来避免这个问题。
+
+```python
+from PyQt5.QtCore import pyqtSignal, QObject,QThread
+class WorkThread(QThread):
+    sig = pyqtSignal()
+    def __int__(self):
+        super(WorkThread,self).__init__()
+
+    def run(self):
+        # 模拟工作线程
+        time.sleep(5)
+        self.sig.emit()
+work_thread = WorkThread()
 
 
+
+class widget(Qwidget):
+    """docstring for ClassName"""
+    def __init__(self, arg):
+        # 当work_thread处理完毕时，调用某些方法
+        work_thread.sig.connect(self.method)
+    def some_method(self):
+        # 启动线程
+        work_thread.start()
+```
 ## 常用API或方法
 
 ### 文字与样式设置
