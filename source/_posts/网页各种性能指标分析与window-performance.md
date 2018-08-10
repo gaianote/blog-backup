@@ -4,6 +4,12 @@ date: 2018-08-10 15:24:56
 tags:
 ---
 
+首屏和白屏时间影响着用户的体验，如果超过3秒网站还没有加载完成的话，用户可能就会关闭网页浏览其它内容了。因此，网站前端性能调优就显得尤为重要。
+
+一般我们可以通过浏览器的调试工具-网络面板，或者代理工具查看网页加载过程中的各个阶段的耗时。而利用window.performance属性则可以获得更为精确的原始数据，以毫秒为单位，精确到微秒。
+
+<!--more-->
+
 ## 什么是首屏和白屏时间？
 
 白屏时间是指浏览器从响应用户输入网址地址，到浏览器开始显示内容的时间。首屏时间是指浏览器从响应用户输入网络地址，到首屏内容渲染完成的时间。
@@ -16,6 +22,7 @@ tags:
 
 
 ![img](/images/c0601eb4f0234cd6bbeefe7e34cff3f1.png)
+
 ## 白屏时间
 
 通常认为浏览器开始渲染 `<body>` 或者解析完 `<head>` 的时间是白屏结束的时间点。
@@ -124,7 +131,7 @@ tags:
 ```
 
 
-### [Performance API](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance)
+## [Performance API](https://developer.mozilla.org/zh-CN/docs/Web/API/Performance)
 
 Performance 接口可以获取到当前页面与性能相关的信息。
 
