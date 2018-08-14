@@ -410,6 +410,51 @@ local_search:
 
 注:以上内容在Next官网本地搜索模块有详细介绍,在此只为记录.
 
+## hexo yilia主题添加文章访问量统计
+
+hexo添加访问量统计功能可以用**百度的站长统计**、**leancloud**，还有**不蒜子**，这里我用的不蒜子，感觉挺简单的。
+
+### 引入[不蒜子](http://busuanzi.ibruce.info/)
+
+```html
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+```
+
+这段代码可以写在footer.ejs里或者header.ejs里或者layout.ejs里，我用的yilia主题，放在/themes/yilia/layout/_partial/footer.ejs
+
+### 添加站点访问量
+
+通常站点的总访问量会显示在footer的位置，所以我们可以在footer.ejs里加上如下标签：
+
+```html
+<span id="busuanzi_container_site_uv">   本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+```
+
+计算访问量的方法有两种：算法a：pv的方式，单个用户连续点击n篇文章，记录n次访问量。算法b：uv的方式，单个用户连续点击n篇文章，只记录1次访客数。我用的是uv的方式，大家自行选择即可。
+
+### 添加文章访问量
+
+文章的访问量显示在文章里面，所以在article.ejs里加上文章访问量的标签：
+
+```html
+<span id="busuanzi_container_page_pv">   本文总阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+```
+
+我们直接就这样放在yilia主题中，首页也会显示该网页的访问量，没法正常使用，所以我加一个判断，如果是首页不显示该文章的访问量，下面这段代码添加在/themes/yilia/layout/_partial/article.ejs的header的日期后面：
+
+```html
+<%if ( !index ){ %>
+
+<span class="archive-article-date">
+
+   阅读量 <span id="busuanzi_value_page_pv"></span>
+
+</span>
+
+<%
+ }
+%>
+```
 ## 参考资料
 
 [hexo官网](https://hexo.io/)
@@ -418,3 +463,4 @@ local_search:
 [简洁轻便的博客平台: Hexo详解](http://www.tuicool.com/articles/ueI7naV)
 [20分钟教你使用hexo搭建github博客](http://www.jianshu.com/p/e99ed60390a8)
 [自动备份Hexo博客源文件](http://www.tuicool.com/articles/EnaqAvV)
+[hexo-yilia主题添加文章访问量统计](http://www.lookk.cn/2017/12/09/hexo-yilia%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E6%96%87%E7%AB%A0%E8%AE%BF%E9%97%AE%E9%87%8F%E7%BB%9F%E8%AE%A1/)
