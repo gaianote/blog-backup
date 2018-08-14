@@ -34,21 +34,21 @@ Avocado尽可能地遵守标准的Python测试技术。 使用Avocado API编写�
 
 Avocado主要是用Python编写的,因此标准的Python安装是可行的,而且通常更可取。
 
->>>如果您正在寻找特定于虚拟化的测试,请在完成Avocado安装后考虑查看Avocado-VT安装说明。
+>如果您正在寻找特定于虚拟化的测试,请在完成Avocado安装后考虑查看Avocado-VT安装说明。
 
 #### 使用标准Python工具进行安装
 
 最简单的安装方法是通过pip。 在大多数可用Python 2.7和pip的POSIX系统上,只需一个命令即可执行安装：
 
->>> 译者注:虽然python2.7是可用的,但是已经逐渐被淘汰了,因此建议使用python3.6+以及其相对应的pip进行安装
+> 译者注:虽然python2.7是可用的,但是已经逐渐被淘汰了,因此建议使用python3.6+以及其相对应的pip进行安装
 
 ```bash
 pip install --user avocado-framework
 ```
 这将从PyPI存储库中获取Avocado包(可能还有一些依赖项),并尝试将其安装在用户的主目录中(通常在〜/ .local下)。
 
->>> 如果要执行系统范围的安装,请删除 --user删除。
->>> 译者:如果希望在命令行启用 avocado 命令的话,安装时不能使用 --user 参数
+> 如果要执行系统范围的安装,请删除 --user删除。
+> 译者:如果希望在命令行启用 avocado 命令的话,安装时不能使用 --user 参数
 
 如果您想要更多隔离,Avocado也可以安装在Python虚拟环境中。 除了创建和激活虚拟环境本身之外没有其他步骤：
 
@@ -102,7 +102,7 @@ JOB HTML  : $HOME/avocado/job-results/job-2014-08-12T15.39-381b849a/html/results
 
 您可能已经注意到我们使用/ bin / true作为测试,并且根据我们的期望,它通过了！ 这些被称为简单测试,但也有另一种类型的测试,我们称之为仪器测试。 在测试类型中查看更多信息或继续阅读。
 
->>>虽然在大多数情况下运行Avocado运行 $ test1 $ test3 ...很好,但它可能导致参数与测试名称冲突。 最安全的执行测试的方法是Avocado运行 -  $ argument1  -  $ argument2  -  $ test1 $ test2。 之后的所有内容 - 将被视为位置参数,即测试名称(在Avocado运行的情况下)
+> 虽然在大多数情况下运行Avocado运行 $ test1 $ test3 ...很好,但它可能导致参数与测试名称冲突。 最安全的执行测试的方法是Avocado运行 -  $ argument1  -  $ argument2  -  $ test1 $ test2。 之后的所有内容 - 将被视为位置参数,即测试名称(在Avocado运行的情况下)
 
 #### 列出测试
 
@@ -121,7 +121,7 @@ JOB HTML   : /tmp/avocado-dry-runSeWniM/job-2015-10-16T15.46-0000000/html/result
 
 另一种方法是使用list子命令列出发现的测试如果没有提供参数,Avocado会为每个插件列出“默认”测试。 输出可能如下所示：
 
->>> 译者: `avocado list .` 列出当前目录的avocado测试,直接使用`avocado list`未返回结果。
+> 译者: `avocado list .` 列出当前目录的avocado测试,直接使用`avocado list`未返回结果。
 
 ```
 $ avocado list
@@ -449,17 +449,17 @@ def test(self):
 
 * 变量级数据目录：如果在测试期间使用变量执行时,也会考虑以变量命名的目录寻找测试数据文件。对于测试文件`/home/user/test.py`,并测试`MyTest.test_foo`,带有变量`debug-ffff`,数据目录路径将是`/home/user/test.py.data/MyTest.test_foo/debug-ffff/`。
 
->>> 与INSTRUMENTED测试不同,SIMPLE测试仅定义`file`和`variant` 数据目录,因此是最具体的数据目录可能看起来像`/bin/echo.data/debug-ffff /`。
+> 与INSTRUMENTED测试不同,SIMPLE测试仅定义`file`和`variant` 数据目录,因此是最具体的数据目录可能看起来像`/bin/echo.data/debug-ffff /`。
 
 
 Avocado按照定义的顺序查找数据文件[`DATA_SOURCES`](api/core/avocado.core.html＃avocado.core.test.TestData.DATA_SOURCES),这是从最具体的一个到最通用的一个。这意味着,如果是变量正在使用,首先使用variant目录。然后测试尝试测试级别目录,最后是文件级目录。
 
 另外,你可以使用`get_data(filename,must_exist = False)`来获取可能不存在的文件的预期位置,这在当你打算创建它的情况下很有用。
 
->>> 运行测试时,您可以使用`--log-test-data-directories`命令行选项记录将使用的测试数据目录
+> 运行测试时,您可以使用`--log-test-data-directories`命令行选项记录将使用的测试数据目录
 对于特定的测试和执行条件(例如使用或没有变种)。在测试日志中查找“测试数据目录”。
 
->>>以前存在的API`avocado.core.test.Test.datadir`,用于允许基于测试文件访问数据目录仅限位置。此API已被删除。无论出于何种原因,您仍然只需要根据测试文件位置访问数据目录,可以使用`get_data(filename ='',source ='file',must_exist = False)`。
+>以前存在的API`avocado.core.test.Test.datadir`,用于允许基于测试文件访问数据目录仅限位置。此API已被删除。无论出于何种原因,您仍然只需要根据测试文件位置访问数据目录,可以使用`get_data(filename ='',source ='file',must_exist = False)`。
 
 ### 访问测试参数
 
@@ -491,7 +491,7 @@ self.params.get("sleep_cycles", '*', 10)    # returns 1
 self.params.get("sleep_length", "/*/variants/*")  # returns 600
 ```
 
->>> 在可能发生冲突的复杂场景中,该路径很重要,因为当存在多个具有相同键匹配值的值时,Avocado会引发异常。如上所述,您可以通过使用特定路径或通过定义允许指定解析层次结构的自定义mux-path来避免这些路径。 更多细节可以在测试参数中找到。
+> 在可能发生冲突的复杂场景中,该路径很重要,因为当存在多个具有相同键匹配值的值时,Avocado会引发异常。如上所述,您可以通过使用特定路径或通过定义允许指定解析层次结构的自定义mux-path来避免这些路径。 更多细节可以在测试参数中找到。
 
 ### 运行多个测试变量
 
@@ -955,7 +955,7 @@ $ cat $HOME/avocado/job-results/latest/test-results/1-output_record.sh/stdout.di
 +Hello, world!
 ```
 
->>> 目前,stdout和stder都以文本方式存储。根据当前区域设置无法解码的数据将根据 https://docs.python.org/3/library/codecs.html#codecs.replace_errors 替换
+> 目前,stdout和stder都以文本方式存储。根据当前区域设置无法解码的数据将根据 https://docs.python.org/3/library/codecs.html#codecs.replace_errors 替换
 ### 在本机Avocado模块中测试日志,stdout和stderr
 
 如果需要,可以直接从原生测试范围写入预期的stdout和stderr文件。区分以下实体是很重要的：
@@ -1103,7 +1103,7 @@ JOB HTML   : $HOME/avocado/job-results/job-2017-02-03T17.41-59c815f/html/results
 
 使用跳过装饰器,实际上没有执行任何操作。我们将跳过`setup`方法、测试方法和`teardown`方法。
 
->>> 任何skip装饰器都不能在teardown方法上使用,否则会出现错误,状态吗为`ERROR`
+> 任何skip装饰器都不能在teardown方法上使用,否则会出现错误,状态吗为`ERROR`
 
 ### 取消测试
 您可以在测试的任何阶段(`setup()`、测试方法或`teardown`)中调用`self.cancel()`取消测试。测试将以取消状态结束,并且不会使job以非0状态退出。例子：
@@ -1295,9 +1295,9 @@ Avocado将一些信息(包括测试参数)作为环境变量导出到正在运�
 * `AVOCADO_TEST_OUTPUTDIR`:测试的输出目录
 * `AVOCADO_TEST_SYSINFODIR`：系统信息目录
 * `***`: 来自-mux-yaml的所有变量
->>> `AVOCADO_TEST_SRCDIR`存在于早期版本中,但在版本60.0上已弃用,在版本62.0上已删除。请改用`AVOCADO_TEST_WORKDIR`。
+> `AVOCADO_TEST_SRCDIR`存在于早期版本中,但在版本60.0上已弃用,在版本62.0上已删除。请改用`AVOCADO_TEST_WORKDIR`。
 
->>> `AVOCADO_TEST_DATADIR`存在于早期版本中,但在版本60.0上已弃用,在版本62.0上已删除。现在,测试数据文件(和目录)已动态评估,不可用作环境变量
+> `AVOCADO_TEST_DATADIR`存在于早期版本中,但在版本60.0上已弃用,在版本62.0上已删除。现在,测试数据文件(和目录)已动态评估,不可用作环境变量
 
 ### SIMPLE测试BASH扩展
 
@@ -1315,7 +1315,7 @@ fi
 ```
 有关实用程序的完整列表,请查看目录返回通过`avocado exec-path`(如果有的话)。 另外,示例测试`examples/tests/ simplewarning.sh`可以提供进一步的灵感。
 
->>> 这些扩展可以作为单独的包提供。 对于RPM包,请查找bash子包。
+> 这些扩展可以作为单独的包提供。 对于RPM包,请查找bash子包。
 
 ### 简单的测试状态
 
@@ -1356,7 +1356,7 @@ warn_location = all
 
 测试脚本必须提供各种方法来清晰地将结果传达给相关方,无论是人还是机器。
 
->>> 有几个可选的结果插件,你可以在Result Plugins中找到它们。
+> 有几个可选的结果插件,你可以在Result Plugins中找到它们。
 
 ### 人类可读结果
 
@@ -1495,8 +1495,8 @@ $ avocado run sleeptest.py --tap -
 ok 1 sleeptest.py:SleepTest.test
 ```
 
->>> 译者 debug.log不会显示在控制台,需要到debug.log中去查看
->>> cat ~/avocado/job-results/latest/test-results/1-sleeptest.py_SleepTest.test/debug.log
+> 译者 debug.log不会显示在控制台,需要到debug.log中去查看
+> cat ~/avocado/job-results/latest/test-results/1-sleeptest.py_SleepTest.test/debug.log
 
 #### Silent result
 此结果禁用所有stdout日志记录(同时将错误消息打印到stderr)。然后,可以使用返回代码来了解结果：
@@ -1620,7 +1620,7 @@ dressing = ceasar
 
 按此顺序,意味着您在本地配置文件上设置的内容可以覆盖系统范围文件中定义的内容。
 
->>> 请注意,如果Avocado从Git 仓库中运行,这些文件将被忽略,并被配置树文件取代。这通常只会影响开发Avocado的人,如果你有疑问,`avocado config`会告诉你确切的文件在任何特定的情况下都被使用。
+> 请注意,如果Avocado从Git 仓库中运行,这些文件将被忽略,并被配置树文件取代。这通常只会影响开发Avocado的人,如果你有疑问,`avocado config`会告诉你确切的文件在任何特定的情况下都被使用。
 
 ### 测试中使用的值的优先顺序
 
@@ -1805,7 +1805,7 @@ JOB TIME   : 1.15 s
 JOB HTML   : $HOME/avocado/job-results/job-2017-06-14T14.54-333912f/html/results.html
 ```
 
->>> 特别是在使用正则表达式时,建议单独用引号包裹测试引用,以避免损坏它们。在这种情况下,上述示例的命令将是：
+> 特别是在使用正则表达式时,建议单独用引号包裹测试引用,以避免损坏它们。在这种情况下,上述示例的命令将是：
 
 ```
 avocado run "/usr/share/doc/avocado/tests/gdbtest.py:GdbTest.test_[le].*raw"
@@ -1860,9 +1860,9 @@ early:  在日志记录系统设置之前进行早期日志记录。它包括测
 
 当您运行测试时,您还可以通过`avocado run –store-logging-stream [STREAM[:LEVEL] [STREAM[:LEVEL] …]]`将自定义日志流存储到结果目录中,它将在测试结果目录中生成每一个(唯一的)条目的`$STREAM.$LEVEL`文件。
 
->>> 必须指定分离的日志流。在这个函数中不能使用内置流。
+> 必须指定分离的日志流。在这个函数中不能使用内置流。
 
->>> 目前,自定义流仅存储在每个job中,而不是针对每个单独的测试。
+> 目前,自定义流仅存储在每个job中,而不是针对每个单独的测试。
 
 ### 分页器
 
@@ -1886,9 +1886,9 @@ Avocado附带一个sysinfo插件,它自动收集每个系统的系统信息,甚�
 
 job执行后,您可以在`$RESULTS/test-results/$TEST/sysinfo`的`$RESULTS/sysinfo`找到所收集的信息,它被分类为前、后和概要文件夹,文件名是安全地执行命令或文件名。当您启用HTML结果插件时,还可以在HTML结果中看到sysinfo。
 
->>> 如果使用源代码的Avocado,则需要手动放置`commands/files/profilers`到`/etc/avocado/sysinfo`或者调整`$AVOCADO_SRC/etc/avocado/avocado.conf`的路径
+> 如果使用源代码的Avocado,则需要手动放置`commands/files/profilers`到`/etc/avocado/sysinfo`或者调整`$AVOCADO_SRC/etc/avocado/avocado.conf`的路径
 
->>> 译者: 使用pip 安装的配置文件在诸如`/usr/lib/python3.6/site-packages/avocado/etc/avocado/avocado.conf`路径中,真实路径可以使用`avocado config`命令进行查询
+> 译者: 使用pip 安装的配置文件在诸如`/usr/lib/python3.6/site-packages/avocado/etc/avocado/avocado.conf`路径中,真实路径可以使用`avocado config`命令进行查询
 
 ## [测试参数](https://avocado-framework.readthedocs.io/en/63.0/TestParameters.html)
 
@@ -2808,9 +2808,9 @@ TestFail继承自AssertionError,以保持与vanilla python单元测试的兼容�
 
 它假设是通用的,没有任何Avocado知识,可以在不同的项目中重复使用。
 
->>> 在当前版本中,存在Avocado日志记录流的隐藏知识。 有关此问题的更多信息,请访问https://trello.com/c/4QyUgWsW/720-get-rid-of-avocado-test-loggers-from-avocado-utils
+> 在当前版本中,存在Avocado日志记录流的隐藏知识。 有关此问题的更多信息,请访问https://trello.com/c/4QyUgWsW/720-get-rid-of-avocado-test-loggers-from-avocado-utils
 
->>> 译者：此章节为翻译,详情请查看原文档
+> 译者：此章节为翻译,详情请查看原文档
 
 ### Subpackages
 ### Submodules
@@ -2862,13 +2862,13 @@ TestFail继承自AssertionError,以保持与vanilla python单元测试的兼容�
 
 可能是Avocado 骇客感兴趣的内部API.
 
->>> 译者:此节未翻译,更多内容请查看原文档
+> 译者:此节未翻译,更多内容请查看原文档
 
 ## [扩展(插件)API](https://avocado-framework.readthedocs.io/en/63.0/api/plugins/avocado.plugins.html)
 
 扩展API可能是插件编写者兴趣所在.
 
->>> 译者:此节未翻译,更多内容请查看原文档
+> 译者:此节未翻译,更多内容请查看原文档
 
 ## [可选插件API](https://avocado-framework.readthedocs.io/en/63.0/api/optional-plugins/index.html)
 
@@ -2887,11 +2887,11 @@ TestFail继承自AssertionError,以保持与vanilla python单元测试的兼容�
 
 ## [发行说明](https://avocado-framework.readthedocs.io/en/63.0/release_notes/index.html)
 
->>> 译者:此节未翻译,更多内容请查看原文档
+> 译者:此节未翻译,更多内容请查看原文档
 
 ## [征求意见稿(RFCS)](https://avocado-framework.readthedocs.io/en/63.0/rfcs/index.html)
 
->>> 译者:此节未翻译,更多内容请查看原文档
+> 译者:此节未翻译,更多内容请查看原文档
 
 ## 原文档
 
