@@ -1,7 +1,7 @@
 ---
 title: "avocado自动化测试框架中文文档"
 date: 2018-07-18 09:21:04
-tags:
+tags: 测试
 ---
 
 ## [关于Avocado](https://avocado-framework.readthedocs.io/en/63.0/Introduction.html)
