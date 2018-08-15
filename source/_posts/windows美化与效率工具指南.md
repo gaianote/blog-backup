@@ -135,6 +135,17 @@ Hyper 是一个基于 Election 的终端 Terminal Emulator，是一个插件丰�
 参考：[My&nbsp;WSL&nbsp;Setup&nbsp;by&nbsp;lloydstubber](https://github.com/lloydstubber/my-wsl-setup)
 
 
+## 其它软件
+
+### 解压缩软件
+
+[Bandizip for Windows](https://www.bandisoft.com/bandizip/)
+
+开发这个软件的公司叫 Bandisoft，是一家挺低调的韩国软件公司，正是知名录屏软件 Bandicam 的初开发公司（后来由 Bandicam 公司接手开发）
+
+优点是界面清爽，功能全面，没有广告和弹窗，国内竞品好压之类广告弹窗着实烦人。
+
+![img](/images/176efff0c80546ffa41a1cce0cf602bb.png)
 
 ## 参考文档
 [Mac To Win | 不完全迁移体验指北](https://sspai.com/post/45742)
