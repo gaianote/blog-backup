@@ -28,8 +28,7 @@ Docker 是一个容器工具，提供虚拟环境。很多人认为，它改变�
 
 ### 4.1 Docker Compose 简介
 
-![img](http://www.ruanyifeng.com/blogimg/asset/2018/bg2018021311.jpg)
-
+![img](/images/1b3735d5ee5d4d06911a3b64507f9db1.jpg)
 [Compose](https://docs.docker.com/compose/) 是 Docker 公司推出的一个工具软件，可以管理多个 Docker 容器组成一个应用。你需要定义一个 [YAML](http://www.ruanyifeng.com/blog/2016/07/yaml.html) 格式的配置文件`docker-compose.yml`，写好多个容器之间的调用关系。然后，只要一个命令，就能同时启动/关闭这些容器。
 
 ```bash

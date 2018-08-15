@@ -14,7 +14,7 @@ class Image_loader(object):
         self.wait_to_rewrite = False
         self.rewrite_time = 0
 
-    def down_load_image(self,image_url):
+    def down_load_image(self,image_url,image_type):
         flag = True
         i = 0
         # 下载三次，如果三次都相等则说明图片完整
@@ -30,8 +30,8 @@ class Image_loader(object):
             if response_1.content == response_2.content and response_1.content == response_3.content:
                 flag = False
                 loading = loading.replace('.',' ')
-                print('File check: √' + loading, end='\r')
-        self.image_name = uuid.uuid4().hex + '.png'
+                print('File check: √' + loading)
+        self.image_name = uuid.uuid4().hex + '.' + image_type
         image_path = os.path.join(self.image_dir_path,self.image_name)
 
         with open (image_path,'wb') as file:
@@ -48,6 +48,8 @@ class Image_loader(object):
             return file_data_list
         file_data_list = [File_data(file_name,file_path,file_type) for file_name,file_path,file_type in file_data_list if file_type and file_type in file_types]
         return file_data_list
+
+
     def rewrite_image(self):
 
         file_list = self.get_file_list(self.post_dir_path,'.md')
@@ -57,12 +59,18 @@ class Image_loader(object):
             print('rewrite:' + file_data.file_path)
             with open(file_data.file_path,'r',encoding = 'utf-8') as file:
                 for line in file:
-                    matched = re.compile(r'!\[(.*?)\]\((http.*?\.png)\)').match(line)
+                    matched = re.compile(r'!\[(.*?)\]\((http.*?)\)').match(line)
                     if matched:
                         self.wait_to_rewrite = True
+                        # 处理查询： ![x](https://cdn.sspai.com/minja/2018.jpg?imageView1)'
+                        if re.search(r'\?',line):
+                            image_url = matched.group(2).split('?')[0]
+                        else:
+                            image_url = matched.group(2)
+                        image_type = image_url.split('.')[-1]
                         print(line)
-                        print(matched.group(2))
-                        self.down_load_image(matched.group(2))
+                        print(image_url)
+                        self.down_load_image(image_url,image_type)
                         line = '![{0}](/images/{1})'.format(matched.group(1),self.image_name)
                         print(line)
                     file_text += line
