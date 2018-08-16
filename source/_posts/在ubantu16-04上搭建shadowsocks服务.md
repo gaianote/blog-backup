@@ -6,6 +6,8 @@ tags:
 
 以前我们科学上网的时候最常用的就是vpn了，而2年前，ss被开源(ss出现一年后，开源社区的破娃小姐姐在ss的基础上发布了ssr)，现在已经是最流行的科学上网方案。
 
+
+
 <!--more-->
 
 ## vpn与shadowsocks
@@ -15,6 +17,8 @@ tags:
 在很多人心目中就是用来翻墙的工具，其实不是。vpn最主要的功能，并不是用来翻墙，只是它可以达到翻墙的目的。
 
 vpn指虚拟专用网络，它的功能是：在公用网络上建立专用网络，进行加密通讯。在企业网络和高校的网络中应用很广泛。你接入vpn，其实就是接入了一个专有网络，你的网络访问都从这个出口出去，你和vpn之间的通信是否加密，取决于你连接vpn的方式或者协议。
+
+
 
 ### ss与ssr
 
@@ -26,7 +30,8 @@ ss和ssr它的原理都是一样的，就是socks5代理。socks代理只是简�
 
 直连模式就是流量不走代理 ，PAC模式简单说就是国内地址不走代理，国外走代理，全局模式就是不管国内国外，所有流量通过代理服务器访问
 
-下载ss或者ssr客户端推荐去github或者[https://shadowsocks.org/en/index.html](https://shadowsocks.org/en/index.html)这里去下载
+
+![img](/images/2748df9aff684540b2bf54c77322b0d2.png)
 
 ### vpn和ss/ssr的区别和优缺点
 
@@ -37,6 +42,16 @@ ss和ssr它的原理都是一样的，就是socks5代理。socks代理只是简�
 ss/ssr的目的就是用来翻墙的，而vpn的目的是用来加密企业数据的，对于vpn来说安全是第一位的，而对于ss/ssr来说穿透防火墙是第一位，抗干扰性强，而且对流量做了混淆，所有流量在通过防火墙的时候，基本上都被识别为普通流量，也就是说你翻墙了，但是政府是检测不到你在翻墙的。两者的出发点和着重点就不同，ss/ssr更注重流量的混淆加密。如果要安全匿名上网，可以用vpn+tor或者ss/ssr+tor。
 
 而安全性方面还要补充的一点就是，国内vpn服务商，政府是很容易拿到他们的服务器日志的，如果他们真的这样做了，你翻墙做了什么，一览无余
+
+## 云主机提供商[Vultr](https://www.vultr.com/?ref=7507302)
+
+[Vultr](https://www.vultr.com/?ref=7507302)官网是一家提供日本、美国、欧洲等多个国家和地区机房的VPS主机商，硬盘都是采用SSD，VPS主机都是KVM架构，VPS配置最少的内存512MB、硬盘为15GB的VPS只要2.5美元/月，vultr是根据VPS使用小时来计费（0.007/h,折合人民币4分6/小时）的，使用多长时间就算多长时间，计费对应的款。Vultr是KVM系统架构，目前已开通15个机房，比较适合国内的是日本东京（tokyo）,美国洛杉矶（ Los Angeles ），美国西雅图（ Seattle ）这三个机房相对国内线路较好。vultr支持支付宝（Alipay）付费使用。
+
+使用要点：
+
+1. Vultr注册时的邮箱必须是真实有效的，后续开通主机需要验证邮箱
+2. 不要选择2.5美元/月的主机，这个主机只支持ipv6，目前大部分网站和网络运营商都是不支持的
+3. 通过[http://www.pingms.com/](http://www.pingms.com/)查看各个云主机到本地的延迟，东京一般情况是延迟最低的
 
 ## shadowsocks 服务器安装
 
@@ -267,6 +282,28 @@ sysctl -p
 ```
 最后重启服务器生效！
 
+## 客户端
+
+### 下载
+
+ios客户端：搜索windy，需要日区的apple id，因为中国区没有上架，日区美区都可以
+pc以及其它客户端: 建议到[shadowsocks.org](https://shadowsocks.org/en/download/clients.html)进行下载
+
+### 使用
+
+#### **电脑**
+
+打开客户端，将上面记录的相应连接信息填入客户端，确定。
+
+![img](/images/bac8537dba3f474dac3c4f0c480636db.png)
+右键任务栏托盘小飞机图标，“启动”，可以选择合适的代理模式。
+
+* **PAC**：只代理国外网站；
+* **全局**：所有网站都通过SS。
+
+![img](/images/4c3d5ea3154042739da3ae1d65e79e86.png)
+其它系统客户端的设置基本如此
+
 ## 网络测试
 
 从下面的测试结果来看，安装bbr魔改版效果比较好
@@ -330,3 +367,4 @@ docker run -d -p 2333:80 ilemonrain/html5-speedtest:latest
 
 [[小实验] 锐速&BBR究竟哪家强？个人PC有必要上锐速吗？](https://lolico.moe/gotagota/compare-serverspeeder-and-bbr.html)
 [Vpn与ss/ssr的区别](https://deeponion.org/community/threads/vpnss-ssr.901/)
+[vultr-vps-搭建-shadowsocks（ss）教程（新手向）](https://go2think.com/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%EF%BC%9Avultr-vps-%E6%90%AD%E5%BB%BA-shadowsocks%EF%BC%88ss%EF%BC%89%E6%95%99%E7%A8%8B%EF%BC%88%E6%96%B0%E6%89%8B%E5%90%91%EF%BC%89/)
