@@ -133,6 +133,56 @@ sudo ssserver -d stop
 sudo ssserver -c /etc/shadowsocks.json -d start
 ```
 
+### ipv6的支持
+
+#### VPS 开启 IPv6
+
+以 Vultr 为例，其他 VPS 类似。
+
+**1.已创建 VPS 开启 IPv6**
+
+进入控制面板，选择 “Settings” ——> “IPv6” ——> “Assign Ipv6 Network” ，然后重启 VPS 即可。
+
+![img](/images/e693fc58a0534b37b3038e3bd2bd11d9.png)
+
+**2.新创建VPS开启IPv6**
+
+在创建 VPS 时，在第四项的 “Enable IPv6” 前打勾即可创建一个开启 IPv6 的机器。
+
+![img](/images/01475e08e091470b854ea40a92f1b88a.png)
+
+**3. 开启后同样前往 “Settings” 的 “IPv6” 中即可查看到 IPv6 地址。**
+
+#### SS 配置 IPv6 支持
+
+打开 SS 配置文件
+
+vi /etc/shadowsocks.json|1|vi/etc/shadowsocks.json|
+
+编辑配置文件，使 ss 支持 IPv4 和 IPv6 地址
+
+```json
+{
+ "server":"::",      //同时支持 IPv4 和 IPv6
+ "port_password": "mypassword",
+ // ...
+}
+```
+
+`Esc`，输入 `:wq` 保存退出。重启 SS 即可。
+
+#### 客户端设置
+
+客户端的设置和以前一样，只不过把 IP 地址改为 IPv6 的地址即可。
+
+在使用时，可以先用 IPv4 的地址进行测试，看能不能上 Google 等，如果正常，再换位 IPv6 的地址进行测试。
+
+要先查看自己的网络是否支持 IPv6，右键任务栏“win10设置” ——> “网络和Internet”——> “以太网” ——>“打开网络共享中心” ，点击 “宽带连接”（拨号上网）或 “以太网”（路由器上网），查看网络状态，看 IPv6 是否有 Internet 连接。
+
+没有的话可以点击下面的“属性” ——> “网络”，查看是否勾选 “IPv6” Internet 协议，一般如果已经勾选，网络支持 IPv6 会自动启用，如果勾选了 IPv6 仍不可用，可以咨询运营商是否支持。不支持的话就没办法了。
+
+![img](/images/4186c069f84744a0b50b242341cc5547.png)
+
 ## 配置开机自启动
 
 1. 编辑 /etc/rc.local 文件
@@ -155,12 +205,11 @@ sudo vi /etc/rc.local
 
 到此重启服务器后，会自动启动。
 
-# TCP BBR 魔改版 for Debian/Ubuntu
+
+
+## 安装 TCP BBR
 
 BBR 是来自 Google 的一个 TCP 拥塞控制算法，单边加速，可以提升你的网络利用率。
-
-
-## 安装
 
 ### 确认你可以使用 BBR
 
@@ -197,6 +246,26 @@ lsmod | grep 'bbr_powered'
 ```
 
 如果结果不为空，则说明成功开启了 BBR 加强版。
+
+### 修改/关闭bbr方法
+
+1. 使用root用户登录，运行以下命令：
+
+```
+vim /etc/sysctl.conf
+```
+2. 删除或注释掉其中的两行：
+
+```
+# net.core.default_qdisc = fq           用#注释掉
+# net.ipv4.tcp_congestion_control = bbr 用#注释掉
+```
+3. 执行命令：
+
+```
+sysctl -p
+```
+最后重启服务器生效！
 
 ## 网络测试
 

@@ -68,6 +68,8 @@ class Image_loader(object):
                         else:
                             image_url = matched.group(2)
                         image_type = image_url.split('.')[-1]
+                        if image_type not in ['bmp','jpg','png','tif','gif','pcx','tga','exif','fpx','svg','psd','cdr','pcd','dxf','ufo','eps','ai','raw','WMF','webp']:
+                            image_type = 'png'
                         print(line)
                         print(image_url)
                         self.down_load_image(image_url,image_type)

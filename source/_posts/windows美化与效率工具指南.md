@@ -134,5 +134,27 @@ Hyper 是一个基于 Election 的终端 Terminal Emulator，是一个插件丰�
 
 ![img](/images/176efff0c80546ffa41a1cce0cf602bb.png)
 
+### 简单FTP Server
+
+单文件程序，大小仅400多K,[点击此处下载](/files/FTPServer.zip)
+
+
+#### 软件截图
+
+![img](/images/e3b728bc14cd4d129f2a52675f6a9c32.png)
+#### 用法
+
+可以设定访问用户名密码，设置权限，自定义端口，限制最大连接数
+
+共享目录即为 FTP 根目录
+
+开启后右上角“×”关掉即可最小化到任务栏图标
+
+然后访问`ftp://你的内网IP:服务端口`即可，如果服务端口是默认的`21`，那么直接访问`ftp://你的内网IP`即可
+
+建议在**windows资源管理器**中访问，这样就可以直接跟在本地复制粘贴一样，批量下载文件
+
+
 ## 参考文档
 [Mac To Win | 不完全迁移体验指北](https://sspai.com/post/45742)
+[LOLI NIKO](https://lolico.moe/software/)
