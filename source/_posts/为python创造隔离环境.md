@@ -4,9 +4,11 @@ date: 2018-08-17 14:14:15
 tags:
 ---
 
-## Python 下各种环境隔离工具简介
-
 virtualenv 是一个非常流行的用于创建独立的python libraries环境的工具。我强烈推荐你学习并了解它，因为他非常实用，并且应用广泛，很多人用它来搭建python开发环境。后面其他工具来主要与virtualenv来进行比较以说明差异。
+
+<!--more-->
+
+## Python 下各种环境隔离工具简介
 
 ### 非标准库
 
@@ -35,9 +37,8 @@ pyvenv 是python3自带的的一个标准工具，但是在python3.6中已经弃
 2.2 venv
 venv 是 python3 自带的命令行工具，可以通过运行 python3 -m venv 启动。另外在某些发行版中，venv需要额外安装，比如Ubuntu需要安装 python3-venv。venv和virtualenv很接近，主要差别是不需要单独copy python可执行文件到相应目录。如果你不需要支持python2，那么你可以直接使用venv。不过到目前为止，python社区仍然更偏向于使用virtuanenv。
 
-##
+## virtualenv
 
-二、安装过程
 1.在系统中安装virtualenv，建议用pip进行安装：
 
 ```
@@ -46,7 +47,7 @@ pip install virtualenv
 
 2.创建项目目录，为项目安装虚拟环境，首先创建了项目文件夹myproject，然后在该文件夹中安装了虚拟环境env。下面代码是在命令行（cmd）下输入。
 
-```
+```bash
 # 创建项目目录
 mkdir myproject
 # 进入项目目录
@@ -61,4 +62,25 @@ virtualenv env
 env\Scripts\activate
 ```
 
-4. 如果想退出虚拟环境，直接在命令行输入`deactivate`接口
+4. 如果想退出虚拟环境，直接在命令行输入`deactivate`即可
+
+### 离线使用virtualenv
+
+执行`virtualenv env`时，virtualenv会自动安装pip等工具，离线时就会导致安装失败；
+
+通过virtualenv.py源代码，我们可以看到它在创建venv时使用pip来安装setuptools/pip/wheel。因此，我们可以利用pip中提供的离线安装选项即可：
+
+1. 首先下载setuptools/pip/wheel到本地setuptoolsPackages文件夹
+
+```
+pip download setuptools
+pip download pip
+pip download wheel
+```
+
+2. 执行以下命令生成venv
+
+```
+# --extra-search-dir can be set multiple times, then it produces a list
+virtualenv --extra-search-dir path/to/setuptoolsPackages --no-download venv
+```
