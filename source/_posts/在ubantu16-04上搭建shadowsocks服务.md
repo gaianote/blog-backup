@@ -246,22 +246,6 @@ lsmod | grep 'bbr'
 **如果结果不为空，则说明成功开启了 BBR，那么你就可以使用后续的 BBR 加强版。**
 
 
-### 安装 BBR 魔改版
-
-```
-wget --no-check-certificate -qO 'BBR_POWERED.sh' 'https://moeclub.org/attachment/LinuxShell/BBR_POWERED.sh' && chmod a+x BBR_POWERED.sh && bash BBR_POWERED.sh
-```
-
-执行过程中会重新编译模块，等待完成即可。
-
-安装完成后执行
-
-```
-lsmod | grep 'bbr_powered'
-```
-
-如果结果不为空，则说明成功开启了 BBR 加强版。
-
 ### 修改/关闭bbr方法
 
 1. 使用root用户登录，运行以下命令：
@@ -306,7 +290,7 @@ pc以及其它客户端: 建议到[shadowsocks.org](https://shadowsocks.org/en/d
 
 ## 网络测试
 
-从下面的测试结果来看，安装bbr魔改版效果比较好
+对我而言还是推荐bbr的加速方式
 
 ### 测试方法
 

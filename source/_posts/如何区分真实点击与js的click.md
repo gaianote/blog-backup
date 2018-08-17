@@ -13,7 +13,9 @@ elem  = document.querySelector('#elem_id')
 elem.addEventListener('click',function(e){
   console.log(e.isTrusted,e.clientX,e.clientY,e.pageX,e.pageY)
 })
+
 ```
+
 鼠标真实点击，控制台输出了 true 60 60
 通过js控制的elem.click()，控制台输出false 0 0
 
