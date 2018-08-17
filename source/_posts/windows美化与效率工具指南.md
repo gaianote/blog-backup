@@ -33,15 +33,10 @@ TranslucentTB源码文件需要自己编译，所以直接[下载](https://githu
 ![img](/images/8cd18ead307f48bc8b7a2c38382aa1f0.png)Simple Desktop
 除此之外，无版权图片社区 [Unsplash](https://unsplash.com/)、免费图片社区 [Pixabay](https://pixabay.com/zh/)、甚至是必应每日壁纸等等都是优秀的壁纸来源。
 
-### ④ 文件管理和日常清理的习惯
-
-简洁的文件管理、不复杂凌乱的桌面和常清理的使用习惯自然会让你的 Windows 使用体验蒸蒸日上。💗
-
-参考：《[每个人都应该学会正确管理文件](https://sspai.com/series/13)》（少数派付费教程）
 
 ## 系统工具
 
-### ① [WoX](https://github.com/Wox-launcher/Wox)&nbsp;和 [Everything](https://www.voidtools.com/)：启动器工具
+### ① [WoX](https://github.com/Wox-launcher/Wox/releases)和Everything：启动器工具
 
 ![img](/images/0548a8d950c247989c3e82b19df76240.png)Wox
 WoX 是 Windows 上大名鼎鼎的开源启动器，我派对它有详尽的介绍 → 在[这里](https://sspai.com/post/33460)。
@@ -78,20 +73,7 @@ Send Anywhere 将文件上传到一个 p2p 网络上面，并非其服务器上�
 
 ## 效率工具
 
-### ① smpic：sm.ms 图床上传软件
-
-我的博客图片全部都放到了第三方的图床上面，这让我需要有一个便捷的图片上传途径。
-
-smpic 通过 SM.MS 图床的 API 与大名鼎鼎的 AutoHotKey 脚本实现了这样的图片上传利器，我将快捷键绑定为 `Ctrl` + `Alt` + `U`，这样点击图片按下快捷键直接就可以将图片上传至图床，并同时返回相应的图片引用链接，一气呵成。
-
-smpic 同样，是一款开源、免费的软件，可以在其&nbsp;[Github 页面](https://github.com/kookob/smpic)进行下载。
-
-### ② [Typora](https://typora.io/)： Markdown 编辑器
-
-![img](/images/070ed305645b4723af4618409d628f69.png)Typora
-Typora&nbsp;不必多说了，基本上是 Windows 上写 Markdown 的必备利器了。我的这篇文章就是在 Windows 的 Typora 上面编写完成的。我派对 Typora 也有详尽的介绍：[让 Markdown 写作更简单，免费极简编辑器：Typora](https://sspai.com/post/30292)
-
-### ③ [Snipaste](https://www.snipaste.com/)：截图工具
+### [Snipaste](https://www.snipaste.com/)：截图工具
 
 ![img](/images/6072ccc49efd46d69423a5fcba3dd30b.png)Snipaste
 Snipaste&nbsp;着实是 Windows 上最好的截图工具。但 Snipaste 除了我们常见的截图标注、窗口检测、全局快捷键等等简朴必备技能，还有贴图、取色等等高阶可玩性。目前 Snipaste 在 Windows 商店就可以下载得到，并且就在最近几天 Snipaste 也发布了 Pro 版本，增加了更多的玩法。
@@ -100,26 +82,6 @@ Snipaste&nbsp;着实是 Windows 上最好的截图工具。但 Snipaste 除了�
 Snipaste 的开发者对 Snipaste 很是上心，我派单独采访了这位同学，在这里有更加具体的介绍 →&nbsp;[幕后丨他做了最强免费「截图」工具 Snipaste 后，还有上万字的话想说](https://sspai.com/post/35097)
 
 上面介绍的工具中，除了 Typora 和图床上传工具 smpic 以外（smpic 因为免安装，所以不支持开机自启动），剩下的都有幸被我加入开机自启动名单。🎉
-
-### 开发环境
-
-经过近两年的开发，目前 Windows Subsystem For Linux（以下简称 WSL）已经十分完善。我从微软商店下载安装了 Ubuntu 18.04 作为 WSL 的系统，并使用 Ubuntu 下的 `aptitude` 包管理工具链配置了我的开发环境。安装 WSL 的详细步骤在 →&nbsp;[这里](https://docs.microsoft.com/zh-cn/windows/wsl/install-win10)。
-
-![img](/images/477c247b59f44314b44031b8318b1dc9.png)Ubuntu WSL
-在 WSL 中我安装了我的必备开发工具：
-
-* `git` 代码版本控制
-* `ssh` 远程服务器连接 🔗
-* `zsh` 与 `oh-my-zsh` Shell 环境
-
-在 Windows 中我通过 Hyper 终端环境进行实战。
-
-Hyper 是一个基于 Election 的终端 Terminal Emulator，是一个插件丰富的、跨平台的终端。我写过一个有关它的详细介绍&nbsp;[HOW TO | 让自己的终端漂亮得不像实力派](https://spencerwoo.com/2018/06/16/Terminal/)。在 Windows 下，可以通过 Hyper 调用 WSL 中的 `bash.exe`，这样就不用面对万恶的小黑框了。😈
-
-![img](/images/caa290646b8a4df39edad3c73443432a.png)我当前的开发环境
-这样折腾之后，一套可用的基于命令行的开发环境也处于可用状态了。目前存在的问题是从 Windows 端调用 Linux 内部的指令还是有些问题，比如我在 Visual Studio Code 中试图调用 Linux 环境下的 Python 解释器进行调试就异常麻烦，目前 Visual Studio Code 团队对 C/C++ 和 Node.js 的调试都已经适配完成，至于 Python、Go 等语言，我相信未来的适配也会越来越完善。
-
-参考：[My&nbsp;WSL&nbsp;Setup&nbsp;by&nbsp;lloydstubber](https://github.com/lloydstubber/my-wsl-setup)
 
 
 ## 其它软件
