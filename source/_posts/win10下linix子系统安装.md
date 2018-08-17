@@ -39,7 +39,7 @@ tags: windows linux
 ln -s "/mnt/c/Program Files/Sublime Text 3/sublime.exe" /bin/sublime
 ```
 
-当给你需要执行 Windows 上的 Python 时，可以使用以下命令
+当给你需要执行 Windows 上的 sublime 时，可以使用以下命令
 
 ```python
 sublime # 打开sublime
@@ -78,6 +78,8 @@ fi
 
 ```bash
 curl -L git.io/antigen > antigen.zsh
+# 修改配置 ~/.zshrc（如果切换帐号后无法使用 zsh 则把该用户的配置文件再配一遍）
+curl -L https://raw.githubusercontent.com/skywind3000/vim/master/etc/zshrc.zsh > ~/.zshrc
 # 使用 zsh 主题 robbyrussell
 antigen theme robbyrussell
 ```
@@ -90,6 +92,7 @@ antigen theme robbyrussell
 # Tell Antigen that you're done.
 antigen apply
 ```
+更多的主题可以到[oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh/wiki/themes)项目中查看
 
 ### 一些问题
 
