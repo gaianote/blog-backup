@@ -27,25 +27,98 @@ tags: windows linux
 **5. 打开cmd，输入bash,进入linux子系统**
 
 
-## 混合 Windows 和 Linux 的环境
+## [WSL与Windows的互操作性](https://docs.microsoft.com/en-us/windows/wsl/interop)
 
-在 Linux 环境里运行 Windows 软件？非常有趣。Windows 已经被挂在到了 `/mnt` 目录里，只需要找到自己需要的 exe 文件就可以执行。
+Windows的Linux子系统（WSL）不断改进Windows和Linux之间的集成。
+您可以：
 
-路径中文件名含有空格的话，使用""括起文件路径即可
+* 从Linux控制台调用Windows二进制文件。
+* 从Windows控制台调用Linux二进制文件。
+* **Windows Insiders**在Linux和Windows之间**构建17063+**共享环境变量。
 
-为了方便使用,可以给程序创建软链接:
+这提供了Windows和WSL之间的无缝体验。技术细节在[WSL博客](https://blogs.msdn.microsoft.com/wsl/2016/10/19/windows-and-ubuntu-interoperability/)上
 
+### 从WSL运行Windows程序
+
+WSL可以使用直接从WSL命令行调用Windows二进制文件`[binary name].exe`。例如，`notepad.exe`。为了使Windows可执行文件更易于运行
+
+比如运行安装在windows中的sublime:
+
+```bash
+# 路径中文件名含有空格的话，要使用""括起文件路径即可
+$ '/mnt/c/Program Files/Sublime Text 3/sublime.exe'
 ```
-ln -s "/mnt/c/Program Files/Sublime Text 3/sublime.exe" /bin/sublime
+如果`sublime`在你的系统路径中的话，直接调用sublime.exe即可
+
+```bash
+$ sublime.exe
 ```
 
-当给你需要执行 Windows 上的 sublime 时，可以使用以下命令
+为了方便的运行sublime,我们需要给它创建一个软连接
+
+```bash
+$ ln -s "/mnt/c/Program Files/Sublime Text 3/sublime.exe" /bin/sublime
+$ sublime
+```
+
+### 从WSL修改Windows文件
+
+> 首先了解一点，不支持使用WSL中的Windows应用程序修改位于VolF（不在`/mnt/`下）的文件.
+
+使用sublime打开位于/mnt/下的某个文件,修改后保存,然后使用(linux的)python执行它,这是一个完美的无缝工作流，非常了不起。
 
 ```python
-sublime # 打开sublime
-sublime readme.md # 使用sublime打开当前目录的readme.md
+$ sublime "/mnt/c/simple.py"
+$ python simple.py
 ```
 
+### 安装并使用autojump
+
+由于windows挂在到mnt路径下，你的项目路径一般比较深，cd转换目录非常的麻烦，利用autojump可以解决这个问题。
+
+autojump的工作方式很简单：它会在你每次启动命令时记录你当前位置，并把它添加进它自身的数据库中。这样，某些目录比其它一些目录添加的次数多，这些目录一般就代表你最重要的目录，而它们的“权重”也会增大。
+
+#### 在Linux上安装autojump
+
+在Ubuntu或Debian上安装autojump：
+
+```bash
+$ sudo apt-get install autojump
+```
+
+要在CentOS或Fedora上安装autojump，请使用yum命令。在CentOS上，你需要先启用EPEL仓库才行。
+
+```bash
+$ sudo yum install autojump
+```
+
+在Archlinux上安装autojump：
+
+```bash
+$ sudo pacman -S autojump
+```
+
+如果你找不到适合你的版本的包，你可以从GitHub上下载源码包来编译。
+
+#### 启用autojump
+
+```bash
+chmod 755 /usr/share/autojump/autojump.bash
+
+# 如果使用bash:
+echo "source /usr/share/autojump/autojump.bash" >> ~/.bashrc && source ~/.bashrc
+# 如果使用zsh:
+echo "source /usr/share/autojump/autojump.zsh" >> ~/.zshrc && source ~/.zshrc
+```
+
+#### 使用autojump
+
+假如我曾经访问过`/mnt/c/Users/user/gaianote.github.io`，那么直接执行：
+
+```bash
+j gaianote # 全称或者部分名称
+```
+便可以快捷的跳转到相应的目录了
 
 ## zsh 与 antigen
 
