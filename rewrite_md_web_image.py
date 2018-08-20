@@ -5,6 +5,7 @@ from collections import namedtuple
 import shutil
 import time
 import re
+from PIL import Image
 
 class Image_loader(object):
     """docstring for Image_loader"""
@@ -14,29 +15,34 @@ class Image_loader(object):
         self.wait_to_rewrite = False
         self.rewrite_time = 0
 
+    def is_valid_image(self,filename):
+        valid = True
+        try:
+            Image.open(filename).load()
+        except OSError:
+            valid = False
+        return valid
     def down_load_image(self,image_url,image_type):
         flag = True
         i = 0
-        # 下载三次，如果三次都相等则说明图片完整
+        # 如果图片不完整就删除重新下载
         while flag:
-            response_1 = requests.get(image_url)
-            response_2 = requests.get(image_url)
-            response_3 = requests.get(image_url)
+            os.remove(image_path)
+            response = requests.get(image_url)
 
             loading = '.'*(i+1)
             print('File check:' + loading , end='\r')
             i += 1
 
-            if response_1.content == response_2.content and response_1.content == response_3.content:
-                flag = False
-                loading = loading.replace('.',' ')
-                print('File check: √' + loading)
-        self.image_name = uuid.uuid4().hex + '.' + image_type
-        image_path = os.path.join(self.image_dir_path,self.image_name)
+            self.image_name = uuid.uuid4().hex + '.' + image_type
+            image_path = os.path.join(self.image_dir_path,self.image_name)
 
-        with open (image_path,'wb') as file:
-            file.write(response_1.content)
-            print('download ok: ' + image_path)
+            with open (image_path,'wb') as file:
+                file.write(response.content)
+            flag = not self.is_valid_image(image_path)
+        loading = loading.replace('.',' ')
+        print('File check: √' + loading)
+        print('download ok: ' + image_path)
 
     def get_file_list(self,dir_path = '.',file_types = '.*'):
 
