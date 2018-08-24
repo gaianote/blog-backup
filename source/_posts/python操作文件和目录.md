@@ -1,11 +1,33 @@
 ---
-title: python操作文件和目录
+title: python操作文件路径和目录
 date: 2018-06-11 17:04:01
-tags:
+tags: python
 ---
 
+## python获取文件路径 `os.path.abspath(__file__)`
 
-## 文件路径拼接
+在python文件中使用路径,应该使用`os.path.abspath(__file__)`。永远不要使用`os.path.abspath(.)`或者`os.getpwd()`,因为后者具有不确定性。
+
+* `os.path.abspath(.)`和`os.getcwd()`是等价的，它们表示当前的工作路径，可以被os.chdir()改变
+* `os.path.abspath(__file__)`表示当前文件所在路径
+
+它们返回的都是绝对路径。
+
+<!--more-->
+
+例1：
+
+```python
+>>> os.path.abspath('.')
+'/mnt/c/Users/user/gaianote.github.io'
+>>> os.chdir('source')
+>>> os.getcwd()
+'/mnt/c/Users/user/gaianote.github.io/source'
+>>> os.path.abspath('.')
+'/mnt/c/Users/user/gaianote.github.io/source'
+```
+
+例2:
 
 希望得到工程的根目录BASE_PATH：
 
@@ -16,6 +38,10 @@ BASE_PATH
     |-config.py # 设置文件，定义了path路径
 |-main.py # 入口文件
 ```
+
+在config.py中书写`os.path.abspath(__file__)`,和 `os.path.abspath('.')`,在main.py中执行，第一个得到了config的路径，第二个得到了BASE_PATH的路径
+
+## 路径拼接
 
 **不要用abspath('.')，不要用字符串拼接**
 
@@ -31,14 +57,6 @@ BASE_PATH = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
 BASE_PATH = os.path.abspath('.')
 path =os.path.join(BASE_PATH,'driver','chromedriver.exe')
 ```
-
-**os.path.abspath**
-
-`os.path.abspath(__file__)` 获取所定义脚本的完整路径 # 需要再文件中执行，在控制台会报错
-`os.path.abspath('.')` 获取入口文件的目录路径(通常是工程目录)
-`os.path.abspath('..')` 获取入口文件的目录的父目录路径
-
-在config.py中书写`os.path.abspath(__file__)`,和 `os.path.abspath('.')`,在main.py中执行，第一个得到了config的路径，第二个得到了BASE_PATH的路径
 
 
 ## os 模块
