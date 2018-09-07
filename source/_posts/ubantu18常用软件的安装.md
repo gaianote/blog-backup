@@ -1,11 +1,10 @@
----
-title: ubantu18常用软件的安装
-date: 2018-08-17 09:45:26
+title: ubantu18使用apt-get安装软件
 tags:
-    - linux
-    - ubantu
+  - linux
+  - ubantu
+categories: []
+date: 2018-08-17 09:45:00
 ---
-
 对于软件而言，软件厂商自己编译好了很多二进制文件，只要系统和环境对应，下载之后就能直接安装即可。
 
 但是安装过程中还是会遇到很多痛点:
@@ -94,4 +93,33 @@ sudo apt-get update
 ```bash
 sudo apt-get -y install nodejs
 sudo apt-get -y install npm
+```
+
+### 运行node提示错误
+
+```
+run npm command gives error "/usr/bin/env: node: No such file or directory"
+```
+
+```bash
+ln -s /usr/bin/nodejs /usr/bin/node 
+```
+
+### 系统node无法更新
+
+
+我遇到了一个问题，即在我的ubantu16 上安装nodejs无法更新，始终显示4.2版本，通过以下方法解决了问题
+
+
+```bash
+sudo apt-get install curl
+sudo apt autoremove
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+sudo apt-get install nodejs
+```
+
+运行完成后，查看版本号，已经是第10版了，至此升级成功
+
+```bash
+nodejs -v
 ```
