@@ -115,4 +115,4 @@ admin:
   username: gaianote
   password_hash: $2a$10$jbGtGwHdyCPWGGmTmO9ZLOkRlwhJkf2MYZRNOompZgUVaGZh.1ayi
   secret: _secretisasecretP_
-  deployCommand: './hexo-deploy.sh'
+  deployCommand: '~/gaianote.github.io/hexo-deploy.sh'
