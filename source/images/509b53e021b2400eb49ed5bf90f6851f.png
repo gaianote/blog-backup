@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8' ?>
-<Error>
-	<Code>AccessDenied</Code>
-	<Message>You are denied by bucket referer rule</Message>
-	<Resource>blog-1257171214.cos.ap-shanghai.myqcloud.com/usr/uploads/2018/03/546591309.png</Resource>
-	<RequestId>NWI3M2JkMjRfMmQzOTQzNjRfNjBjNl80ZmMzMGE=</RequestId>
-	<TraceId>OGVmYzZiMmQzYjA2OWNhODk0NTRkMTBiOWVmMDAxODc0OWRkZjk0ZDM1NmI1M2E2MTRlY2MzZDhmNmI5MWI1OWExNmY2NDVlNWI0NWZiZTdjNmI0N2ZlYjU2ODMyMTY5ODdmOGFlZjY2NDcyNmY5MGJiZjk5MmZlNmY5ODEwMTA=</TraceId>
-</Error>
-

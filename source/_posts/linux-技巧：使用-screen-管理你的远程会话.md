@@ -49,8 +49,7 @@ screen还有更高级的功能。你可以不中断screen窗口中程序的运�
 `[root@tivf06 ~]# screen vi /tmp/abc`
 之后我们想暂时退出做点别的事情，比如出去散散步，那么在screen窗口键入`C-a d`，Screen会给出detached提示：
 
-![img](https://www.ibm.com/developerworks/cn/linux/l-cn-screen/vi.jpg)
-
+![img](/images/f2b550b76c3940e49621f6ffbd5fc3b0.jpg)
 
 半个小时之后回来了，找到该screen会话：
 

@@ -1,9 +1,7 @@
----
 title: 在ubantu16.04上搭建shadowsocks服务
 date: 2018-08-15 11:48:14
 tags:
 ---
-
 以前我们科学上网的时候最常用的就是vpn了，而2年前，ss被开源(ss出现一年后，开源社区的破娃小姐姐在ss的基础上发布了ssr)，现在已经是最流行的科学上网方案。
 
 
@@ -271,7 +269,7 @@ sysctl -p
 ### 下载
 
 ios客户端：搜索windy，需要日区的apple id，因为中国区没有上架，日区美区都可以
-pc以及其它客户端: 建议到[shadowsocks.org](https://shadowsocks.org/en/download/clients.html)进行下载
+pc以及其它客户端: 建议到[shadowsocks.org](https://shadowsocks.org/en/download/clients.html)进行下载，或者[github](https://github.com/shadowsocks/shadowsocks-windows/releases)进行下载
 
 ### 使用
 

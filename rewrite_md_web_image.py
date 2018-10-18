@@ -27,8 +27,9 @@ class Image_loader(object):
         i = 0
         # 如果图片不完整就删除重新下载
         while flag:
-            os.remove(image_path)
-            response = requests.get(image_url)
+            headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'}
+
+            response = requests.get(image_url,headers = headers)
 
             loading = '.'*(i+1)
             print('File check:' + loading , end='\r')
@@ -39,7 +40,13 @@ class Image_loader(object):
 
             with open (image_path,'wb') as file:
                 file.write(response.content)
+
             flag = not self.is_valid_image(image_path)
+            print('flag:',flag,'status_code',response.status_code,'url:',image_path)
+            if flag:
+              os.remove(image_path)
+
+
         loading = loading.replace('.',' ')
         print('File check: √' + loading)
         print('download ok: ' + image_path)
