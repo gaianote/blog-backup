@@ -40,11 +40,6 @@ TranslucentTB源码文件需要自己编译，所以直接[下载](https://githu
 
 Launchy：自由的跨平台工具，帮助你忘记开始菜单、桌面图标甚至文件管理器。
 
-经过简单的设置，便可以将你希望搜寻的文件夹，可执行文件，或者图片等任意你希望快速寻找到的文件录入launchy，以进行快速打开/启动，设置方法如下所示：
-
-![img](/images/Snipaste_2018-11-21_17-21-02.png)
-
-
 ### ② QuickLook ：空格键预览工具
 
 ![img](/images/709b53653f7b437a8cdb53d8f2ad8c6c.png)QuickLook

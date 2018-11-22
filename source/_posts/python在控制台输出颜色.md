@@ -1,8 +1,8 @@
----
 title: python在控制台输出颜色
-date: 2018-05-30 10:25:10
 tags: python
+date: 2018-05-30 10:25:10
 ---
+首先安装termcolor库
 
 ```bash
 pip install termcolor
@@ -55,4 +55,18 @@ underline
 blink
 reverse
 concealed
+```
+## windows支持
+
+termcolor仅支持linux系统，对于windows，需要结合[colorama](https://pypi.org/project/colorama/)库进行使用
+
+```python
+from colorama import init
+from termcolor import colored
+
+# use Colorama to make Termcolor work on Windows too
+init()
+
+# then use Termcolor for all colored text output
+print(colored('Hello, World!', 'green', 'on_red'))
 ```
