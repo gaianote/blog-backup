@@ -1,9 +1,7 @@
----
 title: 使用hexo搭建博客并托管在github
-date: 2017-04-23 00:03:44
 tags: tool
+date: 2017-04-23 00:03:44
 ---
-
 ## Hexo简介
 
 Hexo 是一个简单地、轻量地、基于Node的一个静态博客框架，可以方便的生成静态网页托管在github和Heroku上。
@@ -455,6 +453,21 @@ hexo添加访问量统计功能可以用**百度的站长统计**、**leancloud*
  }
 %>
 ```
+
+### VPS gengrator 命令导致 hexo 被 killed 解决方案
+
+```
+free -m 
+dd if=/dev/zero of=/swap bs=4096 count=1572864
+mkswap /swap
+swapon /swap
+echo "LABEL=SWAP-sda /swap swap swap defaults 0 0" >> /etc/fstab
+```
+这样会在根目录建立一个 swap 文件,用于虚拟内存使用
+
+`dd if=/dev/zero of=/swap bs=4096 count=1572864`命令时,会卡一会,等待即可,然后就可以正常使用 `hexo g` 命令了
+
+
 ## 参考资料
 
 [hexo官网](https://hexo.io/)
