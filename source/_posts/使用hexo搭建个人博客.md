@@ -17,6 +17,7 @@ Hexo 是一个简单地、轻量地、基于Node的一个静态博客框架，�
 3. 运行`git clone git@github.com:gaianote/gaianote.github.io.git`，将source分支clone到本地
 4. cd到项目根目录，运行 `npm install` 安装相关依赖
 5. `hexo server` 启动服务器，可以在本地浏览blog
+6. 使用http://localhost:4000/admin/访问管理平台，在线编辑blog
 
 ### 云端推送
 
