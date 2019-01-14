@@ -92,12 +92,24 @@ changyan_conf: false
 disqus: false
 
 #5、Gitment
-gitment_owner: 'gaianote'     #你的 GitHub ID
+gitment_owner: false     #你的 GitHub ID
 gitment_repo: 'gaianote.github.io'          #存储评论的 repo
 gitment_oauth:
   client_id: '5a3c5360539711069cd5'           #client ID
   client_secret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583'       #client secret
-# 样式定制 - 一般不需要修改，除非有很强的定制欲望…
+  # gitment_owner: 'gaianote'
+  # gitment_repo: 'gaianote.github.io'
+  # gitment_oauth:
+  #   client_id: '5a3c5360539711069cd5'
+
+gitalk:
+        enable:  true
+        githubID:  gaianote   
+        repo:  'gaianote.github.io'
+        ClientID:  '5a3c5360539711069cd5'
+        ClientSecret:  '2c5c5bde68afec70aecc213b1d0e42bc929f3583'
+        adminUser:  gaianote
+        distractionFreeMode: true  
 style:
   # 头像上面的背景颜色
   header: '#4d4d4d'
@@ -128,4 +140,5 @@ friends:
   友情链接6: http://localhost:4000/
 
 aboutme: 很惭愧<br><br>只做了一点微小的工作<br>谢谢大家
+
 
