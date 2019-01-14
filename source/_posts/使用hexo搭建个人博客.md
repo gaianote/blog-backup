@@ -468,7 +468,9 @@ echo "LABEL=SWAP-sda /swap swap swap defaults 0 0" >> /etc/fstab
 
 `dd if=/dev/zero of=/swap bs=4096 count=1572864`命令时,会卡一会,等待即可,然后就可以正常使用 `hexo g` 命令了
 
+### 为blog添加评论功能
 
+hexo gitment
 ## 参考资料
 
 [hexo官网](https://hexo.io/)
