@@ -468,9 +468,88 @@ echo "LABEL=SWAP-sda /swap swap swap defaults 0 0" >> /etc/fstab
 
 `dd if=/dev/zero of=/swap bs=4096 count=1572864`命令时,会卡一会,等待即可,然后就可以正常使用 `hexo g` 命令了
 
-### 为blog添加评论功能
+## 为blog添加评论功能 next + gitalk
 
-hexo gitment
+### 配置方法
+
+1.我们先来找到`Hexo\themes\next\layout\_third-party\comments`这个目录下，新建一个叫`gitalk.swig`的文件，里面写入下列代码：
+
+```
+{% if page.comments && theme.gitalk.enable %}
+	<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+	<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+	<script type="text/javascript">
+		var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+			clientID:  '{{theme.gitalk.clientID}}',
+			clientSecret: '{{theme.gitalk.clientSecret}}',
+			repo: '{{theme.gitalk.repo}}',
+			owner: '{{theme.gitalk.owner}}',
+			admin: '{{theme.gitalk.admin}}',
+			id: location.pathname,
+			distractionFreeMode: '{{theme.gitalk.distractionFreeMode}}',
+		  })
+		  gitalk.render('gitalk-container')
+	</script>
+{% endif %}
+```
+同目录下的index.swig文件中，添加以下代码：
+```
+{% include 'gitalk.swig' %}
+```
+目的是使主页面包含上面新建的文件
+
+2.然后找到`\Hexo\themes\next\layout\_partials`文件夹的`comments.swig`文件：这是评论模块的配置文件。
+在倒数第二层的if-else判断里加入：
+
+```
+{% elseif theme.gitalk.enable %}
+	<div id="gitalk-container"></div>
+```
+
+3.修改next的`_config.yaml`文件，添加以下内容:
+
+```
+gitalk:
+  enable: true
+  clientID: 5a3c536053971... # your client id
+  clientSecret: 2c5c5bde68afec70ae... # your client secret
+  repo: gaianote.github.io # your github repo
+  owner: gaianote # your github id
+  admin: gaianote # your github id
+  pagerDirection: first
+```
+### 解决 Error: Validation Failed 报错问题
+
+最近github更新过后，issue的名字不能超过50，所以会出现**Error: Validation Failed**报错,解决方法如下:
+
+在 `themes\NexT\source\js\src\` 下添加 [`md5.min.js`](https://github.com/blueimp/JavaScript-MD5/blob/master/js/md5.min.js)
+
+然后修改修改gitalk.swig，引入md5.min.js，对id值md5编码化
+
+```
+{% if page.comments && theme.gitalk.enable %}
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+  <script src="/js/src/md5.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '{{ theme.gitalk.ClientID }}',
+          clientSecret: '{{ theme.gitalk.ClientSecret }}',
+          repo: '{{ theme.gitalk.repo }}',
+          owner: '{{ theme.gitalk.githubID }}',
+          admin: ['{{ theme.gitalk.adminUser }}'],
+
+          id: md5(location.pathname),
+
+          distractionFreeMode: '{{ theme.gitalk.distractionFreeMode }}'
+        })
+        gitalk.render('gitalk-container')
+    </script>
+{% endif %}
+```
 ## 参考资料
 
 [hexo官网](https://hexo.io/)
