@@ -6,7 +6,7 @@ tags: javascript
 
 ## getComputedStyle
 
-getComputedStyle是一个可以获取当前元素所有最终使用的CSS属性值。返回的是一个CSS样式声明对象([object CSSStyleDeclaration])，只读。
+`getComputedStyle`是一个可以获取当前元素所有最终使用的CSS属性值。返回的是一个CSS样式声明对象([object CSSStyleDeclaration])，只读。
 
 getComputedStyle() gives the final used values of all the CSS properties of an element.
 
