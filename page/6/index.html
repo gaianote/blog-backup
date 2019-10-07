@@ -264,130 +264,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/04/25/jenkins/1.jenkins基础入门/14.Jenkins邮件通知设置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/25/jenkins/1.jenkins基础入门/14.Jenkins邮件通知设置/" itemprop="url">Jenkins邮件通知设置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-25T16:25:30+00:00">
-                2019-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>上一篇，介绍了一个构建监控的工具，其实这个工具，在一般实际工作中用处不大，甚至还不如一个邮件提醒的实在。所以，本篇，讨论Jenkins上邮件设置，通过设置了邮件地址和邮件发送服务器，我们构建后，就可以通过邮件得到构建结果。这个功能是很有必要的，试想一个这么场景，我需要Jenkins完成一个Job的构建，这个构建过程大概持续半小时到一个小时。那么我们是不是一直监控半小时到一个小时。其实没有必要，我们可以在这个时间内去干别的事情，只需要，时间到了就能收到构建的邮件。</p>
-<h2 id="Jenkins邮件提醒配置界面"><a href="#Jenkins邮件提醒配置界面" class="headerlink" title="Jenkins邮件提醒配置界面"></a>Jenkins邮件提醒配置界面</h2><p>在Jenkins邮件提示设置是在系统设置中，点击 系统管理-&gt;系统设置，下拉到页面底部，可以看到邮件通知设置。</p>
-<p><img src="/images/827832229231.png" alt="img"></p>
-<p>点击勾选高级，这里用QQ邮箱举例，可以从<a href="http://blog.csdn.net/u011541946/article/details/77278837" target="_blank" rel="noopener">参考这里</a>。</p>
-<p><img src="/images/827832229241.png" alt="img"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/04/24/git学习/1.git-clone/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -462,6 +338,126 @@
             <p><strong>git clone</strong> 命令的作用是，将远程仓库中的代码克隆到本地</p>
 <p>clone 某个远程分支到本地</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> -b 2.1.2 ssh://git@192.168.71.104:2222/zeus/ztest.git</span><br><span class="line">$ <span class="built_in">cd</span> ztest</span><br><span class="line">$ git branch</span><br><span class="line">* 2.1.2</span><br><span class="line">$ git branch -a</span><br><span class="line">* 2.1.2</span><br><span class="line">  remotes/origin/1.2.2</span><br><span class="line">  remotes/origin/2.1.2</span><br><span class="line">  remotes/origin/HEAD -&gt; origin/master</span><br><span class="line">  remotes/origin/master</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/04/21/jenkins/1.jenkins基础入门/10构建一个程序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/21/jenkins/1.jenkins基础入门/10构建一个程序/" itemprop="url">jenkins 构建一个程序</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-21T15:17:30+00:00">
+                2019-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>点击Build选项卡 -&gt; Add buid step 可以看到，jenkins支持以下几种构建模式，如果主机时windows，就执行Execute Windows batch command,如果主机时linux，就点击Execute shell<br><img src="/images/1557301014425.png" alt="img"></p>
 
           
         
@@ -592,126 +588,6 @@
 </ol>
 <p>点击Jenkins，出现如下配置界面。</p>
 <p><img src="/images/4328332229212.png" alt="img"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/04/21/jenkins/1.jenkins基础入门/10构建一个程序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/21/jenkins/1.jenkins基础入门/10构建一个程序/" itemprop="url">jenkins 构建一个程序</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-21T15:17:30+00:00">
-                2019-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>点击Build选项卡 -&gt; Add buid step 可以看到，jenkins支持以下几种构建模式，如果主机时windows，就执行Execute Windows batch command,如果主机时linux，就点击Execute shell<br><img src="/images/1557301014425.png" alt="img"></p>
 
           
         
@@ -1552,6 +1428,157 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/04/16/jenkins/1.jenkins基础入门/1.jenkins简单介绍和安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/16/jenkins/1.jenkins基础入门/1.jenkins简单介绍和安装/" itemprop="url">jenkins简单介绍和安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-16T12:15:32+00:00">
+                2019-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-jenkins简介"><a href="#1-jenkins简介" class="headerlink" title="1. jenkins简介"></a>1. jenkins简介</h2><p>如果在做自动化测试的朋友，应该熟悉Jenkins，或者至少使用过。如果一个人没有使用过Jenkins或者hudson，hudson是Jenkins的前身，他还说自己做过自动化测试，只能说，他只不过是在做半自动化测试。为什么是半自动化呢？他只不过是把手工用例转换自动化脚本，<strong>真正的自动化测试是一个全公司的平台，有测试，开发，运维，三个团队一起研发和维护和使用的自动化测试平台，这个通常叫devops，也就是开发和运维两个英文单词的缩写。</strong>devops最近几年开始火热起来，据说它能解决企业传统开发，测试，运维的工作流程和模式，能够达到项目快速迭代，缩短项目上线时间。要实现这个过程，需要每个环节都全部自动化，开发代码提交到自动化打包，测试启动自动化测试脚本，运维启动自动更新文件到线上环境，三者之前，形成一个闭环，每个环节都打通，自动化实现，快速响应，快速迭代。</p>
+<p>话题扯得有点远了，干脆再扯一点。devops高大上的一个东西，或者叫项目，我没法实现。能实现的，都是国内外技术专家，膜拜这些大神。这样的大神肯定有，但是肯定不多。我所理解的国内的devops平台，一般是这样实现的。组件一个devops研发团队，把开发，测试，运维，三种共有的东西和流程给抽象化，然后提取抽象化的东西，开始进去编程实现。每个节点都是可以扩展和提供API给别人。<strong>在这个基础之上，开发完成自己任务，测试完成自己自动化测试，运维完成自动部署和监控。</strong>每个环节都有自己团队的工具和实现方式，三个都实现好了，然后接入devops平台，从而达到完整的体系。</p>
+<p>这个系列，我们重点介绍devops平台的关键的核心的管理工具，叫Jenkins，主要介绍Jenkins的基本认识和基本使用方法。第一个问题来了，什么是Jenkins？它是一个Java开放的开源程序，所以，需要提前安装Java JDK环境，能支持安装到windows,mac,linux平台，主要是一个管理工具。第二个问题，为什么要使用Jenkins？我们用它，主要是项目上的持续集成和持续交付。持续集成对应英文（Continuous Integration），有时候简称CI，持续交付对应英文（Continuous Delivery），简称CD，以后，听到了CI和CD，就明白了什么意思。下面这张图，是Jenkins在实际项目运用上的一个经典的流程图。</p>
+<p>作为一个测试工程师，可能你的工作大部分是在上面图中的执行测试部分。测试工程师需要写webui,接口自动化测试脚本，或者手机功能测试脚本。自动化打包和自动化运维部署，一般是开发团队和运维团队干的活。不过，现在每个公司都是追求全栈，全能工程师，牛人需要每个环节都参与。三者之间，现在已经紧密合作关系，所以，现在经常听到有这样的描述：A是开发人员里面，做测试做得最好的；B是测试里面，写代码能力最好的；C是运维里面，开发能力最强的。好想又扯远了，带偏了主题。下面，跟着几个步骤，完成Jenkins的环境搭建。</p>
+<h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h2><p>本导读将向您介绍使用 Jenkins、Jenkins 的主要特性和 Jenkins Pipeline 的基本知识。 本导读使用“独立”的 Jenkins 发行版，它可以在您自己本地的机器上运行。</p>
+<h3 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h3><p>第一次使用 Jenkins，您需要：</p>
+<ul>
+<li>机器要求：<ul>
+<li>256 MB 内存，建议大于 512 MB</li>
+<li>10 GB 的硬盘空间（用于 Jenkins 和 Docker 镜像）</li>
+</ul>
+</li>
+<li>需要安装以下软件：<ul>
+<li>Java 8 ( JRE 或者 JDK 都可以)</li>
+<li><a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a> （导航到网站顶部的Get Docker链接以访问适合您平台的Docker下载）</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-下载并运行-Jenkins"><a href="#2-下载并运行-Jenkins" class="headerlink" title="2. 下载并运行 Jenkins"></a>2. 下载并运行 Jenkins</h3><ol>
+<li><a href="http://mirrors.jenkins.io/war-stable/latest/jenkins.war" target="_blank" rel="noopener">下载 Jenkins</a>.</li>
+<li>打开终端进入到下载目录.</li>
+<li>运行命令 <code>java -jar jenkins.war --httpPort=8080</code>.</li>
+<li>打开浏览器进入链接 <code>http://localhost:8080</code>.</li>
+<li>按照说明完成安装.</li>
+</ol>
+<p>安装完成后，您可以开始使用 Jenkins，当然，有时候你还需要手动开启你的防火墙端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># config firewall</span></span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=8080/tcp</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<h3 id="3-设置语言"><a href="#3-设置语言" class="headerlink" title="3. 设置语言"></a>3. 设置语言</h3><ol>
+<li>安装<code>Locale Plugin</code>, 重启后生效。</li>
+<li>配置<code>【Manage Jenkins】&gt;【Configure System】&gt; 【Locale】</code></li>
+<li>语言填<code>zh_CN</code>，勾选强制设置语言</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1604,7 +1631,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-count">219</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

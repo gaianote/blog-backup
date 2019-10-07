@@ -264,138 +264,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/03/25/docker/12.docker宿主主机与容器拷贝文件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/docker/12.docker宿主主机与容器拷贝文件/" itemprop="url">docker宿主主机与容器拷贝文件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T10:05:23+00:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-从容器拷贝文件到宿主机"><a href="#1-从容器拷贝文件到宿主机" class="headerlink" title="1. 从容器拷贝文件到宿主机"></a>1. 从容器拷贝文件到宿主机</h2><p>语法：</p>
-<p><code>docker cp</code> 容器名：容器中要拷贝的文件名及其路径 要拷贝到宿主机里面对应的路径</p>
-<p>示例：</p>
-<p>将容器：<code>mycontainer</code> 中路径：<code>/opt/testnew/</code>下的文件：<code>file.txt</code>拷贝到宿主机<code>/opt/test/</code>路径下，在宿主机中执行命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker cp mycontainer:/opt/testnew/file.txt /opt/<span class="built_in">test</span>/</span><br></pre></td></tr></table></figure>
-<h2 id="2-从宿主机拷贝文件到容器"><a href="#2-从宿主机拷贝文件到容器" class="headerlink" title="2. 从宿主机拷贝文件到容器"></a>2. 从宿主机拷贝文件到容器</h2><p>语法：</p>
-<p><code>docker cp</code> 宿主机中要拷贝的文件名及其路径 容器名：要拷贝到容器里面对应的路径</p>
-<p>示例：</p>
-<p>将宿主机中路径：<code>/opt/test/</code>下的文件：<code>file.txt</code>拷贝到容器：<code>mycontainer</code>的<code>/opt/testnew/</code>路径下，同样还是在宿主机中执行命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker cp /opt/<span class="built_in">test</span>/file.txt mycontainer：/opt/testnew/</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>需要注意的是，不管容器有没有启动，拷贝命令都会生效。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/03/23/linux/1.常用命令/使用dd命令快速生成大文件或者小文件的方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1773,6 +1641,250 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/02/12/docker/5.docker持久化存储/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/12/docker/5.docker持久化存储/" itemprop="url">docker持久化存储</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-12T15:05:37+00:00">
+                2019-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-管理Docker中的数据"><a href="#1-管理Docker中的数据" class="headerlink" title="1. 管理Docker中的数据"></a>1. 管理Docker中的数据</h2><p>默认情况下，在容器内创建的所有文件都存储在可写容器层中。这意味着：</p>
+<ul>
+<li>当该容器不再存在时，数据不会持久存在，并且如果另一个进程需要数据，则可能很难从容器中获取数据。</li>
+<li>容器的可写层紧密耦合到运行容器的主机。您无法轻松地将数据移动到其他位置。</li>
+<li>写入容器的可写层需要 <a href="https://docs.docker.com/storage/storagedriver/" target="_blank" rel="noopener">存储驱动程序</a>来管理文件系统。存储驱动程序使用Linux内核提供联合文件系统。与使用直接写入主机文件系统的<em>数据卷</em>相比，这种额外的抽象降低了性能 。</li>
+</ul>
+<p>Docker有两个容器选项可以在主机中存储文件，因此即使在容器停止之后文件仍然存在：<em>卷</em>和 <em>绑定挂载</em>。如果你在Linux上运行Docker，你也可以使用<em>tmpfs mount</em>。</p>
+<p>继续阅读有关这两种持久数据方式的更多信息。</p>
+<h2 id="2-选择正确的Mount类型"><a href="#2-选择正确的Mount类型" class="headerlink" title="2. 选择正确的Mount类型"></a>2. 选择正确的Mount类型</h2><p>无论您选择使用哪种类型的安装，数据在容器内看起来都是相同的。它作为目录或容器文件系统中的单个文件公开。</p>
+<p>可视化卷，绑定装载和<code>tmpfs</code> 装载之间差异的简单方法是考虑数据在Docker宿主主机上的位置。</p>
+<p><img src="/images/types-of-mounts.png" alt="img"></p>
+<h3 id="1-Volume"><a href="#1-Volume" class="headerlink" title="1. Volume"></a><strong>1. Volume</strong></h3><p><strong>存储在由Docker（/var/lib/docker/volumes/）管理的主机文件系统的一部分中。非Docker进程不应修改文件系统的这一部分。卷是在Docker中保留数据的最佳方式。</strong></p>
+<ul>
+<li>对于容器内非空目录的处理：第一次创建卷时 ，会将容器内的非空目录内容复制到docker-volume中</li>
+</ul>
+<h3 id="2-Mount-Points"><a href="#2-Mount-Points" class="headerlink" title="2. Mount Points"></a><strong>2. Mount Points</strong></h3><p>可以存储在主机系统的<em>任何位置</em>。它们甚至可能是重要的系统文件或目录。Docker主机或Docker容器上的非Docker进程可以随时修改它们。</p>
+<ul>
+<li>对于容器内非空目录的处理：如果容器非空目录挂载到宿主主机，容器内该目录就会隐藏，如果时/usr/bin等目录，则该容器就无法启动，所以，<strong>通常不应该使用Mount Points挂载容器的非空目录到宿主主机</strong></li>
+</ul>
+<h3 id="3-tmpfs挂载"><a href="#3-tmpfs挂载" class="headerlink" title="3. tmpfs挂载"></a><strong>3. tmpfs挂载</strong></h3><p>仅存储在主机系统的内存中，永远不会写入主机系统的文件系统。</p>
+<h2 id="3-Docker-Volume"><a href="#3-Docker-Volume" class="headerlink" title="3. Docker Volume"></a>3. Docker Volume</h2><p><strong>Docker Volume</strong> 是保存<code>Docker</code>容器生成和使用的数据的首选机制。虽然绑定挂载依赖于主机的目录结构，但卷完全由<code>Docker</code>管理。卷绑定安装有几个优点：</p>
+<ul>
+<li>与绑定装载相比，卷更易于备份或迁移。</li>
+<li>您可以使用Docker CLI命令或Docker API管理卷。</li>
+<li>卷适用于Linux和Windows容器。</li>
+<li>可以在多个容器之间更安全地共享卷。</li>
+<li>卷驱动程序允许您在远程主机或云提供程序上存储卷，加密卷的内容或添加其他功能。</li>
+<li>新卷的内容可以由容器预先填充。</li>
+</ul>
+<p><img src="/images/types-of-mounts-volume.png" alt="img"></p>
+<p>此外，卷通常是比容器的可写层中的持久数据更好的选择，因为使用卷不会增加使用它的容器的大小，并且卷的内容存在于给定容器的生命周期之外。</p>
+<h3 id="1-创建和管理volume"><a href="#1-创建和管理volume" class="headerlink" title="1. 创建和管理volume"></a>1. 创建和管理volume</h3><p><strong>1. 创建存储卷</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create $volume_name</span><br></pre></td></tr></table></figure>
+<p><strong>2. 列出已有存储卷</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume ls</span><br><span class="line"></span><br><span class="line">DRIVER              VOLUME NAME</span><br><span class="line">local               1aa54b00b05aaf521f93586afcae5c9f6a5e44eb6a84c0ab99222435f75b28f5</span><br><span class="line">local               9cf0504c3ac9b408837aa456e13c450b7b9a212f450910ccbee3cefde165027a</span><br></pre></td></tr></table></figure>
+<h3 id="2-删除存储卷"><a href="#2-删除存储卷" class="headerlink" title="2. 删除存储卷"></a>2. 删除存储卷</h3><p><strong>1. 删除卷</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume rm volume_name</span><br></pre></td></tr></table></figure>
+<p><strong>2. 删除所有未使用的卷并释放空间</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume prune</span><br></pre></td></tr></table></figure>
+<h3 id="3-检查卷："><a href="#3-检查卷：" class="headerlink" title="3. 检查卷："></a>3. 检查卷：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume inspect my-vol</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Driver&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Labels&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/my-vol/_data&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;my-vol&quot;,</span><br><span class="line">        &quot;Options&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Scope&quot;: &quot;local&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="4-使用docker卷"><a href="#4-使用docker卷" class="headerlink" title="4. 使用docker卷"></a>4. 使用docker卷</h3><p>我们还可以使用-v或–volume标志将Docker卷附加到容器。但是，我们不是像使用绑定挂载那样将路径放在主机上的目录中，而是简单地放置卷名。</p>
+<p>用法：-v 后面跟随  卷名 : docker容器路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v volume_name:/docker_path</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name adonis \</span><br><span class="line">    -v volume_name:/docker_path \</span><br><span class="line">    ztest</span><br></pre></td></tr></table></figure>
+<h2 id="2-使用绑定挂载"><a href="#2-使用绑定挂载" class="headerlink" title="2. 使用绑定挂载"></a>2. 使用绑定挂载</h2><p>自Docker早期以来，Bind Mounts一直存在。与<a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener">卷</a>相比，绑定装载具有有限的功能。使用绑定装入时，<em>主机</em>上的文件或目录将装入容器中。文件或目录由其在主机上的完整路径或相对路径引用。相反，当您使用卷时，会在主机上的Docker存储目录中创建一个新目录，Docker会管理该目录的内容。</p>
+<p>该文件或目录不需要已存在于Docker主机上。如果它尚不存在，则按需创建。绑定安装非常高效，但它们依赖于具有特定目录结构的主机文件系统。<strong>如果您正在开发新的Docker应用程序，请考虑使用<a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener">命名卷</a>。</strong>您无法使用Docker CLI命令直接管理Bind Mount。</p>
+<p><img src="/images/types-of-mounts-bind.png" alt="img"></p>
+<h3 id="1-选择-v或–mount标志"><a href="#1-选择-v或–mount标志" class="headerlink" title="1. 选择-v或–mount标志"></a>1. 选择-v或–mount标志</h3><p>最初，<code>-v</code>或<code>--volume</code>标志用于独立容器，<code>--mount</code>标志用于群组服务。但是，从Docker 17.06开始，您还可以使用<code>--mount</code>独立容器。一般来说， <code>--mount</code>更明确和冗长。最大的区别在于-v 语法将所有选项组合在一个字段中，而<code>--mount</code>语法将它们分开。以下是每个标志的语法比较。</p>
+<blockquote>
+<p>提示：新用户应使用–mount语法。有经验的用户可能更熟悉-v或–volume语法，但鼓励使用–mount，因为研究表明它更容易使用。</p>
+</blockquote>
+<h4 id="1-–volume"><a href="#1-–volume" class="headerlink" title="1. –volume"></a>1. –volume</h4><p><code>-v</code>或<code>--volume</code>：由三个字段组成，用冒号字符（<code>:</code>）分隔。字段必须按正确的顺序排列，并且每个字段的含义不是很明显。</p>
+<p>对于Bind Mounts，第一个字段是主机上文件或目录的路径。<br>第二个字段是文件或目录在容器中安装的路径。<br>第三个字段是可选的，并且是用逗号分隔的选项，诸如列表ro，consistent，delegated，cached，z，和Z。这些选项将在下面讨论。</p>
+<h4 id="2-–mount"><a href="#2-–mount" class="headerlink" title="2.  –mount"></a>2.  –mount</h4><p><code>--mount</code>：由多个键值对组成，以逗号分隔，每个键<code>&lt;key&gt;=&lt;value&gt;</code>组由一个元组组成。该<code>--mount</code>语法比更详细的<code>-v</code>或<code>--volume</code>，但按键的顺序并不显著，并且标志的价值更容易理解。</p>
+<p>mount的<code>type</code>，其可以是bind，volume，或tmpfs。本主题讨论bind mounts，因此类型始终是bind。<br>mount的<code>source</code>。对于bind mounts,这是Docker宿主主机上的文件或目录的路径。可以指定为source或 src。<br><code>destination</code>文件或目录安装在容器中的路径作为其值。可以指定为<code>destination</code>，<code>dst</code>或<code>target</code>。<br><code>readonly</code>选项（如果存在）导致bind mounts以只读方式装入容器中。<br><code>bind-propagation</code> 选项（如果存在）会更改 绑定传播。可以是一个 <code>rprivate</code> ，<code>private</code>，<code>rshared</code>，<code>shared</code>，<code>rslave</code>，<code>slave</code>。<br><code>consistency</code>选项，如果存在，可以是一种consistent，delegated或cached。此设置仅适用于Docker Desktop for Mac，在所有其他平台上均被忽略。</p>
+<p>该–mount标志不支持z或Z修改selinux标签的选项。<br>下面的示例显示了可能的语法–mount和-v语法，并 –mount首先给出。</p>
+<h4 id="3-v和–mount行为之间的差异"><a href="#3-v和–mount行为之间的差异" class="headerlink" title="3. -v和–mount行为之间的差异"></a>3. -v和–mount行为之间的差异</h4><p>因为<code>-v</code>和<code>--volume</code> flags一直是Docker的一部分，所以它们的行为无法改变。这意味着在<code>-v</code>和<code>--mount</code>之间存在一种不同的行为。</p>
+<ul>
+<li><p>如果使用<code>-v</code>或<code>--volume</code>绑定装载Docker主机上尚不存在的文件或目录，请<code>-v</code>为您创建端点。它始终作为目录创建。</p>
+</li>
+<li><p>如果您使用<code>--mount</code>绑定Docker宿主主机上尚不存在的文件或目录，Docker也不会自动为您创建它，但会产生一个错误。</p>
+</li>
+</ul>
+<h3 id="2-使用绑定装载启动容器"><a href="#2-使用绑定装载启动容器" class="headerlink" title="2. 使用绑定装载启动容器"></a>2. 使用绑定装载启动容器</h3><p>考虑一个你有一个目录的情况<code>source</code>，当你构建源代码时，工件被保存到另一个目录中<code>source/target/</code>。您希望工件可用于容器<code>/app/</code>，并且您希望每次在开发主机上构建源时容器都可以访问新构建。使用以下命令将<code>target/</code> 目录绑定到容器中<code>/app/</code>。从<code>source</code>目录中运行该命令 。该<code>$(pwd)</code>子命令将扩展到Linux或者MacOS主机的当前工作目录。</p>
+<p>所述<code>--mount</code>和<code>-v</code>以下实施例产生相同的结果。除非<code>devtest</code>在运行第一个容器后删除容器，否则不能同时运行它们。</p>
+<ul>
+<li><code>--mount</code></li>
+<li><code>-v</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d \</span><br><span class="line">  -it \</span><br><span class="line">  --name devtest \</span><br><span class="line">  --mount type=bind,source=&quot;$(pwd)&quot;/target,target=/app \</span><br><span class="line">  nginx:latest</span><br></pre></td></tr></table></figure>
+<p>使用<code>docker inspect devtest</code>验证绑定安装正确创建。寻找<code>Mounts</code>部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;Mounts&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Type&quot;: &quot;bind&quot;,</span><br><span class="line">        &quot;Source&quot;: &quot;/tmp/source/target&quot;,</span><br><span class="line">        &quot;Destination&quot;: &quot;/app&quot;,</span><br><span class="line">        &quot;Mode&quot;: &quot;&quot;,</span><br><span class="line">        &quot;RW&quot;: true,</span><br><span class="line">        &quot;Propagation&quot;: &quot;rprivate&quot;</span><br><span class="line">    &#125;</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+<p>这表明mount是一个<code>bind</code>mount，它显示了正确的源和目标，它表明mount是读写的，并且传播设置为<code>rprivate</code>。</p>
+<p>停止容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker container stop devtest</span><br><span class="line"></span><br><span class="line">$ docker container rm devtest</span><br></pre></td></tr></table></figure>
+<h3 id="3-配置绑定传播"><a href="#3-配置绑定传播" class="headerlink" title="3. 配置绑定传播"></a>3. 配置绑定传播</h3><p>对于bind mounts和volumes，绑定传播默认为<code>rprivate</code>。它仅可用于绑定装入，并且仅适用于Linux主机。绑定传播是一个高级主题，许多用户永远不需要配置它。<strong>绑定传播是指在给定的绑定装载或命名卷（比如宿主主机）中创建的装载是否可以传播到该装载的副本（比如Docker）</strong>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">传播设置</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>shared</code></td>
+<td style="text-align:left">原始挂载的子挂载将暴露给副本挂载，副挂载的子挂载也会传播到原始挂载。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>slave</code></td>
+<td style="text-align:left">类似于共享挂载，但只在一个方向上。如果原始挂载程序公开子挂载，则副本挂载程序可以看到它。而副本挂载的子挂载不会传播到原始挂载</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>private</code></td>
+<td style="text-align:left">挂载是私人的。其中的子挂载不会暴露给副本挂载，副挂载的子挂载也不会暴露给原始挂载。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>rshared</code></td>
+<td style="text-align:left">与共享相同，但传播也扩展到嵌套在任何原始或副本挂载点中的挂载点。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>rslave</code></td>
+<td style="text-align:left">与从属相同，但传播也延伸到嵌套在任何原始或副本挂载点内的挂载点。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>rprivate</code></td>
+<td style="text-align:left">默认。与private相同，意味着原始或副本装入点中任何位置的挂载点都不会沿任一方向传播。</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -v /foo:/bar:slave</span><br></pre></td></tr></table></figure>
+<h3 id="4-挂载到容器上的非空目录中"><a href="#4-挂载到容器上的非空目录中" class="headerlink" title="4. 挂载到容器上的非空目录中"></a>4. 挂载到容器上的非空目录中</h3><p><strong>如果将bind-mount绑定到容器上的非空目录中，则绑定装置会隐藏目录的现有内容。</strong>这可能是有益的，例如当您想要在不构建新图像的情况下测试新版本的应用程序时。但是，它也可能令人惊讶，并且此行为与<a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener">docker卷的</a>行为不同。</p>
+<p>此示例设计为极端，将容器<code>/usr/</code>目录的内容替换<code>/tmp/</code>为主机上的目录, 在大多数情况下，这会导致容器无法运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d \</span><br><span class="line">  -it \</span><br><span class="line">  --name broken-container \</span><br><span class="line">  --mount <span class="built_in">type</span>=<span class="built_in">bind</span>,<span class="built_in">source</span>=/tmp,target=/usr \</span><br><span class="line">  nginx:latest</span><br><span class="line"></span><br><span class="line">docker: Error response from daemon: oci runtime error: container_linux.go:262:</span><br><span class="line">starting container process caused <span class="string">"exec: \"nginx\": executable file not found in <span class="variable">$PATH</span>"</span>.</span><br></pre></td></tr></table></figure>
+<p>容器已创建但无法启动。去掉它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container rm broken-container</span><br></pre></td></tr></table></figure>
+<h2 id="5-NFS"><a href="#5-NFS" class="headerlink" title="5. NFS"></a>5. NFS</h2><pre><code>docker volume create \
+    --driver local \
+    --opt type=nfs \
+    --opt o=addr=192.168.71.104,rw  \
+    --opt device=:/tytest/workspace \
+    tytest
+  docker run -it -v tytest:/workspace --privileged 192.168.71.104:5000/tytest
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1825,7 +1937,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-count">219</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

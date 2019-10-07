@@ -264,210 +264,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/25/koa/koa2学习系列教程8mysql数据库/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/25/koa/koa2学习系列教程8mysql数据库/" itemprop="url">koa2学习系列教程8 mysql数据库</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-25T20:31:36+00:00">
-                2017-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="在命令行使用mysql"><a href="#在命令行使用mysql" class="headerlink" title="在命令行使用mysql"></a>在命令行使用mysql</h2><h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><p>对于mysql，我们除了在官网下载安装包以外，还可以使用XAMPP建站集成环境进行安装，安装完成后打开MySQL模块即可使用</p>
-<h3 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h3><p>找到mysql的bin文件夹，将其添加到环境变量路径，方便在cmd中使用mysql</p>
-<p>添加方法：使用win自带的搜索功能，搜索环境变量，进入编辑环境变量后选择<strong>用户环境变量</strong>，选择PATH后编辑，选择新建，输入mysql的bin路径，比如我的是 E:\xampp\mysql\bin</p>
-<p>编辑PATH完成后，cmd重启生效</p>
-<h3 id="命令行的基本操作"><a href="#命令行的基本操作" class="headerlink" title="命令行的基本操作"></a>命令行的基本操作</h3><p><strong>连接数据库</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -h localhost -u root -p</span><br></pre></td></tr></table></figure>
-<p>要求输入password时，假如未设定，直接回车即可</p>
-<p><strong>显示用户名下的所有数据库</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ show databases;</span><br></pre></td></tr></table></figure>
-<p>注意sql语句要求以’;’结尾，执行命令后，会输出形如下列的表格</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| mynote             |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| phpmyadmin         |</span><br><span class="line">+--------------------+</span><br></pre></td></tr></table></figure>
-<p><strong>进入某个数据库</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ use databasename</span><br></pre></td></tr></table></figure>
-<p><strong>退出mysql</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">exit</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="MYSQL-与-ORM"><a href="#MYSQL-与-ORM" class="headerlink" title="MYSQL 与 ORM"></a>MYSQL 与 ORM</h2><p>如果直接使用mysql包提供的接口，我们编写的代码就比较底层，例如，查询代码：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">connection.query(<span class="string">'SELECT * FROM users WHERE id = ?'</span>, [<span class="string">'123'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">err, rows</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> row <span class="keyword">in</span> rows) &#123;</span><br><span class="line">      processRow(row);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>考虑到数据库表是一个二维表，包含多行多列，例如一个pets的表：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from pets;</span><br><span class="line">+----+--------+------------+</span><br><span class="line">| id | name   | birth      |</span><br><span class="line">+----+--------+------------+</span><br><span class="line">|  1 | Gaffey | 2007-07-07 |</span><br><span class="line">|  2 | Odie   | 2008-08-08 |</span><br><span class="line">+----+--------+------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>每一行可以用一个JavaScript对象表示，例如第一行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;id&quot;: 1,</span><br><span class="line">  &quot;name&quot;: &quot;Gaffey&quot;,</span><br><span class="line">  &quot;birth&quot;: &quot;2007-07-07&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这就是传说中的ORM技术：Object-Relational Mapping，把关系数据库的表结构映射到对象上</p>
-<p>但是由谁来做这个转换呢？所以ORM框架应运而生。</p>
-<h2 id="ORM框架-Sequelize"><a href="#ORM框架-Sequelize" class="headerlink" title="ORM框架 Sequelize"></a>ORM框架 Sequelize</h2><p>我们选择Node的ORM框架Sequelize来操作数据库。这样，我们读写的都是JavaScript对象，Sequelize帮我们把对象变成数据库中的行。</p>
-<p>用Sequelize查询pets表，代码像这样：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Pet.findAll()</span><br><span class="line">   .then(<span class="function"><span class="keyword">function</span> (<span class="params">pets</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">let</span> pet <span class="keyword">in</span> pets) &#123;</span><br><span class="line">           <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;pet.id&#125;</span>: <span class="subst">$&#123;pet.name&#125;</span>`</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">       <span class="comment">// error</span></span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure>
-<p>因为Sequelize返回的对象是Promise，所以我们可以用then()和catch()分别异步响应成功和失败。</p>
-<p>但是用then()和catch()仍然比较麻烦。有没有更简单的方法呢？</p>
-<p>可以用ES7的await来调用任何一个Promise对象，这样我们写出来的代码就变成了：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> pets = <span class="keyword">await</span> Pet.findAll();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-<p>真的就是这么简单！</p>
-<p>考虑到koa的处理函数都是async函数，所以我们实际上将来在koa的async函数中直接写await访问数据库就可以了！</p>
-<p>这也是为什么我们选择Sequelize的原因：只要API返回Promise，就可以用await调用，写代码就非常简单！</p>
-<h2 id="使用-Sequelize"><a href="#使用-Sequelize" class="headerlink" title="使用 Sequelize"></a>使用 Sequelize</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install sequelize --save</span><br><span class="line">npm install mysql --save</span><br></pre></td></tr></table></figure>
-<p>注意mysql是驱动，我们不直接使用，但是sequelize会用</p>
-<p>配置config.js,他是一个简单的配置文件</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    database: <span class="string">'test'</span>, <span class="comment">// 使用哪个数据库</span></span><br><span class="line">    username: <span class="string">'www'</span>, <span class="comment">// 用户名</span></span><br><span class="line">    password: <span class="string">'www'</span>, <span class="comment">// 口令</span></span><br><span class="line">    host: <span class="string">'localhost'</span>, <span class="comment">// 主机名</span></span><br><span class="line">    port: <span class="number">3306</span> <span class="comment">// 端口号，MySQL默认3306</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
-<p>第一步，创建一个sequelize对象实例：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Sequelize = <span class="built_in">require</span>(<span class="string">'sequelize'</span>);</span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">'./config'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sequelize = <span class="keyword">new</span> Sequelize(config.database, config.username, config.password, &#123;</span><br><span class="line">    host: config.host,</span><br><span class="line">    dialect: <span class="string">'mysql'</span>,</span><br><span class="line">    pool: &#123;</span><br><span class="line">        max: <span class="number">5</span>,</span><br><span class="line">        min: <span class="number">0</span>,</span><br><span class="line">        idle: <span class="number">30000</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>第二步，定义模型Pet，告诉Sequelize如何映射数据库表：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Pet = sequelize.define(<span class="string">'pet'</span>, &#123;</span><br><span class="line">    id: &#123;</span><br><span class="line">        type: Sequelize.STRING(<span class="number">50</span>),</span><br><span class="line">        primaryKey: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    name: Sequelize.STRING(<span class="number">100</span>),</span><br><span class="line">    gender: Sequelize.BOOLEAN,</span><br><span class="line">    birth: Sequelize.STRING(<span class="number">10</span>),</span><br><span class="line">    createdAt: Sequelize.BIGINT,</span><br><span class="line">    updatedAt: Sequelize.BIGINT,</span><br><span class="line">    version: Sequelize.BIGINT</span><br><span class="line">&#125;, &#123;</span><br><span class="line">        timestamps: <span class="literal">false</span></span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
-<p>用sequelize.define()定义Model时，传入名称pet，默认的表名就是pets。第二个参数指定列名和数据类型，如果是主键，需要更详细地指定。第三个参数是额外的配置，我们传入{ timestamps: false }是为了关闭Sequelize的自动添加timestamp的功能。所有的ORM框架都有一种很不好的风气，总是自作聪明地加上所谓“自动化”的功能，但是会让人感到完全摸不着头脑。</p>
-<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> dog = <span class="keyword">await</span> Pet.create(&#123;</span><br><span class="line">        id: <span class="string">'d-'</span> + now,</span><br><span class="line">        name: <span class="string">'Odie'</span>,</span><br><span class="line">        gender: <span class="literal">false</span>,</span><br><span class="line">        birth: <span class="string">'2008-08-08'</span>,</span><br><span class="line">        createdAt: now,</span><br><span class="line">        updatedAt: now,</span><br><span class="line">        version: <span class="number">0</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'created: '</span> + <span class="built_in">JSON</span>.stringify(dog));</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-<p>显然await代码更胜一筹。</p>
-<h3 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> pets = <span class="keyword">await</span> Pet.findAll(&#123;</span><br><span class="line">        where: &#123;</span><br><span class="line">            name: <span class="string">'Gaffey'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`find <span class="subst">$&#123;pets.length&#125;</span> pets:`</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> p <span class="keyword">of</span> pets) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(p));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-<h3 id="更新数据，可以对查询到的实例调用save-方法："><a href="#更新数据，可以对查询到的实例调用save-方法：" class="headerlink" title="更新数据，可以对查询到的实例调用save()方法："></a>更新数据，可以对查询到的实例调用save()方法：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> p = <span class="keyword">await</span> queryFromSomewhere();</span><br><span class="line">    p.gender = <span class="literal">true</span>;</span><br><span class="line">    p.updatedAt = <span class="built_in">Date</span>.now();</span><br><span class="line">    p.version ++;</span><br><span class="line">    <span class="keyword">await</span> p.save();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-<h3 id="删除数据，可以对查询到的实例调用destroy-方法："><a href="#删除数据，可以对查询到的实例调用destroy-方法：" class="headerlink" title="删除数据，可以对查询到的实例调用destroy()方法："></a>删除数据，可以对查询到的实例调用destroy()方法：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> p = <span class="keyword">await</span> queryFromSomewhere();</span><br><span class="line">    <span class="keyword">await</span> p.destroy();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
-<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>为了避免格式上的混乱，我们需要一个统一的模型，强迫所有Model都遵守同一个规范，这样不但实现简单，而且容易统一风格。</p>
-<p>我们首先要定义的就是Model存放的文件夹必须在models内，并且以Model名字命名，例如：Pet.js，User.js等等。</p>
-<p>其次，每个Model必须遵守一套规范：</p>
-<ul>
-<li>统一主键，名称必须是<code>id</code>，类型必须是<code>STRING(50)</code>；</li>
-<li>主键可以自己指定，也可以由框架自动生成（如果为<code>null</code>或<code>undefined</code>）；</li>
-<li>所有字段默认为<code>NOT NULL</code>，除非显式指定；</li>
-<li>统一<code>timestamp</code>机制，每个Model必须有<code>createdAt</code>、<code>updatedAt</code>和<code>version</code>，分别记录创建时间、修改时间和版本号。其中，<code>createdAt</code>和<code>updatedAt</code>以<code>BIGINT</code>存储时间戳，最大的好处是无需处理时区，排序方便。<code>version</code>每次修改时自增。</li>
-</ul>
-<h3 id="数据库配置"><a href="#数据库配置" class="headerlink" title="数据库配置"></a>数据库配置</h3><p>接下来，我们把简单的config.js拆成3个配置文件：</p>
-<ul>
-<li>config-default.js：存储默认的配置;</li>
-<li>config-override.js：存储特定的配置;</li>
-<li>config-test.js：存储用于测试的配置;</li>
-</ul>
-<p>例如，默认的config-default.js可以配置如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    dialect: <span class="string">'mysql'</span>,</span><br><span class="line">    database: <span class="string">'nodejs'</span>,</span><br><span class="line">    username: <span class="string">'www'</span>,</span><br><span class="line">    password: <span class="string">'www'</span>,</span><br><span class="line">    host: <span class="string">'localhost'</span>,</span><br><span class="line">    port: <span class="number">3306</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
-<p>而config-override.js可应用实际配置：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    database: <span class="string">'production'</span>,</span><br><span class="line">    username: <span class="string">'www'</span>,</span><br><span class="line">    password: <span class="string">'secret-password'</span>,</span><br><span class="line">    host: <span class="string">'192.168.1.199'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
-<p>config-test.js可应用测试环境的配置：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    database: <span class="string">'test'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
-<p>读取配置的时候，我们用config.js实现不同环境读取不同的配置文件：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> defaultConfig = <span class="string">'./config-default.js'</span>;</span><br><span class="line"><span class="comment">// 可设定为绝对路径，如 /opt/product/config-override.js</span></span><br><span class="line"><span class="keyword">const</span> overrideConfig = <span class="string">'./config-override.js'</span>;</span><br><span class="line"><span class="keyword">const</span> testConfig = <span class="string">'./config-test.js'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> config = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (process.env.NODE_ENV === <span class="string">'test'</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Load <span class="subst">$&#123;testConfig&#125;</span>...`</span>);</span><br><span class="line">    config = <span class="built_in">require</span>(testConfig);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Load <span class="subst">$&#123;defaultConfig&#125;</span>...`</span>);</span><br><span class="line">    config = <span class="built_in">require</span>(defaultConfig);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (fs.statSync(overrideConfig).isFile()) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`Load <span class="subst">$&#123;overrideConfig&#125;</span>...`</span>);</span><br><span class="line">            config = <span class="built_in">Object</span>.assign(config, <span class="built_in">require</span>(overrideConfig));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`Cannot load <span class="subst">$&#123;overrideConfig&#125;</span>.`</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
-<p>具体的规则是：</p>
-<p>先读取config-default.js；<br>如果不是测试环境，就读取config-override.js，如果文件不存在，就忽略。<br>如果是测试环境，就读取config-test.js。<br>这样做的好处是，开发环境下，团队统一使用默认的配置，并且无需config-override.js。部署到服务器时，由运维团队配置好config-override.js，以覆盖config-override.js的默认设置。测试环境下，本地和CI服务器统一使用config-test.js，测试数据库可以反复清空，不会影响开发。</p>
-<p>配置文件表面上写起来很容易，但是，既要保证开发效率，又要避免服务器配置文件泄漏，还要能方便地执行测试，就需要一开始搭建出好的结构，才能提升工程能力。</p>
-<h3 id="使用Model"><a href="#使用Model" class="headerlink" title="使用Model"></a>使用Model</h3><p>要使用Model，就需要引入对应的Model文件，例如：User.js。一旦Model多了起来，如何引用也是一件麻烦事。</p>
-<p>自动化永远比手工做效率高，而且更可靠。我们写一个model.js，自动扫描并导入所有Model：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> db = <span class="built_in">require</span>(<span class="string">'./db'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> files = fs.readdirSync(__dirname + <span class="string">'/models'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> js_files = files.filter(<span class="function">(<span class="params">f</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> f.endsWith(<span class="string">'.js'</span>);</span><br><span class="line">&#125;, files);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> f <span class="keyword">of</span> js_files) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`import model from file <span class="subst">$&#123;f&#125;</span>...`</span>);</span><br><span class="line">    <span class="keyword">let</span> name = f.substring(<span class="number">0</span>, f.length - <span class="number">3</span>);</span><br><span class="line">    <span class="built_in">module</span>.exports[name] = <span class="built_in">require</span>(__dirname + <span class="string">'/models/'</span> + f);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports.sync = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> db.sync();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>这样，需要用的时候，写起来就像这样：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> model = <span class="built_in">require</span>(<span class="string">'./model'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span></span><br><span class="line">    Pet = model.Pet,</span><br><span class="line">    User = model.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pet = <span class="keyword">await</span> Pet.create(&#123; ... &#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><p>最终，我们创建的工程model-sequelize结构如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">model-sequelize/</span><br><span class="line">|</span><br><span class="line">|-.vscode</span><br><span class="line">|  |-launch.json    # VSCode 配置文件</span><br><span class="line">|-models            # 存放所有Model</span><br><span class="line">|  |-Pet.js         # Pet</span><br><span class="line">|  |-User.js        # User</span><br><span class="line">|-config.js         # 配置文件入口</span><br><span class="line">|-config-default.js # 默认配置文件</span><br><span class="line">|-config-test.js    # 测试配置文件</span><br><span class="line">|-db.js             # 如何定义Model</span><br><span class="line">|-model.js          # 如何导入Model</span><br><span class="line">|-init-db.js        # 初始化数据库</span><br><span class="line">|-app.js            # 业务代码</span><br><span class="line">|-package.json      # 项目描述文件</span><br><span class="line">|-node_modules/     # npm安装的所有依赖包</span><br></pre></td></tr></table></figure>
-<p>注意到我们其实不需要创建表的SQL，因为Sequelize提供了一个<code>sync()</code>方法，可以自动创建数据库。这个功能在开发和生产环境中没有什么用，但是在测试环境中非常有用。测试时，我们可以用<code>sync()</code>方法自动创建出表结构，而不是自己维护SQL脚本。这样，可以随时修改Model的定义，并立刻运行测试。开发环境下，首次使用<code>sync()</code>也可以自动创建出表结构，避免了手动运行SQL的问题。</p>
-<p>init-db.js的代码非常简单，作用是创建Pets和User表，只需要执行一次即可。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> model = <span class="built_in">require</span>(<span class="string">'./model.js'</span>);</span><br><span class="line"></span><br><span class="line">model.sync().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'sync done'</span>);</span><br><span class="line">    process.exit(<span class="number">0</span>);</span><br><span class="line">&#125;).catch(<span class="function">(<span class="params">e</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'failed with: '</span>+e);</span><br><span class="line">    process.exit(<span class="number">0</span>);&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'init db ok.'</span>);</span><br></pre></td></tr></table></figure>
-<p>参考文档</p>
-<p><a href="http://www.liaoxuefeng.com" target="_blank" rel="noopener">廖雪峰的官方网站</a><br><a href="http://docs.sequelizejs.com" target="_blank" rel="noopener">Sequelize官方文档</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/25/koa/koa2学习系列教程4_context上下文/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -805,125 +601,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/24/koa/koa2学习系列教程2_中间件/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/24/koa/koa2学习系列教程2_中间件/" itemprop="url">koa2学习系列教程2 中间件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-24T15:09:55+00:00">
-                2017-04-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/24/koa/koa2学习系列教程1_Hello_Koa/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1071,6 +748,125 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/24/koa/koa2学习系列教程2_中间件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/24/koa/koa2学习系列教程2_中间件/" itemprop="url">koa2学习系列教程2 中间件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-24T15:09:55+00:00">
+                2017-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/24/nodejs/Node-js框架之express与koa对比分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1165,6 +961,398 @@
 <h2 id="中间件-Middleware"><a href="#中间件-Middleware" class="headerlink" title="中间件 Middleware"></a>中间件 Middleware</h2><p>对比了主要的几个框架功能方面的使用，其实区别最大，使用方式最不同的地方是在中间件的处理上。Express由于是在ES6特性之前的，中间件的基础原理还是callback方式的；而koa得益于generator特性和co框架（co会把所有generator的返回封装成为Promise对象），使得中间件的编写更加优雅。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// req 用于获取请求信息， ServerRequest 的实例</span></span><br><span class="line"><span class="comment">// res 用于响应处理结果， ServerResponse 的实例</span></span><br><span class="line"><span class="comment">// next() 函数用于将当前控制权转交给下一步处理，</span></span><br><span class="line"><span class="comment">//        如果给 next() 传递一个参数时，表示出错信息</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="function"><span class="keyword">function</span> (<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 对req和res进行必要的处理</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 进入下一个中间件</span></span><br><span class="line">    <span class="keyword">return</span> next();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 传递错误信息到下一个中间件</span></span><br><span class="line">    <span class="keyword">return</span> next(err);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 直接输出，不再进入后面的中间件</span></span><br><span class="line">    <span class="keyword">return</span> res.send(<span class="string">'show page'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// koa 一切都在ctx对象上+generator</span></span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span> *(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>; <span class="comment">// is the Context</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.request; <span class="comment">// is a koa Request</span></span><br><span class="line">    <span class="keyword">this</span>.response; <span class="comment">// is a koa Response</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.req;<span class="comment">// is node js request</span></span><br><span class="line">    <span class="keyword">this</span>.res;<span class="comment">// is node js response</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//不再进入后面的中间件, 回溯upstream</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h2 id="本文转载自："><a href="#本文转载自：" class="headerlink" title="本文转载自："></a>本文转载自：</h2><p><a href="http://www.tuicool.com/articles/zIzmYvj" target="_blank" rel="noopener">Node.js框架之express与koa对比分析</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/23/python/4.python使用技巧/将Python代码打包放到PyPI上/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/23/python/4.python使用技巧/将Python代码打包放到PyPI上/" itemprop="url">将Python代码打包放到PyPI上</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-23T22:07:42+00:00">
+                2017-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="什么是PyPI"><a href="#什么是PyPI" class="headerlink" title="什么是PyPI"></a>什么是PyPI</h2><p>PyPI(Python Package Index)是python官方的第三方库的仓库。<br>所有人都可以下载第三方库或上传自己开发的库到PyPI。<br>PyPI推荐使用pip包管理器来下载第三方库</p>
+<h2 id="包的文件结构"><a href="#包的文件结构" class="headerlink" title="包的文件结构"></a>包的文件结构</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">foo</span><br><span class="line">|-- bin/ #存放项目的一些可执行文件</span><br><span class="line">|   |-- foo</span><br><span class="line">|-- foo/ # 所有模块、包都应该放在此目录，程序的入口最好命名为main.py</span><br><span class="line">|   |-- tests/ # 存放单元测试代码；</span><br><span class="line">|   |   |-- __init__.py</span><br><span class="line">|   |   |-- test_main.py</span><br><span class="line">|   |-- __init__.py</span><br><span class="line">|   |-- main.py</span><br><span class="line">|-- docs/ # 用于存放文档</span><br><span class="line">|   |-- conf.py</span><br><span class="line">|   |-- abc.rst</span><br><span class="line">|-- setup.py # 来管理代码的打包、安装、部署问题</span><br><span class="line">|-- requirements.txt # 存放软件依赖的外部Python包列表</span><br><span class="line">|-- README.rst # 项目说明文件</span><br></pre></td></tr></table></figure>
+<h2 id="setup文件"><a href="#setup文件" class="headerlink" title="setup文件"></a>setup文件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> codecs</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">  <span class="keyword">from</span> setuptools <span class="keyword">import</span> setup</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">  <span class="keyword">from</span> distutils.core <span class="keyword">import</span> setup</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read</span><span class="params">(fname)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> codecs.open(os.path.join(os.path.dirname(__file__), fname)).read()</span><br><span class="line"></span><br><span class="line">NAME = <span class="string">"project_name"</span></span><br><span class="line">PACKAGES = [<span class="string">"somefunctions"</span>,]</span><br><span class="line">DESCRIPTION = <span class="string">"package description."</span></span><br><span class="line">LONG_DESCRIPTION = read(<span class="string">"README.rst"</span>)</span><br><span class="line">KEYWORDS = <span class="string">"test python package"</span></span><br><span class="line">AUTHOR = <span class="string">"your_name"</span></span><br><span class="line">AUTHOR_EMAIL = <span class="string">"youremail@email.com"</span></span><br><span class="line">URL = <span class="string">"http://your_blog/"</span></span><br><span class="line">VERSION = <span class="string">"1.0.1"</span></span><br><span class="line">LICENSE = <span class="string">"MIT"</span></span><br><span class="line">CLASSFIERS = [<span class="string">'License :: OSI Approved :: MIT License'</span>,<span class="string">'Programming Language :: Python'</span>,<span class="string">'Intended Audience :: Developers'</span>,<span class="string">'Operating System :: OS Independent'</span>]</span><br><span class="line"></span><br><span class="line">setup(</span><br><span class="line">  name = NAME,</span><br><span class="line">  version = VERSION,</span><br><span class="line">  description = DESCRIPTION,</span><br><span class="line">  long_description =LONG_DESCRIPTION,</span><br><span class="line">  classifiers =  CLASSFIERS,</span><br><span class="line">  keywords = KEYWORDS,</span><br><span class="line">  author = AUTHOR,</span><br><span class="line">  author_email = AUTHOR_EMAIL,</span><br><span class="line">  url = URL,</span><br><span class="line">  license = LICENSE,</span><br><span class="line">  packages = PACKAGES,</span><br><span class="line">  include_package_data=<span class="literal">True</span>,</span><br><span class="line">  zip_safe=<span class="literal">True</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="打包上传"><a href="#打包上传" class="headerlink" title="打包上传"></a>打包上传</h2><p>使用check命令查看是否存在语法问题，使用sdist进行打包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python setup.py check</span><br><span class="line">python setup.py sdist</span><br></pre></td></tr></table></figure>
+<p>发布前，需要到<a href="https://pypi.python.org/pypi" target="_blank" rel="noopener">pypi官网</a>注册一个账号，并在用户目录新建文件 ~/.pypirc ，并键入以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[distutils]</span><br><span class="line">index-servers = pypi</span><br><span class="line">[pypi]</span><br><span class="line">repository: https://pypi.python.org/pypi</span><br><span class="line">username: yourname</span><br><span class="line">password: yourpwd</span><br></pre></td></tr></table></figure>
+<p>执行以下内容进行打包上传，服务器返回Server response (200): OK表示上传成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py sdist upload</span><br></pre></td></tr></table></figure>
+<p>发布成功后就可以使用<code>pip install</code>安装你自己的python包了！</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://github.com/pypa/setuptools/issues/941" target="_blank" rel="noopener">Invalid or non-existent authentication information</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/23/python/requests速查手册/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/23/python/requests速查手册/" itemprop="url">requests速查手册</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-23T22:07:42+00:00">
+                2017-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="get"><a href="#get" class="headerlink" title="get"></a>get</h2><p><strong>请求网址与传递参数</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</span><br><span class="line">r = requests.get(url, params=payload)</span><br></pre></td></tr></table></figure>
+<p><strong>定制请求头</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">headers = &#123;<span class="string">'user-agent'</span>: <span class="string">'my-app/0.0.1'</span>&#125;</span><br><span class="line">r = requests.get(url, headers=headers)</span><br></pre></td></tr></table></figure>
+<p><strong>超时</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(url, timeout=<span class="number">0.001</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>短链接</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(url,headers=&#123;<span class="string">'Connection'</span>:<span class="string">'close'</span>&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="post"><a href="#post" class="headerlink" title="post"></a>post</h2><p><strong>发送表单数据</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;</span><br><span class="line">r = requests.post(url, data=data)</span><br></pre></td></tr></table></figure>
+<p><strong>发送json数据</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># requests会自动序列化data</span></span><br><span class="line">data = &#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;</span><br><span class="line">r = requests.post(url, json=data)</span><br></pre></td></tr></table></figure>
+<h2 id="处理返回结果"><a href="#处理返回结果" class="headerlink" title="处理返回结果"></a>处理返回结果</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 得到json</span></span><br><span class="line">r.json()</span><br></pre></td></tr></table></figure>
+<h2 id="代理ip"><a href="#代理ip" class="headerlink" title="代理ip"></a>代理ip</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">proxies = &#123;</span><br><span class="line">  <span class="string">'http'</span>: <span class="string">'http://10.10.1.10:3128'</span>,</span><br><span class="line">  <span class="string">'https'</span>: <span class="string">'http://10.10.1.10:1080'</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">requests.get(<span class="string">'http://example.org'</span>, proxies=proxies)</span><br></pre></td></tr></table></figure>
+<h2 id="编码与解码问题"><a href="#编码与解码问题" class="headerlink" title="编码与解码问题"></a>编码与解码问题</h2><p>我们可以通过 <code>r.encoding</code> 查看requests抓取文件的编码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(url)</span><br><span class="line"><span class="keyword">print</span> (r.encoding)</span><br></pre></td></tr></table></figure>
+<p>如果 Requests 检测不到正确的编码，那么你告诉它正确的是什么：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">response.encoding = <span class="string">'gbk'</span></span><br><span class="line"><span class="keyword">print</span> (response.text)</span><br></pre></td></tr></table></figure>
+<p>字符串在Python内部的表示是 <code>unicode</code> 编码，因此，在做编码转换时，通常需要以 <code>unicode</code> 作为中间编码，即先将其他编码的字符串解码 <code>decode</code> 成 <code>unicode</code> ，再从 <code>unicode</code> 编码 <code>encode</code> 成另一种编码。</p>
+<p><code>decode</code> 的作用是将其他编码的字符串转换成unicode编码，如 <code>str1.decode(&#39;gb2312&#39;)</code>，表示将 <code>gb2312</code> 编码的字符串 <code>str1</code> 转换成 <code>unicode</code> 编码。</p>
+<p><code>encode</code> 的作用是将 <code>unicode</code> 编码转换成其他编码的字符串，如 <code>str2.encode(&#39;gb2312&#39;)</code>，表示将 <code>unicode</code> 编码的字符串 <code>str2</code> 转换成 <code>gb2312</code>编码。</p>
+<p>如果一个字符串已经是 <code>unicode</code> 了，再进行解码则将出错，因此通常要对其编码方式是否为 <code>unicode</code> 进行判断，用非 <code>unicode</code> 编码形式的str来 <code>encode</code> 会报错</p>
+<h2 id="保存图片"><a href="#保存图片" class="headerlink" title="保存图片"></a>保存图片</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">image_url = <span class="string">'http://wiki.jikexueyuan.com/project/learn-road-qt/images/32.png'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">response = requests.get(image_url)</span><br><span class="line"><span class="keyword">with</span> open (<span class="string">'simple.png'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> file:</span><br><span class="line">    file.write(response.content)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/23/python/1.python基础语法/python实现windows系统下自动拨号/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/23/python/1.python基础语法/python实现windows系统下自动拨号/" itemprop="url">python实现windows系统下自动拨号</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-23T22:07:42+00:00">
+                2017-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Adsl</span><span class="params">(object)</span>:</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 分别填写adsl名称，用户名与密码，dsl名称一般为宽带连接</span></span><br><span class="line">    self.name = <span class="string">"宽带连接"</span></span><br><span class="line">    self.username = <span class="string">'adsl_uname'</span></span><br><span class="line">    self.password = <span class="string">'adsl_upwd'</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">connect</span><span class="params">(self)</span>:</span></span><br><span class="line">    cmd_str = <span class="string">"rasdial %s %s %s"</span> % (self.name, self.username, self.password)</span><br><span class="line">    os.system(cmd_str)</span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">disconnect</span><span class="params">(self)</span>:</span></span><br><span class="line">    cmd_str = <span class="string">"rasdial %s /disconnect"</span> % self.name</span><br><span class="line">    os.system(cmd_str)</span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">reconnect</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.disconnect()</span><br><span class="line">    self.connect()</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1371,7 +1559,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/23/python/1.python基础语法/python实现windows系统下自动拨号/">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/23/python/1.python基础语法/python规范目录结构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="李云鹏">
@@ -1390,7 +1578,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/04/23/python/1.python基础语法/python实现windows系统下自动拨号/" itemprop="url">python实现windows系统下自动拨号</a></h1>
+                <a class="post-title-link" href="/2017/04/23/python/1.python基础语法/python规范目录结构/" itemprop="url">python规范目录结构</a></h1>
         
 
         <div class="post-meta">
@@ -1442,286 +1630,9 @@
       
         
           
-            <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Adsl</span><span class="params">(object)</span>:</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment"># 分别填写adsl名称，用户名与密码，dsl名称一般为宽带连接</span></span><br><span class="line">    self.name = <span class="string">"宽带连接"</span></span><br><span class="line">    self.username = <span class="string">'adsl_uname'</span></span><br><span class="line">    self.password = <span class="string">'adsl_upwd'</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">connect</span><span class="params">(self)</span>:</span></span><br><span class="line">    cmd_str = <span class="string">"rasdial %s %s %s"</span> % (self.name, self.username, self.password)</span><br><span class="line">    os.system(cmd_str)</span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">disconnect</span><span class="params">(self)</span>:</span></span><br><span class="line">    cmd_str = <span class="string">"rasdial %s /disconnect"</span> % self.name</span><br><span class="line">    os.system(cmd_str)</span><br><span class="line">    time.sleep(<span class="number">5</span>)</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">reconnect</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.disconnect()</span><br><span class="line">    self.connect()</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/23/python/requests速查手册/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/23/python/requests速查手册/" itemprop="url">requests速查手册</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-23T22:07:42+00:00">
-                2017-04-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="get"><a href="#get" class="headerlink" title="get"></a>get</h2><p><strong>请求网址与传递参数</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload = &#123;<span class="string">'key1'</span>: <span class="string">'value1'</span>, <span class="string">'key2'</span>: <span class="string">'value2'</span>&#125;</span><br><span class="line">r = requests.get(url, params=payload)</span><br></pre></td></tr></table></figure>
-<p><strong>定制请求头</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">headers = &#123;<span class="string">'user-agent'</span>: <span class="string">'my-app/0.0.1'</span>&#125;</span><br><span class="line">r = requests.get(url, headers=headers)</span><br></pre></td></tr></table></figure>
-<p><strong>超时</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(url, timeout=<span class="number">0.001</span>)</span><br></pre></td></tr></table></figure>
-<p><strong>短链接</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(url,headers=&#123;<span class="string">'Connection'</span>:<span class="string">'close'</span>&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="post"><a href="#post" class="headerlink" title="post"></a>post</h2><p><strong>发送表单数据</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;</span><br><span class="line">r = requests.post(url, data=data)</span><br></pre></td></tr></table></figure>
-<p><strong>发送json数据</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># requests会自动序列化data</span></span><br><span class="line">data = &#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;</span><br><span class="line">r = requests.post(url, json=data)</span><br></pre></td></tr></table></figure>
-<h2 id="处理返回结果"><a href="#处理返回结果" class="headerlink" title="处理返回结果"></a>处理返回结果</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 得到json</span></span><br><span class="line">r.json()</span><br></pre></td></tr></table></figure>
-<h2 id="代理ip"><a href="#代理ip" class="headerlink" title="代理ip"></a>代理ip</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">proxies = &#123;</span><br><span class="line">  <span class="string">'http'</span>: <span class="string">'http://10.10.1.10:3128'</span>,</span><br><span class="line">  <span class="string">'https'</span>: <span class="string">'http://10.10.1.10:1080'</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">requests.get(<span class="string">'http://example.org'</span>, proxies=proxies)</span><br></pre></td></tr></table></figure>
-<h2 id="编码与解码问题"><a href="#编码与解码问题" class="headerlink" title="编码与解码问题"></a>编码与解码问题</h2><p>我们可以通过 <code>r.encoding</code> 查看requests抓取文件的编码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(url)</span><br><span class="line"><span class="keyword">print</span> (r.encoding)</span><br></pre></td></tr></table></figure>
-<p>如果 Requests 检测不到正确的编码，那么你告诉它正确的是什么：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">response.encoding = <span class="string">'gbk'</span></span><br><span class="line"><span class="keyword">print</span> (response.text)</span><br></pre></td></tr></table></figure>
-<p>字符串在Python内部的表示是 <code>unicode</code> 编码，因此，在做编码转换时，通常需要以 <code>unicode</code> 作为中间编码，即先将其他编码的字符串解码 <code>decode</code> 成 <code>unicode</code> ，再从 <code>unicode</code> 编码 <code>encode</code> 成另一种编码。</p>
-<p><code>decode</code> 的作用是将其他编码的字符串转换成unicode编码，如 <code>str1.decode(&#39;gb2312&#39;)</code>，表示将 <code>gb2312</code> 编码的字符串 <code>str1</code> 转换成 <code>unicode</code> 编码。</p>
-<p><code>encode</code> 的作用是将 <code>unicode</code> 编码转换成其他编码的字符串，如 <code>str2.encode(&#39;gb2312&#39;)</code>，表示将 <code>unicode</code> 编码的字符串 <code>str2</code> 转换成 <code>gb2312</code>编码。</p>
-<p>如果一个字符串已经是 <code>unicode</code> 了，再进行解码则将出错，因此通常要对其编码方式是否为 <code>unicode</code> 进行判断，用非 <code>unicode</code> 编码形式的str来 <code>encode</code> 会报错</p>
-<h2 id="保存图片"><a href="#保存图片" class="headerlink" title="保存图片"></a>保存图片</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">image_url = <span class="string">'http://wiki.jikexueyuan.com/project/learn-road-qt/images/32.png'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">response = requests.get(image_url)</span><br><span class="line"><span class="keyword">with</span> open (<span class="string">'simple.png'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> file:</span><br><span class="line">    file.write(response.content)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/23/linux/VPS与虚拟主机/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/23/linux/VPS与虚拟主机/" itemprop="url">VPS与虚拟主机</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-23T22:07:42+00:00">
-                2017-04-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>独立服务器：<ul>
-<li>顾名思义，就是一个躺在机房的实实在在的物理服务器</li>
-</ul>
-</li>
-<li>VPS：<ul>
-<li>Virtual Private Server 虚拟专用服务器,一般是将一个独立服务器通过虚拟化技术虚拟成多个虚拟专用服务器</li>
-</ul>
-</li>
-<li>云服务器 ECS：<ul>
-<li>云服务器是一个计算，网络，存储的组合。简单点说就是通过多个CPU，内存，硬盘组成的计算池和存储池和网络的组合</li>
-</ul>
-</li>
-<li>虚拟主机<ul>
-<li>Vhost 虚拟主机是通过，物理服务器，VPS或者云服务器<strong>安装例如CPanel，Plesk等面板搭建</strong>的</li>
-</ul>
-</li>
-</ul>
+            <p>假设项目名称为Foo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Foo/</span><br><span class="line">|-- bin/ #存放项目的一些可执行文件</span><br><span class="line">|   |-- foo</span><br><span class="line">|-- foo/ # 所有模块、包都应该放在此目录，程序的入口最好命名为main.py</span><br><span class="line">|   |-- tests/ # 存放单元测试代码；</span><br><span class="line">|   |   |-- __init__.py</span><br><span class="line">|   |   |-- test_main.py</span><br><span class="line">|   |-- __init__.py</span><br><span class="line">|   |-- main.py</span><br><span class="line">|-- docs/ # 用于存放文档</span><br><span class="line">|   |-- conf.py</span><br><span class="line">|   |-- abc.rst</span><br><span class="line">|-- setup.py # 来管理代码的打包、安装、部署问题</span><br><span class="line">|-- requirements.txt # 存放软件依赖的外部Python包列表</span><br><span class="line">|-- README # 项目说明文件</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.cnblogs.com/bigberg/p/6423164.html" target="_blank" rel="noopener">python基础6–目录结构</a></p>
 
           
         
@@ -1809,7 +1720,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-count">219</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

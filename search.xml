@@ -28,11 +28,6 @@
   </entry>
   <entry>
     <title></title>
-    <url>%2F2019%2F10%2F07%2F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%2F%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%2F</url>
-    <content type="text"></content>
-  </entry>
-  <entry>
-    <title></title>
     <url>%2F2019%2F10%2F07%2Fpython%2F%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%2F</url>
     <content type="text"><![CDATA[Python实现十大经典排序算法- 简书]]></content>
   </entry>
@@ -417,18 +412,18 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[jenkins 消息提醒]]></title>
-    <url>%2F2019%2F04%2F21%2Fjenkins%2F1.jenkins%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%2F13.Jenkins%E6%9E%84%E5%BB%BA%E7%9B%91%E8%A7%86%E5%99%A8-CatLight%2F</url>
-    <content type="text"><![CDATA[这里介绍一个消息提醒器，叫CatLight,这个软件的图标就是有一个发金黄色光亮的猫。这里介绍它，是因为，CatLigh可以用来当做一个Jenkins上Job的构建的一个监控器使用，简单来了解，CatLight是如何和Jenkins进行配置，达到监控Build的。 CatLight的下载和安装 浏览器打开https://catlight.io，进行windows版本下载。 和Jenkins配置连接 点击Jenkins，出现如下配置界面。]]></content>
+    <title><![CDATA[jenkins 构建一个程序]]></title>
+    <url>%2F2019%2F04%2F21%2Fjenkins%2F1.jenkins%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%2F10%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[点击Build选项卡 -&gt; Add buid step 可以看到，jenkins支持以下几种构建模式，如果主机时windows，就执行Execute Windows batch command,如果主机时linux，就点击Execute shell]]></content>
       <tags>
         <tag>jenkins</tag>
         <tag>基础</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[jenkins 构建一个程序]]></title>
-    <url>%2F2019%2F04%2F21%2Fjenkins%2F1.jenkins%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%2F10%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%2F</url>
-    <content type="text"><![CDATA[点击Build选项卡 -&gt; Add buid step 可以看到，jenkins支持以下几种构建模式，如果主机时windows，就执行Execute Windows batch command,如果主机时linux，就点击Execute shell]]></content>
+    <title><![CDATA[jenkins 消息提醒]]></title>
+    <url>%2F2019%2F04%2F21%2Fjenkins%2F1.jenkins%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%2F13.Jenkins%E6%9E%84%E5%BB%BA%E7%9B%91%E8%A7%86%E5%99%A8-CatLight%2F</url>
+    <content type="text"><![CDATA[这里介绍一个消息提醒器，叫CatLight,这个软件的图标就是有一个发金黄色光亮的猫。这里介绍它，是因为，CatLigh可以用来当做一个Jenkins上Job的构建的一个监控器使用，简单来了解，CatLight是如何和Jenkins进行配置，达到监控Build的。 CatLight的下载和安装 浏览器打开https://catlight.io，进行windows版本下载。 和Jenkins配置连接 点击Jenkins，出现如下配置界面。]]></content>
       <tags>
         <tag>jenkins</tag>
         <tag>基础</tag>
@@ -521,17 +516,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[shell流程控制]]></title>
-    <url>%2F2019%2F04%2F12%2Flinux%2F2.shell%E5%9F%BA%E6%9C%AC%E8%AA%9E%E6%B3%95%2F6.shell%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%2F</url>
-    <content type="text"><![CDATA[if else 条件语句1234567891011121314a=10b=20if [ $a == $b ]then echo "a 等于 b"elif [ $a -gt $b ]then echo "a 大于 b"elif [ $a -lt $b ]then echo "a 小于 b"else echo "没有符合的条件"fi 输出结果：1a 小于 b 注意： 条件表达式要放在方括号之间，并且要有空格，例如: [$a==$b] 是错误的，必须写成 [ $a == $b ] for 循环1234for i in 1 2 3 4 5do echo "The value is: $i"done 也可以写成一行,一行的写法是，使用;代替换行符即可: 1for i in 1 2 3 4 5;do echo &quot;The value is: $i&quot;;done 输出： 12345The value is: 1The value is: 2The value is: 3The value is: 4The value is: 5 while 语句1234567#!/bin/bashint=1while(( $int&lt;=5 ))do echo $int let "int++"done case取值后面必须为单词in，每一模式必须以右括号结束。取值可以为变量或常数。匹配发现取值符合某一模式后，其间所有命令开始执行直至 ;;。 取值将检测匹配的每一个模式。一旦模式匹配，则执行完匹配模式相应命令后不再继续其他模式。如果无一匹配模式，使用星号 * 捕获该值，再执行后面的命令。 123456789101112131415echo '输入 1 到 4 之间的数字:'echo '你输入的数字为:'read aNumcase $aNum in 1) echo '你选择了 1' ;; 2) echo '你选择了 2' ;; 3) echo '你选择了 3' ;; 4) echo '你选择了 4' ;; *) echo '你没有输入 1 到 4 之间的数字' ;;esac 跳出循环在循环过程中，有时候需要在未达到循环结束条件时强制跳出循环，Shell使用两个命令来实现该功能：break和continue。 break命令: break命令允许跳出所有循环（终止执行后面的所有循环）continue命令: 它不会跳出所有循环，仅仅跳出当前循环 1234567891011121314#!/bin/bashwhile :do echo -n "输入 1 到 5 之间的数字: " read aNum case $aNum in 1|2|3|4|5) echo "你输入的数字为 $aNum!" ;; *) echo "你输入的数字不是 1 到 5 之间的!" continue echo "游戏结束" ;; esacdone]]></content>
+    <title><![CDATA[03 Linux系统维护管理]]></title>
+    <url>%2F2019%2F04%2F12%2Flinux%2F1.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F03%20Linux%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4%E7%AE%A1%E7%90%86%2F</url>
+    <content type="text"><![CDATA[12345678910data 查看日期，设置日期clear 清屏man 查看帮助信息who 查看用户信息w 用户信息，更全面uname 操作系统信息uptime 输出系统任务队列信息last 输出上次和过去系统用户登陆的信息,详细的日志信息，包括用户名，终端，ip，登陆时间以及断开时间dmesg 显示开机信息free 显示系统内存状态 date查看日期，设置日期（只有root用户才可以设置时间） 12# dateTue Apr 2 22:28:17 CST 2019 结合+号输出特定的格式 12# date &apos;+%Y年%m月%d日 %H时%M分%S秒&apos;2019年04月02日 22时26分55秒 设置时间 1# data -s 2020-01-01 who123# whoroot tty2 2019-04-02 22:01root pts/0 2019-04-02 22:02 (192.168.199.233) w12345# w 22:37:14 up 36 min, 2 users, load average: 0.00, 0.01, 0.03USER TTY FROM LOGIN@ IDLE JCPU PCPU WHATroot tty2 22:01 35:22 0.06s 0.06s -bashroot pts/0 192.168.199.233 22:02 2.00s 0.17s 0.00s w uname12# uname -aLinux localhost.localdomain 3.10.0-957.el7.x86_64 #1 SMP Thu Nov 8 23:39:32 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux dmesgdmesg -c 显示并清空开机信息 freeMem：物理内存Swap：虚拟分区，当物理内存不足时，用于缓解问题 [root@localhost ~]# free -h total used free shared buff/cache available Mem: 3.7G 418M 2.9G 14M 412M 3.0G Swap: 2.0G 0B 2.0G]]></content>
       <tags>
         <tag>linux</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[03 Linux系统维护管理]]></title>
-    <url>%2F2019%2F04%2F12%2Flinux%2F1.%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F03%20Linux%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4%E7%AE%A1%E7%90%86%2F</url>
-    <content type="text"><![CDATA[12345678910data 查看日期，设置日期clear 清屏man 查看帮助信息who 查看用户信息w 用户信息，更全面uname 操作系统信息uptime 输出系统任务队列信息last 输出上次和过去系统用户登陆的信息,详细的日志信息，包括用户名，终端，ip，登陆时间以及断开时间dmesg 显示开机信息free 显示系统内存状态 date查看日期，设置日期（只有root用户才可以设置时间） 12# dateTue Apr 2 22:28:17 CST 2019 结合+号输出特定的格式 12# date &apos;+%Y年%m月%d日 %H时%M分%S秒&apos;2019年04月02日 22时26分55秒 设置时间 1# data -s 2020-01-01 who123# whoroot tty2 2019-04-02 22:01root pts/0 2019-04-02 22:02 (192.168.199.233) w12345# w 22:37:14 up 36 min, 2 users, load average: 0.00, 0.01, 0.03USER TTY FROM LOGIN@ IDLE JCPU PCPU WHATroot tty2 22:01 35:22 0.06s 0.06s -bashroot pts/0 192.168.199.233 22:02 2.00s 0.17s 0.00s w uname12# uname -aLinux localhost.localdomain 3.10.0-957.el7.x86_64 #1 SMP Thu Nov 8 23:39:32 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux dmesgdmesg -c 显示并清空开机信息 freeMem：物理内存Swap：虚拟分区，当物理内存不足时，用于缓解问题 [root@localhost ~]# free -h total used free shared buff/cache available Mem: 3.7G 418M 2.9G 14M 412M 3.0G Swap: 2.0G 0B 2.0G]]></content>
+    <title><![CDATA[shell流程控制]]></title>
+    <url>%2F2019%2F04%2F12%2Flinux%2F2.shell%E5%9F%BA%E6%9C%AC%E8%AA%9E%E6%B3%95%2F6.shell%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%2F</url>
+    <content type="text"><![CDATA[if else 条件语句1234567891011121314a=10b=20if [ $a == $b ]then echo "a 等于 b"elif [ $a -gt $b ]then echo "a 大于 b"elif [ $a -lt $b ]then echo "a 小于 b"else echo "没有符合的条件"fi 输出结果：1a 小于 b 注意： 条件表达式要放在方括号之间，并且要有空格，例如: [$a==$b] 是错误的，必须写成 [ $a == $b ] for 循环1234for i in 1 2 3 4 5do echo "The value is: $i"done 也可以写成一行,一行的写法是，使用;代替换行符即可: 1for i in 1 2 3 4 5;do echo &quot;The value is: $i&quot;;done 输出： 12345The value is: 1The value is: 2The value is: 3The value is: 4The value is: 5 while 语句1234567#!/bin/bashint=1while(( $int&lt;=5 ))do echo $int let "int++"done case取值后面必须为单词in，每一模式必须以右括号结束。取值可以为变量或常数。匹配发现取值符合某一模式后，其间所有命令开始执行直至 ;;。 取值将检测匹配的每一个模式。一旦模式匹配，则执行完匹配模式相应命令后不再继续其他模式。如果无一匹配模式，使用星号 * 捕获该值，再执行后面的命令。 123456789101112131415echo '输入 1 到 4 之间的数字:'echo '你输入的数字为:'read aNumcase $aNum in 1) echo '你选择了 1' ;; 2) echo '你选择了 2' ;; 3) echo '你选择了 3' ;; 4) echo '你选择了 4' ;; *) echo '你没有输入 1 到 4 之间的数字' ;;esac 跳出循环在循环过程中，有时候需要在未达到循环结束条件时强制跳出循环，Shell使用两个命令来实现该功能：break和continue。 break命令: break命令允许跳出所有循环（终止执行后面的所有循环）continue命令: 它不会跳出所有循环，仅仅跳出当前循环 1234567891011121314#!/bin/bashwhile :do echo -n "输入 1 到 5 之间的数字: " read aNum case $aNum in 1|2|3|4|5) echo "你输入的数字为 $aNum!" ;; *) echo "你输入的数字不是 1 到 5 之间的!" continue echo "游戏结束" ;; esacdone]]></content>
       <tags>
         <tag>linux</tag>
       </tags>
@@ -1308,17 +1303,25 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Python 标准库中 time 和 datetime 的区别与联系]]></title>
-    <url>%2F2018%2F05%2F25%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2FPython%E6%A0%87%E5%87%86%E5%BA%93%E4%B8%ADtime%E5%92%8Cdatetime%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB%2F</url>
-    <content type="text"><![CDATA[Python 中提供了对时间日期的多种多样的处理方式，主要是在 time 和 datetime 这两个模块里。今天稍微梳理一下这两个模块在使用上的一些区别和联系。 time在 Python 文档里，time是归类在Generic Operating System Services中，换句话说， 它提供的功能是更加接近于操作系统层面的。通读文档可知，time 模块是围绕着 Unix Timestamp 进行的。 该模块主要包括一个类 struct_time，另外其他几个函数及相关常量。 需要注意的是在该模块中的大多数函数是调用了所在平台C library的同名函数， 所以要特别注意有些函数是平台相关的，可能会在不同的平台有不同的效果。另外一点是，由于是基于Unix Timestamp，所以其所能表述的日期范围被限定在 1970 - 2038 之间，如果你写的代码需要处理在前面所述范围之外的日期，那可能需要考虑使用datetime模块更好。文档解释比较费劲，具体看看怎么用： 123456789101112131415161718192021222324252627In [1]: import timeIn [2]: time.time()Out[2]: 1414332433.345712In [3]: timestamp = time.time()In [4]: time.gmtime(timestamp)Out[4]: time.struct_time(tm_year=2014, tm_mon=10, tm_mday=26, tm_hour=14, tm_min=7, tm_sec=13, tm_wday=6, tm_yday=299, tm_isdst=0)In [5]: time.localtime(timestamp)Out[5]: time.struct_time(tm_year=2014, tm_mon=10, tm_mday=26, tm_hour=22, tm_min=7, tm_sec=13, tm_wday=6, tm_yday=299, tm_isdst=0)In [6]: struct_time = time.localtime(timestamp)In [7]: time.ctime(timestamp)Out[7]: 'Sun Oct 26 22:07:13 2014'In [8]: time.asctime(struct_time)Out[8]: 'Sun Oct 26 22:07:13 2014'In [9]: time.mktime(struct_time)Out[9]: 1414332433.0In [10]: time.strftime("%Y-%m-%d_%H-%M-%S")Out[10]: 2018-05-25_10-04-49In [11]: time.strptime("30 Nov 00", "%d %b %y")Out[11]: time.struct_time(tm_year=2000, tm_mon=11, tm_mday=30, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=335, tm_isdst=-1) 问题不大，可能有时候需要注意一下使用的时区。 datetimedatetime 比 time 高级了不少，可以理解为 datetime 基于 time 进行了封装，提供了更多实用的函数。在datetime 模块中包含了几个类，具体关系如下: 123456object timedelta # 主要用于计算时间跨度 tzinfo # 时区相关 time # 只关注时间 date # 只关注日期 datetime # 同时有时间和日期 名称比较绕口，在实际实用中，用得比较多的是 datetime.datetime 和 datetime.timedelta ，另外两个 datetime.date 和 datetime.time 实际使用和 datetime.datetime 并无太大差别。 下面主要讲讲 datetime.datetime 的使用。使用datetime.datetime.now()可以获得当前时刻的datetime.datetime 实例。 对于一个 datetime.datetime 实例，主要会有以下属性及常用方法，看名称就能理解，应该没有太大问题： 1234567891011121314datetime.yeardatetime.monthdatetime.daydatetime.hourdatetime.minutedatetime.seconddatetime.microseconddatetime.tzinfodatetime.date() # 返回 date 对象datetime.time() # 返回 time 对象datetime.replace(name=value) # 前面所述各项属性是 read-only 的，需要此方法才可更改datetime.timetuple() # 返回time.struct_time 对象dattime.strftime(format) # 按照 format 进行格式化输出 除了实例本身具有的方法,类本身也提供了很多好用的方法： 12345datetime.today()a # 当前时间，localtimedatetime.now([tz]) # 当前时间默认 localtimedatetime.utcnow() # UTC 时间datetime.fromtimestamp(timestamp[, tz]) # 由 Unix Timestamp 构建对象datetime.strptime(date_string, format) # 给定时间格式解析字符串 请注意，上面省略了很多和时区相关的函数，如需使用请查文档。对于日期的计算，使用timedelta也算是比较简单的： 1234567891011In [1]: import datetimeIn [2]: time_now = datetime.datetime.now()In [3]: time_nowOut[3]: datetime.datetime(2014, 10, 27, 21, 46, 16, 657523)In [4]: delta1 = datetime.timedelta(hours=25)In [5]: print(time_now + delta1)2014-10-28 22:46:16.657523In [6]: print(time_now - delta1)2014-10-26 20:46:16.657523 甚至两个 datetime 对象直接相减就能获得一个 timedelta 对象。如果有需要计算工作日的需求，可以使用 business_calendar这个库，不需要装其他依赖就可使用。]]></content>
+    <title><![CDATA[Python字典]]></title>
+    <url>%2F2018%2F05%2F25%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E5%AD%97%E5%85%B8%2F</url>
+    <content type="text"><![CDATA[知道value如何找到key值1234&gt;&gt;&gt; dic = &#123;&apos;a&apos;: &#123;&apos;c&apos;:&apos;001&apos;&#125;, &apos;b&apos;:&apos;002&apos;&#125;&gt;&gt;&gt; list(dic.keys())[list(dic.values()).index(&quot;001&quot;)]&apos;a&apos;&gt;&gt;&gt; dic = {‘a’:’001’, ‘b’:’002’}引用一段Python3文档里面的原话。 If keys, values and items views are iterated over with no intervening modifications to the dictionary, the order of items will directly correspond. 也就是说，在你迭代的过程中如果没有发生对字典的修改，那么.keys() and .values 这两个函数返回的 dict-view对象总是保持对应关系。]]></content>
       <tags>
         <tag>python</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Python字典]]></title>
-    <url>%2F2018%2F05%2F25%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E5%AD%97%E5%85%B8%2F</url>
-    <content type="text"><![CDATA[知道value如何找到key值1234&gt;&gt;&gt; dic = &#123;&apos;a&apos;: &#123;&apos;c&apos;:&apos;001&apos;&#125;, &apos;b&apos;:&apos;002&apos;&#125;&gt;&gt;&gt; list(dic.keys())[list(dic.values()).index(&quot;001&quot;)]&apos;a&apos;&gt;&gt;&gt; dic = {‘a’:’001’, ‘b’:’002’}引用一段Python3文档里面的原话。 If keys, values and items views are iterated over with no intervening modifications to the dictionary, the order of items will directly correspond. 也就是说，在你迭代的过程中如果没有发生对字典的修改，那么.keys() and .values 这两个函数返回的 dict-view对象总是保持对应关系。]]></content>
+    <title><![CDATA[Python异常处理]]></title>
+    <url>%2F2018%2F05%2F25%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%2F</url>
+    <content type="text"><![CDATA[try…except12345678try: fh = open("testfile", "w") fh.write("这是一个测试文件，用于测试异常!!")except: print ("Error: 没有找到文件或读取文件失败")else: print ("内容写入文件成功") fh.close() 异常处理基础语法如下:12345678try:&lt;语句&gt; #运行别的代码except &lt;名字&gt;：&lt;语句&gt; #如果在try部份引发了'name'异常except &lt;名字&gt;，&lt;数据&gt;:&lt;语句&gt; #如果引发了'name'异常，获得附加的数据else:&lt;语句&gt; #如果没有异常发生 使用raise抛出异常使用raise会导致程序中断 1raise Exception("发生了一些错误，程序中断") 用户自定义异常通过创建一个新的异常类，程序可以命名它们自己的异常。异常应该是典型的继承自Exception类，通过直接或间接的方式。 以下为与RuntimeError相关的实例,实例中创建了一个类，基类为RuntimeError，用于在异常触发时输出更多的信息。 在try语句块中，用户自定义的异常后执行except块语句，变量 e 是用于创建Networkerror类的实例。 123class Networkerror(RuntimeError): def __init__(self, arg): self.args = arg 在你定义以上类后，你可以触发该异常，如下所示： 12345try: raise Networkerror("Bad hostname")except Networkerror,e: print e.args raise Networkerror("Bad hostname") # raise是用来抛出异常，不适用则不会中断程序]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Python 标准库中 time 和 datetime 的区别与联系]]></title>
+    <url>%2F2018%2F05%2F25%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2FPython%E6%A0%87%E5%87%86%E5%BA%93%E4%B8%ADtime%E5%92%8Cdatetime%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB%2F</url>
+    <content type="text"><![CDATA[Python 中提供了对时间日期的多种多样的处理方式，主要是在 time 和 datetime 这两个模块里。今天稍微梳理一下这两个模块在使用上的一些区别和联系。 time在 Python 文档里，time是归类在Generic Operating System Services中，换句话说， 它提供的功能是更加接近于操作系统层面的。通读文档可知，time 模块是围绕着 Unix Timestamp 进行的。 该模块主要包括一个类 struct_time，另外其他几个函数及相关常量。 需要注意的是在该模块中的大多数函数是调用了所在平台C library的同名函数， 所以要特别注意有些函数是平台相关的，可能会在不同的平台有不同的效果。另外一点是，由于是基于Unix Timestamp，所以其所能表述的日期范围被限定在 1970 - 2038 之间，如果你写的代码需要处理在前面所述范围之外的日期，那可能需要考虑使用datetime模块更好。文档解释比较费劲，具体看看怎么用： 123456789101112131415161718192021222324252627In [1]: import timeIn [2]: time.time()Out[2]: 1414332433.345712In [3]: timestamp = time.time()In [4]: time.gmtime(timestamp)Out[4]: time.struct_time(tm_year=2014, tm_mon=10, tm_mday=26, tm_hour=14, tm_min=7, tm_sec=13, tm_wday=6, tm_yday=299, tm_isdst=0)In [5]: time.localtime(timestamp)Out[5]: time.struct_time(tm_year=2014, tm_mon=10, tm_mday=26, tm_hour=22, tm_min=7, tm_sec=13, tm_wday=6, tm_yday=299, tm_isdst=0)In [6]: struct_time = time.localtime(timestamp)In [7]: time.ctime(timestamp)Out[7]: 'Sun Oct 26 22:07:13 2014'In [8]: time.asctime(struct_time)Out[8]: 'Sun Oct 26 22:07:13 2014'In [9]: time.mktime(struct_time)Out[9]: 1414332433.0In [10]: time.strftime("%Y-%m-%d_%H-%M-%S")Out[10]: 2018-05-25_10-04-49In [11]: time.strptime("30 Nov 00", "%d %b %y")Out[11]: time.struct_time(tm_year=2000, tm_mon=11, tm_mday=30, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=335, tm_isdst=-1) 问题不大，可能有时候需要注意一下使用的时区。 datetimedatetime 比 time 高级了不少，可以理解为 datetime 基于 time 进行了封装，提供了更多实用的函数。在datetime 模块中包含了几个类，具体关系如下: 123456object timedelta # 主要用于计算时间跨度 tzinfo # 时区相关 time # 只关注时间 date # 只关注日期 datetime # 同时有时间和日期 名称比较绕口，在实际实用中，用得比较多的是 datetime.datetime 和 datetime.timedelta ，另外两个 datetime.date 和 datetime.time 实际使用和 datetime.datetime 并无太大差别。 下面主要讲讲 datetime.datetime 的使用。使用datetime.datetime.now()可以获得当前时刻的datetime.datetime 实例。 对于一个 datetime.datetime 实例，主要会有以下属性及常用方法，看名称就能理解，应该没有太大问题： 1234567891011121314datetime.yeardatetime.monthdatetime.daydatetime.hourdatetime.minutedatetime.seconddatetime.microseconddatetime.tzinfodatetime.date() # 返回 date 对象datetime.time() # 返回 time 对象datetime.replace(name=value) # 前面所述各项属性是 read-only 的，需要此方法才可更改datetime.timetuple() # 返回time.struct_time 对象dattime.strftime(format) # 按照 format 进行格式化输出 除了实例本身具有的方法,类本身也提供了很多好用的方法： 12345datetime.today()a # 当前时间，localtimedatetime.now([tz]) # 当前时间默认 localtimedatetime.utcnow() # UTC 时间datetime.fromtimestamp(timestamp[, tz]) # 由 Unix Timestamp 构建对象datetime.strptime(date_string, format) # 给定时间格式解析字符串 请注意，上面省略了很多和时区相关的函数，如需使用请查文档。对于日期的计算，使用timedelta也算是比较简单的： 1234567891011In [1]: import datetimeIn [2]: time_now = datetime.datetime.now()In [3]: time_nowOut[3]: datetime.datetime(2014, 10, 27, 21, 46, 16, 657523)In [4]: delta1 = datetime.timedelta(hours=25)In [5]: print(time_now + delta1)2014-10-28 22:46:16.657523In [6]: print(time_now - delta1)2014-10-26 20:46:16.657523 甚至两个 datetime 对象直接相减就能获得一个 timedelta 对象。如果有需要计算工作日的需求，可以使用 business_calendar这个库，不需要装其他依赖就可使用。]]></content>
       <tags>
         <tag>python</tag>
       </tags>
@@ -1329,14 +1332,6 @@
     <content type="text"><![CDATA[如何更新在package.json 写好的依赖到到最新版本，并更新package.json到最新内容npm-check-updates 是一个工具，它使用所有依赖项的最新版本自动调整 package.json 123$ npm install -g npm-check-updates$ npm-check -updates -u$ npm install]]></content>
       <tags>
         <tag>nodejs npm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Python异常处理]]></title>
-    <url>%2F2018%2F05%2F25%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%2F</url>
-    <content type="text"><![CDATA[try…except12345678try: fh = open("testfile", "w") fh.write("这是一个测试文件，用于测试异常!!")except: print ("Error: 没有找到文件或读取文件失败")else: print ("内容写入文件成功") fh.close() 异常处理基础语法如下:12345678try:&lt;语句&gt; #运行别的代码except &lt;名字&gt;：&lt;语句&gt; #如果在try部份引发了'name'异常except &lt;名字&gt;，&lt;数据&gt;:&lt;语句&gt; #如果引发了'name'异常，获得附加的数据else:&lt;语句&gt; #如果没有异常发生 使用raise抛出异常使用raise会导致程序中断 1raise Exception("发生了一些错误，程序中断") 用户自定义异常通过创建一个新的异常类，程序可以命名它们自己的异常。异常应该是典型的继承自Exception类，通过直接或间接的方式。 以下为与RuntimeError相关的实例,实例中创建了一个类，基类为RuntimeError，用于在异常触发时输出更多的信息。 在try语句块中，用户自定义的异常后执行except块语句，变量 e 是用于创建Networkerror类的实例。 123class Networkerror(RuntimeError): def __init__(self, arg): self.args = arg 在你定义以上类后，你可以触发该异常，如下所示： 12345try: raise Networkerror("Bad hostname")except Networkerror,e: print e.args raise Networkerror("Bad hostname") # raise是用来抛出异常，不适用则不会中断程序]]></content>
-      <tags>
-        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -1508,18 +1503,18 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[koa2学习系列教程2 中间件]]></title>
-    <url>%2F2017%2F04%2F24%2Fkoa%2Fkoa2%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B2_%E4%B8%AD%E9%97%B4%E4%BB%B6%2F</url>
-    <content type="text"></content>
+    <title><![CDATA[koa2学习系列教程1 Hello Koa]]></title>
+    <url>%2F2017%2F04%2F24%2Fkoa%2Fkoa2%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B1_Hello_Koa%2F</url>
+    <content type="text"><![CDATA[安装koa依赖于node v7.6.0或者更高的node版本，如果版本未达到要求，请升级 1$ npm install koa Hello koa123456789const Koa = require('koa');const app = new Koa();// responseapp.use(ctx =&gt; &#123; ctx.body = 'Hello Koa';&#125;);app.listen(3000); ctx.body = ‘Hello World’这行代码表示设置response.body的值为’Hello World, 一个Koa应用就是一个对象，包含了一个middleware数组，这个数组由一组同步或异步函数组成。 这些函数负责对HTTP请求进行各种加工，比如生成缓存、指定代理、请求重定向等等。 变量app就是一个Koa应用。它监听3000端口，返回一个内容为Hello Koa的网页 app.use方法用于向middleware数组添加相应函数。 listen方法指定监听端口，并启动当前应用。 异步编程终极解决方案 asyncasync是js异步执行的最佳方案，await无法单独出现，总是需要与async配合使用; async 函数返回一个 Promise 对象，可以使用 then 方法添加回调函数。当函数执行的时候，一旦遇到 await 就会先返回，等到触发的异步操作完成，再接着执行函数体内后面的语句。 12345678async function foo ()=&gt;&#123; console.log('foo start') await sub() console.log('foo end')&#125;async function sub ()=&gt;&#123; console.log('sub')&#125; async表示这个函数是异步的 await sub() 表示等待 sub() 执行完毕,并返回结果后，继续向下执行 输出结果如下： 123foo startsubfoo end 中间件 (async需要node v7.6+)koa是一个可以使用两种函数作为中间件的中间件框架 async function common function 123456789101112131415//异步的app.use(async (ctx, next) =&gt; &#123; console.log('first middleware start') await next(); await sub(); console.log('first middleware end')&#125;);//同步的app.use(()=&gt;&#123; console.log('second middleware')&#125;)const sub = ()=&gt;&#123; console.log('sub')&#125; 输出结果如下： 1234first middleware startsecond middlewaresubfirst middleware end app.use的参数就是中间件，可以看出，通过await next()可以调用下一个中间件，通过await func()可以调用其他函数 参考文档koa 中文文档koa实战]]></content>
       <tags>
         <tag>nodejs</tag>
         <tag>koa</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[koa2学习系列教程1 Hello Koa]]></title>
-    <url>%2F2017%2F04%2F24%2Fkoa%2Fkoa2%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B1_Hello_Koa%2F</url>
-    <content type="text"><![CDATA[安装koa依赖于node v7.6.0或者更高的node版本，如果版本未达到要求，请升级 1$ npm install koa Hello koa123456789const Koa = require('koa');const app = new Koa();// responseapp.use(ctx =&gt; &#123; ctx.body = 'Hello Koa';&#125;);app.listen(3000); ctx.body = ‘Hello World’这行代码表示设置response.body的值为’Hello World, 一个Koa应用就是一个对象，包含了一个middleware数组，这个数组由一组同步或异步函数组成。 这些函数负责对HTTP请求进行各种加工，比如生成缓存、指定代理、请求重定向等等。 变量app就是一个Koa应用。它监听3000端口，返回一个内容为Hello Koa的网页 app.use方法用于向middleware数组添加相应函数。 listen方法指定监听端口，并启动当前应用。 异步编程终极解决方案 asyncasync是js异步执行的最佳方案，await无法单独出现，总是需要与async配合使用; async 函数返回一个 Promise 对象，可以使用 then 方法添加回调函数。当函数执行的时候，一旦遇到 await 就会先返回，等到触发的异步操作完成，再接着执行函数体内后面的语句。 12345678async function foo ()=&gt;&#123; console.log('foo start') await sub() console.log('foo end')&#125;async function sub ()=&gt;&#123; console.log('sub')&#125; async表示这个函数是异步的 await sub() 表示等待 sub() 执行完毕,并返回结果后，继续向下执行 输出结果如下： 123foo startsubfoo end 中间件 (async需要node v7.6+)koa是一个可以使用两种函数作为中间件的中间件框架 async function common function 123456789101112131415//异步的app.use(async (ctx, next) =&gt; &#123; console.log('first middleware start') await next(); await sub(); console.log('first middleware end')&#125;);//同步的app.use(()=&gt;&#123; console.log('second middleware')&#125;)const sub = ()=&gt;&#123; console.log('sub')&#125; 输出结果如下： 1234first middleware startsecond middlewaresubfirst middleware end app.use的参数就是中间件，可以看出，通过await next()可以调用下一个中间件，通过await func()可以调用其他函数 参考文档koa 中文文档koa实战]]></content>
+    <title><![CDATA[koa2学习系列教程2 中间件]]></title>
+    <url>%2F2017%2F04%2F24%2Fkoa%2Fkoa2%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B2_%E4%B8%AD%E9%97%B4%E4%BB%B6%2F</url>
+    <content type="text"></content>
       <tags>
         <tag>nodejs</tag>
         <tag>koa</tag>
@@ -1534,17 +1529,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[python协程与异步IO]]></title>
-    <url>%2F2017%2F04%2F23%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E5%8D%8F%E7%A8%8B%E4%B8%8E%E5%BC%82%E6%AD%A5IO%2F</url>
-    <content type="text"><![CDATA[协程协程的用途在于IO，遇到IO就挂起，并发执行另一个任务，比如http请求，可以实现同时请求若干个网站的目的但是很多经典库比如requests并不支持协程 生成器与协程 PEP-0492 通过使用 async 关键字显式的对生成器和协程做了区分。 实际上，使用async显示声明协程（函数），并在函数内使用wait代替yield，一个协程变诞生了 生成器 yield的功能类似于return，但是不同之处在于它返回的是生成器 生成器是通过一个或多个yield表达式构成的函数，每一个生成器都是一个迭代器(for循环或while循环) 如果一个函数包含yield关键字，这个函数就会变为一个生成器。 生成器并不会一次返回所有结果，而是每次遇到yield关键字后返回相应结果，并保留函数当前的运行状态，等待下一次的调用。 由于生成器也是一个迭代器，那么它就应该支持next方法来获取下一个值 1234567891011121314151617181920212223242526def func(): n = 0 print(n) while 1: print(n,'a') n = yield n #可以通过send函数向n赋值 print(n,'b')f = func()print(f)# 生成一个&lt;generator object func at 0x030489F0&gt;f.send(None) # 启动生成器# f.send(None)遇到yield 中断00 af.send(1)# n被赋值为1，循环遇到yield中断1 b1 af.send(2)# f.send(2)，n被赋值为2，循环遇到yield中断2 b2 a 生产者-消费者模型传统的生产者-消费者模型是一个线程写消息，一个线程取消息，通过锁机制控制队列和等待，但一不小心就可能死锁。如果改用协程，生产者生产消息后，直接通过yield跳转到消费者开始执行，待消费者执行完毕后，切换回生产者继续生产，效率极高 123456789101112131415161718192021def consumer(): r = '' while True: n = yield r if not n: return print('[CONSUMER] Consuming %s...' % n) r = '200 OK'def produce(c): c.send(None) n = 0 while n &lt; 5: n = n + 1 print('[PRODUCER] Producing %s...' % n) r = c.send(n) print('[PRODUCER] Consumer return: %s' % r) c.close()c = consumer()produce(c) 执行过程分析 c = consumer(),生成generator c.send(None)其实等价于next(c),第一次执行时其实只执行到n = yield r就停止了，然后把r的值返回给调用者。用于启动生成器 yield r是一个表达式，通过send(msg)被赋值，而send(msg)是有返回值的，返回值为：下一个yield r表达式的参数，即为r。 produce一旦生产了东西，通过c.send(n)切换到consumer执行。consumer通过yield拿到消息，处理，又通过yield把结果传回。也就是说，c.send(1) 不但会给 c 传送一个数据，它还会等着下次 yield 从 c 中返回一个数据，它是有返回值的，一去一回才算完，拿到了返回的数据(200 OK)才继续下面执行。 整个流程无锁，由一个线程执行，produce和consumer协作完成任务，所以称为“协程”，而非线程的抢占式多任务。 asyncioasyncio是Python 3.4版本引入的标准库，直接内置了对异步IO的支持 12345678910111213import timeimport asyncio@asyncio.coroutinedef hello(): print('Hello world!') yield from asyncio.sleep(1) print('Hello end!')tasks = [hello(), hello()]loop = asyncio.get_event_loop()loop.run_until_complete(asyncio.wait(tasks))loop.close() 两个hello()是由同一个线程并发执行的,返回结果为 12345678# 单线程依次执行print('Hello world!')Hello world!Hello world!# 执行异步操作asyncio.sleep(1)暂停1s# 单线程依次执行print('Hello end!')Hello end!Hello end! async/awaitasync/await是自python 3.5开始后asyncio实现的新语法 把@asyncio.coroutine替换为async； 把yield from替换为await。 1234async def hello(): print("Hello start!") r = await asyncio.sleep(1) print("Hello end!") aiohttpasyncio可以实现单线程并发IO操作。如果仅用在客户端，发挥的威力不大。 如果把asyncio用在服务器端，例如Web服务器，由于HTTP连接就是IO操作，因此可以用单线程+coroutine实现多用户的高并发支持。 asyncio实现了TCP、UDP、SSL等协议，aiohttp则是基于asyncio实现的HTTP框架。 1pip install aiohttp 1234567891011121314151617181920212223import asynciofrom aiohttp import webasync def index(request): await asyncio.sleep(0.5) # 模拟io阻塞 return web.Response(body=b'&lt;h1&gt;Index&lt;/h1&gt;',content_type='text/html')async def hello(request): await asyncio.sleep(0.5) text = '&lt;h1&gt;hello, %s!&lt;/h1&gt;' % request.match_info['name'] return web.Response(body=text.encode('utf-8'),content_type='text/html')async def init(loop): app = web.Application(loop=loop) app.router.add_route('GET', '/', index) app.router.add_route('GET', '/hello/&#123;name&#125;', hello) srv = await loop.create_server(app.make_handler(), '127.0.0.1', 8000) print('Server started at http://127.0.0.1:8000...') return srvloop = asyncio.get_event_loop()loop.run_until_complete(init(loop))loop.run_forever() python并发之协程python:利用asyncio进行快速抓取玩转 Python 3.5 的 await/asyncPython 3.5 协程究竟是个啥]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[python实现windows系统下自动拨号]]></title>
-    <url>%2F2017%2F04%2F23%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E5%AE%9E%E7%8E%B0windows%E7%B3%BB%E7%BB%9F%E4%B8%8B%E8%87%AA%E5%8A%A8%E6%8B%A8%E5%8F%B7%2F</url>
-    <content type="text"><![CDATA[1234567891011121314151617class Adsl(object): def __init__(self): # 分别填写adsl名称，用户名与密码，dsl名称一般为宽带连接 self.name = "宽带连接" self.username = 'adsl_uname' self.password = 'adsl_upwd' def connect(self): cmd_str = "rasdial %s %s %s" % (self.name, self.username, self.password) os.system(cmd_str) time.sleep(5) def disconnect(self): cmd_str = "rasdial %s /disconnect" % self.name os.system(cmd_str) time.sleep(5) def reconnect(self): self.disconnect() self.connect()]]></content>
+    <title><![CDATA[将Python代码打包放到PyPI上]]></title>
+    <url>%2F2017%2F04%2F23%2Fpython%2F4.python%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%2F%E5%B0%86Python%E4%BB%A3%E7%A0%81%E6%89%93%E5%8C%85%E6%94%BE%E5%88%B0PyPI%E4%B8%8A%2F</url>
+    <content type="text"><![CDATA[什么是PyPIPyPI(Python Package Index)是python官方的第三方库的仓库。所有人都可以下载第三方库或上传自己开发的库到PyPI。PyPI推荐使用pip包管理器来下载第三方库 包的文件结构123456789101112131415foo|-- bin/ #存放项目的一些可执行文件| |-- foo|-- foo/ # 所有模块、包都应该放在此目录，程序的入口最好命名为main.py| |-- tests/ # 存放单元测试代码；| | |-- __init__.py| | |-- test_main.py| |-- __init__.py| |-- main.py|-- docs/ # 用于存放文档| |-- conf.py| |-- abc.rst|-- setup.py # 来管理代码的打包、安装、部署问题|-- requirements.txt # 存放软件依赖的外部Python包列表|-- README.rst # 项目说明文件 setup文件1234567891011121314151617181920212223242526272829303132333435363738import codecsimport osimport systry: from setuptools import setupexcept: from distutils.core import setupdef read(fname): return codecs.open(os.path.join(os.path.dirname(__file__), fname)).read()NAME = "project_name"PACKAGES = ["somefunctions",]DESCRIPTION = "package description."LONG_DESCRIPTION = read("README.rst")KEYWORDS = "test python package"AUTHOR = "your_name"AUTHOR_EMAIL = "youremail@email.com"URL = "http://your_blog/"VERSION = "1.0.1"LICENSE = "MIT"CLASSFIERS = ['License :: OSI Approved :: MIT License','Programming Language :: Python','Intended Audience :: Developers','Operating System :: OS Independent']setup( name = NAME, version = VERSION, description = DESCRIPTION, long_description =LONG_DESCRIPTION, classifiers = CLASSFIERS, keywords = KEYWORDS, author = AUTHOR, author_email = AUTHOR_EMAIL, url = URL, license = LICENSE, packages = PACKAGES, include_package_data=True, zip_safe=True,) 打包上传使用check命令查看是否存在语法问题，使用sdist进行打包。 12python setup.py checkpython setup.py sdist 发布前，需要到pypi官网注册一个账号，并在用户目录新建文件 ~/.pypirc ，并键入以下内容 123456[distutils]index-servers = pypi[pypi]repository: https://pypi.python.org/pypiusername: yournamepassword: yourpwd 执行以下内容进行打包上传，服务器返回Server response (200): OK表示上传成功 1python setup.py sdist upload 发布成功后就可以使用pip install安装你自己的python包了！ 参考资料Invalid or non-existent authentication information]]></content>
       <tags>
         <tag>python</tag>
       </tags>
@@ -1560,9 +1547,25 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[VPS与虚拟主机]]></title>
-    <url>%2F2017%2F04%2F23%2Flinux%2FVPS%E4%B8%8E%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA%2F</url>
-    <content type="text"><![CDATA[独立服务器： 顾名思义，就是一个躺在机房的实实在在的物理服务器 VPS： Virtual Private Server 虚拟专用服务器,一般是将一个独立服务器通过虚拟化技术虚拟成多个虚拟专用服务器 云服务器 ECS： 云服务器是一个计算，网络，存储的组合。简单点说就是通过多个CPU，内存，硬盘组成的计算池和存储池和网络的组合 虚拟主机 Vhost 虚拟主机是通过，物理服务器，VPS或者云服务器安装例如CPanel，Plesk等面板搭建的]]></content>
+    <title><![CDATA[python实现windows系统下自动拨号]]></title>
+    <url>%2F2017%2F04%2F23%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E5%AE%9E%E7%8E%B0windows%E7%B3%BB%E7%BB%9F%E4%B8%8B%E8%87%AA%E5%8A%A8%E6%8B%A8%E5%8F%B7%2F</url>
+    <content type="text"><![CDATA[1234567891011121314151617class Adsl(object): def __init__(self): # 分别填写adsl名称，用户名与密码，dsl名称一般为宽带连接 self.name = "宽带连接" self.username = 'adsl_uname' self.password = 'adsl_upwd' def connect(self): cmd_str = "rasdial %s %s %s" % (self.name, self.username, self.password) os.system(cmd_str) time.sleep(5) def disconnect(self): cmd_str = "rasdial %s /disconnect" % self.name os.system(cmd_str) time.sleep(5) def reconnect(self): self.disconnect() self.connect()]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python协程与异步IO]]></title>
+    <url>%2F2017%2F04%2F23%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E5%8D%8F%E7%A8%8B%E4%B8%8E%E5%BC%82%E6%AD%A5IO%2F</url>
+    <content type="text"><![CDATA[协程协程的用途在于IO，遇到IO就挂起，并发执行另一个任务，比如http请求，可以实现同时请求若干个网站的目的但是很多经典库比如requests并不支持协程 生成器与协程 PEP-0492 通过使用 async 关键字显式的对生成器和协程做了区分。 实际上，使用async显示声明协程（函数），并在函数内使用wait代替yield，一个协程变诞生了 生成器 yield的功能类似于return，但是不同之处在于它返回的是生成器 生成器是通过一个或多个yield表达式构成的函数，每一个生成器都是一个迭代器(for循环或while循环) 如果一个函数包含yield关键字，这个函数就会变为一个生成器。 生成器并不会一次返回所有结果，而是每次遇到yield关键字后返回相应结果，并保留函数当前的运行状态，等待下一次的调用。 由于生成器也是一个迭代器，那么它就应该支持next方法来获取下一个值 1234567891011121314151617181920212223242526def func(): n = 0 print(n) while 1: print(n,'a') n = yield n #可以通过send函数向n赋值 print(n,'b')f = func()print(f)# 生成一个&lt;generator object func at 0x030489F0&gt;f.send(None) # 启动生成器# f.send(None)遇到yield 中断00 af.send(1)# n被赋值为1，循环遇到yield中断1 b1 af.send(2)# f.send(2)，n被赋值为2，循环遇到yield中断2 b2 a 生产者-消费者模型传统的生产者-消费者模型是一个线程写消息，一个线程取消息，通过锁机制控制队列和等待，但一不小心就可能死锁。如果改用协程，生产者生产消息后，直接通过yield跳转到消费者开始执行，待消费者执行完毕后，切换回生产者继续生产，效率极高 123456789101112131415161718192021def consumer(): r = '' while True: n = yield r if not n: return print('[CONSUMER] Consuming %s...' % n) r = '200 OK'def produce(c): c.send(None) n = 0 while n &lt; 5: n = n + 1 print('[PRODUCER] Producing %s...' % n) r = c.send(n) print('[PRODUCER] Consumer return: %s' % r) c.close()c = consumer()produce(c) 执行过程分析 c = consumer(),生成generator c.send(None)其实等价于next(c),第一次执行时其实只执行到n = yield r就停止了，然后把r的值返回给调用者。用于启动生成器 yield r是一个表达式，通过send(msg)被赋值，而send(msg)是有返回值的，返回值为：下一个yield r表达式的参数，即为r。 produce一旦生产了东西，通过c.send(n)切换到consumer执行。consumer通过yield拿到消息，处理，又通过yield把结果传回。也就是说，c.send(1) 不但会给 c 传送一个数据，它还会等着下次 yield 从 c 中返回一个数据，它是有返回值的，一去一回才算完，拿到了返回的数据(200 OK)才继续下面执行。 整个流程无锁，由一个线程执行，produce和consumer协作完成任务，所以称为“协程”，而非线程的抢占式多任务。 asyncioasyncio是Python 3.4版本引入的标准库，直接内置了对异步IO的支持 12345678910111213import timeimport asyncio@asyncio.coroutinedef hello(): print('Hello world!') yield from asyncio.sleep(1) print('Hello end!')tasks = [hello(), hello()]loop = asyncio.get_event_loop()loop.run_until_complete(asyncio.wait(tasks))loop.close() 两个hello()是由同一个线程并发执行的,返回结果为 12345678# 单线程依次执行print('Hello world!')Hello world!Hello world!# 执行异步操作asyncio.sleep(1)暂停1s# 单线程依次执行print('Hello end!')Hello end!Hello end! async/awaitasync/await是自python 3.5开始后asyncio实现的新语法 把@asyncio.coroutine替换为async； 把yield from替换为await。 1234async def hello(): print("Hello start!") r = await asyncio.sleep(1) print("Hello end!") aiohttpasyncio可以实现单线程并发IO操作。如果仅用在客户端，发挥的威力不大。 如果把asyncio用在服务器端，例如Web服务器，由于HTTP连接就是IO操作，因此可以用单线程+coroutine实现多用户的高并发支持。 asyncio实现了TCP、UDP、SSL等协议，aiohttp则是基于asyncio实现的HTTP框架。 1pip install aiohttp 1234567891011121314151617181920212223import asynciofrom aiohttp import webasync def index(request): await asyncio.sleep(0.5) # 模拟io阻塞 return web.Response(body=b'&lt;h1&gt;Index&lt;/h1&gt;',content_type='text/html')async def hello(request): await asyncio.sleep(0.5) text = '&lt;h1&gt;hello, %s!&lt;/h1&gt;' % request.match_info['name'] return web.Response(body=text.encode('utf-8'),content_type='text/html')async def init(loop): app = web.Application(loop=loop) app.router.add_route('GET', '/', index) app.router.add_route('GET', '/hello/&#123;name&#125;', hello) srv = await loop.create_server(app.make_handler(), '127.0.0.1', 8000) print('Server started at http://127.0.0.1:8000...') return srvloop = asyncio.get_event_loop()loop.run_until_complete(init(loop))loop.run_forever() python并发之协程python:利用asyncio进行快速抓取玩转 Python 3.5 的 await/asyncPython 3.5 协程究竟是个啥]]></content>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[python规范目录结构]]></title>
+    <url>%2F2017%2F04%2F23%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E8%A7%84%E8%8C%83%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%2F</url>
+    <content type="text"><![CDATA[假设项目名称为Foo 123456789101112131415Foo/|-- bin/ #存放项目的一些可执行文件| |-- foo|-- foo/ # 所有模块、包都应该放在此目录，程序的入口最好命名为main.py| |-- tests/ # 存放单元测试代码；| | |-- __init__.py| | |-- test_main.py| |-- __init__.py| |-- main.py|-- docs/ # 用于存放文档| |-- conf.py| |-- abc.rst|-- setup.py # 来管理代码的打包、安装、部署问题|-- requirements.txt # 存放软件依赖的外部Python包列表|-- README # 项目说明文件 python基础6–目录结构]]></content>
       <tags>
         <tag>python</tag>
       </tags>
@@ -1576,14 +1579,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[将Python代码打包放到PyPI上]]></title>
-    <url>%2F2017%2F04%2F23%2Fpython%2F4.python%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%2F%E5%B0%86Python%E4%BB%A3%E7%A0%81%E6%89%93%E5%8C%85%E6%94%BE%E5%88%B0PyPI%E4%B8%8A%2F</url>
-    <content type="text"><![CDATA[什么是PyPIPyPI(Python Package Index)是python官方的第三方库的仓库。所有人都可以下载第三方库或上传自己开发的库到PyPI。PyPI推荐使用pip包管理器来下载第三方库 包的文件结构123456789101112131415foo|-- bin/ #存放项目的一些可执行文件| |-- foo|-- foo/ # 所有模块、包都应该放在此目录，程序的入口最好命名为main.py| |-- tests/ # 存放单元测试代码；| | |-- __init__.py| | |-- test_main.py| |-- __init__.py| |-- main.py|-- docs/ # 用于存放文档| |-- conf.py| |-- abc.rst|-- setup.py # 来管理代码的打包、安装、部署问题|-- requirements.txt # 存放软件依赖的外部Python包列表|-- README.rst # 项目说明文件 setup文件1234567891011121314151617181920212223242526272829303132333435363738import codecsimport osimport systry: from setuptools import setupexcept: from distutils.core import setupdef read(fname): return codecs.open(os.path.join(os.path.dirname(__file__), fname)).read()NAME = "project_name"PACKAGES = ["somefunctions",]DESCRIPTION = "package description."LONG_DESCRIPTION = read("README.rst")KEYWORDS = "test python package"AUTHOR = "your_name"AUTHOR_EMAIL = "youremail@email.com"URL = "http://your_blog/"VERSION = "1.0.1"LICENSE = "MIT"CLASSFIERS = ['License :: OSI Approved :: MIT License','Programming Language :: Python','Intended Audience :: Developers','Operating System :: OS Independent']setup( name = NAME, version = VERSION, description = DESCRIPTION, long_description =LONG_DESCRIPTION, classifiers = CLASSFIERS, keywords = KEYWORDS, author = AUTHOR, author_email = AUTHOR_EMAIL, url = URL, license = LICENSE, packages = PACKAGES, include_package_data=True, zip_safe=True,) 打包上传使用check命令查看是否存在语法问题，使用sdist进行打包。 12python setup.py checkpython setup.py sdist 发布前，需要到pypi官网注册一个账号，并在用户目录新建文件 ~/.pypirc ，并键入以下内容 123456[distutils]index-servers = pypi[pypi]repository: https://pypi.python.org/pypiusername: yournamepassword: yourpwd 执行以下内容进行打包上传，服务器返回Server response (200): OK表示上传成功 1python setup.py sdist upload 发布成功后就可以使用pip install安装你自己的python包了！ 参考资料Invalid or non-existent authentication information]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Python使用requirement.txt实现自动打包部署]]></title>
     <url>%2F2017%2F04%2F23%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2FPython%E4%BD%BF%E7%94%A8requirement.txt%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85%E9%83%A8%E7%BD%B2%2F</url>
     <content type="text"><![CDATA[不要在本地打包依赖python一些模块是下载源码然后本机编译的。如果本机打包模块发布在别的机器上可能会出现兼容性问题。所以，统一使用pip进行模块安装打包。 使用pip进行依赖部署在开发环境中，统一运行以下命令安装依赖 1sudo pip install xx 在开发环境中，运行以下命令导出依赖 1pip freeze &gt; requirement.txt 在生产环境中，执行以下命令安装依赖 1pip install -r requirement.txt]]></content>
@@ -1592,9 +1587,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[python规范目录结构]]></title>
-    <url>%2F2017%2F04%2F23%2Fpython%2F1.python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%2Fpython%E8%A7%84%E8%8C%83%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%2F</url>
-    <content type="text"><![CDATA[假设项目名称为Foo 123456789101112131415Foo/|-- bin/ #存放项目的一些可执行文件| |-- foo|-- foo/ # 所有模块、包都应该放在此目录，程序的入口最好命名为main.py| |-- tests/ # 存放单元测试代码；| | |-- __init__.py| | |-- test_main.py| |-- __init__.py| |-- main.py|-- docs/ # 用于存放文档| |-- conf.py| |-- abc.rst|-- setup.py # 来管理代码的打包、安装、部署问题|-- requirements.txt # 存放软件依赖的外部Python包列表|-- README # 项目说明文件 python基础6–目录结构]]></content>
+    <title><![CDATA[VPS与虚拟主机]]></title>
+    <url>%2F2017%2F04%2F23%2Flinux%2FVPS%E4%B8%8E%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA%2F</url>
+    <content type="text"><![CDATA[独立服务器： 顾名思义，就是一个躺在机房的实实在在的物理服务器 VPS： Virtual Private Server 虚拟专用服务器,一般是将一个独立服务器通过虚拟化技术虚拟成多个虚拟专用服务器 云服务器 ECS： 云服务器是一个计算，网络，存储的组合。简单点说就是通过多个CPU，内存，硬盘组成的计算池和存储池和网络的组合 虚拟主机 Vhost 虚拟主机是通过，物理服务器，VPS或者云服务器安装例如CPanel，Plesk等面板搭建的]]></content>
       <tags>
         <tag>python</tag>
       </tags>

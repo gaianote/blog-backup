@@ -335,8 +335,8 @@
       
         
           
-            <p><img src="https://upload-images.jianshu.io/upload_images/4905573-1b4115ad4454a063.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/555/format/webp" alt="img"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/4905573-7cb6ea087fd0add9?imageMogr2/auto-orient/strip|imageView2/2/w/700/format/webp" alt="img"></p>
+            <p><img src="/images/webp01.png" alt="img"></p>
+<p><img src="/images/webp02.png" alt="img"></p>
 <h5 id="名词解释："><a href="#名词解释：" class="headerlink" title="名词解释："></a>名词解释：</h5><p><strong>n</strong>：数据规模<br><strong>k</strong>：“桶”的个数<br><strong>In-place</strong>：占用常数内存，不占用额外内存<br><strong>Out-place</strong>：占用额外内存<br><strong>稳定性</strong>：排序后2个相等键值的顺序和排序之前它们的顺序相同</p>
 <h2 id="1-冒泡排序（Bubble-Sort）"><a href="#1-冒泡排序（Bubble-Sort）" class="headerlink" title="1. 冒泡排序（Bubble Sort）"></a>1. 冒泡排序（Bubble Sort）</h2><hr>
 <p><strong>冒泡排序逻辑：</strong></p>
@@ -344,21 +344,21 @@
 <h5 id="冒泡排序须知："><a href="#冒泡排序须知：" class="headerlink" title="冒泡排序须知："></a>冒泡排序须知：</h5><p>冒泡排序每次找出一个最大的元素，因此需要遍历 n-1 次。还有一种优化算法，就是立一个flag，当在一趟序列遍历中元素没有发生交换，则证明该序列已经有序。但这种改进对于提升性能来说并没有什么太大作用。</p>
 <h5 id="什么时候最快（Best-Cases）："><a href="#什么时候最快（Best-Cases）：" class="headerlink" title="什么时候最快（Best Cases）："></a>什么时候最快（Best Cases）：</h5><p>当输入的数据已经是正序时。</p>
 <h5 id="什么时候最慢（Worst-Cases）："><a href="#什么时候最慢（Worst-Cases）：" class="headerlink" title="什么时候最慢（Worst Cases）："></a>什么时候最慢（Worst Cases）：</h5><p>当输入的数据是反序时。</p>
-<h5 id="冒泡排序动图演示："><a href="#冒泡排序动图演示：" class="headerlink" title="冒泡排序动图演示："></a>冒泡排序动图演示：</h5><p><img src="https://upload-images.jianshu.io/upload_images/4905573-1864e66dfb844640?imageMogr2/auto-orient/strip|imageView2/2/w/826/format/webp" alt="img"></p>
+<h5 id="冒泡排序动图演示："><a href="#冒泡排序动图演示：" class="headerlink" title="冒泡排序动图演示："></a>冒泡排序动图演示：</h5><p><img src="/images/webp03.png" alt="img"></p>
 <h5 id="冒泡排序-Python-代码实现："><a href="#冒泡排序-Python-代码实现：" class="headerlink" title="冒泡排序 Python 代码实现："></a>冒泡排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubbleSort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums) - <span class="number">1</span>): <span class="comment"># 遍历 len(nums)-1 次</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(nums) - i - <span class="number">1</span>): <span class="comment"># 已排好序的部分不用再次遍历</span></span><br><span class="line">            <span class="keyword">if</span> nums[j] &gt; nums[j+<span class="number">1</span>]:</span><br><span class="line">                nums[j], nums[j+<span class="number">1</span>] = nums[j+<span class="number">1</span>], nums[j] <span class="comment"># Python 交换两个数不用中间变量</span></span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
 <h2 id="2-选择排序（Selection-Sort）"><a href="#2-选择排序（Selection-Sort）" class="headerlink" title="2. 选择排序（Selection Sort）"></a>2. 选择排序（Selection Sort）</h2><hr>
 <h5 id="选择排序须知："><a href="#选择排序须知：" class="headerlink" title="选择排序须知："></a>选择排序须知：</h5><p>选择排序不受输入数据的影响，即在任何情况下时间复杂度不变。选择排序每次选出最小的元素，因此需要遍历 n-1 次。</p>
-<h5 id="选择排序动图演示："><a href="#选择排序动图演示：" class="headerlink" title="选择排序动图演示："></a>选择排序动图演示：</h5><p><img src="https://upload-images.jianshu.io/upload_images/4905573-a7abb52284864391?imageMogr2/auto-orient/strip|imageView2/2/w/811/format/webp" alt="img"></p>
+<h5 id="选择排序动图演示："><a href="#选择排序动图演示：" class="headerlink" title="选择排序动图演示："></a>选择排序动图演示：</h5><p><img src="/images/webp04.png" alt="img"></p>
 <h5 id="选择排序-Python-代码实现："><a href="#选择排序-Python-代码实现：" class="headerlink" title="选择排序 Python 代码实现："></a>选择排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectionSort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums) - <span class="number">1</span>):  <span class="comment"># 遍历 len(nums)-1 次</span></span><br><span class="line">        minIndex = i</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, len(nums)):</span><br><span class="line">            <span class="keyword">if</span> nums[j] &lt; nums[minIndex]:  <span class="comment"># 更新最小值索引</span></span><br><span class="line">                minIndex = j  </span><br><span class="line">        nums[i], nums[minIndex] = nums[minIndex], nums[i] <span class="comment"># 把最小数交换到前面</span></span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
 <h2 id="3-插入排序（Insertion-Sort）"><a href="#3-插入排序（Insertion-Sort）" class="headerlink" title="3. 插入排序（Insertion Sort）"></a>3. 插入排序（Insertion Sort）</h2><hr>
 <h5 id="插入排序须知："><a href="#插入排序须知：" class="headerlink" title="插入排序须知："></a>插入排序须知：</h5><p>插入排序如同打扑克一样，每次将后面的牌插到前面已经排好序的牌中。插入排序有一种优化算法，叫做<strong>拆半插入</strong>。因为前面是局部排好的序列，因此可以用折半查找的方法将牌插入到正确的位置，而不是从后往前一一比对。折半查找只是减少了比较次数，但是元素的移动次数不变，所以时间复杂度仍为 O(n^2) ！</p>
-<h5 id="插入排序动图演示："><a href="#插入排序动图演示：" class="headerlink" title="插入排序动图演示："></a>插入排序动图演示：</h5><p><img src="https://upload-images.jianshu.io/upload_images/4905573-b4a9bf382407ff23?imageMogr2/auto-orient/strip|imageView2/2/w/811/format/webp" alt="img"></p>
+<h5 id="插入排序动图演示："><a href="#插入排序动图演示：" class="headerlink" title="插入排序动图演示："></a>插入排序动图演示：</h5><p><img src="/images/webp05.png" alt="img"></p>
 <h5 id="插入排序-Python-代码实现："><a href="#插入排序-Python-代码实现：" class="headerlink" title="插入排序 Python 代码实现："></a>插入排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertionSort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums) - <span class="number">1</span>):  <span class="comment"># 遍历 len(nums)-1 次</span></span><br><span class="line">        curNum, preIndex = nums[i+<span class="number">1</span>], i  <span class="comment"># curNum 保存当前待插入的数</span></span><br><span class="line">        <span class="keyword">while</span> preIndex &gt;= <span class="number">0</span> <span class="keyword">and</span> curNum &lt; nums[preIndex]: <span class="comment"># 将比 curNum 大的元素向后移动</span></span><br><span class="line">            nums[preIndex + <span class="number">1</span>] = nums[preIndex]</span><br><span class="line">            preIndex -= <span class="number">1</span></span><br><span class="line">        nums[preIndex + <span class="number">1</span>] = curNum  <span class="comment"># 待插入的数的正确位置   </span></span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
 <h2 id="希尔排序（Shell-Sort）"><a href="#希尔排序（Shell-Sort）" class="headerlink" title="希尔排序（Shell Sort）"></a>希尔排序（Shell Sort）</h2><hr>
 <h5 id="希尔排序须知："><a href="#希尔排序须知：" class="headerlink" title="希尔排序须知："></a>希尔排序须知：</h5><p>希尔排序是插入排序的一种更高效率的实现。它与插入排序的不同之处在于，它会优先比较距离较远的元素。</p>
 <p>【例子】对于待排序列 {44，12，59，36，62，43，94，7，35，52，85}，我们可设定增量序列为 {5，3，1}。</p>
 <p>【解析】第一个增量为 5，因此 {44，43，85}、{12，94}、{59，7}、{36，35}、{62，52} 分别隶属于同一个子序列，子序列内部进行插入排序；然后选取第二个增量3，因此 {43，35，94，62}、{12，52，59，85}、{7，44，36} 分别隶属于同一个子序列；最后一个增量为 1，这一次排序相当于简单插入排序，但是经过前两次排序，序列已经基本有序，因此此次排序时间效率就提高了很多。希尔排序过程如下：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/4905573-922ba8b75832ae71.png?imageMogr2/auto-orient/strip|imageView2/2/w/801/format/webp" alt="img"></p>
+<p><img src="/images/webp06.png" alt="img"></p>
 <p>希尔排序的核心在于间隔序列的设定。既可以提前设定好间隔序列，也可以动态的定义间隔序列。动态定义间隔序列的算法是《算法（第4版》的合著者 Robert Sedgewick 提出的。在这里，我就使用了这种方法。</p>
 <h5 id="希尔排序-Python-代码实现："><a href="#希尔排序-Python-代码实现：" class="headerlink" title="希尔排序 Python 代码实现："></a>希尔排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shellSort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    lens = len(nums)</span><br><span class="line">    gap = <span class="number">1</span>  </span><br><span class="line">    <span class="keyword">while</span> gap &lt; lens // <span class="number">3</span>:</span><br><span class="line">        gap = gap * <span class="number">3</span> + <span class="number">1</span>  <span class="comment"># 动态定义间隔序列</span></span><br><span class="line">    <span class="keyword">while</span> gap &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(gap, lens):</span><br><span class="line">            curNum, preIndex = nums[i], i - gap  <span class="comment"># curNum 保存当前待插入的数</span></span><br><span class="line">            <span class="keyword">while</span> preIndex &gt;= <span class="number">0</span> <span class="keyword">and</span> curNum &lt; nums[preIndex]:</span><br><span class="line">                nums[preIndex + gap] = nums[preIndex] <span class="comment"># 将比 curNum 大的元素向后移动</span></span><br><span class="line">                preIndex -= gap</span><br><span class="line">            nums[preIndex + gap] = curNum  <span class="comment"># 待插入的数的正确位置</span></span><br><span class="line">        gap //= <span class="number">3</span>  <span class="comment"># 下一个动态间隔</span></span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
 <h2 id="归并排序（Merge-Sort）"><a href="#归并排序（Merge-Sort）" class="headerlink" title="归并排序（Merge Sort）"></a>归并排序（Merge Sort）</h2><hr>
@@ -368,11 +368,11 @@
 <li>自下而上的迭代</li>
 </ol>
 <p>和选择排序一样，归并排序的性能不受输入数据的影响，但表现比选择排序好的多，因为始终都是O(n log n）的时间复杂度。代价是需要额外的内存空间。</p>
-<h5 id="归并排序动图演示："><a href="#归并排序动图演示：" class="headerlink" title="归并排序动图演示："></a>归并排序动图演示：</h5><p><img src="https://upload-images.jianshu.io/upload_images/4905573-5cdf82545dcc4de7?imageMogr2/auto-orient/strip|imageView2/2/w/811/format/webp" alt="img"></p>
+<h5 id="归并排序动图演示："><a href="#归并排序动图演示：" class="headerlink" title="归并排序动图演示："></a>归并排序动图演示：</h5><p><img src="/images/webp07.png" alt="img"></p>
 <h5 id="归并排序-Python-代码实现："><a href="#归并排序-Python-代码实现：" class="headerlink" title="归并排序 Python 代码实现："></a>归并排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mergeSort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="comment"># 归并过程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(left, right)</span>:</span></span><br><span class="line">        result = []  <span class="comment"># 保存归并后的结果</span></span><br><span class="line">        i = j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; len(left) <span class="keyword">and</span> j &lt; len(right):</span><br><span class="line">            <span class="keyword">if</span> left[i] &lt;= right[j]:</span><br><span class="line">                result.append(left[i])</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.append(right[j])</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">        result = result + left[i:] + right[j:] <span class="comment"># 剩余的元素直接添加到末尾</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="comment"># 递归过程</span></span><br><span class="line">    <span class="keyword">if</span> len(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line">    mid = len(nums) // <span class="number">2</span></span><br><span class="line">    left = mergeSort(nums[:mid])</span><br><span class="line">    right = mergeSort(nums[mid:])</span><br><span class="line">    <span class="keyword">return</span> merge(left, right)</span><br></pre></td></tr></table></figure>
 <h2 id="快速排序（Quick-Sort）"><a href="#快速排序（Quick-Sort）" class="headerlink" title="快速排序（Quick Sort）"></a>快速排序（Quick Sort）</h2><hr>
 <h5 id="快速排序须知："><a href="#快速排序须知：" class="headerlink" title="快速排序须知："></a>快速排序须知：</h5><p>又是一种分而治之思想在排序算法上的典型应用。本质上来看，快速排序应该算是在冒泡排序基础上的递归分治法。它是处理大数据最快的排序算法之一，虽然 Worst Case 的时间复杂度达到了 O(n²)，但是在大多数情况下都比平均时间复杂度为 O(n log n) 的排序算法表现要更好，因为 O(n log n) 记号中隐含的常数因子很小，而且快速排序的内循环比大多数排序算法都要短小，这意味着它无论是在理论上还是在实际中都要更快，比复杂度稳定等于 O(n log n) 的归并排序要小很多。所以，对绝大多数顺序性较弱的随机数列而言，快速排序总是优于归并排序。它的主要缺点是非常脆弱，在实现时要非常小心才能避免低劣的性能。</p>
-<h5 id="快速排序动图演示："><a href="#快速排序动图演示：" class="headerlink" title="快速排序动图演示："></a>快速排序动图演示：</h5><p><img src="https://upload-images.jianshu.io/upload_images/4905573-78aeead3ef0a4960?imageMogr2/auto-orient/strip|imageView2/2/w/811/format/webp" alt="img"></p>
+<h5 id="快速排序动图演示："><a href="#快速排序动图演示：" class="headerlink" title="快速排序动图演示："></a>快速排序动图演示：</h5><p><img src="/images/webp08.png" alt="img"></p>
 <h5 id="快速排序-Python-代码实现："><a href="#快速排序-Python-代码实现：" class="headerlink" title="快速排序 Python 代码实现："></a>快速排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quickSort</span><span class="params">(nums)</span>:</span>  <span class="comment"># 这种写法的平均空间复杂度为 O(nlogn)</span></span><br><span class="line">    <span class="keyword">if</span> len(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line">    pivot = nums[<span class="number">0</span>]  <span class="comment"># 基准值</span></span><br><span class="line">    left = [nums[i] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(nums)) <span class="keyword">if</span> nums[i] &lt; pivot] </span><br><span class="line">    right = [nums[i] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(nums)) <span class="keyword">if</span> nums[i] &gt;= pivot]</span><br><span class="line">    <span class="keyword">return</span> quickSort(left) + [pivot] + quickSort(right)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">@param nums: 待排序数组</span></span><br><span class="line"><span class="string">@param left: 数组上界</span></span><br><span class="line"><span class="string">@param right: 数组下界</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quickSort2</span><span class="params">(nums, left, right)</span>:</span>  <span class="comment"># 这种写法的平均空间复杂度为 O(logn) </span></span><br><span class="line">    <span class="comment"># 分区操作</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(nums, left, right)</span>:</span></span><br><span class="line">        pivot = nums[left]  <span class="comment"># 基准值</span></span><br><span class="line">        <span class="keyword">while</span> left &lt; right:</span><br><span class="line">            <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> nums[right] &gt;= pivot:</span><br><span class="line">                right -= <span class="number">1</span></span><br><span class="line">            nums[left] = nums[right]  <span class="comment"># 比基准小的交换到前面</span></span><br><span class="line">            <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> nums[left] &lt;= pivot:</span><br><span class="line">                left += <span class="number">1</span></span><br><span class="line">            nums[right] = nums[left]  <span class="comment"># 比基准大交换到后面</span></span><br><span class="line">        nums[left] = pivot <span class="comment"># 基准值的正确位置，也可以为 nums[right] = pivot</span></span><br><span class="line">        <span class="keyword">return</span> left  <span class="comment"># 返回基准值的索引，也可以为 return right</span></span><br><span class="line">    <span class="comment"># 递归操作</span></span><br><span class="line">    <span class="keyword">if</span> left &lt; right:</span><br><span class="line">        pivotIndex = partition(nums, left, right)</span><br><span class="line">        quickSort2(nums, left, pivotIndex - <span class="number">1</span>)  <span class="comment"># 左序列</span></span><br><span class="line">        quickSort2(nums, pivotIndex + <span class="number">1</span>, right) <span class="comment"># 右序列</span></span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
 <h2 id="堆排序（Heap-Sort）"><a href="#堆排序（Heap-Sort）" class="headerlink" title="堆排序（Heap Sort）"></a>堆排序（Heap Sort）</h2><hr>
 <h5 id="堆排序须知："><a href="#堆排序须知：" class="headerlink" title="堆排序须知："></a>堆排序须知：</h5><p>堆排序可以说是一种利用堆的概念来排序的选择排序。分为两种方法：</p>
@@ -381,12 +381,12 @@
 <li>小根堆：每个节点的值都小于或等于其子节点的值，用于降序排列。</li>
 </ol>
 <p>如下图所示，首先将一个无序的序列生成一个最大堆，如图（a）所示。接下来我们不需要将堆顶元素输出，只要将它与堆的最后一个元素对换位置即可，如图（b）所示。这时我们确知最后一个元素 99 一定是递增序列的最后一个元素，而且已经在正确的位置上。 现在问题变成了如何将剩余的元素重新生成一个最大堆——也很简单，只要依次自上而下进行过滤，使其符合最大堆的性质。图（c）是调整后形成的新的最大堆。要注意的是，99 已经被排除在最大堆之外，即在调整的时候，堆中元素的个数应该减 1 。结束第 1 轮调整后，再次将当前堆中的最后一个元素 22 与堆顶元素换位，如图（d）所示，再继续调整成新的最大堆……如此循环，直到堆中只剩 1 个元素，即可停止，得到一个从小到大排列的有序序列。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/4905573-55cf43be19295278.png?imageMogr2/auto-orient/strip|imageView2/2/w/649/format/webp" alt="img"></p>
-<h5 id="堆排序动图演示："><a href="#堆排序动图演示：" class="headerlink" title="堆排序动图演示："></a>堆排序动图演示：</h5><p><img src="https://upload-images.jianshu.io/upload_images/4905573-97e51f6661ffadc8?imageMogr2/auto-orient/strip|imageView2/2/w/547/format/webp" alt="img"></p>
+<p><img src="/images/webp09.png" alt="img"></p>
+<h5 id="堆排序动图演示："><a href="#堆排序动图演示：" class="headerlink" title="堆排序动图演示："></a>堆排序动图演示：</h5><p><img src="/images/webp10.png" alt="img"></p>
 <h5 id="堆排序-Python-代码实现："><a href="#堆排序-Python-代码实现：" class="headerlink" title="堆排序 Python 代码实现："></a>堆排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 大根堆（从小打大排列）</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapSort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="comment"># 调整堆</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">adjustHeap</span><span class="params">(nums, i, size)</span>:</span></span><br><span class="line">        <span class="comment"># 非叶子结点的左右两个孩子</span></span><br><span class="line">        lchild = <span class="number">2</span> * i + <span class="number">1</span></span><br><span class="line">        rchild = <span class="number">2</span> * i + <span class="number">2</span></span><br><span class="line">        <span class="comment"># 在当前结点、左孩子、右孩子中找到最大元素的索引</span></span><br><span class="line">        largest = i </span><br><span class="line">        <span class="keyword">if</span> lchild &lt; size <span class="keyword">and</span> nums[lchild] &gt; nums[largest]: </span><br><span class="line">            largest = lchild </span><br><span class="line">        <span class="keyword">if</span> rchild &lt; size <span class="keyword">and</span> nums[rchild] &gt; nums[largest]: </span><br><span class="line">            largest = rchild </span><br><span class="line">        <span class="comment"># 如果最大元素的索引不是当前结点，把大的结点交换到上面，继续调整堆</span></span><br><span class="line">        <span class="keyword">if</span> largest != i: </span><br><span class="line">            nums[largest], nums[i] = nums[i], nums[largest] </span><br><span class="line">            <span class="comment"># 第 2 个参数传入 largest 的索引是交换前大数字对应的索引</span></span><br><span class="line">            <span class="comment"># 交换后该索引对应的是小数字，应该把该小数字向下调整</span></span><br><span class="line">            adjustHeap(nums, largest, size)</span><br><span class="line">    <span class="comment"># 建立堆</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">builtHeap</span><span class="params">(nums, size)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)//<span class="number">2</span>)[::<span class="number">-1</span>]: <span class="comment"># 从倒数第一个非叶子结点开始建立大根堆</span></span><br><span class="line">            adjustHeap(nums, i, size) <span class="comment"># 对所有非叶子结点进行堆的调整</span></span><br><span class="line">        <span class="comment"># print(nums)  # 第一次建立好的大根堆</span></span><br><span class="line">    <span class="comment"># 堆排序 </span></span><br><span class="line">    size = len(nums)</span><br><span class="line">    builtHeap(nums, size) </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums))[::<span class="number">-1</span>]: </span><br><span class="line">        <span class="comment"># 每次根结点都是最大的数，最大数放到后面</span></span><br><span class="line">        nums[<span class="number">0</span>], nums[i] = nums[i], nums[<span class="number">0</span>] </span><br><span class="line">        <span class="comment"># 交换完后还需要继续调整堆，只需调整根节点，此时数组的 size 不包括已经排序好的数</span></span><br><span class="line">        adjustHeap(nums, <span class="number">0</span>, i) </span><br><span class="line">    <span class="keyword">return</span> nums  <span class="comment"># 由于每次大的都会放到后面，因此最后的 nums 是从小到大排列</span></span><br></pre></td></tr></table></figure>
 <h2 id="计数排序（Counting-Sort）"><a href="#计数排序（Counting-Sort）" class="headerlink" title="计数排序（Counting Sort）"></a>计数排序（Counting Sort）</h2><hr>
 <h5 id="计数排序须知："><a href="#计数排序须知：" class="headerlink" title="计数排序须知："></a>计数排序须知：</h5><p>计数排序要求输入数据的范围在 [0,N-1] 之间，则可以开辟一个大小为 N 的数组空间，将输入的数据值转化为键存储在该数组空间中，数组中的元素为该元素出现的个数。它是一种线性时间复杂度的排序。</p>
-<h5 id="计数排序动图演示："><a href="#计数排序动图演示：" class="headerlink" title="计数排序动图演示："></a>计数排序动图演示：</h5><p><img src="https://upload-images.jianshu.io/upload_images/4905573-66aab3f2d4dc61eb?imageMogr2/auto-orient/strip|imageView2/2/w/700/format/webp" alt="img"></p>
+<h5 id="计数排序动图演示："><a href="#计数排序动图演示：" class="headerlink" title="计数排序动图演示："></a>计数排序动图演示：</h5><p><img src="/images/webp11.png" alt="img"></p>
 <h5 id="计数排序-Python-代码实现："><a href="#计数排序-Python-代码实现：" class="headerlink" title="计数排序 Python 代码实现："></a>计数排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">countingSort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    bucket = [<span class="number">0</span>] * (max(nums) + <span class="number">1</span>) <span class="comment"># 桶的个数</span></span><br><span class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> nums:  <span class="comment"># 将元素值作为键值存储在桶中，记录其出现的次数</span></span><br><span class="line">        bucket[num] += <span class="number">1</span></span><br><span class="line">    i = <span class="number">0</span>  <span class="comment"># nums 的索引</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(bucket)):</span><br><span class="line">        <span class="keyword">while</span> bucket[j] &gt; <span class="number">0</span>:</span><br><span class="line">            nums[i] = j</span><br><span class="line">            bucket[j] -= <span class="number">1</span></span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
 <h2 id="桶排序（Bucket-Sort）"><a href="#桶排序（Bucket-Sort）" class="headerlink" title="桶排序（Bucket Sort）"></a>桶排序（Bucket Sort）</h2><hr>
 <h5 id="桶排序须知："><a href="#桶排序须知：" class="headerlink" title="桶排序须知："></a>桶排序须知：</h5><p>桶排序是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。</p>
@@ -406,13 +406,13 @@
 <li>MSD （主位优先法）：从高位开始进行排序</li>
 <li>LSD （次位优先法）：从低位开始进行排序</li>
 </ol>
-<h5 id="LSD基数排序动图演示："><a href="#LSD基数排序动图演示：" class="headerlink" title="LSD基数排序动图演示："></a>LSD基数排序动图演示：</h5><p><img src="https://upload-images.jianshu.io/upload_images/4905573-5e67cbc4c0925c18?imageMogr2/auto-orient/strip|imageView2/2/w/700/format/webp" alt="img"></p>
+<h5 id="LSD基数排序动图演示："><a href="#LSD基数排序动图演示：" class="headerlink" title="LSD基数排序动图演示："></a>LSD基数排序动图演示：</h5><p><img src="/images/webp12.png" alt="img"></p>
 <h5 id="基数排序-Python-代码实现："><a href="#基数排序-Python-代码实现：" class="headerlink" title="基数排序 Python 代码实现："></a>基数排序 Python 代码实现：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># LSD Radix Sort</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">radixSort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    mod = <span class="number">10</span></span><br><span class="line">    div = <span class="number">1</span></span><br><span class="line">    mostBit = len(str(max(nums)))  <span class="comment"># 最大数的位数决定了外循环多少次</span></span><br><span class="line">    buckets = [[] <span class="keyword">for</span> row <span class="keyword">in</span> range(mod)] <span class="comment"># 构造 mod 个空桶</span></span><br><span class="line">    <span class="keyword">while</span> mostBit:</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:  <span class="comment"># 将数据放入对应的桶中</span></span><br><span class="line">            buckets[num // div % mod].append(num)</span><br><span class="line">        i = <span class="number">0</span>  <span class="comment"># nums 的索引</span></span><br><span class="line">        <span class="keyword">for</span> bucket <span class="keyword">in</span> buckets:  <span class="comment"># 将数据收集起来</span></span><br><span class="line">            <span class="keyword">while</span> bucket:</span><br><span class="line">                nums[i] = bucket.pop(<span class="number">0</span>) <span class="comment"># 依次取出</span></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">        div *= <span class="number">10</span></span><br><span class="line">        mostBit -= <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
 <h2 id="补充：外部排序"><a href="#补充：外部排序" class="headerlink" title="补充：外部排序"></a>补充：外部排序</h2><hr>
 <p>外部排序是指大文件排序，即待排序的数据记录以文件的形式存储在外存储器上。由于文件中的记录很多、信息容量庞大，所以整个文件所占据的存储单元往往会超过了计算机的内存量，因此，无法将整个文件调入内存中进行排序。于是，在排序过程中需进行多次的内外存之间的交换。在实际应用中，由于使用的外设不一致，通常可以分为磁盘文件排序和磁带文件排序两大类。</p>
 <p>外部排序基本上由两个相对独立的阶段组成。首先，按可用内存大小，将外存上含 N 个记录的文件分成若干长度为 L(&lt;N) 的子文件，依次读入内存，利用内部排序算法进行排序。然后，将排序后的文件写入外存，通常将这些文件称为归并段（Run）或“顺串”；对这些归并段进行逐步归并，最终得到整个有序文件。可见外部排序的基本方法是归并排序法，下面的例子给出了一个简单的外部排序解决过程。</p>
 <p>【例子】给定磁盘上有6大块记录需要排序，而计算机内存最多只能对3个记录块进行内排序，则外部排序的过程如下图所示。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/4905573-6aba32ff7b9fb200.png?imageMogr2/auto-orient/strip|imageView2/2/w/657/format/webp" alt="img"></p>
+<p><img src="/images/webp13.png" alt="img"></p>
 <p>【解析】首先将连续的3大块记录读入内存，用任何一种内部排序算法完成排序，再写回磁盘。经过2次3大块记录的内部排序，得到上图（a）的结果。然后另用一个可容纳6大块记录的周转盘，辅助最后的归并。方法是将内存分成3块，其中2块用于输入，1块用于输出，指定一个输入块只负责读取一个归并段中的记录，如上图（b）所示。归并步骤为：</p>
 <p>当任一输入块为空时，归并暂停，将相应归并段中的一块信息写入内存<br>将内存中2个输入块中的记录逐一归并入输出块<br>当输出块写满时，归并暂停，将输出块中的记录写入周转盘<br>如此可将2个归并段在周转盘上归并成一个有序的归并段。上例的解决方法是最简单的归并法，事实上外部排序的效率还可以进一步提高。要提高外排的效率，关键要解决以下4个问题：</p>
 <ul>
@@ -966,125 +966,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/10/07/数据结构与算法/常见数据结构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/10/07/数据结构与算法/常见数据结构/" itemprop="url">未命名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-07T13:38:20+00:00">
-                2019-10-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/10/07/python/排序算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1519,12 +1400,12 @@
             <h2 id="1-理解RESTful架构"><a href="#1-理解RESTful架构" class="headerlink" title="1. 理解RESTful架构"></a>1. 理解RESTful架构</h2><p>越来越多的人开始意识到，<strong>网站即软件</strong>，而且是一种新型的软件。</p>
 <p>这种”互联网软件”采用客户端/服务器模式，建立在分布式体系上，通过互联网通信，具有高延时（high latency）、高并发等特点。</p>
 <p>网站开发，完全可以采用软件开发的模式。但是传统上，软件和网络是两个不同的领域，很少有交集；软件开发主要针对单机环境，网络则主要研究系统之间的通信。互联网的兴起，使得这两个领域开始融合，<strong>现在我们必须考虑，如何开发在互联网环境中使用的软件。</strong></p>
-<p><img src="http://www.ruanyifeng.com/blogimg/asset/201109/bg2011091202.jpg" alt="img"></p>
+<p><img src="/images/bg2011091202.jpg" alt="img"></p>
 <p>RESTful架构，就是目前最流行的一种互联网软件架构。它结构清晰、符合标准、易于理解、扩展方便，所以正得到越来越多网站的采用。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/10737663-f754da7449f2a99f.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/550/format/webp" alt="img"></p>
+<p><img src="/images/webp" alt="img"></p>
 <p>但是，到底什么是RESTful架构，并不是一个容易说清楚的问题。下面，我就谈谈我理解的RESTful架构。</p>
 <h3 id="1-起源"><a href="#1-起源" class="headerlink" title="1. 起源"></a>1. 起源</h3><p>REST这个词，是<a href="http://en.wikipedia.org/wiki/Roy_Fielding" target="_blank" rel="noopener">Roy Thomas Fielding</a>在他2000年的<a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm" target="_blank" rel="noopener">博士论文</a>中提出的。</p>
-<p><img src="http://www.ruanyifeng.com/blogimg/asset/201109/bg2011091201.jpg" alt="img"></p>
+<p><img src="/images/bg2011091201.jpg" alt="img"></p>
 <p>Fielding是一个非常重要的人，他是HTTP协议（1.0版和1.1版）的主要设计者、Apache服务器软件的作者之一、Apache基金会的第一任主席。所以，他的这篇论文一经发表，就引起了关注，并且立即对互联网开发产生了深远的影响。</p>
 <p>他这样介绍论文的写作目的：</p>
 <blockquote>
@@ -1549,7 +1430,7 @@
 <h2 id="2-RESTful-API-设计指南"><a href="#2-RESTful-API-设计指南" class="headerlink" title="2. RESTful API 设计指南"></a>2. RESTful API 设计指南</h2><p>网络应用程序，分为前端和后端两个部分。当前的发展趋势，就是前端设备层出不穷（手机、平板、桌面电脑、其他专用设备……）。</p>
 <p>因此，必须有一种统一的机制，方便不同的前端设备与后端进行通信。这导致API构架的流行，甚至出现<a href="http://www.google.com.hk/search?q=API+first" target="_blank" rel="noopener">“API First”</a>的设计思想。<a href="http://en.wikipedia.org/wiki/Representational_state_transfer" target="_blank" rel="noopener">RESTful API</a>是目前比较成熟的一套互联网应用程序的API设计理论。我以前写过一篇<a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="noopener">《理解RESTful架构》</a>，探讨如何理解这个概念。</p>
 <p>今天，我将介绍RESTful API的设计细节，探讨如何设计一套合理、好用的API。我的主要参考了两篇文章（<a href="http://codeplanet.io/principles-good-restful-api-design/" target="_blank" rel="noopener">1</a>，<a href="https://bourgeois.me/rest/" target="_blank" rel="noopener">2</a>）。</p>
-<p><img src="http://www.ruanyifeng.com/blogimg/asset/2014/bg2014052201.png" alt="RESTful API"></p>
+<p><img src="/images/bg2014052201.png" alt="img"></p>
 <h3 id="1-协议"><a href="#1-协议" class="headerlink" title="1. 协议"></a>1. 协议</h3><p>API与用户的通信协议，总是使用<a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="noopener">HTTPs协议</a>。</p>
 <h3 id="2-域名"><a href="#2-域名" class="headerlink" title="2. 域名"></a>2. 域名</h3><p>应该尽量将API部署在专用域名之下。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//api.example.com</span></span><br></pre></td></tr></table></figure>
@@ -1904,6 +1785,130 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/09/11/linux/1.常用命令/权限管理-chmod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/11/linux/1.常用命令/权限管理-chmod/" itemprop="url">linux权限管理 - chmod命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-11T11:05:38+00:00">
+                2019-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>chmod命令</strong>用来变更文件或目录的权限。在UNIX系统家族里，文件或目录权限的控制分别以读取、写入、执行3种一般权限来区分，另有3种特殊权限可供运用。用户可以使用chmod指令去变更文件与目录的权限，设置方式采用文字或数字代号皆可。符号连接的权限无法变更，如果用户对符号连接修改权限，其改变会作用在被连接的原始文件。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/11/linux/1.常用命令/权限管理-chmod/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1956,7 +1961,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-count">219</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

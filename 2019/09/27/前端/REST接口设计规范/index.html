@@ -87,15 +87,15 @@
 <meta property="og:site_name" content="李云鹏的个人博客">
 <meta property="og:description" content="1. 理解RESTful架构越来越多的人开始意识到，网站即软件，而且是一种新型的软件。 这种”互联网软件”采用客户端/服务器模式，建立在分布式体系上，通过互联网通信，具有高延时（high latency）、高并发等特点。 网站开发，完全可以采用软件开发的模式。但是传统上，软件和网络是两个不同的领域，很少有交集；软件开发主要针对单机环境，网络则主要研究系统之间的通信。互联网的兴起，使得这两个领域开始">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.ruanyifeng.com/blogimg/asset/201109/bg2011091202.jpg">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/10737663-f754da7449f2a99f.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/550/format/webp">
-<meta property="og:image" content="http://www.ruanyifeng.com/blogimg/asset/201109/bg2011091201.jpg">
-<meta property="og:image" content="http://www.ruanyifeng.com/blogimg/asset/2014/bg2014052201.png">
-<meta property="og:updated_time" content="2019-10-07T13:38:20.308Z">
+<meta property="og:image" content="http://gaianote.github.io/images/bg2011091202.jpg">
+<meta property="og:image" content="http://gaianote.github.io/images/webp">
+<meta property="og:image" content="http://gaianote.github.io/images/bg2011091201.jpg">
+<meta property="og:image" content="http://gaianote.github.io/images/bg2014052201.png">
+<meta property="og:updated_time" content="2019-10-07T14:21:54.823Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="REST接口设计规范">
 <meta name="twitter:description" content="1. 理解RESTful架构越来越多的人开始意识到，网站即软件，而且是一种新型的软件。 这种”互联网软件”采用客户端/服务器模式，建立在分布式体系上，通过互联网通信，具有高延时（high latency）、高并发等特点。 网站开发，完全可以采用软件开发的模式。但是传统上，软件和网络是两个不同的领域，很少有交集；软件开发主要针对单机环境，网络则主要研究系统之间的通信。互联网的兴起，使得这两个领域开始">
-<meta name="twitter:image" content="http://www.ruanyifeng.com/blogimg/asset/201109/bg2011091202.jpg">
+<meta name="twitter:image" content="http://gaianote.github.io/images/bg2011091202.jpg">
 
 
 
@@ -345,12 +345,12 @@
         <h2 id="1-理解RESTful架构"><a href="#1-理解RESTful架构" class="headerlink" title="1. 理解RESTful架构"></a>1. 理解RESTful架构</h2><p>越来越多的人开始意识到，<strong>网站即软件</strong>，而且是一种新型的软件。</p>
 <p>这种”互联网软件”采用客户端/服务器模式，建立在分布式体系上，通过互联网通信，具有高延时（high latency）、高并发等特点。</p>
 <p>网站开发，完全可以采用软件开发的模式。但是传统上，软件和网络是两个不同的领域，很少有交集；软件开发主要针对单机环境，网络则主要研究系统之间的通信。互联网的兴起，使得这两个领域开始融合，<strong>现在我们必须考虑，如何开发在互联网环境中使用的软件。</strong></p>
-<p><img src="http://www.ruanyifeng.com/blogimg/asset/201109/bg2011091202.jpg" alt="img"></p>
+<p><img src="/images/bg2011091202.jpg" alt="img"></p>
 <p>RESTful架构，就是目前最流行的一种互联网软件架构。它结构清晰、符合标准、易于理解、扩展方便，所以正得到越来越多网站的采用。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/10737663-f754da7449f2a99f.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/550/format/webp" alt="img"></p>
+<p><img src="/images/webp" alt="img"></p>
 <p>但是，到底什么是RESTful架构，并不是一个容易说清楚的问题。下面，我就谈谈我理解的RESTful架构。</p>
 <h3 id="1-起源"><a href="#1-起源" class="headerlink" title="1. 起源"></a>1. 起源</h3><p>REST这个词，是<a href="http://en.wikipedia.org/wiki/Roy_Fielding" target="_blank" rel="noopener">Roy Thomas Fielding</a>在他2000年的<a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm" target="_blank" rel="noopener">博士论文</a>中提出的。</p>
-<p><img src="http://www.ruanyifeng.com/blogimg/asset/201109/bg2011091201.jpg" alt="img"></p>
+<p><img src="/images/bg2011091201.jpg" alt="img"></p>
 <p>Fielding是一个非常重要的人，他是HTTP协议（1.0版和1.1版）的主要设计者、Apache服务器软件的作者之一、Apache基金会的第一任主席。所以，他的这篇论文一经发表，就引起了关注，并且立即对互联网开发产生了深远的影响。</p>
 <p>他这样介绍论文的写作目的：</p>
 <blockquote>
@@ -375,7 +375,7 @@
 <h2 id="2-RESTful-API-设计指南"><a href="#2-RESTful-API-设计指南" class="headerlink" title="2. RESTful API 设计指南"></a>2. RESTful API 设计指南</h2><p>网络应用程序，分为前端和后端两个部分。当前的发展趋势，就是前端设备层出不穷（手机、平板、桌面电脑、其他专用设备……）。</p>
 <p>因此，必须有一种统一的机制，方便不同的前端设备与后端进行通信。这导致API构架的流行，甚至出现<a href="http://www.google.com.hk/search?q=API+first" target="_blank" rel="noopener">“API First”</a>的设计思想。<a href="http://en.wikipedia.org/wiki/Representational_state_transfer" target="_blank" rel="noopener">RESTful API</a>是目前比较成熟的一套互联网应用程序的API设计理论。我以前写过一篇<a href="http://www.ruanyifeng.com/blog/2011/09/restful.html" target="_blank" rel="noopener">《理解RESTful架构》</a>，探讨如何理解这个概念。</p>
 <p>今天，我将介绍RESTful API的设计细节，探讨如何设计一套合理、好用的API。我的主要参考了两篇文章（<a href="http://codeplanet.io/principles-good-restful-api-design/" target="_blank" rel="noopener">1</a>，<a href="https://bourgeois.me/rest/" target="_blank" rel="noopener">2</a>）。</p>
-<p><img src="http://www.ruanyifeng.com/blogimg/asset/2014/bg2014052201.png" alt="RESTful API"></p>
+<p><img src="/images/bg2014052201.png" alt="img"></p>
 <h3 id="1-协议"><a href="#1-协议" class="headerlink" title="1. 协议"></a>1. 协议</h3><p>API与用户的通信协议，总是使用<a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="noopener">HTTPs协议</a>。</p>
 <h3 id="2-域名"><a href="#2-域名" class="headerlink" title="2. 域名"></a>2. 域名</h3><p>应该尽量将API部署在专用域名之下。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//api.example.com</span></span><br></pre></td></tr></table></figure>
@@ -675,7 +675,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-count">219</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

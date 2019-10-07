@@ -264,143 +264,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/05/22/jenkins/2.jenkins与Pipeline/10.在pipeline拉取git或svn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="李云鹏">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/rem.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="李云鹏的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/05/22/jenkins/2.jenkins与Pipeline/10.在pipeline拉取git或svn/" itemprop="url">在pipeline拉取git或svn</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-22T09:15:29+00:00">
-                2019-05-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-生成checkout代码"><a href="#1-生成checkout代码" class="headerlink" title="1. 生成checkout代码"></a>1. 生成checkout代码</h2><ol>
-<li>在Sample Step输入框输入：<br><img src="/images/1557716278772.png" alt="img"></li>
-<li>填写项目地址和用户名密码 </li>
-</ol>
-<p><strong>svn</strong>:</p>
-<p><img src="/images/1557717093092.png" alt="img"></p>
-<p><strong>git</strong>:</p>
-<p><img src="/images/1557840071647.png" alt="img"></p>
-<ol start="3">
-<li><p>点击<strong>Generate Pipeline Script</strong>按钮，会自动生成相应的代码</p>
-</li>
-<li><p>将步骤3复制的代码粘贴到checkout的位置</p>
-</li>
-</ol>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(<span class="string">'Build'</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">               checkout(...) <span class="comment">//将步骤3复制的代码粘贴到这里</span></span><br><span class="line">               sh <span class="string">'pwd'</span>  <span class="comment">//这个是Linux的执行</span></span><br><span class="line">               sh <span class="string">'ls'</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        stage(<span class="string">'Test'</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">               <span class="comment">// bat 'dir' // 如果jenkins安装在windows并执行这部分代码</span></span><br><span class="line">               sh <span class="string">'echo $&#123;JAVA_HOME&#125;'</span>  <span class="comment">//这个是Linux的执行</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-dir-工作目录："><a href="#2-dir-工作目录：" class="headerlink" title="2. dir 工作目录："></a>2. dir 工作目录：</h2><p>如果文件夹不存在，dir命令会创建文件夹，下面操作会将git down到gui文件夹，如果没有dir命令，则会直接下载到workspace根目录</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage(<span class="string">'Build'</span>) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                dir(<span class="string">'gui'</span>)&#123;</span><br><span class="line">                	checkout(...)</span><br><span class="line">                 	sh <span class="string">'pwd'</span>  <span class="comment">//这个是Linux的执行</span></span><br><span class="line">                    sh <span class="string">'ls'</span></span><br><span class="line">                 &#125;</span><br><span class="line">              · dir(<span class="string">''</span>)&#123;</span><br><span class="line">                    <span class="comment">//do your job out of git folder</span></span><br><span class="line">                    sh <span class="string">'pwd'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用dir后效果如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pwd</span></span><br><span class="line">/root/.jenkins/workspace/svntest</span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line">gui  gui@tmp</span><br><span class="line"><span class="comment"># cd gui &amp;&amp; ls</span></span><br><span class="line">business  data  doc  drivers  lib  __main__.py</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/05/20/jenkins/2.jenkins与Pipeline/9.多个stage的关系-顺序和并行/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1646,6 +1509,131 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/05/12/linux/2.解压缩/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/12/linux/2.解压缩/" itemprop="url">linux解压缩命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-12T13:17:34+00:00">
+                2019-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>tar.gz和tar.bz2解压命令<br>网络上下载到linux源码包主要是tar.gz和tar.bz2压缩格式的，有一部分是zip</p>
+<p>解压tar.gz命令是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf xx.tar.gz</span><br></pre></td></tr></table></figure>
+<p>解压tar.bz2的命令是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -jxvf xx.tar.bz2</span><br></pre></td></tr></table></figure>
+<p>解压zip则使用unzip工具</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1698,7 +1686,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-count">219</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
