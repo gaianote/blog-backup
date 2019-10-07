@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="python获取文件路径 os.path.abspath(__file__)在python文件中使用路径,应该使用os.path.abspath(__file__)。永远不要使用os.path.abspath(.)或者os.getpwd(),因为后者具有不确定性。  os.path.abspath(.)和os.getcwd()是等价的，它们表示当前的工作路径，可以被os.chdir()改变 os.">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python操作文件路径和目录">
+<meta property="og:url" content="http://gaianote.github.io/2018/06/11/python/1.python基础语法/python操作文件和目录/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="python获取文件路径 os.path.abspath(__file__)在python文件中使用路径,应该使用os.path.abspath(__file__)。永远不要使用os.path.abspath(.)或者os.getpwd(),因为后者具有不确定性。  os.path.abspath(.)和os.getcwd()是等价的，它们表示当前的工作路径，可以被os.chdir()改变 os.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.208Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python操作文件路径和目录">
+<meta name="twitter:description" content="python获取文件路径 os.path.abspath(__file__)在python文件中使用路径,应该使用os.path.abspath(__file__)。永远不要使用os.path.abspath(.)或者os.getpwd(),因为后者具有不确定性。  os.path.abspath(.)和os.getcwd()是等价的，它们表示当前的工作路径，可以被os.chdir()改变 os.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2018/06/11/python/1.python基础语法/python操作文件和目录/">
+
+
+
+
+
+  <title>python操作文件路径和目录 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2018/06/11/python/1.python基础语法/python操作文件和目录/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python操作文件路径和目录</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-11T17:04:01+00:00">
+                2018-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="python获取文件路径-os-path-abspath-file"><a href="#python获取文件路径-os-path-abspath-file" class="headerlink" title="python获取文件路径 os.path.abspath(__file__)"></a>python获取文件路径 <code>os.path.abspath(__file__)</code></h2><p>在python文件中使用路径,应该使用<code>os.path.abspath(__file__)</code>。永远不要使用<code>os.path.abspath(.)</code>或者<code>os.getpwd()</code>,因为后者具有不确定性。</p>
+<ul>
+<li><code>os.path.abspath(.)</code>和<code>os.getcwd()</code>是等价的，它们表示当前的工作路径，可以被os.chdir()改变</li>
+<li><code>os.path.abspath(__file__)</code>表示当前文件所在路径</li>
+</ul>
+<p>它们返回的都是绝对路径。</p>
+<a id="more"></a>
+<p>例1：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.path.abspath(<span class="string">'.'</span>)</span><br><span class="line"><span class="string">'/mnt/c/Users/user/gaianote.github.io'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.chdir(<span class="string">'source'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.getcwd()</span><br><span class="line"><span class="string">'/mnt/c/Users/user/gaianote.github.io/source'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>os.path.abspath(<span class="string">'.'</span>)</span><br><span class="line"><span class="string">'/mnt/c/Users/user/gaianote.github.io/source'</span></span><br></pre></td></tr></table></figure>
+<p>例2:</p>
+<p>希望得到工程的根目录BASE_PATH：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BASE_PATH</span><br><span class="line">|</span><br><span class="line">|-lib</span><br><span class="line">    |-config.py # 设置文件，定义了path路径</span><br><span class="line">|-main.py # 入口文件</span><br></pre></td></tr></table></figure>
+<p>在config.py中书写<code>os.path.abspath(__file__)</code>,和 <code>os.path.abspath(&#39;.&#39;)</code>,在main.py中执行，第一个得到了config的路径，第二个得到了BASE_PATH的路径</p>
+<h2 id="路径拼接"><a href="#路径拼接" class="headerlink" title="路径拼接"></a>路径拼接</h2><p><strong>不要用abspath(‘.’)，不要用字符串拼接</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path =os.path.abspath（ os.path.abspath(<span class="string">'..'</span>) + <span class="string">'\\driver\\chromedriver.exe'</span> ）</span><br></pre></td></tr></table></figure>
+<p><strong>正确方法,使用os.path.join进行拼接</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BASE_PATH = os.path.split(os.path.dirname(os.path.abspath(__file__)))[<span class="number">0</span>]</span><br><span class="line"><span class="comment"># BASE_PATH还可以这么写</span></span><br><span class="line">BASE_PATH = os.path.abspath(<span class="string">'.'</span>)</span><br><span class="line">path =os.path.join(BASE_PATH,<span class="string">'driver'</span>,<span class="string">'chromedriver.exe'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="os-模块"><a href="#os-模块" class="headerlink" title="os 模块"></a>os 模块</h2><p>Python 的 os 模块封装了常见的文件和目录操作，本文只列出部分常用的方法，更多的方法可以查看官方文档。</p>
+<h3 id="下面是部分常见的用法："><a href="#下面是部分常见的用法：" class="headerlink" title="下面是部分常见的用法："></a>下面是部分常见的用法：</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>os.name</td>
+<td>指示你正在使用的工作平台。比如对于Windows，它是’nt’，而对于Linux/Unix用户，它是’posi</td>
+</tr>
+<tr>
+<td>os.getcwd()</td>
+<td>得到当前工作目录，即当前python脚本工作的目录路径。</td>
+</tr>
+<tr>
+<td>os.listdir()</td>
+<td>返回指定目录下的所有<strong>文件</strong>和<strong>目录名</strong></td>
+</tr>
+<tr>
+<td>os.stat(file)</td>
+<td>获取文件属性</td>
+</tr>
+<tr>
+<td>os.mkdir()</td>
+<td>创建目录</td>
+</tr>
+<tr>
+<td>os.rmdir()</td>
+<td>删除空目录或文件</td>
+</tr>
+<tr>
+<td>os.system(shell)</td>
+<td>运行操作系统命令行</td>
+</tr>
+<tr>
+<td>os.rename</td>
+<td>重命名</td>
+</tr>
+<tr>
+<td>os.remove</td>
+<td>删除文件</td>
+</tr>
+<tr>
+<td>os.getcwd</td>
+<td>获取当前工作路径</td>
+</tr>
+<tr>
+<td>os.walk</td>
+<td>遍历目录</td>
+</tr>
+<tr>
+<td>os.path.join</td>
+<td>连接目录与文件名</td>
+</tr>
+<tr>
+<td>os.path.split</td>
+<td>分割文件名与目录</td>
+</tr>
+<tr>
+<td>os.path.abspath</td>
+<td>获取绝对路径</td>
+</tr>
+<tr>
+<td>os.path.dirname</td>
+<td>获取路径(指包含文件的目录)</td>
+</tr>
+<tr>
+<td>os.path.basename</td>
+<td>获取文件名或文件夹名</td>
+</tr>
+<tr>
+<td>os.path.splitext</td>
+<td>分离文件名与扩展名</td>
+</tr>
+<tr>
+<td>os.path.isfile</td>
+<td>判断给出的路径是否是一个文件</td>
+</tr>
+<tr>
+<td>os.path.isdir</td>
+<td>判断给出的路径是否是一个目录</td>
+</tr>
+<tr>
+<td>os.path.exits()</td>
+<td>判断一个路径目录或者文件是否存在</td>
+</tr>
+</tbody>
+</table>
+<h2 id="标准库shutil"><a href="#标准库shutil" class="headerlink" title="标准库shutil"></a>标准库shutil</h2><h3 id="shutil-move-src-dst"><a href="#shutil-move-src-dst" class="headerlink" title="shutil.move(src,dst)"></a>shutil.move(src,dst)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shutil.move(<span class="string">'tmp/20180128/new'</span>,<span class="string">'tmp/20180128/test'</span>)   <span class="comment"># 移动文件, 重命名等</span></span><br></pre></td></tr></table></figure>
+<h3 id="shutil-copytree-src-dst-symlinks-False-ignore-None"><a href="#shutil-copytree-src-dst-symlinks-False-ignore-None" class="headerlink" title="shutil.copytree(src, dst, symlinks=False, ignore=None)"></a>shutil.copytree(src, dst, symlinks=False, ignore=None)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">shutil.copytree(<span class="string">"b"</span>,<span class="string">"c"</span>)    <span class="comment"># 递归复制。复制一个文件夹及其内容到另一个文件夹，另一个文件夹已存在时报错</span></span><br><span class="line"><span class="comment">#(复制一个文件夹路径，把左边的文件夹路径替换为右边的，而不是作为右边的子文件夹)</span></span><br><span class="line"><span class="comment">#复制过程中跳过后缀名为参数名的文件</span></span><br><span class="line">shutil.copytree(<span class="string">'folder1'</span>, <span class="string">'folder2'</span>, ignore=shutil.ignore_patterns(<span class="string">'*.py'</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="shutil-rmtree-path-ignore-errors-False-onerror-None"><a href="#shutil-rmtree-path-ignore-errors-False-onerror-None" class="headerlink" title="shutil.rmtree(path, ignore_errors=False, onerror=None)"></a>shutil.rmtree(path, ignore_errors=False, onerror=None)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shutil.rmtree(<span class="string">'tmp/a'</span>)   <span class="comment"># 递归删除目录树.删除一个文件夹(包括这个文件夹)及其内容(文件夹不存在报错)</span></span><br></pre></td></tr></table></figure>
+<h3 id="shutil-get-archive-formats"><a href="#shutil-get-archive-formats" class="headerlink" title="shutil.get_archive_formats()"></a>shutil.get_archive_formats()</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shutil.get_archive_formats()    <span class="comment"># 返回支持的 压缩格式列表, 如 [(name,desc),('tar','uncompressed tar file')],</span></span><br></pre></td></tr></table></figure>
+<h3 id="shutil-make-archive-base-name-format-root-dir-None-base-dir-None-verbose-0-dry-run-0-owner-None-group-None-logger-None"><a href="#shutil-make-archive-base-name-format-root-dir-None-base-dir-None-verbose-0-dry-run-0-owner-None-group-None-logger-None" class="headerlink" title="shutil.make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0, dry_run=0, owner=None, group=None, logger=None)"></a>shutil.make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0, dry_run=0, owner=None, group=None, logger=None)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">shutil.make_archive(<span class="string">'tmp/a/new2'</span>,<span class="string">'zip'</span>,root_dir=<span class="string">'/tmp/a'</span>)   <span class="comment"># 创建压缩文件,</span></span><br><span class="line">base_name : 压缩包的文件名, 也可以使压缩包的路径.</span><br><span class="line">format : 压缩种类</span><br><span class="line">root_dir : 要压缩的文件夹路径, 默认当前目录</span><br><span class="line">owner : 用户, 默认当前用户</span><br><span class="line">group : 组, 默然当前组</span><br></pre></td></tr></table></figure>
+<h3 id="shutil-copy-src-dst"><a href="#shutil-copy-src-dst" class="headerlink" title="shutil.copy(src, dst)"></a>shutil.copy(src, dst)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shutil.copy(<span class="string">"a.txt"</span>,<span class="string">"d.txt"</span>)   <span class="comment"># 复制文件及权限,文件已存在则覆盖</span></span><br></pre></td></tr></table></figure>
+<h3 id="shutil-copyfileobj-fsrc-fdst-length-16384"><a href="#shutil-copyfileobj-fsrc-fdst-length-16384" class="headerlink" title="shutil.copyfileobj(fsrc, fdst, length=16384)"></a>shutil.copyfileobj(fsrc, fdst, length=16384)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shutil.copyfileobj(open(<span class="string">'old.xml'</span>,<span class="string">'r'</span>), open(<span class="string">'new.xml'</span>, <span class="string">'w'</span>))</span><br><span class="line"><span class="comment"># 将文件内容拷贝到另一个文件</span></span><br></pre></td></tr></table></figure>
+<h3 id="shutil-copyfile-src-dst"><a href="#shutil-copyfile-src-dst" class="headerlink" title="shutil.copyfile(src, dst)"></a>shutil.copyfile(src, dst)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shutil.copyfile(<span class="string">'f1.log'</span>, <span class="string">'f2.log'</span>)  <span class="comment"># 拷贝文件</span></span><br></pre></td></tr></table></figure>
+<h3 id="shutil-copymode-src-dst"><a href="#shutil-copymode-src-dst" class="headerlink" title="shutil.copymode(src, dst)"></a>shutil.copymode(src, dst)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shutil.copymode(<span class="string">'f1.log'</span>, <span class="string">'f2.log'</span>)     <span class="comment"># 仅拷贝权限,内容,用户,组不变</span></span><br></pre></td></tr></table></figure>
+<h3 id="shutil-copystat-src-dst"><a href="#shutil-copystat-src-dst" class="headerlink" title="shutil.copystat(src, dst)"></a>shutil.copystat(src, dst)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shutil.copystat(<span class="string">'f1.log'</span>, <span class="string">'f2.log'</span>)     <span class="comment"># 仅拷贝状态信息</span></span><br></pre></td></tr></table></figure>
+<h3 id="shutil-copy2-src-dst"><a href="#shutil-copy2-src-dst" class="headerlink" title="shutil.copy2(src, dst)"></a>shutil.copy2(src, dst)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shutil.copy2(<span class="string">'f1.log'</span>, <span class="string">'f2.log'</span>)     <span class="comment"># 拷贝文件和状态信息</span></span><br></pre></td></tr></table></figure>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><p>在操作系统中定义的环境变量，全部保存在os.environ这个变量中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">os.environ</span><br><span class="line">os.environ.get(<span class="string">'PATH'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="操作文件和目录"><a href="#操作文件和目录" class="headerlink" title="操作文件和目录"></a>操作文件和目录</h2><p><strong>查看当前目录的绝对路径</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dir = os.path.abspath(<span class="string">'.'</span>)</span><br></pre></td></tr></table></figure>
+<p>在当前目录操作一个新目录newdir,首先需要得到这个目录的绝对路径</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">newdir = os.path.join(dir, <span class="string">'newdir'</span>)</span><br></pre></td></tr></table></figure>
+<p>路径操作不应使用字符串拼接，而应该使用os.path模块;因为不同操作系统的路径分隔符是不同的</p>
+<p><strong>创建新目录</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.mkdir(newdir)</span><br></pre></td></tr></table></figure>
+<p><strong>删除目录</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.rmdir(newdir)</span><br></pre></td></tr></table></figure>
+<p><strong>得到当前目录下所有的文件夹</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[x <span class="keyword">for</span> x <span class="keyword">in</span> os.listdir(<span class="string">'.'</span>) <span class="keyword">if</span> os.path.isdir(x)]</span><br></pre></td></tr></table></figure>
+<p><strong>得到当前目录下所有的.py文件</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[x <span class="keyword">for</span> x <span class="keyword">in</span> os.listdir(<span class="string">'.'</span>) <span class="keyword">if</span> os.path.isfile(x) <span class="keyword">and</span> os.path.splitext(x)[<span class="number">1</span>]==<span class="string">'.py'</span>]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/07/python/1.python基础语法/python函数的参数/" rel="next" title="python函数的参数">
+                <i class="fa fa-chevron-left"></i> python函数的参数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/11/python/4.python使用技巧/离线安装python第三方依赖包/" rel="prev" title="python内网电脑离线/使用代理安装依赖">
+                python内网电脑离线/使用代理安装依赖 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#python获取文件路径-os-path-abspath-file"><span class="nav-number">1.</span> <span class="nav-text">python获取文件路径 os.path.abspath(__file__)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路径拼接"><span class="nav-number">2.</span> <span class="nav-text">路径拼接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#os-模块"><span class="nav-number">3.</span> <span class="nav-text">os 模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下面是部分常见的用法："><span class="nav-number">3.1.</span> <span class="nav-text">下面是部分常见的用法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准库shutil"><span class="nav-number">4.</span> <span class="nav-text">标准库shutil</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-move-src-dst"><span class="nav-number">4.1.</span> <span class="nav-text">shutil.move(src,dst)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-copytree-src-dst-symlinks-False-ignore-None"><span class="nav-number">4.2.</span> <span class="nav-text">shutil.copytree(src, dst, symlinks=False, ignore=None)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-rmtree-path-ignore-errors-False-onerror-None"><span class="nav-number">4.3.</span> <span class="nav-text">shutil.rmtree(path, ignore_errors=False, onerror=None)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-get-archive-formats"><span class="nav-number">4.4.</span> <span class="nav-text">shutil.get_archive_formats()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-make-archive-base-name-format-root-dir-None-base-dir-None-verbose-0-dry-run-0-owner-None-group-None-logger-None"><span class="nav-number">4.5.</span> <span class="nav-text">shutil.make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0, dry_run=0, owner=None, group=None, logger=None)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-copy-src-dst"><span class="nav-number">4.6.</span> <span class="nav-text">shutil.copy(src, dst)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-copyfileobj-fsrc-fdst-length-16384"><span class="nav-number">4.7.</span> <span class="nav-text">shutil.copyfileobj(fsrc, fdst, length=16384)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-copyfile-src-dst"><span class="nav-number">4.8.</span> <span class="nav-text">shutil.copyfile(src, dst)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-copymode-src-dst"><span class="nav-number">4.9.</span> <span class="nav-text">shutil.copymode(src, dst)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-copystat-src-dst"><span class="nav-number">4.10.</span> <span class="nav-text">shutil.copystat(src, dst)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shutil-copy2-src-dst"><span class="nav-number">4.11.</span> <span class="nav-text">shutil.copy2(src, dst)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量"><span class="nav-number">5.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作文件和目录"><span class="nav-number">6.</span> <span class="nav-text">操作文件和目录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

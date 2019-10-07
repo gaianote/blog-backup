@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="下载安装pywinauto直接使用pip安装pip install --upgrade pywinauto (Py2.7+, Py3.3+) 或者也可以手动安装(离线项目主机) 安装 pyWin32 extensions 下载 six并执行 python setup.py install来安装 下载 comtypes 并执行 python setup.py install来安装 下载 the la">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pywinauto简明教程">
+<meta property="og:url" content="http://gaianote.github.io/2018/06/13/python/3.python第三方库/pywinauto简明教程/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="下载安装pywinauto直接使用pip安装pip install --upgrade pywinauto (Py2.7+, Py3.3+) 或者也可以手动安装(离线项目主机) 安装 pyWin32 extensions 下载 six并执行 python setup.py install来安装 下载 comtypes 并执行 python setup.py install来安装 下载 the la">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.248Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pywinauto简明教程">
+<meta name="twitter:description" content="下载安装pywinauto直接使用pip安装pip install --upgrade pywinauto (Py2.7+, Py3.3+) 或者也可以手动安装(离线项目主机) 安装 pyWin32 extensions 下载 six并执行 python setup.py install来安装 下载 comtypes 并执行 python setup.py install来安装 下载 the la">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2018/06/13/python/3.python第三方库/pywinauto简明教程/">
+
+
+
+
+
+  <title>pywinauto简明教程 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2018/06/13/python/3.python第三方库/pywinauto简明教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">pywinauto简明教程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-13T11:37:33+00:00">
+                2018-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="下载安装pywinauto"><a href="#下载安装pywinauto" class="headerlink" title="下载安装pywinauto"></a>下载安装pywinauto</h2><h3 id="直接使用pip安装"><a href="#直接使用pip安装" class="headerlink" title="直接使用pip安装"></a>直接使用pip安装</h3><p><code>pip install --upgrade pywinauto</code> (Py2.7+, Py3.3+)</p>
+<h3 id="或者也可以手动安装-离线项目主机"><a href="#或者也可以手动安装-离线项目主机" class="headerlink" title="或者也可以手动安装(离线项目主机)"></a>或者也可以手动安装(离线项目主机)</h3><ul>
+<li>安装 pyWin32 extensions</li>
+<li>下载 six并执行 python setup.py install来安装</li>
+<li>下载 comtypes 并执行 python setup.py install来安装</li>
+<li>下载 the latest pywinauto 并执行 python setup.py install来安装</li>
+</ul>
+<p><strong>注意事项</strong></p>
+<ul>
+<li>six，comtypes，pywinauto可以使用 <code>pip download pywinauto</code> 得到相应的包</li>
+<li>离线情况下安装依赖pywin32 安装pywin32 要注意python版本，位数（要和系统统一），setutools版本等问题。<a href="https://github.com/mhammond/pywin32/releases" target="_blank" rel="noopener">官方下载地址</a></li>
+</ul>
+<h3 id="支持的控件"><a href="#支持的控件" class="headerlink" title="支持的控件"></a>支持的控件</h3><p>标准Win32控件：MFC, WTL, VB6和其他一些使用WinForms的老应用<br>所有基于MS UI Automation的标准部件：WPF, Qt, 所有浏览器, Windows文件资源管理器和其他</p>
+<p>对于非标准控件，简单情况下，我们可以在得到窗口句柄后，模拟键盘命令对其进行操作。</p>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="实例讲解"><a href="#实例讲解" class="headerlink" title="实例讲解"></a>实例讲解</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pywinauto.application <span class="keyword">import</span> Application</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开一个记事本(如果已经打开，可以忽略)</span></span><br><span class="line">app = Application().start(<span class="string">"notepad.exe"</span>)</span><br><span class="line"><span class="comment"># 绑定进程,class_name和title是可选的，可以灵活使用，如果找到多个货没有找到该程序，程序会报错</span></span><br><span class="line">app = Application().connect(class_name=<span class="string">"Notepad"</span>,title=<span class="string">"无标题 - 记事本"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到可操作的窗口，可以传入标题，类名，或者将标题传入键值</span></span><br><span class="line">win = app.window(title=<span class="string">"无标题 - 记事本"</span>)</span><br><span class="line"><span class="comment"># 或者(通常使用此方法)</span></span><br><span class="line">win = app[<span class="string">"无标题 - 记事本"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以使用Edit对可编辑区进行编辑</span></span><br><span class="line">win.Edit.type_keys(<span class="string">'test.txt'</span>)</span><br><span class="line">win.menu_select(<span class="string">"文件-&gt;保存"</span>)</span><br><span class="line"><span class="comment"># 当弹出新的窗口时，窗口标题变化，因此需要重新确定可操作窗口</span></span><br><span class="line">win = app[<span class="string">'另存为'</span>]</span><br><span class="line">win.Edit.type_keys(<span class="string">'test.txt'</span>)</span><br><span class="line"><span class="comment"># 窗口内含有的按钮等名称，同样可以作为键值传入，从而得到控件</span></span><br><span class="line">win[<span class="string">'保存'</span>].click()</span><br></pre></td></tr></table></figure>
+<p>如果不能确定如何寻找控件，可以使用以下方法打印出所有控件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">win.print_control_identifiers()</span><br></pre></td></tr></table></figure>
+<h3 id="一个完整的例子"><a href="#一个完整的例子" class="headerlink" title="一个完整的例子"></a>一个完整的例子</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pywinauto.application <span class="keyword">import</span> Application</span><br><span class="line">app = Application().start(<span class="string">"notepad.exe"</span>)</span><br><span class="line">app = Application().connect(class_name=<span class="string">"Notepad"</span>)</span><br><span class="line"></span><br><span class="line">app[<span class="string">'无标题 - 记事本'</span>].Edit.type_keys(<span class="string">'test01'</span>)</span><br><span class="line">app[<span class="string">'无标题 - 记事本'</span>].menu_select(<span class="string">"文件-&gt;保存"</span>)</span><br><span class="line"></span><br><span class="line">app[<span class="string">'另存为'</span>].Edit.type_keys(<span class="string">'test.txt'</span>)</span><br><span class="line">app[<span class="string">'另存为'</span>][<span class="string">'保存'</span>].click()</span><br><span class="line">app[<span class="string">'确认另存为'</span>][<span class="string">'是'</span>].click()</span><br></pre></td></tr></table></figure>
+<h2 id="方法简介"><a href="#方法简介" class="headerlink" title="方法简介"></a>方法简介</h2><h3 id="指定可用的Application实例"><a href="#指定可用的Application实例" class="headerlink" title="指定可用的Application实例"></a>指定可用的Application实例</h3><p>像要操作某个窗口，必须先实例化这个窗口，实例化窗口有下面两种方法可以实现：</p>
+<ul>
+<li><p><code>start （self ， cmd_line ， timeout = app_start_timeout ）</code></p>
+</li>
+<li><p><code>connect （self ， ** kwargs ）</code></p>
+</li>
+</ul>
+<h4 id="start-启动程序并实例化"><a href="#start-启动程序并实例化" class="headerlink" title="start()启动程序并实例化"></a><code>start()</code>启动程序并实例化</h4><p><code>app = Application().start(r&quot;c:\path\to\your\application -a -n -y --arguments&quot;)</code></p>
+<p>其中超时参数是可选的，如果应用程序需要很长时间来启动，则只需要使用该参数。</p>
+<h4 id="connect-实例化已经启动的程序："><a href="#connect-实例化已经启动的程序：" class="headerlink" title="connect()实例化已经启动的程序："></a><code>connect()</code>实例化已经启动的程序：</h4><p><code>connect()</code>是当自动化程序已经启动时来使用，可以传入以下几种参数进行绑定：</p>
+<ul>
+<li><p>进程： 应用的过程ID</p>
+<p><code>app = Application().connect(process=2341)</code></p>
+</li>
+<li><p>句柄：应用程序的窗口句柄</p>
+<p><code>app = Application().connect(handle=0x010f0c)</code></p>
+</li>
+<li><p>路径：进程中可执行文件路径（<code>GetModuleFileNameEx</code>)用于查找每个进程的路径并将其传入的值进行比较）</p>
+<p><code>app  =  Application().connect （path = r “c：\ windows \ system32 \ notepad.exe” ）</code></p>
+</li>
+<li><p>任何窗口参数的组合，都会传递给<a href="https://pywinauto.readthedocs.io/en/latest/code/pywinauto.findwindows.html#pywinauto.findwindows.find_elements" target="_blank" rel="noopener"><code>pywinauto.findwindows.find_elements()</code></a>函数，例如：</p>
+<p>  <code>app  =  Application().connect （title_re = “。* Notepad” ， class_name = “Notepad” ）</code></p>
+</li>
+</ul>
+<p>注意：应用程序在你使用<code>connect()</code>之前窗口必须已经准备好。如果无法确定的话，你需要睡眠或者编写一个循环等待来等待应用程序完全启动。</p>
+<h3 id="如何指定应用程序的对话框"><a href="#如何指定应用程序的对话框" class="headerlink" title="如何指定应用程序的对话框"></a>如何指定应用程序的对话框</h3><p>应用程序实例化完成之后，接着需要指定这个窗口。</p>
+<p>例如：</p>
+<p><code>dlg = app.Notepad</code></p>
+<p><code>dlg = app[&#39;Notepad&#39;]</code></p>
+<p>接下来是一个最简单的方法，去询问<code>top_window()</code>函数</p>
+<p><code>dlg = app.top_window()</code></p>
+<p>它将返回这个应用程序最高层级的窗口</p>
+<p><strong>注意：这是目前尚未测试的，所以我们并不清楚它是否会正确的返回</strong></p>
+<p>如果上述还不能进行有效控制，那么你可以使用项目参数传递给<code>findwindows.find.window()</code></p>
+<p><code>dlg = app.window(title_re=&quot;Page Setup&quot;, class_name=&quot;#32770&quot;)</code></p>
+<p>最后介绍一个你可以进行多控制的方法</p>
+<p><code>dialogs = app.windows()</code></p>
+<p>这将返回应用程序中所有可见，启用的顶层窗口列表，然后你就可以使用<code>handleprops</code>模块中的某些方法所选用的对话框，一旦你拥有其句柄，就可以使用</p>
+<p><code>app.window(handle=win)</code></p>
+<p><strong>注意：如果对话框的标题很长，可以使用正则进行匹配</strong></p>
+<p><code>app.window(title_re=&quot;.*Part of Title.*&quot;)</code></p>
+<p>其中 title 和 title_re的区别是:</p>
+<ul>
+<li>title参数：无法使用正则，需要完全匹配标题</li>
+<li>title_re参数:支持正则表达式</li>
+</ul>
+<h3 id="如何在对话框上指定控件"><a href="#如何在对话框上指定控件" class="headerlink" title="如何在对话框上指定控件"></a>如何在对话框上指定控件</h3><p>有很多方法，最简单的就是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.dlg.control</span><br><span class="line">app[<span class="string">'dlg'</span>][<span class="string">'control'</span>]</span><br></pre></td></tr></table></figure>
+<p>代码依据如下内容来构建多个标识符：</p>
+<ul>
+<li>标题</li>
+<li>相关类</li>
+<li>标题 + 相关类</li>
+</ul>
+<p>如果标签的文本为空（或者删除不能使用的字符后为），那么文本就不能被使用。相反，我们会寻找上面和最右边的控制，并附加其相关类，所以列表就是：</p>
+<ul>
+<li>相关类</li>
+<li>联系最紧密的文字+ 相关类</li>
+</ul>
+<p>一旦对话框中所有控件创建了一组标识符，我们就将它们消除歧义</p>
+<p>使用<code>WindowSpecification.print_control_identifiers()</code></p>
+<p>例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">dlg_spec = app[<span class="string">'无标题 - 记事本'</span>]</span><br><span class="line">dlg_spec.print_control_identifiers()</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">Control Identifiers:</span><br><span class="line"></span><br><span class="line">Dialog - <span class="string">'无标题 - 记事本'</span>    (L481, T434, R1281, B802)</span><br><span class="line">[<span class="string">'无标题 - 记事本Dialog'</span>, <span class="string">'Dialog'</span>, <span class="string">'无标题 - 记事本'</span>]</span><br><span class="line">child_window(title=<span class="string">"无标题 - 记事本"</span>, control_type=<span class="string">"Window"</span>)</span><br><span class="line">   |</span><br><span class="line">   | Edit - <span class="string">'文本编辑器'</span>    (L489, T485, R1273, B794)</span><br><span class="line">   | [<span class="string">''</span>, <span class="string">'Edit'</span>, <span class="string">'0'</span>, <span class="string">'1'</span>]</span><br><span class="line">   | child_window(title=<span class="string">"文本编辑器"</span>, auto_id=<span class="string">"15"</span>, control_type=<span class="string">"Edit"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | ScrollBar - <span class="string">'垂直滚动条'</span>    (L1256, T485, R1273, B794)</span><br><span class="line">   |    | [<span class="string">'垂直滚动条ScrollBar'</span>, <span class="string">'垂直滚动条'</span>, <span class="string">'ScrollBar'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"垂直滚动条"</span>, auto_id=<span class="string">"NonClientVerticalScrollBar"</span>, control_type=<span class="string">"ScrollBar"</span>)</span><br><span class="line">   |    |    |</span><br><span class="line">   |    |    | Button - <span class="string">'上一行'</span>    (L1256, T485, R1273, B502)</span><br><span class="line">   |    |    | [<span class="string">'上一行'</span>, <span class="string">'上一行Button'</span>, <span class="string">'Button'</span>, <span class="string">'Button0'</span>, <span class="string">'Button1'</span>]</span><br><span class="line">   |    |    | child_window(title=<span class="string">"上一行"</span>, auto_id=<span class="string">"UpButton"</span>, control_type=<span class="string">"Button"</span>)</span><br><span class="line">   |    |    |</span><br><span class="line">   |    |    | Button - <span class="string">'下一行'</span>    (L1256, T777, R1273, B794)</span><br><span class="line">   |    |    | [<span class="string">'下一行'</span>, <span class="string">'下一行Button'</span>, <span class="string">'Button2'</span>]</span><br><span class="line">   |    |    | child_window(title=<span class="string">"下一行"</span>, auto_id=<span class="string">"DownButton"</span>, control_type=<span class="string">"Button"</span>)</span><br><span class="line">   |</span><br><span class="line">   | TitleBar - <span class="string">'None'</span>    (L505, T437, R1273, B465)</span><br><span class="line">   | [<span class="string">'2'</span>, <span class="string">'TitleBar'</span>]</span><br><span class="line">   |    |</span><br><span class="line">   |    | Menu - <span class="string">'系统'</span>    (L489, T442, R511, B464)</span><br><span class="line">   |    | [<span class="string">'系统Menu'</span>, <span class="string">'系统'</span>, <span class="string">'Menu'</span>, <span class="string">'系统0'</span>, <span class="string">'系统1'</span>, <span class="string">'Menu0'</span>, <span class="string">'Menu1'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"系统"</span>, auto_id=<span class="string">"MenuBar"</span>, control_type=<span class="string">"MenuBar"</span>)</span><br><span class="line">   |    |    |</span><br><span class="line">   |    |    | MenuItem - <span class="string">'系统'</span>    (L489, T442, R511, B464)</span><br><span class="line">   |    |    | [<span class="string">'系统2'</span>, <span class="string">'MenuItem'</span>, <span class="string">'系统MenuItem'</span>, <span class="string">'MenuItem0'</span>, <span class="string">'MenuItem1'</span>]</span><br><span class="line">   |    |    | child_window(title=<span class="string">"系统"</span>, control_type=<span class="string">"MenuItem"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | Button - <span class="string">'最小化'</span>    (L1134, T435, R1181, B465)</span><br><span class="line">   |    | [<span class="string">'最小化Button'</span>, <span class="string">'最小化'</span>, <span class="string">'Button3'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"最小化"</span>, control_type=<span class="string">"Button"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | Button - <span class="string">'最大化'</span>    (L1181, T435, R1227, B465)</span><br><span class="line">   |    | [<span class="string">'最大化Button'</span>, <span class="string">'最大化'</span>, <span class="string">'Button4'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"最大化"</span>, control_type=<span class="string">"Button"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | Button - <span class="string">'关闭'</span>    (L1227, T435, R1274, B465)</span><br><span class="line">   |    | [<span class="string">'关闭'</span>, <span class="string">'关闭Button'</span>, <span class="string">'Button5'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"关闭"</span>, control_type=<span class="string">"Button"</span>)</span><br><span class="line">   |</span><br><span class="line">   | Menu - <span class="string">'应用程序'</span>    (L489, T465, R1273, B484)</span><br><span class="line">   | [<span class="string">'应用程序'</span>, <span class="string">'Menu2'</span>, <span class="string">'应用程序Menu'</span>]</span><br><span class="line">   | child_window(title=<span class="string">"应用程序"</span>, auto_id=<span class="string">"MenuBar"</span>, control_type=<span class="string">"MenuBar"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | MenuItem - <span class="string">'文件(F)'</span>    (L489, T465, R541, B484)</span><br><span class="line">   |    | [<span class="string">'文件(F)MenuItem'</span>, <span class="string">'MenuItem2'</span>, <span class="string">'文件(F)'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"文件(F)"</span>, control_type=<span class="string">"MenuItem"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | MenuItem - <span class="string">'编辑(E)'</span>    (L541, T465, R594, B484)</span><br><span class="line">   |    | [<span class="string">'MenuItem3'</span>, <span class="string">'编辑(E)'</span>, <span class="string">'编辑(E)MenuItem'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"编辑(E)"</span>, control_type=<span class="string">"MenuItem"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | MenuItem - <span class="string">'格式(O)'</span>    (L594, T465, R650, B484)</span><br><span class="line">   |    | [<span class="string">'格式(O)'</span>, <span class="string">'格式(O)MenuItem'</span>, <span class="string">'MenuItem4'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"格式(O)"</span>, control_type=<span class="string">"MenuItem"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | MenuItem - <span class="string">'查看(V)'</span>    (L650, T465, R704, B484)</span><br><span class="line">   |    | [<span class="string">'查看(V)MenuItem'</span>, <span class="string">'查看(V)'</span>, <span class="string">'MenuItem5'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"查看(V)"</span>, control_type=<span class="string">"MenuItem"</span>)</span><br><span class="line">   |    |</span><br><span class="line">   |    | MenuItem - <span class="string">'帮助(H)'</span>    (L704, T465, R759, B484)</span><br><span class="line">   |    | [<span class="string">'帮助(H)'</span>, <span class="string">'MenuItem6'</span>, <span class="string">'帮助(H)MenuItem'</span>]</span><br><span class="line">   |    | child_window(title=<span class="string">"帮助(H)"</span>, control_type=<span class="string">"MenuItem"</span>)</span><br></pre></td></tr></table></figure>
+<p>注意：此方法打印的标识符已经通过标识的唯一进程。所以如果你有两个编辑框，它们都会在其中列出。实际上，第一个可以被称之为“编辑”，“编辑0”，“编辑1”和第二个应该被称为“编辑2”</p>
+<p>注意：你不需要精确！</p>
+<h3 id="如何使用pywinauto在英文之外的环境"><a href="#如何使用pywinauto在英文之外的环境" class="headerlink" title="如何使用pywinauto在英文之外的环境"></a>如何使用pywinauto在英文之外的环境</h3><p>在py2中，Python的编码一直是蛋疼的问题，但是py3的出现改变了这一现状。Python3中，字符串是以Unicode编码的，也就是说，Python的字符串支持多语言。使用如下方法来进行属性控制</p>
+<blockquote>
+<p>在英文文档中，此部分还是以Python2为基础</p>
+</blockquote>
+<ol>
+<li><code>app.dialog_ident.control_ident.click()</code></li>
+<li><code>app[&#39;dialog_ident&#39;][&#39;control_ident&#39;].click()</code></li>
+<li><code>app.window(title_re=&quot;NonAsciiCharacters&quot;).window(title=&quot;MoreNonAsciiCharacters&quot;).click()</code></li>
+</ol>
+<h3 id="如何处理不按照预期进行响应的控件（例如OwnerDraw控件）"><a href="#如何处理不按照预期进行响应的控件（例如OwnerDraw控件）" class="headerlink" title="如何处理不按照预期进行响应的控件（例如OwnerDraw控件）"></a>如何处理不按照预期进行响应的控件（例如OwnerDraw控件）</h3><p>对于非标准控件，无法定位到控件并对其进行操作。我们可以通过定位到其窗口，并模拟键盘操作的方式来操控它,使用上下箭头移动或则使用快捷键进行操作。</p>
+<p><code>dialog.type_keys(&quot;{HOME}{DOWN 2}{ENTER}ABC&quot;)</code></p>
+<p>上面的例子表示模拟键盘依次键入了HOME DOWN DOWN ENTER A B C</p>
+<p>对于一些特殊符号的快捷键，对应的码表如下:</p>
+<table>
+<thead>
+<tr>
+<th>按键名称</th>
+<th>对应符号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SHIFT</td>
+<td>+</td>
+</tr>
+<tr>
+<td>CTRL</td>
+<td>^</td>
+</tr>
+<tr>
+<td>ALT</td>
+<td>%</td>
+</tr>
+<tr>
+<td>SPACE</td>
+<td>{SPACE}</td>
+</tr>
+<tr>
+<td>BACKSPACE</td>
+<td>{BACKSPACE} {BS} or{BKSP}</td>
+</tr>
+<tr>
+<td>BREAK</td>
+<td>{BREAK}</td>
+</tr>
+<tr>
+<td>CAPS   LOCK</td>
+<td>{CAPSLOCK}</td>
+</tr>
+<tr>
+<td>DEL   or   DELETE</td>
+<td>{DELETE}   or   {DEL}</td>
+</tr>
+<tr>
+<td>DOWN   ARROW</td>
+<td>{DOWN}</td>
+</tr>
+<tr>
+<td>END</td>
+<td>{END}</td>
+</tr>
+<tr>
+<td>ENTER</td>
+<td>{ENTER}   or   ~</td>
+</tr>
+<tr>
+<td>ESC</td>
+<td>{ESC}</td>
+</tr>
+<tr>
+<td>HELP</td>
+<td>{HELP}</td>
+</tr>
+<tr>
+<td>HOME</td>
+<td>{HOME}</td>
+</tr>
+<tr>
+<td>INS   or   INSERT</td>
+<td>{INSERT}   or   {INS}</td>
+</tr>
+<tr>
+<td>LEFT   ARROW</td>
+<td>{LEFT}</td>
+</tr>
+<tr>
+<td>NUM   LOCK</td>
+<td>{NUMLOCK}</td>
+</tr>
+<tr>
+<td>PAGE   DOWN</td>
+<td>{PGDN}</td>
+</tr>
+<tr>
+<td>PAGE   UP</td>
+<td>{PGUP}</td>
+</tr>
+<tr>
+<td>PRINT   SCREEN</td>
+<td>{PRTSC}</td>
+</tr>
+<tr>
+<td>RIGHT   ARROW</td>
+<td>{RIGHT}</td>
+</tr>
+<tr>
+<td>SCROLL   LOCK</td>
+<td>{SCROLLLOCK}</td>
+</tr>
+<tr>
+<td>TAB</td>
+<td>{TAB}</td>
+</tr>
+<tr>
+<td>UP   ARROW</td>
+<td>{UP}</td>
+</tr>
+<tr>
+<td>+</td>
+<td>{ADD}</td>
+</tr>
+<tr>
+<td>-</td>
+<td>{SUBTRACT}</td>
+</tr>
+<tr>
+<td>*</td>
+<td>{MULTIPLY}</td>
+</tr>
+<tr>
+<td>/</td>
+<td>{DIVIDE}</td>
+</tr>
+</tbody>
+</table>
+<h3 id="如何访问系统托盘（SysTray，通知区域）"><a href="#如何访问系统托盘（SysTray，通知区域）" class="headerlink" title="如何访问系统托盘（SysTray，通知区域）"></a>如何访问系统托盘（SysTray，通知区域）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pywinauto.application</span><br><span class="line">app = pywinauto.application.Application().connect(path=<span class="string">"explorer"</span>)</span><br><span class="line">systray_icons = app.ShellTrayWnd.NotificationAreaToolbar</span><br></pre></td></tr></table></figure>
+<p>任务栏模块提供对系统托盘的初步访问。</p>
+<p>它定义了以下变量:</p>
+<ul>
+<li><p>explorer_app</p>
+<p>定义连接到正在运行的资源管理器的<code>Application()</code>对象。你可能不需要直接使用它。</p>
+</li>
+<li><p>任务栏</p>
+<p>任务栏的句柄(包括开始按钮，QuickLaunch图标，正在运行的任务等)</p>
+</li>
+<li><p>开始按钮</p>
+<p>“启动我”:-)我想你可能会知道这是什么！</p>
+</li>
+<li><p>快速启动</p>
+<p>具有快速启动图标的工具栏</p>
+</li>
+<li><p>SystemTray中</p>
+<p>包含时钟和系统托盘图标的窗口</p>
+</li>
+<li><p>时钟</p>
+</li>
+<li><p>SystemTrayIcons</p>
+<p>表示系统托盘图标的工具栏</p>
+</li>
+<li><p>RunningApplications</p>
+<p>工具条表示运行中的应用程序</p>
+</li>
+</ul>
+<p>我还在模块中提供了两个可以用来点击系统托盘图标的功能：</p>
+<ul>
+<li><p><code>ClickSystemTrayIcon(button)</code></p>
+<p>您可以使用此按钮左键单击系统托盘中的可见图标。我不得不具体说可见的图标，因为可能有许多看不见的图标显然不能被点击。按钮可以是任意整数。如果您指定3，那么它会找到并单击第3个可见按钮。（几乎不会在这里执行错误检查，但这种方法将来会更有可能被移动/重命名。）</p>
+</li>
+<li><p><code>RightClickSystemTrayIcon(button)</code></p>
+<p>类似于<code>ClickSytemTrayIcon</code>但执行右键单击。</p>
+</li>
+</ul>
+<p>通常，当您点击/右键单击图标时，您将收到一个弹出菜单。在这一点上要记住的是，弹出菜单是应用程序的一部分，而不是资源管理器的一部分。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># connect to outlook</span></span><br><span class="line">outlook = Application.connect(path=<span class="string">'outlook.exe'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># click on Outlook's icon</span></span><br><span class="line">taskbar.ClickSystemTrayIcon(<span class="string">"Microsoft Outlook"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Select an item in the popup menu</span></span><br><span class="line">outlook.PopupMenu.Menu().get_menu_path(<span class="string">"Cancel Server Request"</span>)[<span class="number">0</span>].click()</span><br></pre></td></tr></table></figure>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><p>app.click() 点击控件<br>app.close() 关闭窗口<br>app.Check() 勾选复选框<br>app.Uncheck() 取消勾选复选框</p>
+<p><a href="https://pywinauto.readthedocs.io/en/latest/controls_overview.html#all-controls" target="_blank" rel="noopener">所有控件的官方文档</a><br><a href="https://blog.csdn.net/shawpan/article/details/78170117" target="_blank" rel="noopener">python自动化工具之pywinauto</a><br><a href="https://github.com/fangchaooo/zh-pywinauto-doc/blob/master/What%20is%20pywinauto.md" target="_blank" rel="noopener">PYWINAUTO入门指南</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/12/python/1.python基础语法/python变量作用域/" rel="next" title="python变量作用域">
+                <i class="fa fa-chevron-left"></i> python变量作用域
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/14/python/1.python基础语法/pyautogui的使用/" rel="prev" title="pyautogui的使用">
+                pyautogui的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装pywinauto"><span class="nav-number">1.</span> <span class="nav-text">下载安装pywinauto</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#直接使用pip安装"><span class="nav-number">1.1.</span> <span class="nav-text">直接使用pip安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#或者也可以手动安装-离线项目主机"><span class="nav-number">1.2.</span> <span class="nav-text">或者也可以手动安装(离线项目主机)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持的控件"><span class="nav-number">1.3.</span> <span class="nav-text">支持的控件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速开始"><span class="nav-number">2.</span> <span class="nav-text">快速开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例讲解"><span class="nav-number">2.1.</span> <span class="nav-text">实例讲解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个完整的例子"><span class="nav-number">2.2.</span> <span class="nav-text">一个完整的例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法简介"><span class="nav-number">3.</span> <span class="nav-text">方法简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指定可用的Application实例"><span class="nav-number">3.1.</span> <span class="nav-text">指定可用的Application实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#start-启动程序并实例化"><span class="nav-number">3.1.1.</span> <span class="nav-text">start()启动程序并实例化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#connect-实例化已经启动的程序："><span class="nav-number">3.1.2.</span> <span class="nav-text">connect()实例化已经启动的程序：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何指定应用程序的对话框"><span class="nav-number">3.2.</span> <span class="nav-text">如何指定应用程序的对话框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何在对话框上指定控件"><span class="nav-number">3.3.</span> <span class="nav-text">如何在对话框上指定控件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何使用pywinauto在英文之外的环境"><span class="nav-number">3.4.</span> <span class="nav-text">如何使用pywinauto在英文之外的环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何处理不按照预期进行响应的控件（例如OwnerDraw控件）"><span class="nav-number">3.5.</span> <span class="nav-text">如何处理不按照预期进行响应的控件（例如OwnerDraw控件）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何访问系统托盘（SysTray，通知区域）"><span class="nav-number">3.6.</span> <span class="nav-text">如何访问系统托盘（SysTray，通知区域）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用方法"><span class="nav-number">4.</span> <span class="nav-text">常用方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

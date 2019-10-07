@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="nodejs,mysql,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在命令行使用mysql安装mysql对于mysql，我们除了在官网下载安装包以外，还可以使用XAMPP建站集成环境进行安装，安装完成后打开MySQL模块即可使用 添加环境变量找到mysql的bin文件夹，将其添加到环境变量路径，方便在cmd中使用mysql 添加方法：使用win自带的搜索功能，搜索环境变量，进入编辑环境变量后选择用户环境变量，选择PATH后编辑，选择新建，输入mysql的bin路径">
+<meta name="keywords" content="nodejs,mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="koa2学习系列教程8 mysql数据库">
+<meta property="og:url" content="http://gaianote.github.io/2017/04/25/koa/koa2学习系列教程8mysql数据库/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="在命令行使用mysql安装mysql对于mysql，我们除了在官网下载安装包以外，还可以使用XAMPP建站集成环境进行安装，安装完成后打开MySQL模块即可使用 添加环境变量找到mysql的bin文件夹，将其添加到环境变量路径，方便在cmd中使用mysql 添加方法：使用win自带的搜索功能，搜索环境变量，进入编辑环境变量后选择用户环境变量，选择PATH后编辑，选择新建，输入mysql的bin路径">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.048Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="koa2学习系列教程8 mysql数据库">
+<meta name="twitter:description" content="在命令行使用mysql安装mysql对于mysql，我们除了在官网下载安装包以外，还可以使用XAMPP建站集成环境进行安装，安装完成后打开MySQL模块即可使用 添加环境变量找到mysql的bin文件夹，将其添加到环境变量路径，方便在cmd中使用mysql 添加方法：使用win自带的搜索功能，搜索环境变量，进入编辑环境变量后选择用户环境变量，选择PATH后编辑，选择新建，输入mysql的bin路径">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2017/04/25/koa/koa2学习系列教程8mysql数据库/">
+
+
+
+
+
+  <title>koa2学习系列教程8 mysql数据库 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/04/25/koa/koa2学习系列教程8mysql数据库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">koa2学习系列教程8 mysql数据库</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-25T20:31:36+00:00">
+                2017-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="在命令行使用mysql"><a href="#在命令行使用mysql" class="headerlink" title="在命令行使用mysql"></a>在命令行使用mysql</h2><h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><p>对于mysql，我们除了在官网下载安装包以外，还可以使用XAMPP建站集成环境进行安装，安装完成后打开MySQL模块即可使用</p>
+<h3 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h3><p>找到mysql的bin文件夹，将其添加到环境变量路径，方便在cmd中使用mysql</p>
+<p>添加方法：使用win自带的搜索功能，搜索环境变量，进入编辑环境变量后选择<strong>用户环境变量</strong>，选择PATH后编辑，选择新建，输入mysql的bin路径，比如我的是 E:\xampp\mysql\bin</p>
+<p>编辑PATH完成后，cmd重启生效</p>
+<h3 id="命令行的基本操作"><a href="#命令行的基本操作" class="headerlink" title="命令行的基本操作"></a>命令行的基本操作</h3><p><strong>连接数据库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -h localhost -u root -p</span><br></pre></td></tr></table></figure>
+<p>要求输入password时，假如未设定，直接回车即可</p>
+<p><strong>显示用户名下的所有数据库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ show databases;</span><br></pre></td></tr></table></figure>
+<p>注意sql语句要求以’;’结尾，执行命令后，会输出形如下列的表格</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| mynote             |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| phpmyadmin         |</span><br><span class="line">+--------------------+</span><br></pre></td></tr></table></figure>
+<p><strong>进入某个数据库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ use databasename</span><br></pre></td></tr></table></figure>
+<p><strong>退出mysql</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">exit</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="MYSQL-与-ORM"><a href="#MYSQL-与-ORM" class="headerlink" title="MYSQL 与 ORM"></a>MYSQL 与 ORM</h2><p>如果直接使用mysql包提供的接口，我们编写的代码就比较底层，例如，查询代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">connection.query(<span class="string">'SELECT * FROM users WHERE id = ?'</span>, [<span class="string">'123'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">err, rows</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> row <span class="keyword">in</span> rows) &#123;</span><br><span class="line">      processRow(row);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>考虑到数据库表是一个二维表，包含多行多列，例如一个pets的表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from pets;</span><br><span class="line">+----+--------+------------+</span><br><span class="line">| id | name   | birth      |</span><br><span class="line">+----+--------+------------+</span><br><span class="line">|  1 | Gaffey | 2007-07-07 |</span><br><span class="line">|  2 | Odie   | 2008-08-08 |</span><br><span class="line">+----+--------+------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>每一行可以用一个JavaScript对象表示，例如第一行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;id&quot;: 1,</span><br><span class="line">  &quot;name&quot;: &quot;Gaffey&quot;,</span><br><span class="line">  &quot;birth&quot;: &quot;2007-07-07&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这就是传说中的ORM技术：Object-Relational Mapping，把关系数据库的表结构映射到对象上</p>
+<p>但是由谁来做这个转换呢？所以ORM框架应运而生。</p>
+<h2 id="ORM框架-Sequelize"><a href="#ORM框架-Sequelize" class="headerlink" title="ORM框架 Sequelize"></a>ORM框架 Sequelize</h2><p>我们选择Node的ORM框架Sequelize来操作数据库。这样，我们读写的都是JavaScript对象，Sequelize帮我们把对象变成数据库中的行。</p>
+<p>用Sequelize查询pets表，代码像这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Pet.findAll()</span><br><span class="line">   .then(<span class="function"><span class="keyword">function</span> (<span class="params">pets</span>) </span>&#123;</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">let</span> pet <span class="keyword">in</span> pets) &#123;</span><br><span class="line">           <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;pet.id&#125;</span>: <span class="subst">$&#123;pet.name&#125;</span>`</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">       <span class="comment">// error</span></span><br><span class="line">   &#125;);</span><br></pre></td></tr></table></figure>
+<p>因为Sequelize返回的对象是Promise，所以我们可以用then()和catch()分别异步响应成功和失败。</p>
+<p>但是用then()和catch()仍然比较麻烦。有没有更简单的方法呢？</p>
+<p>可以用ES7的await来调用任何一个Promise对象，这样我们写出来的代码就变成了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> pets = <span class="keyword">await</span> Pet.findAll();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>真的就是这么简单！</p>
+<p>考虑到koa的处理函数都是async函数，所以我们实际上将来在koa的async函数中直接写await访问数据库就可以了！</p>
+<p>这也是为什么我们选择Sequelize的原因：只要API返回Promise，就可以用await调用，写代码就非常简单！</p>
+<h2 id="使用-Sequelize"><a href="#使用-Sequelize" class="headerlink" title="使用 Sequelize"></a>使用 Sequelize</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install sequelize --save</span><br><span class="line">npm install mysql --save</span><br></pre></td></tr></table></figure>
+<p>注意mysql是驱动，我们不直接使用，但是sequelize会用</p>
+<p>配置config.js,他是一个简单的配置文件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    database: <span class="string">'test'</span>, <span class="comment">// 使用哪个数据库</span></span><br><span class="line">    username: <span class="string">'www'</span>, <span class="comment">// 用户名</span></span><br><span class="line">    password: <span class="string">'www'</span>, <span class="comment">// 口令</span></span><br><span class="line">    host: <span class="string">'localhost'</span>, <span class="comment">// 主机名</span></span><br><span class="line">    port: <span class="number">3306</span> <span class="comment">// 端口号，MySQL默认3306</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
+<p>第一步，创建一个sequelize对象实例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Sequelize = <span class="built_in">require</span>(<span class="string">'sequelize'</span>);</span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">'./config'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sequelize = <span class="keyword">new</span> Sequelize(config.database, config.username, config.password, &#123;</span><br><span class="line">    host: config.host,</span><br><span class="line">    dialect: <span class="string">'mysql'</span>,</span><br><span class="line">    pool: &#123;</span><br><span class="line">        max: <span class="number">5</span>,</span><br><span class="line">        min: <span class="number">0</span>,</span><br><span class="line">        idle: <span class="number">30000</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>第二步，定义模型Pet，告诉Sequelize如何映射数据库表：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Pet = sequelize.define(<span class="string">'pet'</span>, &#123;</span><br><span class="line">    id: &#123;</span><br><span class="line">        type: Sequelize.STRING(<span class="number">50</span>),</span><br><span class="line">        primaryKey: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    name: Sequelize.STRING(<span class="number">100</span>),</span><br><span class="line">    gender: Sequelize.BOOLEAN,</span><br><span class="line">    birth: Sequelize.STRING(<span class="number">10</span>),</span><br><span class="line">    createdAt: Sequelize.BIGINT,</span><br><span class="line">    updatedAt: Sequelize.BIGINT,</span><br><span class="line">    version: Sequelize.BIGINT</span><br><span class="line">&#125;, &#123;</span><br><span class="line">        timestamps: <span class="literal">false</span></span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>用sequelize.define()定义Model时，传入名称pet，默认的表名就是pets。第二个参数指定列名和数据类型，如果是主键，需要更详细地指定。第三个参数是额外的配置，我们传入{ timestamps: false }是为了关闭Sequelize的自动添加timestamp的功能。所有的ORM框架都有一种很不好的风气，总是自作聪明地加上所谓“自动化”的功能，但是会让人感到完全摸不着头脑。</p>
+<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> dog = <span class="keyword">await</span> Pet.create(&#123;</span><br><span class="line">        id: <span class="string">'d-'</span> + now,</span><br><span class="line">        name: <span class="string">'Odie'</span>,</span><br><span class="line">        gender: <span class="literal">false</span>,</span><br><span class="line">        birth: <span class="string">'2008-08-08'</span>,</span><br><span class="line">        createdAt: now,</span><br><span class="line">        updatedAt: now,</span><br><span class="line">        version: <span class="number">0</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'created: '</span> + <span class="built_in">JSON</span>.stringify(dog));</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>显然await代码更胜一筹。</p>
+<h3 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> pets = <span class="keyword">await</span> Pet.findAll(&#123;</span><br><span class="line">        where: &#123;</span><br><span class="line">            name: <span class="string">'Gaffey'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`find <span class="subst">$&#123;pets.length&#125;</span> pets:`</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> p <span class="keyword">of</span> pets) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(p));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h3 id="更新数据，可以对查询到的实例调用save-方法："><a href="#更新数据，可以对查询到的实例调用save-方法：" class="headerlink" title="更新数据，可以对查询到的实例调用save()方法："></a>更新数据，可以对查询到的实例调用save()方法：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> p = <span class="keyword">await</span> queryFromSomewhere();</span><br><span class="line">    p.gender = <span class="literal">true</span>;</span><br><span class="line">    p.updatedAt = <span class="built_in">Date</span>.now();</span><br><span class="line">    p.version ++;</span><br><span class="line">    <span class="keyword">await</span> p.save();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h3 id="删除数据，可以对查询到的实例调用destroy-方法："><a href="#删除数据，可以对查询到的实例调用destroy-方法：" class="headerlink" title="删除数据，可以对查询到的实例调用destroy()方法："></a>删除数据，可以对查询到的实例调用destroy()方法：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> p = <span class="keyword">await</span> queryFromSomewhere();</span><br><span class="line">    <span class="keyword">await</span> p.destroy();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>为了避免格式上的混乱，我们需要一个统一的模型，强迫所有Model都遵守同一个规范，这样不但实现简单，而且容易统一风格。</p>
+<p>我们首先要定义的就是Model存放的文件夹必须在models内，并且以Model名字命名，例如：Pet.js，User.js等等。</p>
+<p>其次，每个Model必须遵守一套规范：</p>
+<ul>
+<li>统一主键，名称必须是<code>id</code>，类型必须是<code>STRING(50)</code>；</li>
+<li>主键可以自己指定，也可以由框架自动生成（如果为<code>null</code>或<code>undefined</code>）；</li>
+<li>所有字段默认为<code>NOT NULL</code>，除非显式指定；</li>
+<li>统一<code>timestamp</code>机制，每个Model必须有<code>createdAt</code>、<code>updatedAt</code>和<code>version</code>，分别记录创建时间、修改时间和版本号。其中，<code>createdAt</code>和<code>updatedAt</code>以<code>BIGINT</code>存储时间戳，最大的好处是无需处理时区，排序方便。<code>version</code>每次修改时自增。</li>
+</ul>
+<h3 id="数据库配置"><a href="#数据库配置" class="headerlink" title="数据库配置"></a>数据库配置</h3><p>接下来，我们把简单的config.js拆成3个配置文件：</p>
+<ul>
+<li>config-default.js：存储默认的配置;</li>
+<li>config-override.js：存储特定的配置;</li>
+<li>config-test.js：存储用于测试的配置;</li>
+</ul>
+<p>例如，默认的config-default.js可以配置如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    dialect: <span class="string">'mysql'</span>,</span><br><span class="line">    database: <span class="string">'nodejs'</span>,</span><br><span class="line">    username: <span class="string">'www'</span>,</span><br><span class="line">    password: <span class="string">'www'</span>,</span><br><span class="line">    host: <span class="string">'localhost'</span>,</span><br><span class="line">    port: <span class="number">3306</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
+<p>而config-override.js可应用实际配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    database: <span class="string">'production'</span>,</span><br><span class="line">    username: <span class="string">'www'</span>,</span><br><span class="line">    password: <span class="string">'secret-password'</span>,</span><br><span class="line">    host: <span class="string">'192.168.1.199'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
+<p>config-test.js可应用测试环境的配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config = &#123;</span><br><span class="line">    database: <span class="string">'test'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
+<p>读取配置的时候，我们用config.js实现不同环境读取不同的配置文件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> defaultConfig = <span class="string">'./config-default.js'</span>;</span><br><span class="line"><span class="comment">// 可设定为绝对路径，如 /opt/product/config-override.js</span></span><br><span class="line"><span class="keyword">const</span> overrideConfig = <span class="string">'./config-override.js'</span>;</span><br><span class="line"><span class="keyword">const</span> testConfig = <span class="string">'./config-test.js'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> config = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (process.env.NODE_ENV === <span class="string">'test'</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Load <span class="subst">$&#123;testConfig&#125;</span>...`</span>);</span><br><span class="line">    config = <span class="built_in">require</span>(testConfig);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Load <span class="subst">$&#123;defaultConfig&#125;</span>...`</span>);</span><br><span class="line">    config = <span class="built_in">require</span>(defaultConfig);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (fs.statSync(overrideConfig).isFile()) &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">`Load <span class="subst">$&#123;overrideConfig&#125;</span>...`</span>);</span><br><span class="line">            config = <span class="built_in">Object</span>.assign(config, <span class="built_in">require</span>(overrideConfig));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`Cannot load <span class="subst">$&#123;overrideConfig&#125;</span>.`</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
+<p>具体的规则是：</p>
+<p>先读取config-default.js；<br>如果不是测试环境，就读取config-override.js，如果文件不存在，就忽略。<br>如果是测试环境，就读取config-test.js。<br>这样做的好处是，开发环境下，团队统一使用默认的配置，并且无需config-override.js。部署到服务器时，由运维团队配置好config-override.js，以覆盖config-override.js的默认设置。测试环境下，本地和CI服务器统一使用config-test.js，测试数据库可以反复清空，不会影响开发。</p>
+<p>配置文件表面上写起来很容易，但是，既要保证开发效率，又要避免服务器配置文件泄漏，还要能方便地执行测试，就需要一开始搭建出好的结构，才能提升工程能力。</p>
+<h3 id="使用Model"><a href="#使用Model" class="headerlink" title="使用Model"></a>使用Model</h3><p>要使用Model，就需要引入对应的Model文件，例如：User.js。一旦Model多了起来，如何引用也是一件麻烦事。</p>
+<p>自动化永远比手工做效率高，而且更可靠。我们写一个model.js，自动扫描并导入所有Model：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> db = <span class="built_in">require</span>(<span class="string">'./db'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> files = fs.readdirSync(__dirname + <span class="string">'/models'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> js_files = files.filter(<span class="function">(<span class="params">f</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> f.endsWith(<span class="string">'.js'</span>);</span><br><span class="line">&#125;, files);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> f <span class="keyword">of</span> js_files) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`import model from file <span class="subst">$&#123;f&#125;</span>...`</span>);</span><br><span class="line">    <span class="keyword">let</span> name = f.substring(<span class="number">0</span>, f.length - <span class="number">3</span>);</span><br><span class="line">    <span class="built_in">module</span>.exports[name] = <span class="built_in">require</span>(__dirname + <span class="string">'/models/'</span> + f);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports.sync = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> db.sync();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这样，需要用的时候，写起来就像这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> model = <span class="built_in">require</span>(<span class="string">'./model'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span></span><br><span class="line">    Pet = model.Pet,</span><br><span class="line">    User = model.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pet = <span class="keyword">await</span> Pet.create(&#123; ... &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><p>最终，我们创建的工程model-sequelize结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">model-sequelize/</span><br><span class="line">|</span><br><span class="line">|-.vscode</span><br><span class="line">|  |-launch.json    # VSCode 配置文件</span><br><span class="line">|-models            # 存放所有Model</span><br><span class="line">|  |-Pet.js         # Pet</span><br><span class="line">|  |-User.js        # User</span><br><span class="line">|-config.js         # 配置文件入口</span><br><span class="line">|-config-default.js # 默认配置文件</span><br><span class="line">|-config-test.js    # 测试配置文件</span><br><span class="line">|-db.js             # 如何定义Model</span><br><span class="line">|-model.js          # 如何导入Model</span><br><span class="line">|-init-db.js        # 初始化数据库</span><br><span class="line">|-app.js            # 业务代码</span><br><span class="line">|-package.json      # 项目描述文件</span><br><span class="line">|-node_modules/     # npm安装的所有依赖包</span><br></pre></td></tr></table></figure>
+<p>注意到我们其实不需要创建表的SQL，因为Sequelize提供了一个<code>sync()</code>方法，可以自动创建数据库。这个功能在开发和生产环境中没有什么用，但是在测试环境中非常有用。测试时，我们可以用<code>sync()</code>方法自动创建出表结构，而不是自己维护SQL脚本。这样，可以随时修改Model的定义，并立刻运行测试。开发环境下，首次使用<code>sync()</code>也可以自动创建出表结构，避免了手动运行SQL的问题。</p>
+<p>init-db.js的代码非常简单，作用是创建Pets和User表，只需要执行一次即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> model = <span class="built_in">require</span>(<span class="string">'./model.js'</span>);</span><br><span class="line"></span><br><span class="line">model.sync().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'sync done'</span>);</span><br><span class="line">    process.exit(<span class="number">0</span>);</span><br><span class="line">&#125;).catch(<span class="function">(<span class="params">e</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'failed with: '</span>+e);</span><br><span class="line">    process.exit(<span class="number">0</span>);&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'init db ok.'</span>);</span><br></pre></td></tr></table></figure>
+<p>参考文档</p>
+<p><a href="http://www.liaoxuefeng.com" target="_blank" rel="noopener">廖雪峰的官方网站</a><br><a href="http://docs.sequelizejs.com" target="_blank" rel="noopener">Sequelize官方文档</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/25/koa/koa2学习系列教程4_context上下文/" rel="next" title="koa2学习系列教程4 context应用上下文">
+                <i class="fa fa-chevron-left"></i> koa2学习系列教程4 context应用上下文
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/26/前端/命令行程序开发教程/" rel="prev" title="命令行程序开发教程">
+                命令行程序开发教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在命令行使用mysql"><span class="nav-number">1.</span> <span class="nav-text">在命令行使用mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装mysql"><span class="nav-number">1.1.</span> <span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加环境变量"><span class="nav-number">1.2.</span> <span class="nav-text">添加环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行的基本操作"><span class="nav-number">1.3.</span> <span class="nav-text">命令行的基本操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MYSQL-与-ORM"><span class="nav-number">2.</span> <span class="nav-text">MYSQL 与 ORM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ORM框架-Sequelize"><span class="nav-number">3.</span> <span class="nav-text">ORM框架 Sequelize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Sequelize"><span class="nav-number">4.</span> <span class="nav-text">使用 Sequelize</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入数据"><span class="nav-number">4.1.</span> <span class="nav-text">插入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询数据"><span class="nav-number">4.2.</span> <span class="nav-text">查询数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新数据，可以对查询到的实例调用save-方法："><span class="nav-number">4.3.</span> <span class="nav-text">更新数据，可以对查询到的实例调用save()方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除数据，可以对查询到的实例调用destroy-方法："><span class="nav-number">4.4.</span> <span class="nav-text">删除数据，可以对查询到的实例调用destroy()方法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model"><span class="nav-number">5.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库配置"><span class="nav-number">5.1.</span> <span class="nav-text">数据库配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Model"><span class="nav-number">5.2.</span> <span class="nav-text">使用Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工程结构"><span class="nav-number">5.3.</span> <span class="nav-text">工程结构</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

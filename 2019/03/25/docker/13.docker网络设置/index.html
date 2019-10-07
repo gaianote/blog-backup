@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="docker,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 网络驱动程序Docker的网络子系统是可插拔的，使用驱动程序。默认情况下存在多个驱动程序，并提供核心网络功能：  bridge：默认网络驱动程序。如果未指定驱动程序，则这是您要创建的网络类型。当您的应用程序在需要通信的独立容器中运行时，通常会使用桥接网络。查看 桥接网络。 host：对于独立容器，删除容器和Docker主机之间的网络隔离，并直接使用主机的网络。host 仅适用于Docker">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker网络设置">
+<meta property="og:url" content="http://gaianote.github.io/2019/03/25/docker/13.docker网络设置/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="1. 网络驱动程序Docker的网络子系统是可插拔的，使用驱动程序。默认情况下存在多个驱动程序，并提供核心网络功能：  bridge：默认网络驱动程序。如果未指定驱动程序，则这是您要创建的网络类型。当您的应用程序在需要通信的独立容器中运行时，通常会使用桥接网络。查看 桥接网络。 host：对于独立容器，删除容器和Docker主机之间的网络隔离，并直接使用主机的网络。host 仅适用于Docker">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-07T13:38:19.788Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker网络设置">
+<meta name="twitter:description" content="1. 网络驱动程序Docker的网络子系统是可插拔的，使用驱动程序。默认情况下存在多个驱动程序，并提供核心网络功能：  bridge：默认网络驱动程序。如果未指定驱动程序，则这是您要创建的网络类型。当您的应用程序在需要通信的独立容器中运行时，通常会使用桥接网络。查看 桥接网络。 host：对于独立容器，删除容器和Docker主机之间的网络隔离，并直接使用主机的网络。host 仅适用于Docker">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2019/03/25/docker/13.docker网络设置/">
+
+
+
+
+
+  <title>docker网络设置 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/03/25/docker/13.docker网络设置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">docker网络设置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T19:05:30+00:00">
+                2019-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-网络驱动程序"><a href="#1-网络驱动程序" class="headerlink" title="1. 网络驱动程序"></a>1. 网络驱动程序</h2><p>Docker的网络子系统是可插拔的，使用驱动程序。默认情况下存在多个驱动程序，并提供核心网络功能：</p>
+<ul>
+<li><code>bridge</code>：<strong>默认网络驱动程序</strong>。如果未指定驱动程序，则这是您要创建的网络类型。<strong>当您的应用程序在需要通信的独立容器中运行时，通常会使用桥接网络。</strong>查看 <a href="https://docs.docker.com/network/bridge/" target="_blank" rel="noopener">桥接网络</a>。</li>
+<li><code>host</code>：对于独立容器，删除容器和Docker主机之间的网络隔离，并直接使用主机的网络。<code>host</code> 仅适用于Docker 17.06及更高版本的swarm服务。请参阅 <a href="https://docs.docker.com/network/host/" target="_blank" rel="noopener">使用主机网络</a>。</li>
+<li><code>overlay</code>：覆盖网络将多个Docker守护程序连接在一起，并使群集服务能够相互通信。您还可以使用覆盖网络来促进群集服务和独立容器之间的通信，或者在不同Docker守护程序上的两个独立容器之间进行通信。此策略消除了在这些容器之间执行OS级别路由的需要。请参阅<a href="https://docs.docker.com/network/overlay/" target="_blank" rel="noopener">覆盖网络</a>。</li>
+<li><code>macvlan</code>：Macvlan网络允许您为容器分配MAC地址，使其显示为网络上的物理设备。Docker守护程序通过其MAC地址将流量路由到容器。<code>macvlan</code> 在处理期望直接连接到物理网络的传统应用程序时，使用驱动程序有时是最佳选择，而不是通过Docker主机的网络堆栈进行路由。见 <a href="https://docs.docker.com/network/macvlan/" target="_blank" rel="noopener">Macvlan网络</a>。</li>
+<li><code>none</code>：对于此容器，禁用所有网络。通常与自定义网络驱动程序一起使用。<code>none</code>不适用于群组服务。请参阅 <a href="https://docs.docker.com/network/none/" target="_blank" rel="noopener">禁用容器网络</a>。</li>
+<li><a href="https://docs.docker.com/engine/extend/plugins_services/" target="_blank" rel="noopener"><strong>network plugins</strong></a>：您可以使用Docker安装和使用第三方网络插件。这些插件可从 <a href="https://hub.docker.com/search?category=network&amp;q=&amp;type=plugin" target="_blank" rel="noopener">Docker Hub</a> 或第三方供应商处获得。有关安装和使用给定网络插件的信息，请参阅供应商的文档。</li>
+</ul>
+<h3 id="网络驱动摘要"><a href="#网络驱动摘要" class="headerlink" title="网络驱动摘要"></a>网络驱动摘要</h3><ul>
+<li>当您需要多个容器在同一个Docker主机上进行通信时，<strong>用户定义的bridge网络</strong>是最佳选择。</li>
+<li>当网络堆栈不应与Docker主机隔离时，<strong>host网络</strong>是最好的，但您希望隔离容器的其他方面。</li>
+<li>当您需要在不同Docker主机上运行的容器进行通信时，或者当多个应用程序使用swarm服务协同工作时，<strong>overlay</strong>是最佳选择。</li>
+<li>当您从VM设置迁移或需要容器看起来像网络上的物理主机时，<strong>Macvlan网络</strong>是最佳的，每个主机都具有唯一的MAC地址。</li>
+<li><strong>第三方网络插件</strong>允许您将Docker与专用网络堆栈集成。</li>
+</ul>
+<h2 id="2-使用桥接网络"><a href="#2-使用桥接网络" class="headerlink" title="2. 使用桥接网络"></a>2. 使用桥接网络</h2><p>在网络方面，桥接网络是在网络段之间转发流量的链路层设备。网桥可以是硬件设备或在主机内核中运行的软件设备。</p>
+<p>就Docker而言，桥接网络使用软件桥，该桥接器允许连接到同一桥接网络的容器进行通信，同时提供与未连接到该桥接网络的容器的隔离。Docker桥驱动程序自动在主机中安装规则，以便不同网桥上的容器无法直接相互通信。</p>
+<p>桥接网络适用于在<strong>同一个</strong> Docker守护程序主机上运行的容器。对于在不同Docker守护程序主机上运行的容器之间的通信，您可以在操作系统级别管理路由，也可以使用<a href="https://docs.docker.com/network/overlay/" target="_blank" rel="noopener">覆盖网络</a>。</p>
+<p>启动Docker时，会自动创建<a href="https://docs.docker.com/network/bridge/#use-the-default-bridge-network" target="_blank" rel="noopener">默认桥接网络</a>（也称为<code>bridge</code>），并且除非另行指定，否则新启动的容器将连接到该网络。您还可以创建用户定义的自定义网桥。<strong>用户定义的网桥优于默认bridge 网络。</strong></p>
+<h3 id="1-用户定义的网桥与默认网桥之间的差异"><a href="#1-用户定义的网桥与默认网桥之间的差异" class="headerlink" title="1. 用户定义的网桥与默认网桥之间的差异"></a>1. 用户定义的网桥与默认网桥之间的差异</h3><ul>
+<li><p><strong>用户定义的桥接器可在容器化应用程序之间提供更好的隔离和互操作性</strong>。</p>
+<p>连接到同一用户定义的网桥的容器会自动将<strong>所有端口</strong>相互暴露，并且<strong>不会</strong>向外界显示<strong>任何端口</strong>。这使得容器化应用程序可以轻松地相互通信，而不会意外地打开对外界的访问。</p>
+<p>想象一下具有Web前端和数据库后端的应用程序。外部世界需要访问Web前端（可能在端口80上），但只有后端本身需要访问数据库主机和端口。使用用户定义的网桥，只需要打开Web端口，并且数据库应用程序不需要打开任何端口，因为Web前端可以通过用户定义的网桥访问它。</p>
+<p>如果在默认网桥上运行相同的应用程序堆栈，则需要打开Web端口和数据库端口，并使用 每个的标记<code>-p</code>或<code>--publish</code>标记。这意味着Docker主机需要通过其他方式阻止对数据库端口的访问。</p>
+</li>
+<li><p><strong>用户定义的桥接器在容器之间提供自动DNS解析</strong>。</p>
+<p>默认网桥上的容器只能通过IP地址相互访问，除非您使用被认为是遗留的<a href="https://docs.docker.com/network/links/" target="_blank" rel="noopener"><code>--link</code>选项</a>。在用户定义的桥接网络上，容器可以通过名称或别名相互解析。</p>
+<p>想象一下与前一点相同的应用程序，具有Web前端和数据库后端。如果你打电话给你的容器<code>web</code>和<code>db</code>，Web容器可以在连接到数据库容器<code>db</code>，无论哪个码头工人托管应用程序堆栈上运行。</p>
+<p>如果在默认桥接网络上运行相同的应用程序堆栈，则需要在容器之间手动创建链接（使用旧<code>--link</code> 标志）。这些链接需要在两个方向上创建，因此您可以看到这对于需要通信的两个以上容器而言变得复杂。或者，您可以操作<code>/etc/hosts</code>容器中的文件，但这会产生难以调试的问题。</p>
+</li>
+<li><p><strong>容器可以在运行中与用户定义的网络连接和分离</strong>。</p>
+<p>在容器的生命周期中，您可以动态地将其与用户定义的网络连接或断开连接。要从默认桥接网络中删除容器，您需要停止容器并使用不同的网络选项重新创建容器。</p>
+</li>
+<li><p><strong>每个用户定义的网络都会创建一个可配置的网桥</strong>。</p>
+<p>如果容器使用默认网桥，则可以对其进行配置，但所有容器都使用相同的设置，例如MTU和<code>iptables</code>规则。此外，配置默认桥接网络发生在Docker本身之外，并且需要重新启动Docker。</p>
+<p>使用创建和配置用户定义的网桥 <code>docker network create</code>。如果不同的应用程序组具有不同的网络要求，则可以在创建时单独配置每个用户定义的网桥。</p>
+</li>
+<li><p><strong>默认桥接网络上的链接容器共享环境变量</strong>。</p>
+<p>最初，在两个容器之间共享环境变量的唯一方法是使用<a href="https://docs.docker.com/network/links/" target="_blank" rel="noopener"><code>--link</code>标志</a>链接它们。用户定义的网络无法实现这种类型的变量共享。但是，有更好的方法来共享环境变量。一些想法：</p>
+<ul>
+<li>多个容器可以使用Docker卷装入包含共享信息的文件或目录。</li>
+<li>可以一起启动多个容器<code>docker-compose</code>，并且compose文件可以定义共享变量。</li>
+<li>您可以使用swarm服务而不是独立容器，并利用共享<a href="https://docs.docker.com/engine/swarm/secrets/" target="_blank" rel="noopener">机密</a>和 <a href="https://docs.docker.com/engine/swarm/configs/" target="_blank" rel="noopener">配置</a>。</li>
+</ul>
+</li>
+</ul>
+<p>连接到同一用户定义的网桥的容器有效地将所有端口相互暴露。对于可以访问不同网络上的容器或非Docker主机的端口，必须使用or 标志<em>发布</em>该端口。<code>-p`</code>–publish`</p>
+<h3 id="2-管理用户定义的桥"><a href="#2-管理用户定义的桥" class="headerlink" title="2. 管理用户定义的桥"></a>2. 管理用户定义的桥</h3><p>使用此<code>docker network create</code>命令可以创建用户定义的桥接网络。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create my-net</span><br></pre></td></tr></table></figure>
+<p>您可以指定子网，IP地址范围，网关和其他选项。有关详细信息，请参阅 <a href="https://docs.docker.com/engine/reference/commandline/network_create/#specify-advanced-options" target="_blank" rel="noopener">docker network create</a> reference或输出<code>docker network create --help</code>。</p>
+<p>使用此<code>docker network rm</code>命令删除用户定义的桥接网络。如果容器当前已连接到网络， <a href="https://docs.docker.com/network/bridge/#disconnect-a-container-from-a-user-defined-bridge" target="_blank" rel="noopener">请先断开它们</a> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network rm my-net</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>真的发生了什么？</strong></p>
+<p>当您创建或删除用户定义的网桥或从用户定义的网桥连接或断开容器时，Docker使用特定于操作系统的工具来管理底层网络基础结构（例如<code>iptables</code>在Linux上添加或删除网桥设备或配置规则） ）。这些细节应视为实施细节。让Docker为您管理用户定义的网络。</p>
+</blockquote>
+<h3 id="3-将容器连接到用户定义的网桥"><a href="#3-将容器连接到用户定义的网桥" class="headerlink" title="3. 将容器连接到用户定义的网桥"></a>3. 将容器连接到用户定义的网桥</h3><p>创建新容器时，可以指定一个或多个<code>--network</code>标志。此示例将Nginx容器连接到<code>my-net</code>网络。它还将容器中的端口80发布到Docker主机上的端口8080，因此外部客户端可以访问该端口。连接到<code>my-net</code> 网络的任何其他容器都可以访问<code>my-nginx</code>容器上的所有端口，反之亦然。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker create --name my-nginx \</span><br><span class="line">  --network my-net \</span><br><span class="line">  --publish 8080:80 \</span><br><span class="line">  nginx:latest</span><br></pre></td></tr></table></figure>
+<p>要将<strong>正在运行的</strong>容器连接到现有的用户定义的桥，请使用该 <code>docker network connect</code>命令。以下命令将已在运行的<code>my-nginx</code>容器连接 到已存在的<code>my-net</code>网络：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network connect my-net my-nginx</span><br></pre></td></tr></table></figure>
+<h3 id="4-断开容器与用户定义的桥接器的连接"><a href="#4-断开容器与用户定义的桥接器的连接" class="headerlink" title="4. 断开容器与用户定义的桥接器的连接"></a>4. 断开容器与用户定义的桥接器的连接</h3><p>要断开正在运行的容器与用户定义的桥接器的连接，请使用该<code>docker network disconnect</code>命令。以下命令将<code>my-nginx</code> 容器与<code>my-net</code>网络断开连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network disconnect my-net my-nginx</span><br></pre></td></tr></table></figure>
+<h3 id="5-使用IPv6"><a href="#5-使用IPv6" class="headerlink" title="5. 使用IPv6"></a>5. 使用IPv6</h3><p>如果需要对Docker容器的IPv6支持，则需要 在创建任何IPv6网络或分配容器IPv6地址之前<a href="https://docs.docker.com/config/daemon/ipv6/" target="_blank" rel="noopener">启用</a> Docker守护程序上<a href="https://docs.docker.com/config/daemon/ipv6/" target="_blank" rel="noopener">的选项</a>并重新加载其配置。</p>
+<p>创建网络时，可以指定<code>--ipv6</code>标志以启用IPv6。您无法在默认<code>bridge</code>网络上有选择地禁用IPv6支持。</p>
+<h3 id="6-启用从Docker容器转发到外部世界"><a href="#6-启用从Docker容器转发到外部世界" class="headerlink" title="6. 启用从Docker容器转发到外部世界"></a>6. 启用从Docker容器转发到外部世界</h3><p>默认情况下，来自连接到默认网桥的容器的流量 <strong>不会</strong>转发到外部世界。要启用转发，您需要更改两个设置。这些不是Docker命令，它们会影响Docker主机的内核。</p>
+<ol>
+<li><p>配置Linux内核以允许IP转发。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sysctl net.ipv4.conf.all.forwarding=1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将策略的<code>iptables</code> <code>FORWARD</code>策略更改<code>DROP</code>为 <code>ACCEPT</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo iptables -P FORWARD ACCEPT</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这些设置在重新启动时不会持续存在，因此您可能需要将它们添加到启动脚本中。</p>
+<h3 id="7-使用默认桥接网络"><a href="#7-使用默认桥接网络" class="headerlink" title="7. 使用默认桥接网络"></a>7. 使用默认桥接网络</h3><p>默认<code>bridge</code>网络被视为Docker的遗留细节，不建议用于生产。配置它是一种手动操作，它有 <a href="https://docs.docker.com/network/bridge/#differences-between-user-defined-bridges-and-the-default-bridge" target="_blank" rel="noopener">技术缺点</a>。</p>
+<h4 id="将容器连接到默认桥接网络"><a href="#将容器连接到默认桥接网络" class="headerlink" title="将容器连接到默认桥接网络"></a>将容器连接到默认桥接网络</h4><p>如果未使用该<code>--network</code>标志指定网络，并且指定了网络驱动程序，则默认情况下容器将连接到默认<code>bridge</code>网络。连接到默认<code>bridge</code>网络的容器只能通过IP地址进行通信，除非它们使用<a href="https://docs.docker.com/network/links/" target="_blank" rel="noopener">旧<code>--link</code>标志</a>进行链接 。</p>
+<h4 id="配置默认网桥"><a href="#配置默认网桥" class="headerlink" title="配置默认网桥"></a>配置默认网桥</h4><p>要配置默认<code>bridge</code>网络，请在中指定选项<code>daemon.json</code>。这是一个<code>daemon.json</code>指定了几个选项的示例。仅指定您需要自定义的设置。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"bip"</span>: <span class="string">"192.168.1.5/24"</span>,</span><br><span class="line">  <span class="attr">"fixed-cidr"</span>: <span class="string">"192.168.1.5/25"</span>,</span><br><span class="line">  <span class="attr">"fixed-cidr-v6"</span>: <span class="string">"2001:db8::/64"</span>,</span><br><span class="line">  <span class="attr">"mtu"</span>: <span class="number">1500</span>,</span><br><span class="line">  <span class="attr">"default-gateway"</span>: <span class="string">"10.20.1.1"</span>,</span><br><span class="line">  <span class="attr">"default-gateway-v6"</span>: <span class="string">"2001:db8:abcd::89"</span>,</span><br><span class="line">  <span class="attr">"dns"</span>: [<span class="string">"10.20.1.2"</span>,<span class="string">"10.20.1.3"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重新启动Docker以使更改生效。</p>
+<h4 id="将IPv6与默认网桥一起使用"><a href="#将IPv6与默认网桥一起使用" class="headerlink" title="将IPv6与默认网桥一起使用"></a>将IPv6与默认网桥一起使用</h4><p>如果将Docker配置为支持IPv6（请参阅<a href="https://docs.docker.com/network/bridge/#use-ipv6" target="_blank" rel="noopener">使用IPv6</a>），则还会自动为IPv6配置默认网桥。与用户定义的网桥不同，您无法在默认网桥上有选择地禁用IPv6。</p>
+<h2 id="3-使用主机网络"><a href="#3-使用主机网络" class="headerlink" title="3. 使用主机网络"></a>3. 使用主机网络</h2><p>如果<code>host</code>对容器使用网络驱动程序，则该容器的网络堆栈不会与Docker主机隔离。例如，如果您运行绑定到端口80 <code>host</code>的容器并使用网络，则容器的应用程序将在主机IP地址的端口80上可用。</p>
+<p><strong>主机网络驱动程序仅适用于Linux主机，并且不支持Docker Desktop for Mac，Docker Desktop for Windows或Docker EE for Windows Server。</strong></p>
+<p>在Docker 17.06及更高版本中，您还可以<code>host</code>通过传递<code>--network host</code>给<code>docker container create</code>命令将网络用于群组服务。在这种情况下，控制流量（与管理群集和服务相关的流量）仍然通过覆盖网络发送，**但各个群集服务容器使用Docker守护程序的主机网络和端口发送数据。这会产生一些额外的限制。例如，如果服务容器绑定到端口80，则只有一个服务容器可以在给定的swarm节点上运行。</p>
+<p>如果您的容器或服务未发布端口，则主机网络无效。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/25/docker/12.docker宿主主机与容器拷贝文件/" rel="next" title="docker宿主主机与容器拷贝文件">
+                <i class="fa fa-chevron-left"></i> docker宿主主机与容器拷贝文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/26/docker/8.Docker-machine的使用/" rel="prev" title="Docker-machine的使用">
+                Docker-machine的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-网络驱动程序"><span class="nav-number">1.</span> <span class="nav-text">1. 网络驱动程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络驱动摘要"><span class="nav-number">1.1.</span> <span class="nav-text">网络驱动摘要</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用桥接网络"><span class="nav-number">2.</span> <span class="nav-text">2. 使用桥接网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-用户定义的网桥与默认网桥之间的差异"><span class="nav-number">2.1.</span> <span class="nav-text">1. 用户定义的网桥与默认网桥之间的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-管理用户定义的桥"><span class="nav-number">2.2.</span> <span class="nav-text">2. 管理用户定义的桥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-将容器连接到用户定义的网桥"><span class="nav-number">2.3.</span> <span class="nav-text">3. 将容器连接到用户定义的网桥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-断开容器与用户定义的桥接器的连接"><span class="nav-number">2.4.</span> <span class="nav-text">4. 断开容器与用户定义的桥接器的连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-使用IPv6"><span class="nav-number">2.5.</span> <span class="nav-text">5. 使用IPv6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-启用从Docker容器转发到外部世界"><span class="nav-number">2.6.</span> <span class="nav-text">6. 启用从Docker容器转发到外部世界</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-使用默认桥接网络"><span class="nav-number">2.7.</span> <span class="nav-text">7. 使用默认桥接网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将容器连接到默认桥接网络"><span class="nav-number">2.7.1.</span> <span class="nav-text">将容器连接到默认桥接网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置默认网桥"><span class="nav-number">2.7.2.</span> <span class="nav-text">配置默认网桥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将IPv6与默认网桥一起使用"><span class="nav-number">2.7.3.</span> <span class="nav-text">将IPv6与默认网桥一起使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-使用主机网络"><span class="nav-number">3.</span> <span class="nav-text">3. 使用主机网络</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

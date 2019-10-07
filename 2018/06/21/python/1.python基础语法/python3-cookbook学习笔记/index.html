@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="第一章:数据结构和算法1.4 查找最大或最小的 N 个元素（列表） 怎样从一个集合中获得最大或者最小的 N 个元素列表？heapq 模块有两个函数：nlargest() 和 nsmallest() 列表元素是数字：heapq.nlargest(3, list) 返回list中包含最大的三个元素的列表 列表元素是字典：heapq.nsmallest(3, portfolio, key=lambda">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python3-cookbook学习笔记">
+<meta property="og:url" content="http://gaianote.github.io/2018/06/21/python/1.python基础语法/python3-cookbook学习笔记/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="第一章:数据结构和算法1.4 查找最大或最小的 N 个元素（列表） 怎样从一个集合中获得最大或者最小的 N 个元素列表？heapq 模块有两个函数：nlargest() 和 nsmallest() 列表元素是数字：heapq.nlargest(3, list) 返回list中包含最大的三个元素的列表 列表元素是字典：heapq.nsmallest(3, portfolio, key=lambda">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.178Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python3-cookbook学习笔记">
+<meta name="twitter:description" content="第一章:数据结构和算法1.4 查找最大或最小的 N 个元素（列表） 怎样从一个集合中获得最大或者最小的 N 个元素列表？heapq 模块有两个函数：nlargest() 和 nsmallest() 列表元素是数字：heapq.nlargest(3, list) 返回list中包含最大的三个元素的列表 列表元素是字典：heapq.nsmallest(3, portfolio, key=lambda">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2018/06/21/python/1.python基础语法/python3-cookbook学习笔记/">
+
+
+
+
+
+  <title>python3-cookbook学习笔记 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2018/06/21/python/1.python基础语法/python3-cookbook学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">python3-cookbook学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-21T14:10:38+00:00">
+                2018-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="第一章-数据结构和算法"><a href="#第一章-数据结构和算法" class="headerlink" title="第一章:数据结构和算法"></a>第一章:数据结构和算法</h2><h3 id="1-4-查找最大或最小的-N-个元素（列表）"><a href="#1-4-查找最大或最小的-N-个元素（列表）" class="headerlink" title="1.4 查找最大或最小的 N 个元素（列表）"></a>1.4 查找最大或最小的 N 个元素（列表）</h3><ul>
+<li>怎样从一个集合中获得最大或者最小的 N 个元素列表？<code>heapq</code> 模块有两个函数：<code>nlargest()</code> 和 <code>nsmallest()</code></li>
+<li>列表元素是数字：<code>heapq.nlargest(3, list)</code> 返回list中包含最大的三个元素的列表</li>
+<li>列表元素是字典：<code>heapq.nsmallest(3, portfolio, key=lambda s: s[&#39;price&#39;])</code> 返回所有字典的以price key键对应的值的最小值。</li>
+</ul>
+<h3 id="1-6-字典中的键映射多个值"><a href="#1-6-字典中的键映射多个值" class="headerlink" title="1.6 字典中的键映射多个值"></a>1.6 字典中的键映射多个值</h3><ul>
+<li>一个字典就是一个键对应一个单值的映射。如果你想要一个键映射多个值，那么你就需要将这多个值放到另外的容器中， 比如列表或者集合里面</li>
+<li>你可以很方便的使用 collections 模块中的 defaultdict 来构造这样的字典。比如<code>dic = defaultdict(set) dic[&#39;a&#39;].add(1)</code></li>
+<li>自己实现需要使用if判断key是否存在，不够简洁。</li>
+</ul>
+<h3 id="1-7-字典排序"><a href="#1-7-字典排序" class="headerlink" title="1.7 字典排序"></a>1.7 字典排序</h3><ul>
+<li>为了能控制一个字典中元素的顺序，你可以使用collections 模块中的 OrderedDict 类。 在迭代操作的时候它会保持元素被插入(创建)时的顺序</li>
+<li>一个 OrderedDict 的大小是一个普通字典的两倍,数据量过大时需要仔细衡量</li>
+</ul>
+<h3 id="1-8-字典的运算"><a href="#1-8-字典的运算" class="headerlink" title="1.8 字典的运算"></a>1.8 字典的运算</h3><ul>
+<li>为了对字典值执行计算操作(得到值的最大值等)，通常需要使用 zip() 函数先将键和值反转过来 <code>min_price = min(zip(prices_dict.values(), prices_dict.keys()))</code></li>
+<li>zip() 函数创建的是一个只能访问一次的迭代器，赋值给变量后，第二次访问会报错。</li>
+</ul>
+<h3 id="1-17-从字典中提取子集"><a href="#1-17-从字典中提取子集" class="headerlink" title="1.17 从字典中提取子集"></a>1.17 从字典中提取子集</h3><ul>
+<li>使用<strong>字典推导</strong>的方式创建新字典，运行速度是更快的;通过if后面的条件不同，可以得到不同的新字典</li>
+<li>通过value获得新字典：<code>dict1 = {key: value for key, value in base_dict.items() if value &gt; 200}</code></li>
+<li>通过key值获得新字典：<code>dict2 = {key: value for key, value in base_dict.items() if key in [&quot;name&quot;,&quot;price&quot;]}</code></li>
+</ul>
+<h3 id="1-18-映射名称到序列元素"><a href="#1-18-映射名称到序列元素" class="headerlink" title="1.18 映射名称到序列元素"></a>1.18 映射名称到序列元素</h3><ul>
+<li><code>namedtuple</code>的意义在于，直接通过下标index访问list中的数据，意义不清晰。namedtuple为常规的list增加了key值访问的方式。可以通过<code>namedtuple.key</code>和<code>namedtuple()[index]</code>两种方式读取nametuple中的值</li>
+<li><code>collections.namedtuple()</code>工厂函数生成的实例可以将tuple转换为nametuple，并通过名称去访问元组元素，为代码增加可读性。</li>
+<li><code>namedtuple()</code>跟元组类型是可交换的，支持所有的普通元组操作,和字典的区别主要在于命名元组是不可更改的</li>
+<li>基本使用如下，<code>namedtuple()</code>是一个构造函数，其中，第一个参数是类的名称，第二个参数是key值列表；然后在新类中传入value值列表，即形成了新的nametuple</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line">Book = namedtuple(<span class="string">'Book'</span>,[<span class="string">'name'</span>,<span class="string">'author'</span>,<span class="string">'price'</span>])</span><br><span class="line">book1 = Book(<span class="string">'空之境界'</span>,<span class="string">'奈须蘑菇'</span>,<span class="string">'100'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="1-19-转换并同时计算数据"><a href="#1-19-转换并同时计算数据" class="headerlink" title="1.19 转换并同时计算数据"></a>1.19 转换并同时计算数据</h3><ul>
+<li>生成器表达式 x * x for x in nums =&gt; result（for x in list）if ()=&gt; 对列表中的每一个对象进行同样的操作，后面可以加if作为条件。返回result，形成新的列表</li>
+<li>生成器表达式返回的是一个<code>&lt;generator object&gt;</code> ,你可以使用<code>[x * x for x in nums]</code>,形成临时列表再去使用<code>sum()</code>调用它，或者直接使用<code>sum(x * x for x in nums)</code>,得出结果。后一种方案是更省内存的。</li>
+</ul>
+<h3 id="1-20-合并多个字典或映射"><a href="#1-20-合并多个字典或映射" class="headerlink" title="1.20 合并多个字典或映射"></a>1.20 合并多个字典或映射</h3><ul>
+<li>collections模块中的 ChainMap 将字典从逻辑上合并为一个单一的映射后执行某些操作，如果key值重复，任何操作都将指向第一个字典的key</li>
+<li>当使用ChainMap映射的原字典更新了内容，ChainMap可以获取到最新的值。而update方法不可以。</li>
+</ul>
+<h2 id="第二章-字符串和文本"><a href="#第二章-字符串和文本" class="headerlink" title="第二章:字符串和文本"></a>第二章:字符串和文本</h2><h3 id="2-1-使用多个界定符分割字符串"><a href="#2-1-使用多个界定符分割字符串" class="headerlink" title="2.1 使用多个界定符分割字符串"></a>2.1 使用多个界定符分割字符串</h3><ul>
+<li>string 对象的 split() 方法只适应于非常简单的字符串分割情形， 它并不允许有多个分隔符或者是分隔符周围不确定的空格。</li>
+<li>当你需要更加灵活的切割字符串的时候，最好使用 re.split() 方法：<code>re.split(r&#39;[;,\s]\s*&#39;, line)</code></li>
+<li>当partern使用分组时，分组里的内容也会被传入数组中：<code>fields = re.split(r&#39;(;|,|\s)\s*&#39;, line)</code></li>
+</ul>
+<h3 id="2-2-字符串开头或结尾匹配"><a href="#2-2-字符串开头或结尾匹配" class="headerlink" title="2.2 字符串开头或结尾匹配"></a>2.2 字符串开头或结尾匹配</h3><ul>
+<li>检查字符串开头或结尾的一个简单方法是使用 <code>str.startswith()</code> 或者是 <code>str.endswith()</code> 方法,返回<code>True</code>或<code>False</code></li>
+<li>多种匹配可能，只需要将所有的匹配项放入到一个tuple中去(必须时tuple，list类型不可以，需要转换)， 然后传给 <code>startswith()</code> 或者 <code>endswith()</code> 方法: <code>strline.startswith((&#39;.py&#39;,&#39;.json&#39;))</code></li>
+<li>得到固定类型的文件名列表：<code>[name for name in filenames if name.endswith((&#39;.c&#39;, &#39;.h&#39;)) ]</code></li>
+<li>判断是否有某种类型的文件: <code>any(name.endswith(&#39;.py&#39;) for name in filenames)</code></li>
+</ul>
+<h3 id="2-4-字符串匹配和搜索"><a href="#2-4-字符串匹配和搜索" class="headerlink" title="2.4 字符串匹配和搜索"></a>2.4 字符串匹配和搜索</h3><ul>
+<li>如果你想匹配的是<strong>字面字符串</strong>，那么你通常只需要调用基本字符串方法就行， 比如 <code>str.find()</code> , <code>str.endswith()</code> , <code>str.startswith()</code> 或者类似的方法</li>
+<li>当写正则式字符串的时候，相对普遍的做法是使用原始字符串比如 <code>r&#39;(\d+)/(\d+)/(\d+)&#39;</code>。 这种字符串将不去解析反斜杠，如果不这样做的话，你必须使用两个反斜杠，类似 <code>&#39;(\\d+)/(\\d+)/(\\d+)&#39;</code> 。</li>
+<li>在正则中使用分组()的作用是，可以方便的调用group()方法得到相应的分组内容</li>
+</ul>
+<h3 id="2-5-字符串搜索和替换"><a href="#2-5-字符串搜索和替换" class="headerlink" title="2.5 字符串搜索和替换"></a>2.5 字符串搜索和替换</h3><ul>
+<li>对于简单的字面模式，直接使用字符串方法 <code>str.replace(base_word,new_word)</code> 方法即可，它会将所有的<code>base_word</code>替换为<code>new_word</code></li>
+<li>对于复杂的替换可以使用<code>re.complain(pattern).sub(new_word,base_str)</code></li>
+</ul>
+<h3 id="2-6-字符串忽略大小写的搜索替换"><a href="#2-6-字符串忽略大小写的搜索替换" class="headerlink" title="2.6 字符串忽略大小写的搜索替换"></a>2.6 字符串忽略大小写的搜索替换</h3><ul>
+<li>为了在文本操作时忽略大小写，你需要在使用 re 模块的时候给这些操作提供 <code>re.IGNORECASE</code> 标志参数。</li>
+<li>默认情况下，正则方法和字符串的搜索方法都是大小写严格匹配的</li>
+</ul>
+<h3 id="2-7-最短匹配模式"><a href="#2-7-最短匹配模式" class="headerlink" title="2.7 最短匹配模式"></a>2.7 最短匹配模式</h3><ul>
+<li>贪婪模式: <code>re.compile(r&#39;&quot;(.*)&quot;&#39;)</code> 这个规则匹配的是第一个<code>&quot;</code>到最后一个<code>&quot;</code></li>
+<li>非贪婪模式:<code>str_pat = re.compile(r&#39;&quot;(.*?)&quot;&#39;)</code> 这个规则匹配的是第一个<code>&quot;</code>和接下来遇到的第一个 <code>&quot;</code></li>
+</ul>
+<h3 id="2-8-多行匹配模式"><a href="#2-8-多行匹配模式" class="headerlink" title="2.8 多行匹配模式"></a>2.8 多行匹配模式</h3><ul>
+<li><code>.</code>不能匹配换行符</li>
+<li><code>?:</code>开头的分组为不捕获分组<code>r&#39;(?:.|\n)&#39;</code>，不占索引位置，仅仅用来做匹配，而不能通过单独捕获或group方法得到。</li>
+<li>通过定义正则<code>r&#39;(?:.|\n)&#39;</code>增加了匹配多行的功能，可以将这个分组当作<code>.</code>来使用</li>
+<li>标志参数<code>re.DOTALL</code>可以让正则表达式中的点<code>.</code>匹配包括换行符在内的任意字符。</li>
+</ul>
+<h3 id="2-9-将Unicode文本标准化"><a href="#2-9-将Unicode文本标准化" class="headerlink" title="2.9 将Unicode文本标准化"></a>2.9 将Unicode文本标准化</h3><ul>
+<li>同一个字符可能有不同的编码方式，比如拼音，它可以是由整体组成或者是有字母+音标的方式组成，虽然显示上一致，但是两个字符是不相等的。</li>
+<li>可以使用unicodedata模块先将文本标准化(转换为你希望的格式),例如<code>t1 = unicodedata.normalize(&#39;NFC&#39;, base_str)</code><ul>
+<li><code>normalize()</code> 第一个参数指定字符串标准化的方式。 <code>NFC</code>表示字符应该是整体组成(比如可能的话就使用单一编码)，而<code>NFD</code>表示字符应该分解为多个组合字符表示</li>
+</ul>
+</li>
+<li><code>unicodedata.combining(code)</code>可以判断字符code是否为和音字符，结合分解方式的标准化可以用于清洗数据。</li>
+</ul>
+<h3 id="2-11-删除字符串中不需要的字符"><a href="#2-11-删除字符串中不需要的字符" class="headerlink" title="2.11 删除字符串中不需要的字符"></a>2.11 删除字符串中不需要的字符</h3><ul>
+<li><code>strip()</code> 方法能用于删除开始或结尾的字符。 <code>lstrip()</code> 和 <code>rstrip()</code> 分别从左和从右执行删除操作。</li>
+<li><code>strip()</code> 方法默认删除包括换行符在内的空白字符，但是可以传入参数来删除其他字符，<code>strip(&#39;---&#39;)</code></li>
+</ul>
+<h3 id="2-13-字符串对齐与格式化字符串"><a href="#2-13-字符串对齐与格式化字符串" class="headerlink" title="2.13 字符串对齐与格式化字符串"></a>2.13 字符串对齐与格式化字符串</h3><ul>
+<li>对于基本的字符串对齐操作，可以使用字符串的 <code>ljust()</code> , <code>rjust()</code> 和 <code>center()</code> 方法。 <code>&#39;hello world&#39;.center(20,&#39;*&#39;)</code></li>
+<li><code>str.format()</code>方法比格式化文本的 % 操作符更强大,详见此文档<a href="./format格式化字符串方法.md">format格式化字符串方法</a></li>
+</ul>
+<h3 id="2-14-合并拼接字符串"><a href="#2-14-合并拼接字符串" class="headerlink" title="2.14 合并拼接字符串"></a>2.14 合并拼接字符串</h3><ul>
+<li>如果你想要合并的字符串是在一个序列或者 iterable 中，那么最快的方式就是使用<code>join()</code>方法</li>
+<li><code>+</code>合并字符串会创造临时变量，造成性能问题</li>
+</ul>
+<h3 id="2-15-字符串中插入变量"><a href="#2-15-字符串中插入变量" class="headerlink" title="2.15 字符串中插入变量"></a>2.15 字符串中插入变量</h3><ul>
+<li><code>base.format(name=&#39;Guido&#39;, age=37)</code>是目前最好的插入变量解决办法</li>
+<li>如果希望能将变量域中的参数直接传入字符串中，使用<code>base_str.format_map(vars())</code>即可</li>
+</ul>
+<h3 id="以指定列宽格式化字符串-用于控制台"><a href="#以指定列宽格式化字符串-用于控制台" class="headerlink" title="以指定列宽格式化字符串(用于控制台)"></a>以指定列宽格式化字符串(用于控制台)</h3><ul>
+<li>可以使用 textwrap 模块来格式化字符串的输出。<code>textwrap.fill(base_str, 70)</code>每行的输出字符宽为70</li>
+<li>可以结合 <code>os.get_terminal_size()</code> 方法来获取终端的大小尺寸</li>
+</ul>
+<h3 id="在字符串中处理html和xml"><a href="#在字符串中处理html和xml" class="headerlink" title="在字符串中处理html和xml"></a>在字符串中处理html和xml</h3><ul>
+<li>你想将HTML或者XML实体如 <code>&amp;entity;</code> 或 <code>&amp;#code;</code> 替换为对应的文本或者转换文本中特定的字符(比如<code>&lt;</code>, <code>&gt;</code>, 或 <code>&amp;</code>)，可以引入html模块</li>
+<li><code>html.escape(base_str)</code>会将<code>&lt;</code> 转换为 <code>&amp;lt;</code></li>
+</ul>
+<h3 id="字符串令牌解析"><a href="#字符串令牌解析" class="headerlink" title="字符串令牌解析"></a>字符串令牌解析</h3><p>scanner.match是逐行匹配，匹配完第一行再匹配第二行。</p>
+<h4 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h4><ol>
+<li>命名捕获组的正则表达式来定义所有可能的令牌，包括空格</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">NAME = <span class="string">r'(?P&lt;NAME&gt;[a-zA-Z_][a-zA-Z_0-9]*)'</span></span><br><span class="line">NUM = <span class="string">r'(?P&lt;NUM&gt;\d+)'</span></span><br><span class="line">PLUS = <span class="string">r'(?P&lt;PLUS&gt;\+)'</span></span><br><span class="line">TIMES = <span class="string">r'(?P&lt;TIMES&gt;\*)'</span></span><br><span class="line">EQ = <span class="string">r'(?P&lt;EQ&gt;=)'</span></span><br><span class="line">WS = <span class="string">r'(?P&lt;WS&gt;\s+)'</span></span><br><span class="line"></span><br><span class="line">pat = re.compile(<span class="string">'|'</span>.join([NAME, NUM, PLUS, TIMES, EQ, WS]))</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>实现一个生成器</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_tokens</span><span class="params">(pat, text)</span>:</span></span><br><span class="line">    Token = namedtuple(<span class="string">'Token'</span>, [<span class="string">'type'</span>, <span class="string">'value'</span>])</span><br><span class="line">    scanner = pat.scanner(text)</span><br><span class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> iter(scanner.match, <span class="literal">None</span>):</span><br><span class="line">        <span class="keyword">yield</span> Token(m.lastgroup, m.group())</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>调用并处理token</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">text = <span class="string">'''foo = 42</span></span><br><span class="line"><span class="string">key = 100</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> tok <span class="keyword">in</span> generate_tokens(master_pat, text):</span><br><span class="line">    print(tok)</span><br><span class="line"><span class="comment"># Token(type='NAME', value='foo')</span></span><br><span class="line"><span class="comment"># Token(type='WS', value=' ')</span></span><br><span class="line"><span class="comment"># Token(type='EQ', value='=')</span></span><br><span class="line"><span class="comment"># Token(type='WS', value=' ')</span></span><br><span class="line"><span class="comment"># Token(type='NUM', value='42')</span></span><br><span class="line"><span class="comment"># Token(type='WS', value='\n')</span></span><br><span class="line"><span class="comment"># Token(type='NAME', value='key')</span></span><br><span class="line"><span class="comment"># Token(type='WS', value=' ')</span></span><br><span class="line"><span class="comment"># Token(type='EQ', value='=')</span></span><br><span class="line"><span class="comment"># Token(type='WS', value=' ')</span></span><br><span class="line"><span class="comment"># Token(type='NUM', value='100')</span></span><br><span class="line"><span class="comment"># Token(type='WS', value='\n')</span></span><br></pre></td></tr></table></figure>
+<h4 id="要点"><a href="#要点" class="headerlink" title="要点:"></a>要点:</h4><ol>
+<li>如果一个re匹配模式恰好是另一个更长模式的子字符串，那么你需要确定长模式写在前面。(‘|’.join的顺序)</li>
+<li>scanner.match从字符串开头扫描到结尾，如果遇到不满足re匹配模式的地方立刻停止扫描，因此，需要考虑所有的情况，比如空白字符。</li>
+</ol>
+<h3 id="实现一个简单的递归下降分析器"><a href="#实现一个简单的递归下降分析器" class="headerlink" title="实现一个简单的递归下降分析器"></a>实现一个简单的递归下降分析器</h3><h2 id="第三章-数字日期和时间"><a href="#第三章-数字日期和时间" class="headerlink" title="第三章 数字日期和时间"></a>第三章 数字日期和时间</h2><h3 id="数字的四舍五入"><a href="#数字的四舍五入" class="headerlink" title="数字的四舍五入"></a>数字的四舍五入</h3><h3 id="执行精确的浮点数运算"><a href="#执行精确的浮点数运算" class="headerlink" title="执行精确的浮点数运算"></a>执行精确的浮点数运算</h3><h3 id="数字的格式化输出"><a href="#数字的格式化输出" class="headerlink" title="数字的格式化输出"></a>数字的格式化输出</h3><h3 id="二八十六进制整数"><a href="#二八十六进制整数" class="headerlink" title="二八十六进制整数"></a>二八十六进制整数</h3><h3 id="字节到大证书的打包与解包"><a href="#字节到大证书的打包与解包" class="headerlink" title="字节到大证书的打包与解包"></a>字节到大证书的打包与解包</h3><h3 id="复数的数学运算"><a href="#复数的数学运算" class="headerlink" title="复数的数学运算"></a>复数的数学运算</h3><h3 id="无穷大与NaN"><a href="#无穷大与NaN" class="headerlink" title="无穷大与NaN"></a>无穷大与NaN</h3><h3 id="分数运算"><a href="#分数运算" class="headerlink" title="分数运算"></a>分数运算</h3><h3 id="大型数组运算"><a href="#大型数组运算" class="headerlink" title="大型数组运算"></a>大型数组运算</h3><h3 id="矩阵与线性代数运算"><a href="#矩阵与线性代数运算" class="headerlink" title="矩阵与线性代数运算"></a>矩阵与线性代数运算</h3><h3 id="随机选择"><a href="#随机选择" class="headerlink" title="随机选择"></a>随机选择</h3><p>random 模块有大量的函数用来产生随机数和随机选择元素。</p>
+<p>比如，要想从一个序列中随机的抽取一个元素，可以使用 <code>random.choice()</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import random</span><br><span class="line">&gt;&gt;&gt; values = [1, 2, 3, 4, 5, 6]</span><br><span class="line">&gt;&gt;&gt; random.choice(values)</span><br></pre></td></tr></table></figure>
+<p>为了提取出N个不同元素的样本用来做进一步的操作，可以使用 <code>random.sample()</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; random.sample(values, 2)</span><br><span class="line">[6, 2]</span><br><span class="line">&gt;&gt;&gt; random.sample(values, 2)</span><br><span class="line">[4, 3]</span><br><span class="line">&gt;&gt;&gt; random.sample(values, 3)</span><br></pre></td></tr></table></figure>
+<p>如果你仅仅只是想打乱序列中元素的顺序，可以使用 <code>random.shuffle()</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; random.shuffle(values)</span><br><span class="line">&gt;&gt;&gt; values</span><br><span class="line">[2, 4, 6, 5, 3, 1]</span><br></pre></td></tr></table></figure>
+<p>生成随机整数，请使用 <code>random.randint()</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; random.randint(0,10)</span><br><span class="line">2</span><br><span class="line">&gt;&gt;&gt; random.randint(0,10)</span><br><span class="line">5</span><br><span class="line">&gt;&gt;&gt; random.randint(0,10)</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>为了生成0到1范围内均匀分布的浮点数，使用 <code>random.random()</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; random.random()</span><br><span class="line">0.9406677561675867</span><br><span class="line">&gt;&gt;&gt; random.random()</span><br><span class="line">0.133129581343897</span><br></pre></td></tr></table></figure>
+<p>如果要获取N位随机位(二进制)的整数，使用 <code>random.getrandbits()</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; random.getrandbits(200)</span><br><span class="line">335837000776573622800628485064121869519521710558559406913275</span><br></pre></td></tr></table></figure>
+<h3 id="计算最后一个周五的日期"><a href="#计算最后一个周五的日期" class="headerlink" title="计算最后一个周五的日期"></a>计算最后一个周五的日期</h3><h3 id="计算当前月份的日期范围"><a href="#计算当前月份的日期范围" class="headerlink" title="计算当前月份的日期范围"></a>计算当前月份的日期范围</h3><h3 id="字符串转换为日期"><a href="#字符串转换为日期" class="headerlink" title="字符串转换为日期"></a>字符串转换为日期</h3><h3 id="结合时区的日期操作"><a href="#结合时区的日期操作" class="headerlink" title="结合时区的日期操作"></a>结合时区的日期操作</h3><h2 id="第四章-迭代器与生成器"><a href="#第四章-迭代器与生成器" class="headerlink" title="第四章 迭代器与生成器"></a>第四章 迭代器与生成器</h2><h3 id="4-1手动遍历迭代器"><a href="#4-1手动遍历迭代器" class="headerlink" title="4.1手动遍历迭代器"></a>4.1手动遍历迭代器</h3><ul>
+<li>对于一个<code>genrator object</code>,可以使用next(genertor)得到每一个结果，当越界后，程序会报<code>StopIteration</code>错误</li>
+<li>我们可以使用<code>next(genertor,msg)</code>，第二个参数表示越界后返回的值来标记结尾。当传入第二个参数后，越界就不会报错了。</li>
+</ul>
+<h3 id="4-2-代理迭代"><a href="#4-2-代理迭代" class="headerlink" title="4.2 代理迭代"></a>4.2 代理迭代</h3><h3 id="4-3-使用生成器创建新的迭代模式"><a href="#4-3-使用生成器创建新的迭代模式" class="headerlink" title="4.3 使用生成器创建新的迭代模式"></a>4.3 使用生成器创建新的迭代模式</h3><ul>
+<li>一个函数中需要有一个 <code>yield</code> 语句即可将其转换为一个生成器。</li>
+<li><code>yield</code>和<code>return</code>类似，每次被<code>next</code>调用时，会返回<code>yield</code>后面的变量值</li>
+<li>我们通常使用for循环来调用一个迭代器，此时不用考虑越界等细节</li>
+</ul>
+<h3 id="4-4-实现迭代器协议"><a href="#4-4-实现迭代器协议" class="headerlink" title="4.4 实现迭代器协议"></a>4.4 实现迭代器协议</h3><h3 id="4-5-反向迭代一个序列"><a href="#4-5-反向迭代一个序列" class="headerlink" title="4.5 反向迭代一个序列"></a>4.5 反向迭代一个序列</h3><ul>
+<li>可以通过<code>reversed(list)</code>来得到list的反向迭代器</li>
+</ul>
+<h3 id="4-6-带有外部状态的生成器函数"><a href="#4-6-带有外部状态的生成器函数" class="headerlink" title="4.6  带有外部状态的生成器函数"></a>4.6  带有外部状态的生成器函数</h3><ul>
+<li>如果生成器函数需要跟你的程序其他部分打交道的话，可以定义类，并把迭代器放到 <code>__iter__()</code> 方法中</li>
+<li>如果该类生成的实例不使用for进行迭代的化，需要先调用<code>iter(object)</code>，才能进行迭代操作，否则会报错。</li>
+</ul>
+<h3 id="4-7-迭代器切片"><a href="#4-7-迭代器切片" class="headerlink" title="4.7 迭代器切片"></a>4.7 迭代器切片</h3><ul>
+<li>函数 <code>itertools.islice(&lt;generator&gt;,start_num,end_num)</code> 正好适用于在迭代器和生成器上做切片操作</li>
+<li><code>itertools.islice()</code>会消耗掉<generator>，因此只能使用一次</generator></li>
+<li>当<code>end_num</code>的值为<code>None</code>时，表示匹配的最后，当<code>start_num</code>的值为<code>None</code>时,表示从第一个开始匹配</li>
+</ul>
+<h3 id="4-8-跳过可迭代对象的开始部分"><a href="#4-8-跳过可迭代对象的开始部分" class="headerlink" title="4.8 跳过可迭代对象的开始部分"></a>4.8 跳过可迭代对象的开始部分</h3><ul>
+<li>itertools模块的dropwhile可以跳过符合规则的内容：<code>for line in dropwhile(lambda line: line.startswith(&#39;#&#39;), f):</code></li>
+<li>dropwhile它会返回一个迭代器对象，丢弃原有序列中直到函数<strong>返回Flase之前</strong>的所有元素，然后返回后面所有元素。</li>
+<li>lambda作用是构建匿名函数，其中，<code>:</code>前的表示传入的参数，后面的表示return的结构</li>
+</ul>
+<h3 id="4-9-排列组合的迭代"><a href="#4-9-排列组合的迭代" class="headerlink" title="4.9 排列组合的迭代"></a>4.9 排列组合的迭代</h3><ul>
+<li><code>itertools.permutations(items,num)</code> 生成列表items内元素的所有排列组合(考虑顺序)</li>
+<li><code>itertools.combinations(items,num)</code> 可得到输入集合中元素的所有的组合,不考虑顺序(1，2)和(2，1)算一个结果</li>
+<li>更多的工具，可以在<code>itertools</code>中寻找</li>
+</ul>
+<h2 id="第五章-文件与IO"><a href="#第五章-文件与IO" class="headerlink" title="第五章:文件与IO"></a>第五章:文件与IO</h2><h3 id="5-1-读写文本数据"><a href="#5-1-读写文本数据" class="headerlink" title="5.1 读写文本数据"></a>5.1 读写文本数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Read the entire file as a single string</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'somefile.txt'</span>, <span class="string">'a+'</span>,encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Iterate over the lines of the file</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'somefile.txt'</span>, <span class="string">'a+ '</span>,encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        <span class="comment"># process line</span></span><br><span class="line">        ...</span><br><span class="line"><span class="comment"># 复杂情况可以使用readline()逐行读取；while line：保证到最后一行时会退出读取 '\n != EOF'</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'somefile.txt'</span>, <span class="string">'a+'</span>,encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    line = fh.readline()</span><br><span class="line">    <span class="keyword">while</span> line:</span><br><span class="line">        print(line.strip())</span><br><span class="line">        line = f.readline()</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>换行符的识别问题(自动处理)</p>
+<ul>
+<li>在Unix和Windows中是不一样的(分别是 <code>\n</code> 和 <code>\r\n</code> )。</li>
+<li>在读取文本的时候，Python可以识别所有的普通换行符并将其转换为单个 <code>\n</code> 字符。</li>
+<li>在输出时会将换行符 <code>\n</code> 转换为系统默认的换行符。</li>
+<li>二进制模式的时候，python不会自动转化</li>
+</ul>
+</li>
+<li><p><code>open(file, mode=&#39;r&#39;, buffering=-1, encoding=None, errors=None, newline=None, closefd=True)</code></p>
+<ul>
+<li>buffering的可取值有0，1， &gt;1三个，0代表buffer关闭（只适用于二进制模式），1代表line buffer（只适用于文本模式），&gt;1表示初始化的buffer大小；</li>
+<li>encoding表示的是返回的数据采用何种编码，一般采用utf8或者gbk；</li>
+<li>errors的取值一般有strict，ignore，当取strict的时候，字符编码出现问题的时候，会报错，当取ignore的时候，编码出现问题，程序会忽略而过，继续执行下面的程序。</li>
+<li>newline可以取的值有None, \n,  \r, ‘’, ‘\r\n’ ，用于区分换行符，但是这个参数只对文本模式有效；</li>
+<li>closefd的取值，是与传入的文件参数有关，默认情况下为True，传入的file参数为文件的文件名，取值为False的时候，file只能是文件描述符，什么是文件描述符，就是一个非负整数，在Unix内核的系统中，打开一个文件，便会返回一个文件描述符。</li>
+</ul>
+</li>
+<li><p>open参数mode</p>
+<ul>
+<li>mode参数决定了file的行为,如果在r模式下使用file.write(lines)就会报错</li>
+<li>r、w、a为打开文件的基本模式，对应着只读、只写、追加模式；</li>
+<li>b、t、+、U这四个字符，与以上的文件打开模式组合使用，二进制模式，文本模式，读写模式、通用换行符，根据实际情况组合使用、</li>
+</ul>
+</li>
+<li><p>open常见的mode取值组合</p>
+<ul>
+<li>r或rt    默认模式，文本模式读</li>
+<li>rb      二进制文件</li>
+<li>w或wt    文本模式写，打开前文件存储被清空</li>
+<li>wb    二进制写，文件存储同样被清空</li>
+<li>a   追加模式，只能写在文件末尾</li>
+<li>a+  可读写模式，写只能写在文件末尾</li>
+<li>w+ 可读写，与a+的区别是要清空文件内容</li>
+<li>r+   可读写，与a+的区别是可以写到文件任何位置</li>
+</ul>
+</li>
+</ul>
+<p><strong>对照列表：</strong></p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>r</td>
+<td>以只读方式打开文件。文件的指针将会放在文件的开头。这是默认模式。</td>
+</tr>
+<tr>
+<td>rb</td>
+<td>以二进制格式打开一个文件用于只读。文件指针将会放在文件的开头。这是默认模式。</td>
+</tr>
+<tr>
+<td>r+</td>
+<td>打开一个文件用于读写。文件指针将会放在文件的开头。</td>
+</tr>
+<tr>
+<td>rb+</td>
+<td>以二进制格式打开一个文件用于读写。文件指针将会放在文件的开头。</td>
+</tr>
+<tr>
+<td>w</td>
+<td>打开一个文件只用于写入。如果该文件已存在则打开文件，并从开头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td>wb</td>
+<td>以二进制格式打开一个文件只用于写入。如果该文件已存在则打开文件，并从开头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td>w+</td>
+<td>打开一个文件用于读写。如果该文件已存在则打开文件，并从开头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td>wb+</td>
+<td>以二进制格式打开一个文件用于读写。如果该文件已存在则打开文件，并从开头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td>a</td>
+<td>打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</td>
+</tr>
+<tr>
+<td>ab</td>
+<td>以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</td>
+</tr>
+<tr>
+<td>a+</td>
+<td>打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果该文件不存在，创建新文件用于读写。</td>
+</tr>
+<tr>
+<td>ab+</td>
+<td>以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。如果该文件不存在，创建新文件用于读写。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-2-打印输出至文件中"><a href="#5-2-打印输出至文件中" class="headerlink" title="5.2 打印输出至文件中"></a>5.2 打印输出至文件中</h3><ul>
+<li>print接受关键字参数file，可以将输出重定向到一个文件中去,此时print的作用和f.write()相同</li>
+<li>文件必须是文本文件，不能是二进制文件，否则会报错</li>
+<li>重定向后print的内容不会在控制台输出</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'data.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    print(<span class="string">"hello world!"</span>,file = f)</span><br></pre></td></tr></table></figure>
+<h3 id="5-3-使用其它分隔符或行终止符打印"><a href="#5-3-使用其它分隔符或行终止符打印" class="headerlink" title="5.3 使用其它分隔符或行终止符打印"></a>5.3 使用其它分隔符或行终止符打印</h3><ul>
+<li>print() 函数支持使用 <code>sep</code> 和 <code>end</code> 关键字参数，sep表示每个参数之间的分割符,end表示打印的结尾：<code>print(&#39;ACME&#39;, 50, 91.5, sep=&#39;,&#39;, end=&#39;!!\n&#39;)</code></li>
+</ul>
+<h3 id="5-4-读写字节数据"><a href="#5-4-读写字节数据" class="headerlink" title="5.4 读写字节数据"></a>5.4 读写字节数据</h3><ul>
+<li>读取或写入二进制数据需要使用模式为 <code>rb</code> 或 <code>wb</code> 的 <code>open()</code> 函数：<code>with open(&#39;somefile.bin&#39;, &#39;rb&#39;) as f:</code></li>
+<li>二进制数据索引和迭代动作返回的是字节的值而不是字节字符串</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = <span class="string">b'Hello World'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">0</span>]</span><br><span class="line"><span class="number">72</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果你想从二进制模式的文件中读取或写入<strong>文本数据</strong>，必须确保要进行解码(decode)和编码(encode)操作。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'somefile.bin'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read(<span class="number">16</span>) <span class="comment"># 二进制格式</span></span><br><span class="line">    text = data.decode(<span class="string">'utf-8'</span>) <span class="comment"># 文本格式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'somefile.bin'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    text = <span class="string">'Hello World'</span> <span class="comment"># 文本格式</span></span><br><span class="line">    f.write(text.encode(<span class="string">'utf-8'</span>)) <span class="comment"># 二进制格式</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-5-文件不存在才能写入"><a href="#5-5-文件不存在才能写入" class="headerlink" title="5.5 文件不存在才能写入"></a>5.5 文件不存在才能写入</h3><ul>
+<li>可以在 open() 函数中使用 x 模式来代替 w 模式的方法来解决这个问题。文件存在时程序会报错：<code>with open(&#39;somefile&#39;, &#39;xt&#39;) as f:</code></li>
+</ul>
+<h3 id="5-6-字符串的I-O操作"><a href="#5-6-字符串的I-O操作" class="headerlink" title="5.6 字符串的I/O操作"></a>5.6 字符串的I/O操作</h3><ul>
+<li>使用 <code>io.StringIO()</code> 和 <code>io.BytesIO()</code> 类来创建类文件对象操作字符串数据</li>
+</ul>
+<h3 id="5-11-文件路径名的操作"><a href="#5-11-文件路径名的操作" class="headerlink" title="5.11 文件路径名的操作"></a>5.11 文件路径名的操作</h3><ul>
+<li>详见<a href="python操作文件和目录.md">python操作文件和目录</a></li>
+</ul>
+<h3 id="5-12-测试文件是否存在-os-path"><a href="#5-12-测试文件是否存在-os-path" class="headerlink" title="5.12 测试文件是否存在(os.path)"></a>5.12 测试文件是否存在(os.path)</h3><ul>
+<li><p>测试一个文件是否存在,返回布尔值</p>
+<ul>
+<li><code>os.path.exists(&#39;/etc/passwd&#39;)</code></li>
+</ul>
+</li>
+<li><p>测试这个文件时什么类型的,返回布尔值</p>
+<ul>
+<li><code>os.path.isfile(&#39;/etc/passwd&#39;)</code></li>
+<li><code>os.path.isdir(&#39;/etc/passwd&#39;)</code></li>
+<li><code>os.path.islink(&#39;/usr/local/bin/python3&#39;)</code></li>
+<li><code>os.path.realpath(&#39;/usr/local/bin/python3&#39;)</code></li>
+</ul>
+</li>
+<li><p>获取元数据(比如文件大小或者是修改日期)</p>
+<ul>
+<li><code>os.path.getsize(&#39;/etc/passwd&#39;)</code></li>
+<li><code>os.path.getmtime(&#39;/etc/passwd&#39;)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="5-13-获取文件夹中的文件列表"><a href="#5-13-获取文件夹中的文件列表" class="headerlink" title="5.13 获取文件夹中的文件列表"></a>5.13 获取文件夹中的文件列表</h3><ul>
+<li>得到某种类型的文件<ul>
+<li>endswith进行匹配 <code>pyfiles = [name for name in os.listdir(&#39;somedir&#39;) if name.endswith(&#39;.py&#39;)]</code></li>
+<li>引入glob模块进行匹配: <code>pyfiles = glob.glob(&#39;somedir/*.py&#39;)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="5-14-忽略文件名编码"><a href="#5-14-忽略文件名编码" class="headerlink" title="5.14 忽略文件名编码"></a>5.14 忽略文件名编码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'jalape\xf1o.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">     f.write(<span class="string">'Spicy!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.listdir(<span class="string">'.'</span>)</span><br><span class="line">[<span class="string">'jalapeño.txt'</span>]</span><br><span class="line"></span><br><span class="line">os.listdir(<span class="string">b'.'</span>)</span><br><span class="line">[<span class="string">b'jalapen\xcc\x83o.txt'</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="5-19-创建临时文件和文件夹"><a href="#5-19-创建临时文件和文件夹" class="headerlink" title="5.19 创建临时文件和文件夹"></a>5.19 创建临时文件和文件夹</h3><ul>
+<li>tempfile 模块中有很多的函数可以完成这任务。 为了创建一个匿名的临时文件，可以使用 tempfile.TemporaryFile</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tempfile <span class="keyword">import</span> TemporaryFile</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> TemporaryFile(<span class="string">'w+t'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="comment"># Read/write to the file</span></span><br><span class="line">    f.write(<span class="string">'Hello World\n'</span>)</span><br><span class="line">    f.write(<span class="string">'Testing\n'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Seek back to beginning and read the data</span></span><br><span class="line">    f.seek(<span class="number">0</span>)</span><br><span class="line">    data = f.read()</span><br><span class="line"><span class="comment"># Temporary file is destroyed</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-20-与串行端口的数据通信"><a href="#5-20-与串行端口的数据通信" class="headerlink" title="5.20 与串行端口的数据通信"></a>5.20 与串行端口的数据通信</h3><ul>
+<li>你想通过串行端口读写数据，典型场景就是和一些硬件设备打交道(比如一个机器人或传感器)。</li>
+<li>但对于串行通信最好的选择是使用 <a href="https://pythonhosted.org/pyserial/pyserial_api.html" target="_blank" rel="noopener">pySerial</a>包(第三方)</li>
+</ul>
+<h4 id="安装serial"><a href="#安装serial" class="headerlink" title="安装serial"></a>安装serial</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyserial</span><br></pre></td></tr></table></figure>
+<h4 id="列出端口"><a href="#列出端口" class="headerlink" title="列出端口"></a>列出端口</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m serial.tools.list_ports将打印可用端口列表。也可以添加regexp作为第一个参数，列表将只包含匹配的条目。</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> serial.tools.list_ports</span><br><span class="line"></span><br><span class="line">plist = list(serial.tools.list_ports.comports())</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(plist) &lt;= <span class="number">0</span>:</span><br><span class="line">    print(<span class="string">"没有发现端口!"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    plist_0 = list(plist[<span class="number">0</span>])</span><br><span class="line">    serialName = plist_0[<span class="number">0</span>]</span><br><span class="line">    serialFd = serial.Serial(serialName, <span class="number">9600</span>, timeout=<span class="number">60</span>)</span><br><span class="line">    print(<span class="string">"可用端口名&gt;&gt;&gt;"</span>, serialFd.name)</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong></p>
+<p>枚举可能不适用于所有操作系统。它可能不完整，列出不可用的端口或可能缺少端口的详细描述。</p>
+<h4 id="初始化Serial-其中支持的参数如下："><a href="#初始化Serial-其中支持的参数如下：" class="headerlink" title="初始化Serial,其中支持的参数如下："></a>初始化Serial,其中支持的参数如下：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ser = serial.Serial(port = None，baudrate = 9600，bytesize = EIGHTBITS，parity = PARITY_NONE，stopbits = STOPBITS_ONE，timeout = None，xonxoff = False，rtscts = False，write_timeout = None，dsrdtr = False，inter_byte_timeout = None)</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li><code>port</code> - 设备名称或无。</li>
+<li><code>baudrate(int)</code> - 波特率，如9600或115200等。</li>
+<li><code>bytesize</code> - 数据位数。可能的值： <code>FIVEBITS</code>，<code>SIXBITS</code>，<code>SEVENBITS</code>， <code>EIGHBITS</code></li>
+<li><code>parity</code> - 启用奇偶校验。可能的值： <code>PARITY_NONE</code>，<code>PARITY_EVEN</code>，<code>PARITY_ODD PARITY_MARK</code>，<code>PARITY_SPACE</code></li>
+<li><code>stopbits</code> - 停止位数。可能的值： <code>STOPBITS_ONE</code>，<code>STOPBITS_ONE_POINT_FIVE</code>， <code>STOPBITS_TWO</code></li>
+<li><code>timeout(float)</code> - 设置读取超时值。</li>
+<li><code>xonxoff(bool)</code> - 启用软件流控制。</li>
+<li><code>rtscts(bool)</code> - 启用硬件(RTS / CTS)流量控制。</li>
+<li><code>dsrdtr(bool)</code> - 启用硬件(DSR / DTR)流控制。</li>
+<li><code>write_timeout(float)</code> - 设置写超时值。</li>
+<li><code>inter_byte_timeout(float)</code> - 字符间超时，无禁用(默认）。</li>
+</ul>
+<h4 id="异常"><a href="#异常" class="headerlink" title="异常:"></a>异常:</h4><ul>
+<li><code>ValueError</code> - 当参数超出范围时将引发，例如波特率，数据位。</li>
+<li><code>SerialException</code> - 如果找不到设备或无法配置设备。</li>
+</ul>
+<h4 id="实例方法："><a href="#实例方法：" class="headerlink" title="实例方法："></a>实例方法：</h4><h5 id="ser-read-size-1"><a href="#ser-read-size-1" class="headerlink" title="ser.read(size=1)"></a><code>ser.read(size=1)</code></h5><p>Parameters: size – 需要读取的字节数.<br>Returns: 从端口返回的字节<br>Return type: byte</p>
+<p>从串行端口读取大小字节。如果设置了超时，则可以按要求返回较少的字符。在没有超时的情况下，它将被阻塞，直到读取请求的字节数为止。</p>
+<h4 id="ser-readline"><a href="#ser-readline" class="headerlink" title="ser.readline()"></a><code>ser.readline()</code></h4><p>Returns: 从端口返回的字节<br>Return type: byte</p>
+<p>从串口读取一行字节。如果设置了超时，则可以按要求返回较少的字符。在没有超时的情况下，它将被阻塞，直到读取请求的字节数为止。</p>
+<h5 id="write-data"><a href="#write-data" class="headerlink" title="write(data)"></a><code>write(data)</code></h5><p>Parameters: data – 要发送的数据.<br>Returns: 写入的字节数<br>Return type: int</p>
+<p>向端口写入字节数据,Unicode字符串必须被编码,例如<code>ser.write(&#39;hello&#39;.encode(&#39;utf-8&#39;))</code></p>
+<h3 id="5-21-序列化Python对象"><a href="#5-21-序列化Python对象" class="headerlink" title="5.21 序列化Python对象"></a>5.21 序列化Python对象</h3><ul>
+<li>所谓序列化是指Python对象(字典，数组)以特定格式转换为一个字节流，以便将它保存到一个文件用于日后读写。</li>
+<li>对于序列化最普遍的做法就是使用<code>pickle</code>模块，它可以将对象等转换为字节编码储存在文档中，但只有python支持，因此不推荐</li>
+<li>你最好使用更加标准的数据编码格式如XML，CSV或JSON来存储或是序列化数据</li>
+</ul>
+<h2 id="第六章-数字据编码与处理"><a href="#第六章-数字据编码与处理" class="headerlink" title="第六章:数字据编码与处理"></a>第六章:数字据编码与处理</h2><h3 id="6-1-读写CSV数据"><a href="#6-1-读写CSV数据" class="headerlink" title="6.1 读写CSV数据"></a>6.1 读写CSV数据</h3><ul>
+<li>对于大多数的CSV格式的数据读写问题，都可以使用 csv 库，而无需自己处理分隔符以及其它细节。</li>
+<li>csv的默认分隔符是’,’，可以使用delimiter参数进行指定</li>
+<li>将这些数据读取为一个元组的序列:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'stocks.csv'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f_csv = csv.reader(f,delimiter=<span class="string">','</span>)</span><br><span class="line">    headers = next(f_csv) <span class="comment"># 通常第一行是headers，通过next得到lsit</span></span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> f_csv:</span><br><span class="line">        <span class="comment"># row is list</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以使用<code>csv.DictReader(file)</code>和<code>csv.DictWriter(file, headerlist)</code>方便的以字典的形式读取或写入</li>
+</ul>
+<h3 id="6-2-读写JSON数据"><a href="#6-2-读写JSON数据" class="headerlink" title="6.2 读写JSON数据"></a>6.2 读写JSON数据</h3><ul>
+<li>python对象与JSON字符串互相转换,可以使用<code>json.dumps()</code> 和 <code>json.loads()</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line">json_str = json.dumps(data)</span><br><span class="line">data = json.loads(json_str)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果你要处理的是文件而不是字符串，你可以使用 <code>json.dump(data,file)</code> 和 <code>json.load(file)</code> 来编码和解码JSON数据</li>
+<li>json.dump()在序列化的同时写入了文件。 等价于<code>data = json.dumps(data) file.write(data)</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Writing JSON data</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data.json'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(data, f)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Reading data back</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'data.json'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = json.load(f)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以使用<code>object_pairs_hook</code>或<code>object_hook</code>参数对传入的<code>json_str</code>进行处理,从而得到所需的数据类型</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = json.loads(json_str, object_pairs_hook=OrderedDict)</span><br></pre></td></tr></table></figure>
+<h3 id="读写ymal格式的文件"><a href="#读写ymal格式的文件" class="headerlink" title="读写ymal格式的文件"></a>读写ymal格式的文件</h3><p>对于读取yaml文件，我们可以使用pyymal第三方模块，而无需自己编写语法解析规则</p>
+<p>首先安装pyyaml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyyaml</span><br></pre></td></tr></table></figure>
+<p>然后读取并解析yaml</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(file_path,<span class="string">'r'</span>,encoding = <span class="string">"utf-8"</span>) <span class="keyword">as</span> file:</span><br><span class="line">    dic = yaml.load(file).get(key)</span><br></pre></td></tr></table></figure>
+<p>###6.8 与关系型数据库的交互</p>
+<ul>
+<li>你可以使用Python标准库中的 sqlite3 模块</li>
+<li>不要使用Python字符串格式化操作符(如%)或者 .format() 方法来创建这样的字符串。否则很有可能遭受SQL注入攻击。</li>
+<li>与sqlite3交互步骤<ol>
+<li>链接数据库,得到数据库实例 <code>db = sqlite3.connect(&#39;database.db&#39;)</code></li>
+<li>创建游标 <code>cursor = db.cursor()</code></li>
+<li>执行语句<code>cursor.execute(&#39;create table portfolio (symbol text, shares integer, price real)&#39;)</code></li>
+<li>提交语句<code>db.commit()</code></li>
+</ol>
+</li>
+</ul>
+<h3 id="6-10-编码解码Base64数据"><a href="#6-10-编码解码Base64数据" class="headerlink" title="6.10 编码解码Base64数据"></a>6.10 编码解码Base64数据</h3><ul>
+<li>Base64编码仅仅用于面向字节的数据比如字节字符串和字节数组。</li>
+<li>编码为base64:base64.b64encode( data)</li>
+<li>解码为二进制字节:base64.b64decode(base64data)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Some byte data</span></span><br><span class="line">s = <span class="string">b'hello'</span></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="comment"># Encode as Base64</span></span><br><span class="line">a = base64.b64encode(s) <span class="comment"># b'aGVsbG8='</span></span><br><span class="line"><span class="comment"># Decode from Base64</span></span><br><span class="line">base64.b64decode(a) <span class="comment"># b'hello'</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-13-数据的累加与统计操作"><a href="#6-13-数据的累加与统计操作" class="headerlink" title="6.13 数据的累加与统计操作"></a>6.13 数据的累加与统计操作</h3><ul>
+<li>于任何涉及到统计、时间序列以及其他相关技术的数据分析问题，都可以考虑使用Pandas库 。</li>
+</ul>
+<h2 id="第七章-函数"><a href="#第七章-函数" class="headerlink" title="第七章:函数"></a>第七章:函数</h2><h3 id="7-1-可接受任意数量参数的函数"><a href="#7-1-可接受任意数量参数的函数" class="headerlink" title="7.1 可接受任意数量参数的函数"></a>7.1 可接受任意数量参数的函数</h3><ul>
+<li>为了能让一个函数接受任意数量的位置参数，可以使用一个以<code>*</code>开头的参数,这个参数是个tuple</li>
+<li>为了接受任意数量的关键字参数，使用一个以<code>**</code>开头的参数,这个参数是个dict</li>
+<li>一个<code>*</code>参数只能出现在函数定义中最后一个位置参数后面，而 <code>**</code>参数只能出现在最后一个参数。</li>
+<li>有一点要注意的是，在<code>*</code>参数后面仍然可以定义其他参数。这种参数就是我们所说的强制关键字参数</li>
+</ul>
+<h3 id="7-2-只接受关键字参数的函数"><a href="#7-2-只接受关键字参数的函数" class="headerlink" title="7.2 只接受关键字参数的函数"></a>7.2 只接受关键字参数的函数</h3><ul>
+<li>将强制关键字参数放到某个<code>*</code>位置参数或者单个<code>*</code>后面就能达到强制使用关键字参数传递</li>
+<li>如果你还希望某个函数能同时接受任意数量的位置参数和关键字参数，可以同时使用*和**</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">anyargs</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">    print(args) <span class="comment"># A tuple</span></span><br><span class="line">    print(kwargs) <span class="comment"># A dict</span></span><br></pre></td></tr></table></figure>
+<h3 id="7-3-给函数参数增加元信息"><a href="#7-3-给函数参数增加元信息" class="headerlink" title="7.3 给函数参数增加元信息"></a>7.3 给函数参数增加元信息</h3><ul>
+<li>函数的注解方法<code>def add(x:int, y:int) -&gt; int:</code></li>
+<li>注解和注释类似,python解释器不会对这些注解添加任何的语义,他们仅用于提示作用</li>
+<li>函数注解只存储在函数的 <code>__annotations__</code> 属性中,<code>add.__annotations__</code></li>
+</ul>
+<h3 id="7-4-返回多个值的函数"><a href="#7-4-返回多个值的函数" class="headerlink" title="7.4 返回多个值的函数"></a>7.4 返回多个值的函数</h3><ul>
+<li><code>return a,b,c</code>返回的是一个元组</li>
+<li>我们使用的是逗号来生成一个元组，而不是用括号 <code>b = 1,2,3 =&gt; b == (1,2,3)</code></li>
+</ul>
+<h3 id="7-5-定义有默认参数的函数"><a href="#7-5-定义有默认参数的函数" class="headerlink" title="7.5 定义有默认参数的函数"></a>7.5 定义有默认参数的函数</h3><ul>
+<li>测试默认参数<code>None</code>时不能使用:<code>if not b:</code>而要使用<code>if b is None:</code>以排除<code>0</code>,<code>&#39;&#39;</code>等</li>
+<li>默认参数的值仅仅在函数定义的时候赋值一次,比如将变量作为参数传入进去，实际传入的是变量的值的拷贝</li>
+</ul>
+<h3 id="7-6-定义匿名或内联函数"><a href="#7-6-定义匿名或内联函数" class="headerlink" title="7.6 定义匿名或内联函数"></a>7.6 定义匿名或内联函数</h3><ul>
+<li>lambda x, y: x + y lambda 定义一个匿名函数，<code>:</code>之前是函数的参数<code>:</code>之后是函数返回的值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add = <span class="keyword">lambda</span> x, y: x + y</span><br><span class="line">add(<span class="number">2</span>,<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>lambda表达式中的x是一个自由变量， 在运行时绑定值，而不是定义时就绑定</li>
+<li><p>如果需要在定义时确认值，只需给相应的参数提供默认值即可:<code>[lambda x, n=n: x+n for n in range(5)]</code></p>
+</li>
+<li><p><code>[lambda x, n=n: x+n for n in range(5)]</code>解析：</p>
+<ul>
+<li>生成器表达式：<code>for n in range(5)</code>生成包含5个匿名函数的列表列表 lambda x,n=n:x+n</li>
+<li><code>lambda x, n=n: x+n</code>,由于n有默认值，所以在定义时确定n值，n值分别为0,1,2,3,4</li>
+<li>列表结果为(相似)：[lambda x: x+0,lambda x: x+1,lambda x: x+2,lambda x: x+3,lambda x: x+4]</li>
+<li>如果n没有默认值,则n=4,即迭代的最后一个值</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-8-减少可调用对象的参数个数"><a href="#7-8-减少可调用对象的参数个数" class="headerlink" title="7.8 减少可调用对象的参数个数"></a>7.8 减少可调用对象的参数个数</h3><ul>
+<li><code>new_func = partial(func,*params)</code> 给一个或多个参数设置固定的值，减少接下来被调用时的参数个数。</li>
+<li><code>partial(func,*params)</code>的意义是在调用其它函数库接受的回调函数时用来微调参数个数。</li>
+<li>很多时候 <code>partial()</code> 能实现的效果，lambda表达式也能实现,但是稍显臃肿</li>
+<li><code>list_obj.sort(key=partial(distance,pt))</code></li>
+<li>列表的 <code>list_obj.sort()</code> 方法<ul>
+<li>接受一个回调函数<code>key = func()</code>的返回值作为新的列表排序依据， 但是它只能接受一个单个参数的函数，参数是列表的每个子元素</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-9-将单方法的类转换为函数"><a href="#7-9-将单方法的类转换为函数" class="headerlink" title="7.9 将单方法的类转换为函数"></a>7.9 将单方法的类转换为函数</h3><ul>
+<li>通常是为了保存额外状态来给函数使用，详见7.10</li>
+</ul>
+<h3 id="7-10-带额外状态信息的回调函数"><a href="#7-10-带额外状态信息的回调函数" class="headerlink" title="7.10 带额外状态信息的回调函数"></a>7.10 带额外状态信息的回调函数</h3><ul>
+<li>有三种方式可以在回调函数的内部保存变量值<ul>
+<li>创建一个类，使需要保存的变量在类内部传递。回调函数是有对象实例化的一个方法。</li>
+<li>创建一个闭包，使需要保存的变量在函数内部传递。回调函数是这个函数return的闭包。需要为变量声明nonlocal</li>
+<li>创建一个协程，使需要保存的变量在协程内部传递。回调函数是这个协程启动的send方法。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">apply_async</span><span class="params">(func, args, *, callback)</span>:</span></span><br><span class="line">    result = func(*args)</span><br><span class="line">    callback(result)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个类保存变量</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ResultHandler</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.sequence = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handler</span><span class="params">(self, result)</span>:</span></span><br><span class="line">        self.sequence += <span class="number">1</span></span><br><span class="line">        print(<span class="string">'[&#123;&#125;] Got: &#123;&#125;'</span>.format(self.sequence, result))</span><br><span class="line">r = ResultHandler()</span><br><span class="line">apply_async(add, (<span class="number">2</span>, <span class="number">3</span>), callback=r.handler)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个闭包保存变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_handler</span><span class="params">()</span>:</span></span><br><span class="line">    sequence = <span class="number">0</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">handler</span><span class="params">(result)</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> sequence</span><br><span class="line">        sequence += <span class="number">1</span></span><br><span class="line">        print(<span class="string">'[&#123;&#125;] Got: &#123;&#125;'</span>.format(sequence, result))</span><br><span class="line">    <span class="keyword">return</span> handler</span><br><span class="line"></span><br><span class="line">handler = make_handler()</span><br><span class="line">apply_async(add, (<span class="number">2</span>, <span class="number">3</span>), callback=handler)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个协程保存变量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_handler</span><span class="params">()</span>:</span></span><br><span class="line">    sequence = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        result = <span class="keyword">yield</span></span><br><span class="line">        sequence += <span class="number">1</span></span><br><span class="line">        print(<span class="string">'[&#123;&#125;] Got: &#123;&#125;'</span>.format(sequence, result))</span><br><span class="line"></span><br><span class="line">handler = make_handler()</span><br><span class="line">next(handler) <span class="comment"># Advance to the yield</span></span><br><span class="line">apply_async(add, (<span class="number">2</span>, <span class="number">3</span>), callback=handler.send)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>协程解析<ul>
+<li>协程通过yield关键字实现,他实际上是个generator</li>
+<li>对于协程,第一次必须运行一次next(generator)启动它(进入到while True中,这才是协程运行的部分)，直接使用send方法会报错</li>
+<li>协程 <code>param = yield result</code>对于yield来说,<code>=</code>并不是赋值的意思。等号前的值generator通过send方法传入的参数，使其内部读取,yield后的值是其返回给外界的值</li>
+<li>generator每次执行后，遇到yield就会中断执行，直到使用<code>next(generator)</code>或<code>generator.send(param)</code>再次调用它，才会继续执行。</li>
+</ul>
+</li>
+</ul>
+<h2 id="第八章-类与对象"><a href="#第八章-类与对象" class="headerlink" title="第八章:类与对象"></a>第八章:类与对象</h2><h3 id="8-1-改变对象的字符串显示"><a href="#8-1-改变对象的字符串显示" class="headerlink" title="8.1 改变对象的字符串显示"></a>8.1 改变对象的字符串显示</h3><ul>
+<li><code>__repr__()</code> 方法返回一个实例的代码表示形式，通常用来重新构造这个实例。 内置的 repr() 函数返回这个字符串，跟我们使用交互式解释器显示的值是一样的。</li>
+<li><code>__str__()</code> 方法将实例转换为一个字符串，使用 <code>str()</code> 或 <code>print()</code> 函数会输出这个字符串。</li>
+<li>为了更方便的调试代码，我们可以自定义类的 <code>__repr__()</code> 和 <code>__str__()</code>方法</li>
+</ul>
+<h3 id="8-3-让对象支持上下文管理协议"><a href="#8-3-让对象支持上下文管理协议" class="headerlink" title="8.3 让对象支持上下文管理协议"></a>8.3 让对象支持上下文管理协议</h3><ul>
+<li>为了让一个对象兼容 with 语句，你需要实现 <code>__enter__()</code> 和 <code>__exit__()</code> 方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> socket <span class="keyword">import</span> socket, AF_INET, SOCK_STREAM</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LazyConnection</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, address, family=AF_INET, type=SOCK_STREAM)</span>:</span></span><br><span class="line">        self.address = address</span><br><span class="line">        self.family = family</span><br><span class="line">        self.type = type</span><br><span class="line">        self.sock = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.sock <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">'Already connected'</span>)</span><br><span class="line">        self.sock = socket(self.family, self.type)</span><br><span class="line">        self.sock.connect(self.address)</span><br><span class="line">        <span class="keyword">return</span> self.sock</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, exc_ty, exc_val, tb)</span>:</span></span><br><span class="line">        self.sock.close()</span><br><span class="line">        self.sock = <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<h3 id="8-5-在类中封装属性名-私有属性"><a href="#8-5-在类中封装属性名-私有属性" class="headerlink" title="8.5 在类中封装属性名(私有属性)"></a>8.5 在类中封装属性名(私有属性)</h3><ul>
+<li>第一个约定是任何以单下划线_开头的名字都应该是内部实现(私有属性或方法)。</li>
+<li>Python并不会真的阻止别人访问内部名称,但是应该尽量去避免调用内部方法</li>
+<li>双下划线__开头的属性或方法通过继承是无法被覆盖或者修改</li>
+<li>有时候你定义的一个变量和某个保留关键字冲突，这时候可以使用单下划线作为后缀:<code>lambda_ = 2.0</code></li>
+<li>大多数而言，你应该让你的非公共名称以单下划线开头。但是，如果你清楚你的代码会涉及到子类， 并且有些内部属性应该在子类中隐藏起来，那么才考虑使用双下划线方案。</li>
+</ul>
+<h3 id="8-6-创建可管理的属性"><a href="#8-6-创建可管理的属性" class="headerlink" title="8.6 创建可管理的属性"></a>8.6 创建可管理的属性</h3><ul>
+<li>你想给某个实例attribute增加除访问与修改之外的其他处理逻辑，比如类型检查或合法性验证。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, first_name)</span>:</span></span><br><span class="line">        self.first_name = first_name</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Getter function</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._first_name</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Setter function</span></span><br><span class="line"><span class="meta">    @first_name.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first_name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(value, str):</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">'Expected a string'</span>)</span><br><span class="line">        self._first_name = value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Deleter function (optional)</span></span><br><span class="line"><span class="meta">    @first_name.deleter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">first_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">"Can't delete attribute"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="8-25-创建缓存实例"><a href="#8-25-创建缓存实例" class="headerlink" title="8.25 创建缓存实例"></a>8.25 创建缓存实例</h3><ul>
+<li>在创建一个类的对象时，如果之前使用同样参数创建过这个对象， 你想返回它的缓存引用</li>
+<li>详细实现请见9.13小节</li>
+</ul>
+<h3 id="8-9-创建新的类或实例属性-描述器"><a href="#8-9-创建新的类或实例属性-描述器" class="headerlink" title="8.9 创建新的类或实例属性(描述器)"></a>8.9 创建新的类或实例属性(描述器)</h3><ul>
+<li>定义描述器<code>__get__</code> <code>__set__</code> <code>__delete__</code>三种方法在类中</li>
+<li>为了使用一个描述器，需将这个描述器的实例作为类属性放到一个类的定义中:<code>x = Integer(&#39;x&#39;)</code></li>
+<li>描述器可实现大部分Python类特性中的底层魔法， 包括 @classmethod 、@staticmethod 、@property</li>
+</ul>
+<h2 id="第九章-元编程"><a href="#第九章-元编程" class="headerlink" title="第九章:元编程"></a>第九章:元编程</h2><ul>
+<li>按照默认习惯，metaclass的类名总是以Metaclass结尾，以便清楚地表示这是一个metaclass</li>
+<li>metaclass用来控制类的创建行为。当我们在类中传入关键字参数metaclass时，魔术就生效了。</li>
+<li>metaclass可以隐式地继承到子类，但子类自己却感觉不到。</li>
+</ul>
+<h3 id="9-1-在函数上添加装饰器"><a href="#9-1-在函数上添加装饰器" class="headerlink" title="9.1 在函数上添加装饰器"></a>9.1 在函数上添加装饰器</h3><ul>
+<li>装饰器的用途是为函数增加额外功能而不影响代码的整体结构的一种方法，而@function是装饰器的语法糖</li>
+<li>定义一个装饰器</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timethis</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        start = time.time()</span><br><span class="line">        result = func(*args, **kwargs)</span><br><span class="line">        end = time.time()</span><br><span class="line">        print(func.__name__, end-start)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用装饰器</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@timethis</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">countdown</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">        n -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>countdown(<span class="number">100000</span>)</span><br><span class="line">countdown <span class="number">0.008917808532714844</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>countdown(<span class="number">10000000</span>)</span><br><span class="line">countdown <span class="number">0.87188299392912</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-2-创建装饰器时保留函数元信息"><a href="#9-2-创建装饰器时保留函数元信息" class="headerlink" title="9.2 创建装饰器时保留函数元信息"></a>9.2 创建装饰器时保留函数元信息</h3><ul>
+<li>任何时候你定义装饰器的时候，都应该使用 <code>functools</code> 库中的 <code>@wraps</code> 装饰器来注解底层包装函数。</li>
+</ul>
+<h3 id="9-3-解除一个装饰器"><a href="#9-3-解除一个装饰器" class="headerlink" title="9.3 解除一个装饰器"></a>9.3 解除一个装饰器</h3><ul>
+<li>解除一个装饰器是指:一个装饰器已经作用在一个函数上，你想撤销它，直接访问原始的未包装的那个函数</li>
+<li>假设装饰器是通过 @wraps (参考9.2小节)来实现的，那么你可以通过访问 <code>__wrapped__</code> 属性来访问原始函数：<code>orig_func = new_func.__wrapped__</code></li>
+<li>并不是所有的装饰器都使用了 @wraps ，因此这里的方案并不全部适用</li>
+</ul>
+<h3 id="9-4-定义一个带参数的装饰器"><a href="#9-4-定义一个带参数的装饰器" class="headerlink" title="9.4 定义一个带参数的装饰器"></a>9.4 定义一个带参数的装饰器</h3><ul>
+<li>装饰器是可以使用参数的，关键点是包装器是可以使用传递给最外层的参数的</li>
+<li>带参数的装饰器分为三层，最外层为装饰器名称以及参数:<code>def logged(level, name=None, message=None):</code>，中层为<code>def decorate(func):</code>,内层为<code>@wraps(func)</code></li>
+</ul>
+<h3 id="9-5-可自定义属性的装饰器"><a href="#9-5-可自定义属性的装饰器" class="headerlink" title="9.5 可自定义属性的装饰器"></a>9.5 可自定义属性的装饰器</h3><ul>
+<li>你想写一个装饰器来包装一个函数，并且允许用户提供参数在运行时控制装饰器行为</li>
+</ul>
+<h3 id="9-6-带可选参数的装饰器"><a href="#9-6-带可选参数的装饰器" class="headerlink" title="9.6 带可选参数的装饰器"></a>9.6 带可选参数的装饰器</h3><ul>
+<li>带可选参数的装饰器是指:你想写一个装饰器，既可以不传参数给它，比如 <code>@decorator</code> ，也可以传递可选参数给它，比如 <code>@decorator(x,y,z)</code></li>
+<li>主要实现装饰器带或者不带括号都可以正常工作，实现编程一致性</li>
+<li>带参数与不带参数的装饰器区别是：初始化时，orig_func是否被传入<ul>
+<li><code>new_func = logged(orig_func)</code></li>
+<li><code>new_func = logged(level=logging.CRITICAL, name=&#39;example&#39;)(orig_func)</code></li>
+</ul>
+</li>
+<li>实现原理:<ul>
+<li>如果装饰器无参数，会传入<code>func</code>，跳过if语句内的<code>partial</code>方法,直接将orig_func传入</li>
+<li>如果装饰器有参数，初始化时func为None，执行<code>partial</code>方法，导入其它参数并返回一个未完全初始化的自身，以确定除了<code>orig_func</code>之外其它参数。此时等价于无参装饰器。继续初始化执行<code>new_func = logged(orig_func)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="9-7-利用装饰器强制函数上的类型检查"><a href="#9-7-利用装饰器强制函数上的类型检查" class="headerlink" title="9.7 利用装饰器强制函数上的类型检查"></a>9.7 利用装饰器强制函数上的类型检查</h3><ul>
+<li><code>inspect.signature(func)</code> 函数，它可以得到func函数的参数：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> inspect <span class="keyword">import</span> signature</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, y, z=<span class="number">42</span>)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">sig = signature(func)</span><br><span class="line">sig <span class="comment"># (x, y, z=42)</span></span><br><span class="line">sig.parameters <span class="comment"># mappingproxy(OrderedDict([('x', &lt;Parameter at 0x10077a050 'x'&gt;),('y', &lt;Parameter at 0x10077a158 'y'&gt;), ('z', &lt;Parameter at 0x10077a1b0 'z'&gt;)]))</span></span><br><span class="line">sig.parameters[<span class="string">'z'</span>].name <span class="comment"># 'z'</span></span><br><span class="line">sig.parameters[<span class="string">'z'</span>].default <span class="comment"># 42</span></span><br><span class="line">sig.parameters[<span class="string">'z'</span>].kind <span class="comment"># &lt;_ParameterKind: 'POSITIONAL_OR_KEYWORD'&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>sig.bind()方法</p>
+<ul>
+<li><code>sig.bind(int, 2, 3).arguments</code>返回一个有序字典<code>OrderedDict([(&#39;x&#39;, int), (&#39;y&#39;, 2), (&#39;z&#39;, 3)])</code>,key值是被绑定的函数参数值,value是你指定的数据类型或者其他值。</li>
+<li><code>sig.bind_partial(int,z=int)</code>允许忽略一部分参数，而<code>sig.bind</code>方法不允许</li>
+</ul>
+</li>
+<li><p>核心原理：</p>
+<ol>
+<li>使用<code>sig.bind_partial(*ty_args, **ty_kwargs).arguments</code>使<code>bound_types</code>指定根据装饰器参数形成一个有序字典，指定函数类型</li>
+<li>使用<code>sig.bind(*args, **kwargs)arguments</code>方法使<code>bound_values</code>根据函数传入的值形成一个有序字典，为调用函数时传入的值</li>
+<li>通过对比做出判断，然而这种方法不能判断出默认参数(内部转换)是否符合要求，由于可变对象[]不应作为参数，所以默认参数需做判断:<code>if x == None：x = []</code></li>
+</ol>
+</li>
+</ul>
+<h3 id="9-10-为类和静态方法提供装饰器"><a href="#9-10-为类和静态方法提供装饰器" class="headerlink" title="9.10 为类和静态方法提供装饰器"></a>9.10 为类和静态方法提供装饰器</h3><ul>
+<li>为类的方法提供装饰器和为函数添加装饰器定义与使用方法是一致的</li>
+<li>如果类中方法存在装饰器  <code>@classmethod</code> 和 <code>@staticmethod</code> ，要把他们放在最上面，否则会报错</li>
+<li>如果希望装饰器访问类的属性，需做如下修改：<ol>
+<li>在wrapper传入参数self</li>
+<li>类方法<code>origin_func(self, *args, **kwargs)</code>传入参数self</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">catch_exception</span><span class="params">(origin_func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            u = origin_func(self, *args, **kwargs)</span><br><span class="line">            <span class="keyword">return</span> u</span><br><span class="line">        <span class="keyword">except</span> Exception:</span><br><span class="line">            self.revive() <span class="comment">#不用顾虑，直接调用原来的类的方法</span></span><br><span class="line">            <span class="keyword">return</span> <span class="string">'an Exception raised.'</span></span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">revive</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'revive from exception.'</span>)</span><br><span class="line">        <span class="comment"># do something to restore</span></span><br><span class="line"><span class="meta">    @catch_exception</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">read_value</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'here I will do something.'</span>)</span><br><span class="line">        <span class="comment"># do something.</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-13-使用元类控制实例的创建"><a href="#9-13-使用元类控制实例的创建" class="headerlink" title="9.13 使用元类控制实例的创建"></a>9.13 使用元类控制实例的创建</h3><ul>
+<li>一个类可以在<code>__init_</code>中规定它的创建方式。</li>
+<li>我们希望通过<strong>创建元类</strong>改变实例创建方式来实现单例、缓存或其他类似的特性。</li>
+<li>我们可以通过定义元类中的 <code>__call__()</code> 方法规定类的创建方式。并在创建类时通过<code>metaclass</code>关键字参数确定创建方式:<code>class Spam(metaclass=NoInstances):...</code></li>
+</ul>
+<ul>
+<li>定义只能创建唯一的实例的元类Singleton</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span><span class="params">(type)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        self.__instance = <span class="literal">None</span></span><br><span class="line">        super().__init__(*args, **kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.__instance <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            self.__instance = super().__call__(*args, **kwargs)</span><br><span class="line">            <span class="keyword">return</span> self.__instance</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.__instance</span><br><span class="line"></span><br><span class="line"><span class="comment"># Example</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Spam</span><span class="params">(metaclass=Singleton)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">'Creating Spam'</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>详细解析<ul>
+<li>元类Singleton(type)需要传入父类type(元类定义皆为如此)</li>
+<li>元类中<code>def __call__</code>方法定义了类实例化时的行为</li>
+<li>Singleton在Spam定义(解释器扫描到<code>metaclass=Singleton</code>)时被初始化，此时<code>self.__instance = None</code></li>
+<li>当Spam第一次实例化时，<code>self.__instance == None</code>返回<code>super().__call__(*args, **kwargs)</code>,即Spam的实例</li>
+<li>当Spam第二次实例化时，由于<code>self.__instance</code>等于Spam第一次返回的实例，这个值直接被返回了。</li>
+<li>注意的是,当Spam第二次实例化时,由于<code>super().__call__</code>方法根本没有执行，所以他的<code>__init__</code>方法也不会被调用了</li>
+<li>由此便实现了只能初始化一次的元类方法</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-21-避免重复的属性方法"><a href="#9-21-避免重复的属性方法" class="headerlink" title="9.21 避免重复的属性方法"></a>9.21 避免重复的属性方法</h3><ul>
+<li>本节展示了对类进行类型检查的三种方式，并逐步简化的过程</li>
+</ul>
+<h3 id="9-22-定义上下文管理器的简单方法-with"><a href="#9-22-定义上下文管理器的简单方法-with" class="headerlink" title="9.22 定义上下文管理器的简单方法(with)"></a>9.22 定义上下文管理器的简单方法(with)</h3><ul>
+<li>with的基本概念<ul>
+<li>with 语句适用于对资源进行访问的场合，确保不管使用过程中是否发生异常都会执行必要的“清理”操作。</li>
+<li>有了上下文管理器，with 语句才能工作。</li>
+<li>上下文管理器（Context Manager）：支持上下文管理协议的对象，这种对象实现了<code>__enter__()</code> 和 <code>__exit__()</code> 方法。</li>
+<li>语句体（with-body）：with 语句包裹起来的代码块，在执行语句体之前会调用上下文管理器的 <code>__enter__()</code> 方法，执行完语句体之后会执行 <code>__exit__()</code> 方法。</li>
+<li>with语句遇到错误也会抛出异常，区别是它在遇到异常后仍可以执行清理操作。</li>
+</ul>
+</li>
+<li>通常情况下，如果要写一个上下文管理器，你需要定义一个类，里面包含一个 <code>__enter__()</code> 和一个<code>__exit__()</code> 方法</li>
+<li>更好的方法是使用<code>contexlib</code> 模块中的 <code>@contextmanager</code> 装饰器</li>
+<li><code>@contextmanager</code>使用方法<ul>
+<li>yield 之前的代码会在上下文管理器中作为 <code>__enter__()</code> 方法执行，</li>
+<li>yield 之后的代码会作为 <code>__exit__()</code> 方法执行。</li>
+<li>yield 后如果含有值，会返回as后面的内容，类似于return</li>
+<li>如果希望执行<code>__exit__()</code>方法,就在yield前加<code>try:</code>,yield后加<code>finally</code>;否则不执行清理操作</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-23-在局部变量域中执行代码-exec"><a href="#9-23-在局部变量域中执行代码-exec" class="headerlink" title="9.23 在局部变量域中执行代码(exec)"></a>9.23 在局部变量域中执行代码(exec)</h3><ul>
+<li><code>exec(&#39;func_str&#39;)</code>在全局作用域中可以获取并改变全局作用域中的变量</li>
+<li><code>exec(&#39;func_str&#39;)</code>在局部作用域中无法改变局部变量或全局变量的值，它获得的时变量的字典拷贝。</li>
+<li>希望获得<code>exec(&#39;func_str&#39;)</code>在局部作用域中的运行结果，可以在<code>exec</code>之前使用<code>locals_dic = locals()</code>获得局部变量字典，这个字典的值是exec真正改变的值</li>
+<li>每次调用<code>locals()</code> 会获取局部变量值中的值并覆盖字典中相应的变量。如果在<code>exec</code>之后调用<code>locals()</code>将无法获得正确结果</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># exec在局部作用域中无法改变局部变量或全局变量的值</span></span><br><span class="line">a = <span class="number">10</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exec_test</span><span class="params">()</span>:</span></span><br><span class="line">    locals_dic = locals()</span><br><span class="line">    exec(<span class="string">"a += 1"</span>)</span><br><span class="line">    print(<span class="string">'exec:'</span>,locals_dic[<span class="string">'a'</span>],<span class="string">'glabal:'</span>,a)</span><br><span class="line"></span><br><span class="line">exec_test() <span class="comment"># exec: 11 glabal: 10</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-25-拆解Python字节码"><a href="#9-25-拆解Python字节码" class="headerlink" title="9.25 拆解Python字节码"></a>9.25 拆解Python字节码</h3><h2 id="第十章-模块与包"><a href="#第十章-模块与包" class="headerlink" title="第十章:模块与包"></a>第十章:模块与包</h2><h3 id="10-1-构建一个模块的层级包"><a href="#10-1-构建一个模块的层级包" class="headerlink" title="10.1 构建一个模块的层级包"></a>10.1 构建一个模块的层级包</h3><ul>
+<li>一个文件夹内如果存在<code>__init__.py</code>,这个文件夹就成为了一个包</li>
+<li>大部分情况下<code>__init__.py</code>文件为空即可</li>
+<li>如果在子包的<code>__init__.py</code>中写入<code>from . import jpg</code>父模块便可以自动加载子模块jpg.py了<ul>
+<li>自动加载是指对于lib/jpg.py：<code>import lib</code> 之后,直接使用<code>lib.jpg</code>即可</li>
+<li>否则需要<code>from lib import jpg</code>之后才能使用<code>lib.jpg</code></li>
+</ul>
+</li>
+<li>直接使用文件夹内的函数</li>
+</ul>
+<h3 id="10-2-控制模块被全部导入的内容"><a href="#10-2-控制模块被全部导入的内容" class="headerlink" title="10.2 控制模块被全部导入的内容"></a>10.2 控制模块被全部导入的内容</h3><ul>
+<li>强烈反对使用 <code>from module import *</code></li>
+<li>如果你不做任何事, 这样的导入将会导入所有不以下划线开头的。</li>
+<li>如果在模块中定义了 <code>__all__</code> , 那么只有被列举出的东西会被导出:<code>__all__ = [&#39;spam&#39;, &#39;grok&#39;]</code></li>
+</ul>
+<h3 id="10-3-使用相对路径名导入包中子模块"><a href="#10-3-使用相对路径名导入包中子模块" class="headerlink" title="10.3 使用相对路径名导入包中子模块"></a>10.3 使用相对路径名导入包中子模块</h3><p>文件结构如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mypackage/</span><br><span class="line">  |-__init__.py</span><br><span class="line">  |-A/</span><br><span class="line">    |-__init__.py</span><br><span class="line">    |-spam.py</span><br><span class="line">    |-grok.py</span><br><span class="line">  |-B/</span><br><span class="line">    |-__init__.py</span><br><span class="line">    |-bar.py</span><br></pre></td></tr></table></figure>
+<p>在spam中引入grok和bar,只需如此操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> grok</span><br><span class="line"><span class="keyword">from</span> ..B <span class="keyword">import</span> bar</span><br></pre></td></tr></table></figure>
+<h3 id="10-4-将模块分割成多个文件"><a href="#10-4-将模块分割成多个文件" class="headerlink" title="10.4 将模块分割成多个文件"></a>10.4 将模块分割成多个文件</h3><h3 id="10-5-利用命名空间导入目录分散的代码"><a href="#10-5-利用命名空间导入目录分散的代码" class="headerlink" title="10.5 利用命名空间导入目录分散的代码"></a>10.5 利用命名空间导入目录分散的代码</h3><ul>
+<li>不同的目录有着相同的模块名称,希望将同名模块统一成唯一的模块直接引入</li>
+<li>前提是在任何一个目录里都没有<code>__init__.py</code>文件。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.extend([<span class="string">'foo-package'</span>, <span class="string">'bar-package'</span>])</span><br><span class="line"><span class="keyword">import</span> spam.blah</span><br><span class="line"><span class="keyword">import</span> spam.grok</span><br></pre></td></tr></table></figure>
+<h3 id="10-6-重新加载模块"><a href="#10-6-重新加载模块" class="headerlink" title="10.6 重新加载模块"></a>10.6 重新加载模块</h3><h3 id="10-7-运行目录或压缩文件"><a href="#10-7-运行目录或压缩文件" class="headerlink" title="10.7 运行目录或压缩文件"></a>10.7 运行目录或压缩文件</h3><ul>
+<li>如果<code>__main__.py</code>存在于顶层目录，你可以简单地在顶级目录运行这个文件: <code>python dirname</code></li>
+</ul>
+<h3 id="10-8-读取位于包中的数据文件"><a href="#10-8-读取位于包中的数据文件" class="headerlink" title="10.8 读取位于包中的数据文件"></a>10.8 读取位于包中的数据文件</h3><ul>
+<li>可以使用pkgutil.get_data来读取包中的文件</li>
+<li>在包中尽量不使用I/O操作,1是I/O操作需要使用绝对文件名;二是包通常安装作为.zip或.egg文件,open方法此时不会工作</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pkgutil</span><br><span class="line">data = pkgutil.get_data(__package__, <span class="string">'somedata.dat'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="10-9-将文件夹加入到sys-path"><a href="#10-9-将文件夹加入到sys-path" class="headerlink" title="10.9 将文件夹加入到sys.path"></a>10.9 将文件夹加入到sys.path</h3><h3 id="10-10-通过字符串名导入模块"><a href="#10-10-通过字符串名导入模块" class="headerlink" title="10.10 通过字符串名导入模块"></a>10.10 通过字符串名导入模块</h3><ul>
+<li>你想导入一个模块，但是模块的名字在字符串里。你想对字符串调用导入命令。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> importlib</span><br><span class="line">math = importlib.import_module(<span class="string">'math'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="10-11-通过钩子远程加载模块"><a href="#10-11-通过钩子远程加载模块" class="headerlink" title="10.11 通过钩子远程加载模块"></a>10.11 通过钩子远程加载模块</h3><h3 id="10-12-导入模块的同时修改模块"><a href="#10-12-导入模块的同时修改模块" class="headerlink" title="10.12 导入模块的同时修改模块"></a>10.12 导入模块的同时修改模块</h3><h3 id="10-13-安装私有的包"><a href="#10-13-安装私有的包" class="headerlink" title="10.13 安装私有的包"></a>10.13 安装私有的包</h3><ul>
+<li>Python有一个用户安装目录，通常类似”~/.local/lib/python3.3/site-packages”。 要强制在这个目录中安装包，可使用安装选项“–user”</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python3 setup.py install --user</span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">pip install --user packagename</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通常包会被安装到系统的site-packages目录中去<ul>
+<li>路径类似“/usr/local/lib/python3.3/site-packages”。</li>
+<li>不过，这样做需要有管理员权限并且使用sudo命令。</li>
+<li>就算你有这样的权限去执行命令，使用sudo去安装一个新的，可能没有被验证过的包有时候也不安全。</li>
+<li>安装包到用户目录中通常是一个有效的方案，它允许你创建一个自定义安装。</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-14-创建新的Python环境"><a href="#10-14-创建新的Python环境" class="headerlink" title="10.14 创建新的Python环境"></a>10.14 创建新的Python环境</h3><h3 id="10-15-分发包"><a href="#10-15-分发包" class="headerlink" title="10.15 分发包"></a>10.15 分发包</h3><p><code>install_requires</code>:指定了在安装这个包的过程中, 需要哪些其他包。 如果条件不满足, 则会自动安装依赖的库。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setup(install_requires=[<span class="string">"requests"</span>]) <span class="comment"># example1</span></span><br><span class="line">setup(install_requires=[<span class="string">"numpy &gt;= 1.8.1"</span>, <span class="string">"pandas &gt;= 0.14.1"</span>]) <span class="comment"># example2</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://www.xncoding.com/2015/10/26/python/setuptools.html" target="_blank" rel="noopener">python核心 - 打包与发布</a></p>
+<h2 id="第十一章-网络与web编程"><a href="#第十一章-网络与web编程" class="headerlink" title="第十一章:网络与web编程"></a>第十一章:网络与web编程</h2><h3 id="11-1-作为客户端与HTTP服务交互"><a href="#11-1-作为客户端与HTTP服务交互" class="headerlink" title="11.1 作为客户端与HTTP服务交互"></a>11.1 作为客户端与HTTP服务交互</h3><p>对于真的很简单HTTP客户端代码，用内置的 urllib 模块通常就足够了。但是，如果你要做的不仅仅只是简单的GET或POST请求，那就真的不能再依赖它的功能了。这时候就是第三方模块比如 <code>requests</code> 大显身手的时候了。</p>
+<h2 id="第十二章-并发编程"><a href="#第十二章-并发编程" class="headerlink" title="第十二章:并发编程"></a>第十二章:并发编程</h2><p>Python是运行在解释器中的语言，查找资料知道，python中有一个全局锁（GIL），在使用多线程Thread)的情况下，不能发挥多核的优势。而使用多进程(Multiprocess)，则可以发挥多核的优势真正地提高效率</p>
+<p><a href="https://segmentfault.com/a/1190000007495352" target="_blank" rel="noopener">一个实验对比</a></p>
+<table>
+<thead>
+<tr>
+<th>操作类型</th>
+<th>CPU密集型操作</th>
+<th>IO密集型操作</th>
+<th>网络请求密集型操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>线性操作</td>
+<td>94.91824996469</td>
+<td>22.46199995279</td>
+<td>7.3296000004</td>
+</tr>
+<tr>
+<td>多线程操作</td>
+<td>101.1700000762</td>
+<td>24.8605000973</td>
+<td>0.5053332647</td>
+</tr>
+<tr>
+<td>多进程操作</td>
+<td>53.8899999857</td>
+<td>12.7840000391</td>
+<td>0.5045000315</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>多线程在IO密集型的操作下似乎也没有很大的优势（也许IO操作的任务再繁重一些就能体现出优势），在CPU密集型的操作下明显地比单线程线性执行性能更差，但是对于网络请求这种忙等阻塞线程的操作，多线程的优势便非常显著了</p>
+</li>
+<li><p>多进程无论是在CPU密集型还是IO密集型以及网络请求密集型（经常发生线程阻塞的操作）中，都能体现出性能的优势。不过在类似网络请求密集型的操作上，与多线程相差无几，但却更占用CPU等资源，所以对于这种情况下，我们可以选择多线程来执行</p>
+</li>
+</ul>
+<h2 id="第十三章-脚本编程与系统管理"><a href="#第十三章-脚本编程与系统管理" class="headerlink" title="第十三章:脚本编程与系统管理"></a>第十三章:脚本编程与系统管理</h2><h3 id="终止程序并给出错误信息"><a href="#终止程序并给出错误信息" class="headerlink" title="终止程序并给出错误信息"></a>终止程序并给出错误信息</h3><ul>
+<li><code>raise SystemExit(&#39;It failed!&#39;)</code>,它会将消息在 sys.stderr 中打印，然后程序以状态码1退出。</li>
+</ul>
+<h3 id="解析命令行选项"><a href="#解析命令行选项" class="headerlink" title="解析命令行选项"></a>解析命令行选项</h3><ul>
+<li>argparse 模块可被用来解析命令行选项</li>
+</ul>
+<h3 id="创建和解压归档文件"><a href="#创建和解压归档文件" class="headerlink" title="创建和解压归档文件"></a>创建和解压归档文件</h3><ul>
+<li>解压: <code>shutil.unpack_archive(&#39;Python-3.3.0.tgz&#39;)</code></li>
+<li>压缩: <code>shutil.make_archive(&#39;new_file_name&#39;,&#39;zip&#39;,&#39;base_file_name&#39;)</code></li>
+<li>得到shutil支持的压缩类型: <code>shutil.get_archive_formats()</code></li>
+</ul>
+<h3 id="运行时弹出密码输入提示"><a href="#运行时弹出密码输入提示" class="headerlink" title="运行时弹出密码输入提示"></a>运行时弹出密码输入提示</h3><ul>
+<li><code>passwd = getpass.getpass()</code>主要是能够使用户在输入密码时不明文显示密码</li>
+<li><code>user = getpass.getuser()</code>会根据该用户的shell环境来使用当前用户的登录名，如果希望弹出用户名输入提示，使用内置的 input 函数：<code>user = input(&#39;Enter your username: &#39;)</code></li>
+</ul>
+<h3 id="获取终端的大小"><a href="#获取终端的大小" class="headerlink" title="获取终端的大小"></a>获取终端的大小</h3><ul>
+<li>你需要知道当前终端的大小以便正确的格式化输出。可以使用 <code>size = os.get_terminal_size()</code> 函数来做到这一点</li>
+<li>然后使用<code>size.columns</code>和<code>size.lines</code>来得到终端的行和列</li>
+</ul>
+<h3 id="实现一个计时器"><a href="#实现一个计时器" class="headerlink" title="实现一个计时器"></a>实现一个计时器</h3><ul>
+<li>通过计时器可以得到脚本运行的时间，文中给了个可以运行的计时器类用于计时</li>
+</ul>
+<h3 id="通过文件名查找文件"><a href="#通过文件名查找文件" class="headerlink" title="通过文件名查找文件"></a>通过文件名查找文件</h3><ul>
+<li><code>os.walk(basedir)</code>返回一个生成器对象,每次返回一个三元数组，分别是当前目录绝对路径字符串,当前目录下的文件夹名称列表，当前目录下的文件名称列表</li>
+</ul>
+<h3 id="启动一个WEB浏览器"><a href="#启动一个WEB浏览器" class="headerlink" title="启动一个WEB浏览器"></a>启动一个WEB浏览器</h3><ul>
+<li>webbrowser模块可以快速的使用默认浏览器打开一个网页：<code>webbrowser.open(&#39;http://www.python.org&#39;)</code></li>
+</ul>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a href="https://github.com/yidao620c/python3-cookbook" target="_blank" rel="noopener">python3-cookbook</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/21/python/1.python基础语法/python常用数据结构/" rel="next" title="python常用数据结构">
+                <i class="fa fa-chevron-left"></i> python常用数据结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/21/python/额外的数据类型collections/" rel="prev" title="不可不知的python模块:collections">
+                不可不知的python模块:collections <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一章-数据结构和算法"><span class="nav-number">1.</span> <span class="nav-text">第一章:数据结构和算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-查找最大或最小的-N-个元素（列表）"><span class="nav-number">1.1.</span> <span class="nav-text">1.4 查找最大或最小的 N 个元素（列表）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-字典中的键映射多个值"><span class="nav-number">1.2.</span> <span class="nav-text">1.6 字典中的键映射多个值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-字典排序"><span class="nav-number">1.3.</span> <span class="nav-text">1.7 字典排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-字典的运算"><span class="nav-number">1.4.</span> <span class="nav-text">1.8 字典的运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-17-从字典中提取子集"><span class="nav-number">1.5.</span> <span class="nav-text">1.17 从字典中提取子集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-18-映射名称到序列元素"><span class="nav-number">1.6.</span> <span class="nav-text">1.18 映射名称到序列元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-19-转换并同时计算数据"><span class="nav-number">1.7.</span> <span class="nav-text">1.19 转换并同时计算数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-20-合并多个字典或映射"><span class="nav-number">1.8.</span> <span class="nav-text">1.20 合并多个字典或映射</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二章-字符串和文本"><span class="nav-number">2.</span> <span class="nav-text">第二章:字符串和文本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-使用多个界定符分割字符串"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 使用多个界定符分割字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-字符串开头或结尾匹配"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 字符串开头或结尾匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-字符串匹配和搜索"><span class="nav-number">2.3.</span> <span class="nav-text">2.4 字符串匹配和搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-字符串搜索和替换"><span class="nav-number">2.4.</span> <span class="nav-text">2.5 字符串搜索和替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-字符串忽略大小写的搜索替换"><span class="nav-number">2.5.</span> <span class="nav-text">2.6 字符串忽略大小写的搜索替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-最短匹配模式"><span class="nav-number">2.6.</span> <span class="nav-text">2.7 最短匹配模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-多行匹配模式"><span class="nav-number">2.7.</span> <span class="nav-text">2.8 多行匹配模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-将Unicode文本标准化"><span class="nav-number">2.8.</span> <span class="nav-text">2.9 将Unicode文本标准化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-11-删除字符串中不需要的字符"><span class="nav-number">2.9.</span> <span class="nav-text">2.11 删除字符串中不需要的字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-13-字符串对齐与格式化字符串"><span class="nav-number">2.10.</span> <span class="nav-text">2.13 字符串对齐与格式化字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-14-合并拼接字符串"><span class="nav-number">2.11.</span> <span class="nav-text">2.14 合并拼接字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-15-字符串中插入变量"><span class="nav-number">2.12.</span> <span class="nav-text">2.15 字符串中插入变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以指定列宽格式化字符串-用于控制台"><span class="nav-number">2.13.</span> <span class="nav-text">以指定列宽格式化字符串(用于控制台)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在字符串中处理html和xml"><span class="nav-number">2.14.</span> <span class="nav-text">在字符串中处理html和xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串令牌解析"><span class="nav-number">2.15.</span> <span class="nav-text">字符串令牌解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用示例"><span class="nav-number">2.15.1.</span> <span class="nav-text">使用示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#要点"><span class="nav-number">2.15.2.</span> <span class="nav-text">要点:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现一个简单的递归下降分析器"><span class="nav-number">2.16.</span> <span class="nav-text">实现一个简单的递归下降分析器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三章-数字日期和时间"><span class="nav-number">3.</span> <span class="nav-text">第三章 数字日期和时间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字的四舍五入"><span class="nav-number">3.1.</span> <span class="nav-text">数字的四舍五入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行精确的浮点数运算"><span class="nav-number">3.2.</span> <span class="nav-text">执行精确的浮点数运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字的格式化输出"><span class="nav-number">3.3.</span> <span class="nav-text">数字的格式化输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二八十六进制整数"><span class="nav-number">3.4.</span> <span class="nav-text">二八十六进制整数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字节到大证书的打包与解包"><span class="nav-number">3.5.</span> <span class="nav-text">字节到大证书的打包与解包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复数的数学运算"><span class="nav-number">3.6.</span> <span class="nav-text">复数的数学运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无穷大与NaN"><span class="nav-number">3.7.</span> <span class="nav-text">无穷大与NaN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分数运算"><span class="nav-number">3.8.</span> <span class="nav-text">分数运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大型数组运算"><span class="nav-number">3.9.</span> <span class="nav-text">大型数组运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵与线性代数运算"><span class="nav-number">3.10.</span> <span class="nav-text">矩阵与线性代数运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机选择"><span class="nav-number">3.11.</span> <span class="nav-text">随机选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算最后一个周五的日期"><span class="nav-number">3.12.</span> <span class="nav-text">计算最后一个周五的日期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算当前月份的日期范围"><span class="nav-number">3.13.</span> <span class="nav-text">计算当前月份的日期范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串转换为日期"><span class="nav-number">3.14.</span> <span class="nav-text">字符串转换为日期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结合时区的日期操作"><span class="nav-number">3.15.</span> <span class="nav-text">结合时区的日期操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第四章-迭代器与生成器"><span class="nav-number">4.</span> <span class="nav-text">第四章 迭代器与生成器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1手动遍历迭代器"><span class="nav-number">4.1.</span> <span class="nav-text">4.1手动遍历迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-代理迭代"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 代理迭代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-使用生成器创建新的迭代模式"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 使用生成器创建新的迭代模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-实现迭代器协议"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 实现迭代器协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-反向迭代一个序列"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 反向迭代一个序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-带有外部状态的生成器函数"><span class="nav-number">4.6.</span> <span class="nav-text">4.6  带有外部状态的生成器函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-迭代器切片"><span class="nav-number">4.7.</span> <span class="nav-text">4.7 迭代器切片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-8-跳过可迭代对象的开始部分"><span class="nav-number">4.8.</span> <span class="nav-text">4.8 跳过可迭代对象的开始部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-9-排列组合的迭代"><span class="nav-number">4.9.</span> <span class="nav-text">4.9 排列组合的迭代</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第五章-文件与IO"><span class="nav-number">5.</span> <span class="nav-text">第五章:文件与IO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-读写文本数据"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 读写文本数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-打印输出至文件中"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 打印输出至文件中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-使用其它分隔符或行终止符打印"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 使用其它分隔符或行终止符打印</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-读写字节数据"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 读写字节数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-文件不存在才能写入"><span class="nav-number">5.5.</span> <span class="nav-text">5.5 文件不存在才能写入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-字符串的I-O操作"><span class="nav-number">5.6.</span> <span class="nav-text">5.6 字符串的I/O操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-11-文件路径名的操作"><span class="nav-number">5.7.</span> <span class="nav-text">5.11 文件路径名的操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-12-测试文件是否存在-os-path"><span class="nav-number">5.8.</span> <span class="nav-text">5.12 测试文件是否存在(os.path)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-13-获取文件夹中的文件列表"><span class="nav-number">5.9.</span> <span class="nav-text">5.13 获取文件夹中的文件列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-14-忽略文件名编码"><span class="nav-number">5.10.</span> <span class="nav-text">5.14 忽略文件名编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-19-创建临时文件和文件夹"><span class="nav-number">5.11.</span> <span class="nav-text">5.19 创建临时文件和文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-20-与串行端口的数据通信"><span class="nav-number">5.12.</span> <span class="nav-text">5.20 与串行端口的数据通信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装serial"><span class="nav-number">5.12.1.</span> <span class="nav-text">安装serial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列出端口"><span class="nav-number">5.12.2.</span> <span class="nav-text">列出端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化Serial-其中支持的参数如下："><span class="nav-number">5.12.3.</span> <span class="nav-text">初始化Serial,其中支持的参数如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常"><span class="nav-number">5.12.4.</span> <span class="nav-text">异常:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例方法："><span class="nav-number">5.12.5.</span> <span class="nav-text">实例方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ser-read-size-1"><span class="nav-number">5.12.5.1.</span> <span class="nav-text">ser.read(size=1)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ser-readline"><span class="nav-number">5.12.6.</span> <span class="nav-text">ser.readline()</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#write-data"><span class="nav-number">5.12.6.1.</span> <span class="nav-text">write(data)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-21-序列化Python对象"><span class="nav-number">5.13.</span> <span class="nav-text">5.21 序列化Python对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第六章-数字据编码与处理"><span class="nav-number">6.</span> <span class="nav-text">第六章:数字据编码与处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-读写CSV数据"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 读写CSV数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-读写JSON数据"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 读写JSON数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写ymal格式的文件"><span class="nav-number">6.3.</span> <span class="nav-text">读写ymal格式的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-10-编码解码Base64数据"><span class="nav-number">6.4.</span> <span class="nav-text">6.10 编码解码Base64数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-13-数据的累加与统计操作"><span class="nav-number">6.5.</span> <span class="nav-text">6.13 数据的累加与统计操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第七章-函数"><span class="nav-number">7.</span> <span class="nav-text">第七章:函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-可接受任意数量参数的函数"><span class="nav-number">7.1.</span> <span class="nav-text">7.1 可接受任意数量参数的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-只接受关键字参数的函数"><span class="nav-number">7.2.</span> <span class="nav-text">7.2 只接受关键字参数的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-给函数参数增加元信息"><span class="nav-number">7.3.</span> <span class="nav-text">7.3 给函数参数增加元信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-返回多个值的函数"><span class="nav-number">7.4.</span> <span class="nav-text">7.4 返回多个值的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-5-定义有默认参数的函数"><span class="nav-number">7.5.</span> <span class="nav-text">7.5 定义有默认参数的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-定义匿名或内联函数"><span class="nav-number">7.6.</span> <span class="nav-text">7.6 定义匿名或内联函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-8-减少可调用对象的参数个数"><span class="nav-number">7.7.</span> <span class="nav-text">7.8 减少可调用对象的参数个数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-9-将单方法的类转换为函数"><span class="nav-number">7.8.</span> <span class="nav-text">7.9 将单方法的类转换为函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-10-带额外状态信息的回调函数"><span class="nav-number">7.9.</span> <span class="nav-text">7.10 带额外状态信息的回调函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第八章-类与对象"><span class="nav-number">8.</span> <span class="nav-text">第八章:类与对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-改变对象的字符串显示"><span class="nav-number">8.1.</span> <span class="nav-text">8.1 改变对象的字符串显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-让对象支持上下文管理协议"><span class="nav-number">8.2.</span> <span class="nav-text">8.3 让对象支持上下文管理协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-5-在类中封装属性名-私有属性"><span class="nav-number">8.3.</span> <span class="nav-text">8.5 在类中封装属性名(私有属性)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-6-创建可管理的属性"><span class="nav-number">8.4.</span> <span class="nav-text">8.6 创建可管理的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-25-创建缓存实例"><span class="nav-number">8.5.</span> <span class="nav-text">8.25 创建缓存实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-9-创建新的类或实例属性-描述器"><span class="nav-number">8.6.</span> <span class="nav-text">8.9 创建新的类或实例属性(描述器)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第九章-元编程"><span class="nav-number">9.</span> <span class="nav-text">第九章:元编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-在函数上添加装饰器"><span class="nav-number">9.1.</span> <span class="nav-text">9.1 在函数上添加装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-创建装饰器时保留函数元信息"><span class="nav-number">9.2.</span> <span class="nav-text">9.2 创建装饰器时保留函数元信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-解除一个装饰器"><span class="nav-number">9.3.</span> <span class="nav-text">9.3 解除一个装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-4-定义一个带参数的装饰器"><span class="nav-number">9.4.</span> <span class="nav-text">9.4 定义一个带参数的装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-5-可自定义属性的装饰器"><span class="nav-number">9.5.</span> <span class="nav-text">9.5 可自定义属性的装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-6-带可选参数的装饰器"><span class="nav-number">9.6.</span> <span class="nav-text">9.6 带可选参数的装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-7-利用装饰器强制函数上的类型检查"><span class="nav-number">9.7.</span> <span class="nav-text">9.7 利用装饰器强制函数上的类型检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-10-为类和静态方法提供装饰器"><span class="nav-number">9.8.</span> <span class="nav-text">9.10 为类和静态方法提供装饰器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-13-使用元类控制实例的创建"><span class="nav-number">9.9.</span> <span class="nav-text">9.13 使用元类控制实例的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-21-避免重复的属性方法"><span class="nav-number">9.10.</span> <span class="nav-text">9.21 避免重复的属性方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-22-定义上下文管理器的简单方法-with"><span class="nav-number">9.11.</span> <span class="nav-text">9.22 定义上下文管理器的简单方法(with)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-23-在局部变量域中执行代码-exec"><span class="nav-number">9.12.</span> <span class="nav-text">9.23 在局部变量域中执行代码(exec)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-25-拆解Python字节码"><span class="nav-number">9.13.</span> <span class="nav-text">9.25 拆解Python字节码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十章-模块与包"><span class="nav-number">10.</span> <span class="nav-text">第十章:模块与包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-构建一个模块的层级包"><span class="nav-number">10.1.</span> <span class="nav-text">10.1 构建一个模块的层级包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-控制模块被全部导入的内容"><span class="nav-number">10.2.</span> <span class="nav-text">10.2 控制模块被全部导入的内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-使用相对路径名导入包中子模块"><span class="nav-number">10.3.</span> <span class="nav-text">10.3 使用相对路径名导入包中子模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-4-将模块分割成多个文件"><span class="nav-number">10.4.</span> <span class="nav-text">10.4 将模块分割成多个文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-5-利用命名空间导入目录分散的代码"><span class="nav-number">10.5.</span> <span class="nav-text">10.5 利用命名空间导入目录分散的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-6-重新加载模块"><span class="nav-number">10.6.</span> <span class="nav-text">10.6 重新加载模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-7-运行目录或压缩文件"><span class="nav-number">10.7.</span> <span class="nav-text">10.7 运行目录或压缩文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-8-读取位于包中的数据文件"><span class="nav-number">10.8.</span> <span class="nav-text">10.8 读取位于包中的数据文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-9-将文件夹加入到sys-path"><span class="nav-number">10.9.</span> <span class="nav-text">10.9 将文件夹加入到sys.path</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-10-通过字符串名导入模块"><span class="nav-number">10.10.</span> <span class="nav-text">10.10 通过字符串名导入模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-11-通过钩子远程加载模块"><span class="nav-number">10.11.</span> <span class="nav-text">10.11 通过钩子远程加载模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-12-导入模块的同时修改模块"><span class="nav-number">10.12.</span> <span class="nav-text">10.12 导入模块的同时修改模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-13-安装私有的包"><span class="nav-number">10.13.</span> <span class="nav-text">10.13 安装私有的包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-14-创建新的Python环境"><span class="nav-number">10.14.</span> <span class="nav-text">10.14 创建新的Python环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-15-分发包"><span class="nav-number">10.15.</span> <span class="nav-text">10.15 分发包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十一章-网络与web编程"><span class="nav-number">11.</span> <span class="nav-text">第十一章:网络与web编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-1-作为客户端与HTTP服务交互"><span class="nav-number">11.1.</span> <span class="nav-text">11.1 作为客户端与HTTP服务交互</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十二章-并发编程"><span class="nav-number">12.</span> <span class="nav-text">第十二章:并发编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第十三章-脚本编程与系统管理"><span class="nav-number">13.</span> <span class="nav-text">第十三章:脚本编程与系统管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#终止程序并给出错误信息"><span class="nav-number">13.1.</span> <span class="nav-text">终止程序并给出错误信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解析命令行选项"><span class="nav-number">13.2.</span> <span class="nav-text">解析命令行选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建和解压归档文件"><span class="nav-number">13.3.</span> <span class="nav-text">创建和解压归档文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时弹出密码输入提示"><span class="nav-number">13.4.</span> <span class="nav-text">运行时弹出密码输入提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取终端的大小"><span class="nav-number">13.5.</span> <span class="nav-text">获取终端的大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现一个计时器"><span class="nav-number">13.6.</span> <span class="nav-text">实现一个计时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过文件名查找文件"><span class="nav-number">13.7.</span> <span class="nav-text">通过文件名查找文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动一个WEB浏览器"><span class="nav-number">13.8.</span> <span class="nav-text">启动一个WEB浏览器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-number">14.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

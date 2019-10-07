@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="windows linux,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="微软大概为了和OS X竞争，在windows环境下加入了一个linux子系统，据说是目前最好用的Linux发行版(滑稽)。我个人看来的话是有学习linux或者某些业务场景需要使用但不想装虚拟机的话wsl确实是一个不错的选择，事实上也确实比虚拟机流畅。">
+<meta name="keywords" content="windows linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="win10下linux子系统安装与使用">
+<meta property="og:url" content="http://gaianote.github.io/2018/08/16/windows/win10下linix子系统安装/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="微软大概为了和OS X竞争，在windows环境下加入了一个linux子系统，据说是目前最好用的Linux发行版(滑稽)。我个人看来的话是有学习linux或者某些业务场景需要使用但不想装虚拟机的话wsl确实是一个不错的选择，事实上也确实比虚拟机流畅。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://gaianote.github.io/images/2018081600.png">
+<meta property="og:image" content="http://gaianote.github.io/images/2018081601.png">
+<meta property="og:image" content="http://gaianote.github.io/images/2018081602.png">
+<meta property="og:image" content="http://gaianote.github.io/images/20180324220413133.png">
+<meta property="og:image" content="http://gaianote.github.io/images/2018-08-16_19-46-48.png">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="win10下linux子系统安装与使用">
+<meta name="twitter:description" content="微软大概为了和OS X竞争，在windows环境下加入了一个linux子系统，据说是目前最好用的Linux发行版(滑稽)。我个人看来的话是有学习linux或者某些业务场景需要使用但不想装虚拟机的话wsl确实是一个不错的选择，事实上也确实比虚拟机流畅。">
+<meta name="twitter:image" content="http://gaianote.github.io/images/2018081600.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2018/08/16/windows/win10下linix子系统安装/">
+
+
+
+
+
+  <title>win10下linux子系统安装与使用 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2018/08/16/windows/win10下linix子系统安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">win10下linux子系统安装与使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T09:46:30+00:00">
+                2018-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>微软大概为了和OS X竞争，在windows环境下加入了一个linux子系统，据说是目前最好用的Linux发行版(滑稽)。我个人看来的话是有学习linux或者某些业务场景需要使用但不想装虚拟机的话wsl确实是一个不错的选择，事实上也确实比虚拟机流畅。</p>
+<a id="more"></a>
+<h2 id="linux子系统安装步骤："><a href="#linux子系统安装步骤：" class="headerlink" title="linux子系统安装步骤："></a>linux子系统安装步骤：</h2><p><strong>1. 设置 ——&gt; 更新和安全</strong></p>
+<p><img src="/images/2018081600.png" alt="img"><br><strong>2. 开发者选项 ——&gt; 开发人员模式</strong></p>
+<p><img src="/images/2018081601.png" alt="img"><br><strong>3. 程序和功能 ——&gt; 启用和关闭Windows 功能 ——&gt; 勾选最后的Lunix子系统</strong></p>
+<p><img src="/images/2018081602.png" alt="img"></p>
+<p><strong>4. 在Microsoft Store搜索关键字linux,选择需要的Lunix分发版本</strong></p>
+<p><img src="/images/20180324220413133.png" alt="img"></p>
+<p><strong>5. 打开cmd，输入bash,进入linux子系统</strong></p>
+<h2 id="WSL与Windows的互操作性"><a href="#WSL与Windows的互操作性" class="headerlink" title="WSL与Windows的互操作性"></a><a href="https://docs.microsoft.com/en-us/windows/wsl/interop" target="_blank" rel="noopener">WSL与Windows的互操作性</a></h2><p>Windows的Linux子系统（WSL）不断改进Windows和Linux之间的集成。<br>您可以：</p>
+<ul>
+<li>从Linux控制台调用Windows二进制文件。</li>
+<li>从Windows控制台调用Linux二进制文件。</li>
+<li><strong>Windows Insiders</strong>在Linux和Windows之间<strong>构建17063+</strong>共享环境变量。</li>
+</ul>
+<p>这提供了Windows和WSL之间的无缝体验。技术细节在<a href="https://blogs.msdn.microsoft.com/wsl/2016/10/19/windows-and-ubuntu-interoperability/" target="_blank" rel="noopener">WSL博客</a>上</p>
+<h3 id="从WSL运行Windows程序"><a href="#从WSL运行Windows程序" class="headerlink" title="从WSL运行Windows程序"></a>从WSL运行Windows程序</h3><p>WSL可以使用直接从WSL命令行调用Windows二进制文件<code>[binary name].exe</code>。例如，<code>notepad.exe</code>。为了使Windows可执行文件更易于运行</p>
+<p>比如运行安装在windows中的sublime:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 路径中文件名含有空格的话，要使用""括起文件路径即可</span></span><br><span class="line">$ <span class="string">'/mnt/c/Program Files/Sublime Text 3/sublime.exe'</span></span><br></pre></td></tr></table></figure>
+<p>如果<code>sublime</code>在你的系统路径中的话，直接调用sublime.exe即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sublime.exe</span><br></pre></td></tr></table></figure>
+<p>为了方便的运行sublime,我们需要给它创建一个软连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ln -s <span class="string">"/mnt/c/Program Files/Sublime Text 3/sublime.exe"</span> /bin/sublime</span><br><span class="line">$ sublime</span><br></pre></td></tr></table></figure>
+<h3 id="从WSL修改Windows文件"><a href="#从WSL修改Windows文件" class="headerlink" title="从WSL修改Windows文件"></a>从WSL修改Windows文件</h3><blockquote>
+<p>首先了解一点，不支持使用WSL中的Windows应用程序修改位于VolF（不在<code>/mnt/</code>下）的文件.</p>
+</blockquote>
+<p>使用sublime打开位于/mnt/下的某个文件,修改后保存,然后使用(linux的)python执行它,这是一个完美的无缝工作流，非常了不起。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sublime <span class="string">"/mnt/c/simple.py"</span></span><br><span class="line">$ python simple.py</span><br></pre></td></tr></table></figure>
+<h3 id="安装并使用autojump"><a href="#安装并使用autojump" class="headerlink" title="安装并使用autojump"></a>安装并使用autojump</h3><p>由于windows挂在到mnt路径下，你的项目路径一般比较深，cd转换目录非常的麻烦，利用autojump可以解决这个问题。</p>
+<p>autojump的工作方式很简单：它会在你每次启动命令时记录你当前位置，并把它添加进它自身的数据库中。这样，某些目录比其它一些目录添加的次数多，这些目录一般就代表你最重要的目录，而它们的“权重”也会增大。</p>
+<h4 id="在Linux上安装autojump"><a href="#在Linux上安装autojump" class="headerlink" title="在Linux上安装autojump"></a>在Linux上安装autojump</h4><p>在Ubuntu或Debian上安装autojump：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install autojump</span><br></pre></td></tr></table></figure>
+<p>要在CentOS或Fedora上安装autojump，请使用yum命令。在CentOS上，你需要先启用EPEL仓库才行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install autojump</span><br></pre></td></tr></table></figure>
+<p>在Archlinux上安装autojump：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pacman -S autojump</span><br></pre></td></tr></table></figure>
+<p>如果你找不到适合你的版本的包，你可以从GitHub上下载源码包来编译。</p>
+<h4 id="启用autojump"><a href="#启用autojump" class="headerlink" title="启用autojump"></a>启用autojump</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">chmod 755 /usr/share/autojump/autojump.bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果使用bash:</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"source /usr/share/autojump/autojump.bash"</span> &gt;&gt; ~/.bashrc &amp;&amp; <span class="built_in">source</span> ~/.bashrc</span><br><span class="line"><span class="comment"># 如果使用zsh:</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"source /usr/share/autojump/autojump.zsh"</span> &gt;&gt; ~/.zshrc &amp;&amp; <span class="built_in">source</span> ~/.zshrc</span><br></pre></td></tr></table></figure>
+<h4 id="使用autojump"><a href="#使用autojump" class="headerlink" title="使用autojump"></a>使用autojump</h4><p>假如我曾经访问过<code>/mnt/c/Users/user/gaianote.github.io</code>，那么直接执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">j gaianote <span class="comment"># 全称或者部分名称</span></span><br></pre></td></tr></table></figure>
+<p>便可以快捷的跳转到相应的目录了</p>
+<h2 id="zsh-与-antigen"><a href="#zsh-与-antigen" class="headerlink" title="zsh 与 antigen"></a>zsh 与 antigen</h2><blockquote>
+<p>目前常用的 Linux 系统和 OS X 系统的默认 Shell 都是 bash，但是真正强大的 Shell 是深藏不露的 zsh， 这货绝对是马车中的跑车，跑车中的飞行车，史称『终极 Shell』，但是由于配置过于复杂，所以初期无人问津，很多人跑过来看看 zsh 的配置指南，什么都不说转身就走了。直到有一天，国外有个穷极无聊的程序员开发出了一个能够让你快速上手的zsh项目，叫做 <a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">oh my zsh</a>这玩意就像「X天叫你学会 C++」系列，可以让你神功速成，而且是真的。</p>
+</blockquote>
+<blockquote>
+<p>但是oh my zsh 仍然需要很多配置,如果希望更简单的使用，推荐使用zsh 的包管理器： <a href="https://github.com/zsh-users/antigen" target="_blank" rel="noopener">antigen</a>来管理所有功能</p>
+</blockquote>
+<h3 id="安装zsh并启用"><a href="#安装zsh并启用" class="headerlink" title="安装zsh并启用"></a>安装zsh并启用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get -y install zsh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置终端的 shell 环境默认为 zsh，输入以下命令(需要重启)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加 sudo 是修改 root 帐号的默认 shell</span></span><br><span class="line">chsh -s `<span class="built_in">which</span> zsh`</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果上面命令无效，修改 ~/.bashrc 在开头输入：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if [ -t 1 ]; then</span><br><span class="line">    exec zsh</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<h3 id="安装antigen并启用"><a href="#安装antigen并启用" class="headerlink" title="安装antigen并启用"></a>安装antigen并启用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -L git.io/antigen &gt; antigen.zsh</span><br><span class="line"><span class="comment"># 修改配置 ~/.zshrc（如果切换帐号后无法使用 zsh 则把该用户的配置文件再配一遍）</span></span><br><span class="line">curl -L https://raw.githubusercontent.com/skywind3000/vim/master/etc/zshrc.zsh &gt; ~/.zshrc</span><br><span class="line"><span class="comment"># 使用 zsh 主题 robbyrussell</span></span><br><span class="line">antigen theme robbyrussell</span><br></pre></td></tr></table></figure>
+<p>通常我们希望默认启用antigen theme,而不是每次打开终端都需要重新设置,此时只需要<code>vi ~/.zshrc</code>:在设置文件<code>antigen apply</code>之前添加一行<code>antigen theme robbyrussell</code>即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">antigen theme robbyrussell</span><br><span class="line"># Tell Antigen that you&apos;re done.</span><br><span class="line">antigen apply</span><br></pre></td></tr></table></figure>
+<p>更多的主题可以到<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/themes" target="_blank" rel="noopener">oh-my-zsh</a>项目中查看</p>
+<h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>输入zsh,启动zsh时会提示:</p>
+<p>zsh compinit: insecure directories, run compaudit for list.<br>Ignore insecure directories and continue [y] or abort compinit [n]?</p>
+<p>在<a href="https://stackoverflow.com/questions/13762280/zsh-compinit-insecure-directories" target="_blank" rel="noopener">stackoverflow</a>中找到了解决办法：</p>
+<ul>
+<li>setting the current user as the owner of all the directories/subdirectories/files in cause:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compaudit | xargs chown -R <span class="string">"<span class="variable">$(whoami)</span>"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>removing write permissions for group/others for the files in cause:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compaudit | xargs chmod go-w</span><br></pre></td></tr></table></figure>
+<h2 id="终端Hyper"><a href="#终端Hyper" class="headerlink" title="终端Hyper"></a>终端<a href="https://hyper.is/" target="_blank" rel="noopener">Hyper</a></h2><p>windows下比较出名的终端当属cmder了，但是我在使用过程中遇到许多问题，最主要的一个就是复制多行文本时,会变成一行。机缘巧合下了解了hyper，尝试几次后便喜欢上了这款终端。</p>
+<h3 id="设置默认打开bash而不是win-cmd"><a href="#设置默认打开bash而不是win-cmd" class="headerlink" title="设置默认打开bash而不是win cmd"></a>设置默认打开bash而不是win cmd</h3><ol>
+<li><p>选择<code>≡</code> -&gt; <code>Edit</code> -&gt; <code>Prefrence</code>打开配置文件</p>
+</li>
+<li><p>找到以下文字，将<code>shell:&#39;&#39;</code>改为<code>&#39;C:\\Windows\\System32\\bash.exe&#39;</code></p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// Windows</span><br><span class="line">// - Make sure to use a full path if the binary name doesn&apos;t work</span><br><span class="line">// - Remove `--login` in shellArgs</span><br><span class="line">//</span><br><span class="line">// Bash on Windows</span><br><span class="line">// - Example: `C:\\Windows\\System32\\bash.exe`</span><br><span class="line">//</span><br><span class="line">// PowerShell on Windows</span><br><span class="line">// - Example: `C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe`</span><br><span class="line">shell: &apos;C:\\Windows\\System32\\bash.exe&apos;,</span><br></pre></td></tr></table></figure>
+<h3 id="设置默认打开路径"><a href="#设置默认打开路径" class="headerlink" title="设置默认打开路径"></a>设置默认打开路径</h3><p>在linux系统中，<code>.bashrc</code>的第一行添加<code>cd ~</code>即可</p>
+<h3 id="windows子系统下ls难看的底色问题"><a href="#windows子系统下ls难看的底色问题" class="headerlink" title="windows子系统下ls难看的底色问题"></a>windows子系统下ls难看的底色问题</h3><p>ls 颜色设置一个在实际使用中一个比较困扰我的问题是在bash on windows这边，使用ls显示的目录大都有很难看的底色；而对于正常的linux环境下，则没有这个问题；</p>
+<p>这个的原因其实是因为windows的目录在linux这边的权限不同，导致windows的目录在ls的默认颜色中就应该有那种底色；所以只要修改环境变量<code>$LS_COLORS</code>就可以了</p>
+<p>具体的不同：在windows下，目录都是<code>ow</code>，即<code>Directory that is other-writable (o+w) and not sticky</code>；而正常linux系统下的目录都是<code>di</code><br>默认的<code>$LS_COLORS</code>如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:</span><br></pre></td></tr></table></figure>
+<p>可以看到其中<code>ow</code>的配色是<code>34;42</code>,其中那个42就是指定颜色的底色的意思，我们只要在配置中删掉它就可以啦~修改方式，还是在<code>~/.bashrc</code>文件里加上相关设置，把它放到开头,然后执行source命令就可以了=，=我的修改示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># for ls colors</span><br><span class="line">LS_COLORS=&quot;rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=01;34:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:&quot;</span><br><span class="line">export LS_COLORS</span><br></pre></td></tr></table></figure>
+<h4 id="样式列表"><a href="#样式列表" class="headerlink" title="样式列表"></a>样式列表</h4><p><strong>样式</strong>：</p>
+<p>00 — Normal (no color, no bold)<br>01 — Bold    //粗体</p>
+<p><strong>文字颜色</strong></p>
+<p>30 — Black   //黑色<br>31 — Red     //红色<br>32 — Green   //绿色<br>33 — Yellow  //黄色<br>34 — Blue    //蓝色<br>35 — Magenta //洋红色<br>36 — Cyan    //蓝绿色<br>37 — White   //白色</p>
+<p><strong>背景颜色</strong></p>
+<p>40 — Black<br>41 — Red<br>42 — Green<br>43 — Yellow<br>44 — Blue<br>45 — Magenta<br>46 — Cyan<br>47 – White</p>
+<p>白色：    表示普通文件<br>蓝色：    表示目录<br>绿色：    表示可执行文件<br>红色：    表示压缩文件<br>蓝绿色：  链接文件<br>红色闪烁：表示链接的文件有问题<br>黄色：    表示设备文件<br>灰色：    表示其他文件</p>
+<h3 id="文字大小"><a href="#文字大小" class="headerlink" title="文字大小"></a>文字大小</h3><p>最新版本(截止至1808月)的hyper有个bug,使用插件verminal的时候无法改变fontSize，字体显得非常小，删掉它之后就可以正常工作了。</p>
+<p><img src="/images/2018-08-16_19-46-48.png" alt="img"></p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a href="https://github.com/oneone1995/blog/issues/6" target="_blank" rel="noopener">Windows Subsystem for Linux使用全记录</a><br><a href="https://cibifang.com/win10%E7%BB%88%E7%AB%AF%E4%BC%98%E5%8C%96-%E9%AB%98%E9%A2%9C%E5%80%BCwindows%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7hyper%E5%85%A8%E9%9D%A2%E4%BB%8B%E7%BB%8D/" target="_blank" rel="noopener">windows命令行工具 Hyper全面介绍</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/windows-linux/" rel="tag"># windows linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/15/linux/3.基本运维/在ubantu16-04上搭建shadowsocks服务/" rel="next" title="在ubantu16.04上搭建shadowsocks服务">
+                <i class="fa fa-chevron-left"></i> 在ubantu16.04上搭建shadowsocks服务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/17/windows/在macOS和Windows上如何同时操作多个文件夹中的文件/" rel="prev" title="在macOS和Windows上如何同时操作多个文件夹中的文件">
+                在macOS和Windows上如何同时操作多个文件夹中的文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux子系统安装步骤："><span class="nav-number">1.</span> <span class="nav-text">linux子系统安装步骤：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WSL与Windows的互操作性"><span class="nav-number">2.</span> <span class="nav-text">WSL与Windows的互操作性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从WSL运行Windows程序"><span class="nav-number">2.1.</span> <span class="nav-text">从WSL运行Windows程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从WSL修改Windows文件"><span class="nav-number">2.2.</span> <span class="nav-text">从WSL修改Windows文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装并使用autojump"><span class="nav-number">2.3.</span> <span class="nav-text">安装并使用autojump</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在Linux上安装autojump"><span class="nav-number">2.3.1.</span> <span class="nav-text">在Linux上安装autojump</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启用autojump"><span class="nav-number">2.3.2.</span> <span class="nav-text">启用autojump</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用autojump"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用autojump</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zsh-与-antigen"><span class="nav-number">3.</span> <span class="nav-text">zsh 与 antigen</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装zsh并启用"><span class="nav-number">3.1.</span> <span class="nav-text">安装zsh并启用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装antigen并启用"><span class="nav-number">3.2.</span> <span class="nav-text">安装antigen并启用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些问题"><span class="nav-number">3.3.</span> <span class="nav-text">一些问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终端Hyper"><span class="nav-number">4.</span> <span class="nav-text">终端Hyper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置默认打开bash而不是win-cmd"><span class="nav-number">4.1.</span> <span class="nav-text">设置默认打开bash而不是win cmd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置默认打开路径"><span class="nav-number">4.2.</span> <span class="nav-text">设置默认打开路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#windows子系统下ls难看的底色问题"><span class="nav-number">4.3.</span> <span class="nav-text">windows子系统下ls难看的底色问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样式列表"><span class="nav-number">4.3.1.</span> <span class="nav-text">样式列表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文字大小"><span class="nav-number">4.4.</span> <span class="nav-text">文字大小</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-number">5.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

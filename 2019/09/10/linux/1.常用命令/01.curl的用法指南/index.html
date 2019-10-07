@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 简介curl 是常用的命令行工具，用来请求 Web 服务器。它的名字就是客户端（client）的 URL 工具的意思。它的功能非常强大，命令行参数多达几十种。如果熟练的话，完全可以取代 Postman 这一类的图形界面工具。">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="curl的用法指南">
+<meta property="og:url" content="http://gaianote.github.io/2019/09/10/linux/1.常用命令/01.curl的用法指南/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="1. 简介curl 是常用的命令行工具，用来请求 Web 服务器。它的名字就是客户端（client）的 URL 工具的意思。它的功能非常强大，命令行参数多达几十种。如果熟练的话，完全可以取代 Postman 这一类的图形界面工具。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.wangbase.com/blogimg/asset/201909/bg2019090501.jpg">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.058Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="curl的用法指南">
+<meta name="twitter:description" content="1. 简介curl 是常用的命令行工具，用来请求 Web 服务器。它的名字就是客户端（client）的 URL 工具的意思。它的功能非常强大，命令行参数多达几十种。如果熟练的话，完全可以取代 Postman 这一类的图形界面工具。">
+<meta name="twitter:image" content="https://www.wangbase.com/blogimg/asset/201909/bg2019090501.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2019/09/10/linux/1.常用命令/01.curl的用法指南/">
+
+
+
+
+
+  <title>curl的用法指南 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/09/10/linux/1.常用命令/01.curl的用法指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">curl的用法指南</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-10T13:22:36+00:00">
+                2019-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>curl 是常用的命令行工具，用来请求 Web 服务器。它的名字就是客户端（client）的 URL 工具的意思。它的功能非常强大，命令行参数多达几十种。如果熟练的话，完全可以取代 Postman 这一类的图形界面工具。</p>
+<p><img src="https://www.wangbase.com/blogimg/asset/201909/bg2019090501.jpg" alt="img"></p>
+<a id="more"></a>
+<p>本文介绍它的主要命令行参数，作为日常的参考，方便查阅。内容主要翻译自<a href="https://catonmat.net/cookbooks/curl" target="_blank" rel="noopener">《curl cookbook》</a>。为了节约篇幅，下面的例子不包括运行时的输出，初学者可以先看我以前写的<a href="http://www.ruanyifeng.com/blog/2011/09/curl.html" target="_blank" rel="noopener">《curl 初学者教程》</a>。</p>
+<h2 id="2-GET-请求"><a href="#2-GET-请求" class="headerlink" title="2. GET 请求"></a>2. GET 请求</h2><p>不带有任何参数时，curl 就是发出 GET 请求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令向<code>www.example.com</code>发出 GET 请求，服务器返回的内容会在命令行输出。</p>
+<h2 id="3-指定用户代理-A"><a href="#3-指定用户代理-A" class="headerlink" title="3. 指定用户代理 -A"></a>3. 指定用户代理 <strong><code>-A</code></strong></h2><p><code>-A</code>参数指定客户端的用户代理标头，即<code>User-Agent</code>。curl 的默认用户代理字符串是<code>curl/[version]</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -A <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'</span> https://google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令将<code>User-Agent</code>改成 Chrome 浏览器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -A <span class="string">''</span> https://google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令会移除<code>User-Agent</code>标头。</p>
+<p>也可以通过<code>-H</code>参数直接指定标头，更改<code>User-Agent</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -H <span class="string">'User-Agent: php/1.0'</span> https://google.com</span><br></pre></td></tr></table></figure>
+<h2 id="4-指定cookie-b"><a href="#4-指定cookie-b" class="headerlink" title="4. 指定cookie -b"></a><strong>4. 指定cookie <code>-b</code></strong></h2><p><code>-b</code>参数用来向服务器发送 Cookie。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -b <span class="string">'foo=bar'</span> https://google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令会生成一个标头<code>Cookie: foo=bar</code>，向服务器发送一个名为<code>foo</code>、值为<code>bar</code>的 Cookie。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -b <span class="string">'foo1=bar'</span> -b <span class="string">'foo2=baz'</span> https://google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令发送两个 Cookie。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -b cookies.txt https://www.google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令读取本地文件<code>cookies.txt</code>，里面是服务器设置的 Cookie（参见<code>-c</code>参数），将其发送到服务器。</p>
+<h2 id="5-记录cookie-c"><a href="#5-记录cookie-c" class="headerlink" title="5. 记录cookie -c"></a><strong>5. 记录cookie <code>-c</code></strong></h2><p><code>-c</code>参数将服务器设置的 Cookie 写入一个文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -c cookies.txt https://www.google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令将服务器的 HTTP 回应所设置 Cookie 写入文本文件<code>cookies.txt</code>。</p>
+<h2 id="6-post数据体-d"><a href="#6-post数据体-d" class="headerlink" title="6. post数据体 -d"></a><strong>6. post数据体 <code>-d</code></strong></h2><p><code>-d</code>参数用于发送 POST 请求的数据体。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl -d<span class="string">'login=emma＆password=123'</span>-X POST https://google.com/login</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ curl -d <span class="string">'login=emma'</span> -d <span class="string">'password=123'</span> -X POST  https://google.com/login</span><br></pre></td></tr></table></figure>
+<p>使用<code>-d</code>参数以后，HTTP 请求会自动加上标头<code>Content-Type : application/x-www-form-urlencoded</code>。并且会自动将请求转为 POST 方法，因此可以省略<code>-X POST</code>。</p>
+<p><code>-d</code>参数可以读取本地文本文件的数据，向服务器发送。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -d <span class="string">'@data.txt'</span> https://google.com/login</span><br></pre></td></tr></table></figure>
+<p>上面命令读取<code>data.txt</code>文件的内容，作为数据体向服务器发送。</p>
+<p><code>--data-urlencode</code>参数等同于<code>-d</code>，发送 POST 请求的数据体，区别在于会自动将发送的数据进行 URL 编码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --data-urlencode <span class="string">'comment=hello world'</span> https://google.com/login</span><br></pre></td></tr></table></figure>
+<p>上面代码中，发送的数据<code>hello world</code>之间有一个空格，需要进行 URL 编码。</p>
+<h2 id="7-设置-HTTP-的标头Referer-e"><a href="#7-设置-HTTP-的标头Referer-e" class="headerlink" title="7. 设置 HTTP 的标头Referer-e"></a><strong>7. 设置 HTTP 的标头Referer<code>-e</code></strong></h2><p><code>-e</code>参数用来设置 HTTP 的标头<code>Referer</code>，表示请求的来源。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -e <span class="string">'https://google.com?q=example'</span> https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令将<code>Referer</code>标头设为<code>https://google.com?q=example</code>。</p>
+<p><code>-H</code>参数可以通过直接添加标头<code>Referer</code>，达到同样效果。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -H <span class="string">'Referer: https://google.com?q=example'</span> https://www.example.com</span><br></pre></td></tr></table></figure>
+<h2 id="8-上传二进制文件-F"><a href="#8-上传二进制文件-F" class="headerlink" title="8. 上传二进制文件 -F"></a><strong>8. 上传二进制文件 <code>-F</code></strong></h2><p><code>-F</code>参数用来向服务器上传二进制文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -F <span class="string">'file=@photo.png'</span> https://google.com/profile</span><br></pre></td></tr></table></figure>
+<p>上面命令会给 HTTP 请求加上标头<code>Content-Type: multipart/form-data</code>，然后将文件<code>photo.png</code>作为<code>file</code>字段上传。</p>
+<p><code>-F</code>参数可以指定 MIME 类型。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -F <span class="string">'file=@photo.png;type=image/png'</span> https://google.com/profile</span><br></pre></td></tr></table></figure>
+<p>上面命令指定 MIME 类型为<code>image/png</code>，否则 curl 会把 MIME 类型设为<code>application/octet-stream</code>。</p>
+<p><code>-F</code>参数也可以指定文件名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -F <span class="string">'file=@photo.png;filename=me.png'</span> https://google.com/profile</span><br></pre></td></tr></table></figure>
+<p>上面命令中，原始文件名为<code>photo.png</code>，但是服务器接收到的文件名为<code>me.png</code>。</p>
+<h2 id="9-构造-URL-的查询字符串-G"><a href="#9-构造-URL-的查询字符串-G" class="headerlink" title="9.构造 URL 的查询字符串 -G"></a><strong>9.构造 URL 的查询字符串 <code>-G</code></strong></h2><p><code>-G</code>参数用来构造 URL 的查询字符串。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -G -d <span class="string">'q=kitties'</span> -d <span class="string">'count=20'</span> https://google.com/search</span><br></pre></td></tr></table></figure>
+<p>上面命令会发出一个 GET 请求，实际请求的 URL 为<code>https://google.com/search?q=kitties&amp;count=20</code>。如果省略<code>--G</code>，会发出一个 POST 请求。</p>
+<p>如果数据需要 URL 编码，可以结合<code>--data--urlencode</code>参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -G --data-urlencode <span class="string">'comment=hello world'</span> https://www.example.com</span><br></pre></td></tr></table></figure>
+<h2 id="10-添加-HTTP-请求的标头-H"><a href="#10-添加-HTTP-请求的标头-H" class="headerlink" title="10. 添加 HTTP 请求的标头 -H"></a><strong>10. 添加 HTTP 请求的标头 <code>-H</code></strong></h2><p><code>-H</code>参数添加 HTTP 请求的标头。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -H <span class="string">'Accept-Language: en-US'</span> https://google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令添加 HTTP 标头<code>Accept-Language: en-US</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -H <span class="string">'Accept-Language: en-US'</span> -H <span class="string">'Secret-Message: xyzzy'</span> https://google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令添加两个 HTTP 标头。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -d <span class="string">'&#123;"login": "emma", "pass": "123"&#125;'</span> -H <span class="string">'Content-Type: application/json'</span> https://google.com/login</span><br></pre></td></tr></table></figure>
+<p>上面命令添加 HTTP 请求的标头是<code>Content-Type: application/json</code>，然后用<code>-d</code>参数发送 JSON 数据。</p>
+<h2 id="11-打印出服务器回应的-HTTP-标头-i"><a href="#11-打印出服务器回应的-HTTP-标头-i" class="headerlink" title="11. 打印出服务器回应的 HTTP 标头 -i"></a><strong>11. 打印出服务器回应的 HTTP 标头 <code>-i</code></strong></h2><p><code>-i</code>参数打印出服务器回应的 HTTP 标头。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -i https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令收到服务器回应后，先输出服务器回应的标头，然后空一行，再输出网页的源码。</p>
+<h2 id="12-打印-服务器返回的-HTTP-标头-I"><a href="#12-打印-服务器返回的-HTTP-标头-I" class="headerlink" title="12. 打印 服务器返回的 HTTP 标头 -I"></a><strong>12. 打印 服务器返回的 HTTP 标头 <code>-I</code></strong></h2><p><code>-I</code>参数向服务器发出 HEAD 请求，然会将服务器返回的 HTTP 标头打印出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -I https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令输出服务器对 HEAD 请求的回应。</p>
+<p><code>--head</code>参数等同于<code>-I</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --head https://www.example.com</span><br></pre></td></tr></table></figure>
+<h2 id="13-过-SSL-检测-k"><a href="#13-过-SSL-检测-k" class="headerlink" title="13. 过 SSL 检测 -k"></a><strong>13. 过 SSL 检测 <code>-k</code></strong></h2><p><code>-k</code>参数指定跳过 SSL 检测。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -k https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令不会检查服务器的 SSL 证书是否正确。</p>
+<h2 id="14-跟随服务器的重定向-L"><a href="#14-跟随服务器的重定向-L" class="headerlink" title="14. 跟随服务器的重定向 -L"></a><strong>14. 跟随服务器的重定向 <code>-L</code></strong></h2><p><code>-L</code>参数会让 HTTP 请求跟随服务器的重定向。curl 默认不跟随重定向。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -L -d <span class="string">'tweet=hi'</span> https://api.twitter.com/tweet</span><br></pre></td></tr></table></figure>
+<h2 id="15-限制带宽-limit-rate"><a href="#15-限制带宽-limit-rate" class="headerlink" title="15. 限制带宽 --limit-rate"></a><strong>15. 限制带宽 <code>--limit-rate</code></strong></h2><p><code>--limit-rate</code>用来限制 HTTP 请求和回应的带宽，模拟慢网速的环境。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --<span class="built_in">limit</span>-rate 200k https://google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令将带宽限制在每秒 200K 字节。</p>
+<h2 id="16-将回应保存为文件-o"><a href="#16-将回应保存为文件-o" class="headerlink" title="16. 将回应保存为文件 -o"></a><strong>16. 将回应保存为文件 <code>-o</code></strong></h2><p><code>-o</code>参数将服务器的回应保存成文件，等同于<code>wget</code>命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -o example.html https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令将<code>www.example.com</code>保存成<code>example.html</code>。</p>
+<h2 id="17-将回应保存为文件-O"><a href="#17-将回应保存为文件-O" class="headerlink" title="17. 将回应保存为文件 -O"></a><strong>17. 将回应保存为文件 <code>-O</code></strong></h2><p><code>-O</code>参数将服务器回应保存成文件，并将 URL 的最后部分当作文件名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -O https://www.example.com/foo/bar.html</span><br></pre></td></tr></table></figure>
+<p>上面命令将服务器回应保存成文件，文件名为<code>bar.html</code>。</p>
+<h2 id="18-不输出错误和进度信息-s"><a href="#18-不输出错误和进度信息-s" class="headerlink" title="18. 不输出错误和进度信息 -s"></a><strong>18. 不输出错误和进度信息 <code>-s</code></strong></h2><p><code>-s</code>参数将不输出错误和进度信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -s https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令一旦发生错误，不会显示错误信息。不发生错误的话，会正常显示运行结果。</p>
+<p>如果想让 curl 不产生任何输出，可以使用下面的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -s -o /dev/null https://google.com</span><br></pre></td></tr></table></figure>
+<h2 id="19-只输出错误信息-S"><a href="#19-只输出错误信息-S" class="headerlink" title="19. 只输出错误信息 -S"></a><strong>19. 只输出错误信息 <code>-S</code></strong></h2><p><code>-S</code>参数指定只输出错误信息，通常与<code>-s</code>一起使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -sS -o /dev/null https://google.com</span><br></pre></td></tr></table></figure>
+<p>上面命令没有任何输出，除非发生错误。</p>
+<h2 id="20-用户名与密码-u"><a href="#20-用户名与密码-u" class="headerlink" title="20. 用户名与密码 -u"></a><strong>20. 用户名与密码 <code>-u</code></strong></h2><p><code>-u</code>参数用来设置服务器认证的用户名和密码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -u <span class="string">'bob:12345'</span> https://google.com/login</span><br></pre></td></tr></table></figure>
+<p>上面命令设置用户名为<code>bob</code>，密码为<code>12345</code>，然后将其转为 HTTP 标头<code>Authorization: Basic Ym9iOjEyMzQ1</code>。</p>
+<p>curl 能够识别 URL 里面的用户名和密码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://bob:12345@google.com/login</span><br></pre></td></tr></table></figure>
+<p>上面命令能够识别 URL 里面的用户名和密码，将其转为上个例子里面的 HTTP 标头。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -u <span class="string">'bob'</span> https://google.com/login</span><br></pre></td></tr></table></figure>
+<p>上面命令只设置了用户名，执行后，curl 会提示用户输入密码。</p>
+<h2 id="21-输出详情-v"><a href="#21-输出详情-v" class="headerlink" title="21. 输出详情 -v"></a><strong>21. 输出详情 <code>-v</code></strong></h2><p><code>-v</code>参数输出通信的整个过程，用于调试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v https://www.example.com</span><br></pre></td></tr></table></figure>
+<p><code>--trace</code>参数也可以用于调试，还会输出原始的二进制数据。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl --trace - https://www.example.com</span><br></pre></td></tr></table></figure>
+<h2 id="22-指定代理-x"><a href="#22-指定代理-x" class="headerlink" title="22. 指定代理 -x"></a><strong>22. 指定代理 <code>-x</code></strong></h2><p><code>-x</code>参数指定 HTTP 请求的代理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -x socks5://james:cats@myproxy.com:8080 https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令指定 HTTP 请求通过<code>myproxy.com:8080</code>的 socks5 代理发出。</p>
+<p>如果没有指定代理协议，默认为 HTTP。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -x james:cats@myproxy.com:8080 https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令中，请求的代理使用 HTTP 协议。</p>
+<h2 id="23-指定请求方法-X"><a href="#23-指定请求方法-X" class="headerlink" title="23. 指定请求方法 -X"></a><strong>23. 指定请求方法 <code>-X</code></strong></h2><p><code>-X</code>参数指定 HTTP 请求的方法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X POST https://www.example.com</span><br></pre></td></tr></table></figure>
+<p>上面命令对<code>https://www.example.com</code>发出 POST 请求。</p>
+<h2 id="参考连接"><a href="#参考连接" class="headerlink" title="参考连接"></a>参考连接</h2><p><a href="&quot;http://www.ruanyifeng.com/blog/2019/09/curl-reference.html&quot;">curl 的用法指南</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/29/python/4.python使用技巧/一句话启动httpwebserver/" rel="next" title="python一行命令启动http webserver">
+                <i class="fa fa-chevron-left"></i> python一行命令启动http webserver
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/11/linux/1.常用命令/权限管理-chmod/" rel="prev" title="linux权限管理 - chmod命令">
+                linux权限管理 - chmod命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-简介"><span class="nav-number">1.</span> <span class="nav-text">1. 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-GET-请求"><span class="nav-number">2.</span> <span class="nav-text">2. GET 请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-指定用户代理-A"><span class="nav-number">3.</span> <span class="nav-text">3. 指定用户代理 -A</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-指定cookie-b"><span class="nav-number">4.</span> <span class="nav-text">4. 指定cookie -b</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-记录cookie-c"><span class="nav-number">5.</span> <span class="nav-text">5. 记录cookie -c</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-post数据体-d"><span class="nav-number">6.</span> <span class="nav-text">6. post数据体 -d</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-设置-HTTP-的标头Referer-e"><span class="nav-number">7.</span> <span class="nav-text">7. 设置 HTTP 的标头Referer-e</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-上传二进制文件-F"><span class="nav-number">8.</span> <span class="nav-text">8. 上传二进制文件 -F</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-构造-URL-的查询字符串-G"><span class="nav-number">9.</span> <span class="nav-text">9.构造 URL 的查询字符串 -G</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-添加-HTTP-请求的标头-H"><span class="nav-number">10.</span> <span class="nav-text">10. 添加 HTTP 请求的标头 -H</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-打印出服务器回应的-HTTP-标头-i"><span class="nav-number">11.</span> <span class="nav-text">11. 打印出服务器回应的 HTTP 标头 -i</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-打印-服务器返回的-HTTP-标头-I"><span class="nav-number">12.</span> <span class="nav-text">12. 打印 服务器返回的 HTTP 标头 -I</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-过-SSL-检测-k"><span class="nav-number">13.</span> <span class="nav-text">13. 过 SSL 检测 -k</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-跟随服务器的重定向-L"><span class="nav-number">14.</span> <span class="nav-text">14. 跟随服务器的重定向 -L</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-限制带宽-limit-rate"><span class="nav-number">15.</span> <span class="nav-text">15. 限制带宽 --limit-rate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-将回应保存为文件-o"><span class="nav-number">16.</span> <span class="nav-text">16. 将回应保存为文件 -o</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-将回应保存为文件-O"><span class="nav-number">17.</span> <span class="nav-text">17. 将回应保存为文件 -O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-不输出错误和进度信息-s"><span class="nav-number">18.</span> <span class="nav-text">18. 不输出错误和进度信息 -s</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-只输出错误信息-S"><span class="nav-number">19.</span> <span class="nav-text">19. 只输出错误信息 -S</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-用户名与密码-u"><span class="nav-number">20.</span> <span class="nav-text">20. 用户名与密码 -u</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-输出详情-v"><span class="nav-number">21.</span> <span class="nav-text">21. 输出详情 -v</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-指定代理-x"><span class="nav-number">22.</span> <span class="nav-text">22. 指定代理 -x</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-指定请求方法-X"><span class="nav-number">23.</span> <span class="nav-text">23. 指定请求方法 -X</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考连接"><span class="nav-number">24.</span> <span class="nav-text">参考连接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

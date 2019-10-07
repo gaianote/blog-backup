@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="FIO是测试IOPS的非常好的工具，用来对硬件进行压力测试和验证，支持13种不同的I/O引擎">
+<meta property="og:type" content="article">
+<meta property="og:title" content="磁盘测试工具之fio">
+<meta property="og:url" content="http://gaianote.github.io/2018/07/31/软件测试/磁盘测试工具之fio/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="FIO是测试IOPS的非常好的工具，用来对硬件进行压力测试和验证，支持13种不同的I/O引擎">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.348Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="磁盘测试工具之fio">
+<meta name="twitter:description" content="FIO是测试IOPS的非常好的工具，用来对硬件进行压力测试和验证，支持13种不同的I/O引擎">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2018/07/31/软件测试/磁盘测试工具之fio/">
+
+
+
+
+
+  <title>磁盘测试工具之fio | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2018/07/31/软件测试/磁盘测试工具之fio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">磁盘测试工具之fio</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T09:48:15+00:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>FIO是测试IOPS的非常好的工具，用来对硬件进行压力测试和验证，支持13种不同的I/O引擎</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>centos可以使用yum安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install fio</span><br></pre></td></tr></table></figure>
+<h2 id="命令行模式"><a href="#命令行模式" class="headerlink" title="命令行模式"></a>命令行模式</h2><p>安装完成后，使用命令行输入以下命令，便可以开始测试了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fio -filename=/tmp/test_randread -direct=1 -iodepth 1 -thread -rw=randread -ioengine=psync -bs=16k -size=2G -numjobs=10 -runtime=60 -group_reporting -name=mytest</span><br></pre></td></tr></table></figure>
+<p>以上命令的含义是随机读写：(可直接用，向磁盘写一个2G文件，10线程，随机读1分钟，给出结果)</p>
+<h2 id="Job-file模式"><a href="#Job-file模式" class="headerlink" title="Job file模式"></a>Job file模式</h2><p>需要测试多种情况下的多个job时，可以将所有配置参数写在一个配置文件当中，然后使用<code>fio config_file</code>方式运行即可。</p>
+<p>说明：</p>
+<ol>
+<li>配置文件划分为多个区域，每个区域的参数设置均作用于其下方的区域；</li>
+<li>global区域进行全局的参数配置；</li>
+<li>非特定名字的区域（fist_job）则被视为一个运行任务。</li>
+</ol>
+<p>配置文件 config_file 示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#-start job file-</span><br><span class="line">[global]</span><br><span class="line">ioengine=psync</span><br><span class="line">iodepth=1</span><br><span class="line">size=20g</span><br><span class="line">bs=4k</span><br><span class="line">direct=1</span><br><span class="line">runtime = 180</span><br><span class="line">filename=/dev/sdb1</span><br><span class="line">[fist_job]</span><br><span class="line">rw=write</span><br><span class="line">[second_job]</span><br><span class="line">rw=randwrite</span><br><span class="line">#-end job file-</span><br></pre></td></tr></table></figure>
+<h2 id="测试结果分析"><a href="#测试结果分析" class="headerlink" title="测试结果分析"></a>测试结果分析</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">fio-3.1</span><br><span class="line">Starting 10 threads</span><br><span class="line">Jobs: 10 (f=10): [r(10)][100.0%][r=2944KiB/s,w=0KiB/s][r=184,w=0 IOPS][eta 00m:00s]</span><br><span class="line">mytest: (groupid=0, jobs=10): err= 0: pid=345: Tue Jul 31 02:51:46 2018</span><br><span class="line">   read: IOPS=192, BW=3083KiB/s (3157kB/s)(181MiB/60061msec)</span><br><span class="line">    clat (usec): min=981, max=578165, avg=51855.31, stdev=54091.70</span><br><span class="line">     lat (usec): min=981, max=578166, avg=51857.14, stdev=54091.67</span><br><span class="line">    clat percentiles (msec):</span><br><span class="line">     |  1.00th=[    7],  5.00th=[    9], 10.00th=[   12], 20.00th=[   16],</span><br><span class="line">     | 30.00th=[   21], 40.00th=[   27], 50.00th=[   34], 60.00th=[   44],</span><br><span class="line">     | 70.00th=[   59], 80.00th=[   80], 90.00th=[  113], 95.00th=[  146],</span><br><span class="line">     | 99.00th=[  253], 99.50th=[  321], 99.90th=[  558], 99.95th=[  567],</span><br><span class="line">     | 99.99th=[  575]</span><br><span class="line">   bw (  KiB/s): min=   32, max=  673, per=10.00%, avg=308.35, stdev=102.75, samples=1200</span><br><span class="line">   iops        : min=    2, max=   42, avg=19.26, stdev= 6.42, samples=1200</span><br><span class="line">  lat (usec)   : 1000=0.01%</span><br><span class="line">  lat (msec)   : 2=0.35%, 4=0.03%, 10=6.73%, 20=22.14%, 50=35.07%</span><br><span class="line">  lat (msec)   : 100=22.67%, 250=11.95%, 500=0.86%, 750=0.19%</span><br><span class="line">  cpu          : usr=0.05%, sys=0.18%, ctx=11629, majf=0, minf=40</span><br><span class="line">  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, &gt;=64=0.0%</span><br><span class="line">     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%</span><br><span class="line">     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%</span><br><span class="line">     issued rwt: total=11573,0,0, short=0,0,0, dropped=0,0,0</span><br><span class="line">     latency   : target=0, window=0, percentile=100.00%, depth=1</span><br><span class="line"></span><br><span class="line">Run status group 0 (all jobs):</span><br><span class="line">   READ: bw=3083KiB/s (3157kB/s), 3083KiB/s-3083KiB/s (3157kB/s-3157kB/s), io=181MiB (190MB), run=60061-60061msec</span><br><span class="line"></span><br><span class="line">Disk stats (read/write):</span><br><span class="line">  sda: ios=11540/10, merge=0/6, ticks=596750/360, in_queue=597720, util=99.95%</span><br></pre></td></tr></table></figure>
+<ul>
+<li>bw：磁盘的吞吐量，这个是顺序读写考察的重点 。</li>
+<li>iops：磁盘的每秒读写次数，这个是随机读写考察的重点。</li>
+<li>runt：线程运行时长。</li>
+<li>slat（usec）：提交延迟，单位是微秒，向内核提交一个IO请求所需的时间。</li>
+<li>clat（usec）：完成延迟，它是提交到内核和IO完成经过的时间，不包括提交延迟。</li>
+<li>min：最快时间；max：最慢时间；avg：平均时间；stdev：</li>
+<li>lat:一个设置数据块大小的读/写请求从提交到完成所需的时间。</li>
+<li>clat percentiles（usec）:完成时间的百分比分布，如大约99%的请求是在14毫秒之内完成。</li>
+<li>CPU：cpu使用率。</li>
+<li>issued:total=r=0/w=16777216   总共发出0个读请求，16777216个写请求。</li>
+</ul>
+<h2 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h2><h3 id="IO类型"><a href="#IO类型" class="headerlink" title="IO类型"></a>IO类型</h3><p><code>rw=str</code>,向文件发起的IO类型</p>
+<ul>
+<li><code>rw=read</code> 顺序读</li>
+<li><code>rw=write</code> 顺序写</li>
+<li><code>rw=randwrite</code> 随机写</li>
+<li><code>rw=randread</code> 随机读</li>
+<li><code>rw=rw</code> 顺序混合读写</li>
+<li><code>rw=randrw</code> 随机混合读写</li>
+</ul>
+<h3 id="单次IO的数据大小"><a href="#单次IO的数据大小" class="headerlink" title="单次IO的数据大小"></a>单次IO的数据大小</h3><p>产生的IO单元的大小，可以是一个孤立的值，也可以是一个范围。</p>
+<p><code>bs=int</code>,单次IO的block size,默认为4k。如果是单个值的话，将会对读写都生效。如果是一个逗号，再跟一个int值的话，则是仅对于写有效。</p>
+<ul>
+<li><code>bs = 8k</code> 读写都使用8k的块</li>
+<li><code>bs = 4k,8k</code> 读使用4k的块，写使用8k的块</li>
+<li><code>bs = ,8k</code>   使得写采用8k的块，读采用默认的值。</li>
+</ul>
+<h3 id="IO数据总量"><a href="#IO数据总量" class="headerlink" title="IO数据总量"></a>IO数据总量</h3><p><code>size=int</code>,将会读/写多少数据</p>
+<p>这个job IO总共要传输的数据的大小。FIO将会执行到所有的数据传输完成，除非设定了运行时间（runtime选项）。除非有特定的nrfiles选项和filesize选项被设置，fio将会在job定义的文件中平分这个大小。如果这个值不设置的话，fio将会使用这个文件或设备的总大小。如果这些文件不存在的话，size选项一定要给出。也可以给出一个1到100的百分比。e.g. size=20%，fio将会使用给定的文件或设备的20%的空间。</p>
+<h3 id="IO引擎"><a href="#IO引擎" class="headerlink" title="IO引擎"></a>IO引擎</h3><p><code>ioengine=str</code>,定义job向文件发起IO的方式。</p>
+<ul>
+<li><code>sync</code> 基本的read,write.lseek用来作定位</li>
+<li><code>psync</code> 基本的pread,pwrite</li>
+<li><code>vsync</code> 基本的readv,writev</li>
+<li><code>libaio</code> Linux专有的异步IO。Linux仅支持非buffered IO的队列行为。</li>
+<li><code>posixaio</code> glibc posix异步IO</li>
+<li><code>solarisaio</code> solaris独有的异步IO</li>
+<li><code>windowsaio</code> windows独有的异步IO</li>
+<li><code>mmap</code> 文件通过内存映射到用户空间，使用memcpy写入和读出数据</li>
+<li><code>splice</code> 使用splice和vmsplice在用户空间和内核之间传输数据</li>
+<li><code>syslet-rw</code> 使用syslet 系统调用来构造普通的read/write异步IO</li>
+<li><code>sg</code> SCSI generic sg v3 io.可以是使用SG_IO ioctl来同步，或是目标是一个sg字符设备，我们使用read和write执行异步IO</li>
+<li><code>null</code> 不传输任何数据，只是伪装成这样。主要用于训练使用fio，或是基本debug/test的目的。</li>
+<li><code>net</code> 根据给定的host:port通过网络传输数据。根据具体的协议，hostname,port,listen,filename这些选项将被用来说明建立哪种连接，协议选项将决定哪种协议被使用。</li>
+<li><code>netsplice</code> 像net，但是使用splic/vmsplice来映射数据和发送/接收数据。</li>
+<li><code>cpuio</code> 不传输任何的数据，但是要根据cpuload=和cpucycle=选项占用CPU周期.e.g. cpuload=85将使用job不做任何的实际IO，但要占用85%的CPU周期。在SMP机器上，使用numjobs=来获取需要的CPU，因为cpuload仅会载入单个CPU，然后占用需要的比例。</li>
+<li><code>guasi</code> GUASI IO引擎是一般的用于异步IO的用户空间异步系统调用接口</li>
+<li><code>rdma</code> RDMA I/O引擎支持RDMA内存语义（RDMA_WRITE/RDMA_READ）和通道主义(Send/Recv）用于InfiniBand,RoCE和iWARP协议</li>
+<li><code>external</code> 指明要调用一个外部的IO引擎（二进制文件）。e.g. ioengine=external:/tmp/foo.o将载入/tmp下的foo.o这个IO引擎</li>
+</ul>
+<h3 id="IO-depth"><a href="#IO-depth" class="headerlink" title="IO depth"></a>IO depth</h3><p><code>iodepth=int</code>,如果IO引擎是异步的，这个指定我们需要保持的队列深度</p>
+<p>默认对于每个文件来说是1，可以设置一个更大的值来提供并发度。iodepth大于1不会影响同步IO引擎（除非verify_async这个选项被设置）</p>
+<h3 id="IO类型-1"><a href="#IO类型-1" class="headerlink" title="IO类型"></a>IO类型</h3><p><code>direct=bool</code>,true,则标明采用non-buffered io.同O_DIRECT效果一样。ZFS和Solaris不支持direct io，在windows同步IO引擎不支持direct io<br><code>buffered=bool</code>,true,则标明采用buffered io。是direct的反义词，默认是true</p>
+<h3 id="job文件数量"><a href="#job文件数量" class="headerlink" title="job文件数量"></a>job文件数量</h3><p><code>nrfiles=int</code>,用于这个job的文件数目,默认为1,表示负载将分发到几个文件之中<br><code>openfiles=int</code>,在同一时间可以同时打开的文件数目，默认同nrfiles相等，可以设置小一些，来限制同时打开的文件数目。</p>
+<h3 id="线程数"><a href="#线程数" class="headerlink" title="线程数"></a>线程数</h3><p><code>numjobs=int</code>,创建大量的线程/进程来执行同一件事。我们将这样一系列的job，看作一个特定的group</p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><ul>
+<li><code>name=str</code>,job名，用于输出信息用的名字。如果不设置的话，fio输出信息时将采用job name，如果设置的话，将用设置的名字。在命令行中，这个参数有特殊的作用，标明一个新job的开始。</li>
+<li><code>description=str</code>,job的说明信息,在job运行的时候不起作用，只是在输出文件描述信息的时候才起作用。</li>
+<li><code>directory=str</code>,使用的文件的路径前缀，默认是./</li>
+<li><code>filename=str</code>,一般情况下，fio会根据job名，线程号，文件名来产生一个文件名。如果，想在多个job之间共享同一个文件的话，可以设定一个名字来代替默认的名字.如果ioengine是‘net’的话，文件名则是以这种格式=host,port,protocol.如果ioengine是基于文件的话，可以通过‘:’分割来设定一系列的文件。e.g. filename=/dev/sda:/dev/sdb 希望job打开/dev/sda和/dev/sdb作为两个工作文件。</li>
+<li><code>opendir=str</code>,让fio递归的添加目录下和子目录下的所有文件。</li>
+<li><p><code>lockfile=str</code>,fio在文件上执行IO之前默认是不锁文件的，这样的话，当有多个线程在此文件上执行IO的话，会造成结果的不一致。这个选项可以用来共享文件的负载，支持的锁类型：</p>
+<ul>
+<li>none 默认不使用锁</li>
+<li>exclusive 排它锁</li>
+<li>readwrite 读写锁</li>
+</ul>
+<p>在后面可以加一个数字后缀，如果设置的话，每一个线程将会执行这个数字指定的IO后才会放弃锁，因为锁的开销是比较大的，所以这种方式可以加速IO。</p>
+</li>
+<li><code>kb_base=int</code>,size换算单位，1000/1024,默认为1024</li>
+<li><code>randrepeat=bool</code>,对于随机IO负载，配置生成器的种子，使得路径是可以预估的，使得每次重复执行生成的序列是一样的。</li>
+<li><p><code>use_os_rand=bool</code>,fio可以使用操作系统的随机数产生器，也可以使用fio内部的随机数产生器（基于tausworthe），默认是采用fio内部的产生器,质量更好，速度更快。</p>
+</li>
+<li><p><code>fallocate=str</code>,如何准备测试文件</p>
+<ul>
+<li><code>none</code> 不执行预分配空间</li>
+<li><code>posix</code> 通过posix_fallocate()预分配空间</li>
+<li><code>keep</code> 通过fallocate()（设置FALLOC_FL_KEEP_SIZE）预分配空间</li>
+</ul>
+<p>0 none的别名,出于兼容性,1 posix的别名，出于兼容性，并不是在所有的平台上都有效，‘keep’仅在linux上有效，ZFS不支持。默认为‘posix’</p>
+</li>
+<li><code>fadvise_hint=bool</code>,默认fio将使用fadvise()来告知内核fio要产生的IO类型，如果不想告诉kernel来执行一些特定的IO类型的话，可行关闭这个选项。如果设置的话，fio将使用<code>POSIX_FADV_SEWUENTIAL</code>来作顺序IO，使用<code>POSIX_FADV_RANDOM</code>来做随机IO</li>
+<li><code>filesize=int</code>,单个文件的大小，可以是一个范围，在这种情况下，fio将会在一个范围内选择一个大小来决定单个文件大小，如果没有设置的话，所有的文件将会是同样的大小。</li>
+<li><code>fill_device=bool,fill_fs=bool</code>,填满空间直到达到终止条件ENOSPC，只对顺序写有意义。对于读负载，首行要填满挂载点，然后再启动IO，对于裸设备结点，这个设置则没有什么意义，因为，它的大小已被被文件系统知道了，此外写的超出文件将不会返回ENOSPC.</li>
+<li><code>blockalign=int,ba=int</code>,配置随机io的对齐边界。默认是与blocksize的配置一致，对于direct_io，最小为512b,因为它与依赖的硬件块大小，对于使用文件的随机map来说，这个选项不起作用。</li>
+<li><code>blocksize_range=irange,bsrange=irange</code>,不再采用单一的块大小，而是定义一个范围，fio将采用混合io块大小.IO单元大小一般是给定最小值的备数。同时应用于读写，当然也可以通过‘,’来隔开分别配置读写。</li>
+<li><p><code>bssplit=str</code>,可以更为精确的控制产生的block size.这个选项可以用来定义各个块大小所占的权重.格式是</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bssplit=blocksize/percentage;blocksize/percentage</span><br><span class="line">bssplit=4k/10:64k/50;32k/40</span><br></pre></td></tr></table></figure>
+<p>  产生的这样的负载：50% 64k的块，10% 4k的块, 40% 32k的块<br>  可以分别为读和写来设置</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bssplit=2k/50:4k/50,4k/90:8k/10</span><br></pre></td></tr></table></figure>
+<p>  产生这样的负载：读（50% 64k的块，50% 4k的块），写（90% 4k的块, 10% 8k的块）</p>
+</li>
+<li><p><code>blocksize_unaligned,bs_unaligned</code>,如果这个选项被设置的，在bsrange范围内的大小都可以产生，这个选项对于direct io没有作用，因为对于direct io至少需要扇区对齐。</p>
+</li>
+<li><code>zero_buffers</code>,如果这个选项设置的话，IO buffer全部位将被初始为0,如果没有置位的话，将会是随机数.</li>
+<li><code>refill_buffers</code>,如果这个选项设置的话，fio将在每次submit之后都会将重新填满IO buffer,默认都会在初始是填满，以后重复利用。这个选项只有在zero_buffers没有设置的话，这个选项才有作用。</li>
+<li><code>scramble_buffer=bool</code>,如果refilee_buffers成本太高的话，但是负载要求不使用重复数据块，设置这个选项的话，可以轻微的改动IO buffer内容，这种方法骗不过聪明的块压缩算法，但是可以骗过一些简单的算法。</li>
+<li><code>buffer_compress_percentage=int</code>,如果这个设置的话，fio将会尝试提供可以压缩到特定级别的Buffer内容。FIO是能完提供混合的0和随机数来实现的</li>
+<li><code>file_service_type=str</code>,fio切换job时，如何选择文件，支持下面的选项<ul>
+<li><code>random</code> 随机选择一个文件</li>
+<li><code>roundrobin</code> 循环使用打开的文件，默认</li>
+<li><code>sequential</code> 完成一个文件后，再移动到下一个文件<br>这个选项可以加后缀数字，标明切换到下一个新的频繁程度。<code>random:4</code> 每4次IO后，将会切换到一下随机的文件</li>
+</ul>
+</li>
+<li><code>iodepth_batch_submit=int,iodepth_batch=int</code>,这个定义了一次性提交几个IO，默认是1，意味着一旦准备好就提交IO，这个选项可以用来一次性批量提交IO</li>
+<li><code>iodepth_batch_complete=int</code>,这个选项定义了一次取回多少个IO，如果定义为1的话，意味着我们将向内核请求最小为1个IO.</li>
+<li><code>iodepth_low=int</code>,这个水位标志标明什么时候开始重新填充这个队列，默认是同iodepth是一样的，意味着，每时每刻都在尝试填满这个队列。如果iodepth设置为16，而iodepth设置为4的话，那么fio将等到depth下降到4才开始重新填充</li>
+<li><code>offset=int</code>,在文件特定的偏移开始读数据,在这个offset之前的数据将不会被使用，有效的文件大小=real_size-offset</li>
+<li><code>offset_increment=int</code>,如果这个选项被设置的话，实际的offset=offset+offset_increment * thread_number,线程号是从0开始的一个计数器，对于每一个job来说是递增的。这个选项对于几个job同时并行在不交界的地方操作一个文件是有用的。</li>
+<li><code>fsync=int</code>,如果写一个文件的话，每n次IO传输完block后，都会进行一次同步脏数据的操作。</li>
+<li><code>fdatasync=int</code>,同fsync，但是采用fdatasync()来同步数据，但不同步元数据</li>
+<li><code>sync_file_range=str:val</code>,对于每‘val’个写操作，将执行sync_file_range()。FIO将跟踪从上次sync_file_range()调用之扣的写范围，‘str’可以是以下的选择<br>  <code>wait_before SYNC_FILE_RANGE_WAIT_BEFORE</code><br>  <code>write SYNC_FILE_RANGE_WRITE</code><br>  <code>wait_after SYNC_FILE_RANGE_WAIT_AFTER</code><br>  示例：<code>sync_file_range=wait_before,write:8</code>,fio将在每8次写后使用<code>SYNC_FILE_RANGE_WAIT_BEFORE|SYNC_FILE_RANGE_WRITE</code></li>
+<li><code>overwrite=bool</code>,如果是true的话，写一个文件的话，将会覆盖已经存在的数据。如果文件不存在的话，它将会在写阶段开始的时候创建这个文件。</li>
+<li><code>end_fsync=bool</code>,如果是true的话，当job退出的话，fsync将会同步文件内容</li>
+<li><code>fsync_on_close=bool</code>,如果是true的话，关闭时，fio将会同步脏文件，不同于end_fsync的时，它将会在每个文件关闭时都会发生，而不是只在job结束时。</li>
+<li><code>rwmixread=int</code>,混合读写中，读占的百分比</li>
+<li><code>rwmixwrite=int</code>,混合读写中，写占的百分比；如果rwmixread=int和rwmixwrite=int同时使用的话并且相加不等于100%的话，第二个值将会覆盖第一个值。这可能要干扰比例的设定,如果要求fio来限制读和写到一定的比率。在果在这种情况下，那么分布会的有点的不同。</li>
+<li><code>norandommap</code>,一般情况下，fio在做随机IO时，将会覆盖文件的每一个block.如果这个选项设置的话，fio将只是获取一个新的随机offset,而不会查询过去的历史。这意味着一些块可能没有读或写，一些块可能要读/写很多次。在个选项与verify=互斥，并只有多个块大小（bsrange=）正在使用，因为fio只会记录完整的块的重写。</li>
+<li><code>nice=int</code>,根据给定的nice值来运行这个job</li>
+<li><code>prio=int</code>,设置job的优先级，linux将这个值限制在0-7之间，0是最高的。</li>
+<li><code>prioclass=int</code>,设置优先级等级。</li>
+<li><code>thinktime=int</code>,上一个IO完成之后，拖延x毫秒，然后跳到下一个。可以用来访真应用进行的处理。</li>
+<li><code>thinktime_spin=int</code>,只有在thinktime设置时才有效，在为了sleep完thinktime规定的时间之前，假装花费CPU时间来做一些与数据接收有关的事情。</li>
+<li><code>thinktime_blocks</code>,只有在thinktime设置时才有效，控制在等等‘thinktime’的时间内产生多少个block，如果没有设置的话，这个值将是1，每次block后，都会将等待‘thinktime’us。<ul>
+<li><code>rate=int</code>,限制job的带宽。</li>
+<li><code>rate=500k</code>,限制读和写到500k/s</li>
+<li><code>rate=1m,500k</code>,限制读到1MB/s，限制写到500KB/s</li>
+<li><code>rate=,500k</code> , 限制写到500kb/s</li>
+<li><code>rate=500k</code>, 限制读到500KB/s</li>
+</ul>
+</li>
+<li><code>ratemin=int</code>,告诉fio尽最在能力来保证这个最小的带宽，如果不能满足这个需要，将会导致程序退出。</li>
+<li><code>rate_iops=int</code>,将带宽限制到固定数目的IOPS，基本上同rate一样，只是独立于带宽，如果job是指定了一个block size范围，而不是一个固定的值的话，最小blocksize将会作为标准。</li>
+<li><code>rate_iops_min=int</code>,如果fio达不到这个IOPS的话，将会导致job退出。</li>
+<li><code>ratecycle=int</code>,几个毫秒内的平均带宽。用于‘rate’和‘ratemin’</li>
+<li><code>cpumask=int</code>,设置job使用的CPU.给出的参数是一个掩码来设置job可以运行的CPU。所以，如果要允许CPU在1和5上的话，可以通过10进制数来设置（1&lt;&lt;1 | 1&lt;&lt;5），或是34</li>
+<li><code>cpus_allowed=str</code>,功能同cpumask一样，但是允许通过一段文本来设置允许的CPU。e.g.上面的例子可是这样写<code>cpus_allowed=1,5</code>。这个选项允许设置一个CPU范围，如<code>cpus_allowed=1,5,8-15</code><br><code>startdelay=time</code>,fio启动几秒后再启动job。只有在job文件包含几个jobs时才有效，是为了将某个job延时几秒后执行。</li>
+<li><code>runtime=time</code>,控制fio在执行设定的时间后退出执行。很难来控制单个job的运行时间，所以这个参数是用来控制总的运行时间。</li>
+<li><code>time_based</code>,如果设置的话，即使file已被完全读写或写完，也要执行完runtime规定的时间。它是通过循环执行相同的负载来实现的。</li>
+<li><strong><code>ramp_time=time</code></strong>,设定在记录任何性能信息之前要运行特定负载的时间。这个用来等性能稳定后，再记录日志结果，因此可以减少生成稳定的结果需要的运行时间。</li>
+<li><code>sync=bool</code>,使用sync来进行buffered写。对于多数引擎，这意味着使用O_SYNC</li>
+<li><p><code>iomem=str,mem=str</code>,fio可以使用各种各样的类型的内存用来io单元buffer.</p>
+<ul>
+<li><code>malloc</code> 使用malloc()</li>
+<li><code>shm</code> 使用共享内存.通过shmget()分配</li>
+<li><code>shmhuge</code> 同shm一样，可以使用huge pages</li>
+<li><code>mmap</code> 使用mmap。可以是匿名内存，或是支持的文件，如果一个文件名在选项后面设置的话，格式是mem=mmap:/path/to/file</li>
+<li><p><code>mmaphuge</code> 使用mmapped huge file.在mmaphuge扣面添加文件名，alamem=mmaphuge:/hugetlbfs/file<br>分配的区域是由job允许的最大block size * io 队列的长度。对于shmhuge和mmaphuge，系统应该有空闲的页来分配。这个可以通过检测和设置<code>reading/writing /proc/sys/vm/nr_hugepages</code>来实现（linux）。FIO假设一个huge page是4MB。所以要计算对于一个JOB文件需要的Huge page数量，加上所有jobs的队列长度再乘以最大块大小，然后除以每个huge page的大小。可以通过查看/proc/meminfo来看huge pages的大小。如果通过设置nr_hugepages=0来使得不允许分配huge pages，使用mmaphug或是shmhuge将会失败。</p>
+</li>
+<li><p><code>mmaphuge</code> 需要挂载hugelbfs而且要指定文件的位置，所以如果要挂载在/huge下的话，可以使用mem=mmaphuge:/huge/somefile</p>
+</li>
+</ul>
+</li>
+<li><code>iomem_align=int</code>,标明IO内存缓冲的内存对齐方式。</li>
+<li><code>hugepage-size=int</code>,设置huge page的大小。至少要与系统的设定相等。默认是4MB，必然是MB的倍数，所以用hugepage-size=Xm是用来避免出现不是2的整数次方的情况。</li>
+<li><code>exitall</code>当一个job退出时，会终止运行其它的job，默认是等待所有的job都完成，FIO才退出，但有时候这并不是我们想要的。</li>
+<li><code>bwavgtime=int</code>,在给定时间内的平均带宽。值是以毫秒为单位的</li>
+<li><code>iopsavgtime=int</code>,在给定时间内的平均IOPS，值是以毫秒为单位的</li>
+<li><code>create_serialize=bool</code>,job将会串行化创建job,这将会用来避免数据文件的交叉，这依赖于文件系统和系统的CPU数</li>
+<li><code>create_fsync=bool</code>,创建后同步数据文件，这是默认的值</li>
+<li><code>create_on_open=bool</code>,不会为IO预先创建文件，只是在要向文件发起IO的时候，才创建open()</li>
+<li><code>create_only=bool</code>,如果设置为true的话，fio将只运行到job的配置阶段。如果文件需要部署或是更新的磁盘的话，只有上面的事才会做，实际的文件内容并没有执行。</li>
+<li><code>pre_read=bool</code>,如果这个选项被设置的话，在执行IO操作之前，文件将会被预读到内存.这会删除‘invalidate’标志，因为预读数据，然后丢弃cache中的数据的话，是没有意义的。这只是对可以seek的IO引擎有效，因为这允许读相同的数据多次。因此对于network和splice不起作用。</li>
+<li><code>unlink=bool</code>,完成后将删除job产生的文件。默认是not,如果设置为true的话，将会花很多时间重复创建这些文件。</li>
+<li><code>loops=int</code>,重复运行某个job多次，默认是1</li>
+<li><code>do_verify=bool</code>,写完成后，执行一个校验的阶段，只有当verify设置的时候才有效。默认是true</li>
+<li><code>verify=str</code>,写一个文件时，每次执行完一个job扣，fio可以检验文件内容.允许的校验算法是：md5,crc64,crc32c,crc32c-intel,crc32,crc16,crc7,sha512,sha256,sha1,meta,null.这个选项可以用来执行重复的burn-in测试，来保证写数据已经正确的读回。如果是read或随机读，fio将假设它将会检验先前写的文件。如果是各种格式的写，verify将会是对新写入的数据进行校验。</li>
+<li><code>stonewall,wait_for_previous</code>,等待先前的job执行完成后，再启动一个新的job。可以用来在job文件中加入串行化的点。stone wall也用来启动一个新reporting group</li>
+<li><code>new_group</code>,启动一个新的reporting group。如果这个选项没有设置的话，在job文件中的job将属于相同的reporting group，除非通过stonewall隔开</li>
+<li><code>group_reporting</code>,如果‘numjobs’设置的话，我们感兴趣的可能是打印group的统计值，而不是一个单独的job。这在‘numjobs’的值很大时，一般是设置为true的，可以减少输出的信息量。如果‘group_reporting’设置的话，fio将会显示最终的per-groupreport而不是每一个job都会显示</li>
+<li><code>thread</code>,fio默认会使用fork()创建job，如果这个选项设置的话，fio将使用pthread_create来创建线程</li>
+<li><code>zonesize=int</code>,将一个文件分为设定的大小的zone</li>
+<li><code>zoneskip=int</code>,跳过这个zone的数据都被读完后，会跳过设定数目的zone.</li>
+<li><code>write_iolog=str</code>,将IO模式写到一个指定的文件中。为每一个job指定一个单独的文件，否则iolog将会分散的的，文件将会冲突。</li>
+<li><code>read_iolog=str</code>,将开一个指定的文件，回复里面的日志。这可以用来存储一个负载，并进行重放。给出的iolog也可以是一个二进制文件，允许fio来重放通过blktrace获取的负载。</li>
+<li><code>replay_no_stall</code>,当使用read_iolog重放I/O时，默认是尝试遵守这个时间戳，在每个IOPS之前会有适当的延迟。通过设置这个属性，将不会遵守这个时间戳，会根据期望的顺序，尝试回复，越快越好。结果就是相同类型的IO，但是不同的时间</li>
+<li><code>replay_redirect</code>,当使用<code>read_iolog</code>回放IO时，默认的行为是在每一个IOP来源的<code>major/minor</code>设备上回放IOPS。这在有些情况是不是期望的，比如在另一台机器上回放，或是更换了硬件，使是<code>major/minor</code>映射关系发生了改变。<code>Replay_redirect</code>将会导致所有的IOPS回放到单个设备上，不管这些IO来源于哪里.比如：<code>replay_redirect=/dev/sdc</code>将会使得所有的IO都会重定向到<code>/dev/sdc</code>.这就意味着多个设备的数据都会重放到一个设置，如果想来自己多个设备的数据重放到多个设置的话，需要处理我们的trace，生成独立的trace，再使用fio进行重放，不过这会破坏多个设备访问的严格次序。</li>
+<li><code>write_bw_log=str</code>,在job file写这个job的带宽日志。可以在他们的生命周期内存储job的带宽数据。内部的<code>fio_generate_plots</code>脚本可以使用gnuplot将这些文本转化成图。</li>
+<li><code>write_lat_log=str</code>,同<code>write_bw_log</code>类似，只是这个选项可以存储io提交，完成和总的响应时间。如果没有指定文件名，默认的文件名是<code>jobname_type.log</code>。即使给出了文件名，fio也会添加两种类型的log。如果我们指定<code>write_lat_log=foo</code>,实际的log名将是<code>foo_slat.log</code>,<code>foo_slat.log</code>和<code>foo_lat.log</code>.这会帮助<code>fio_generate_plot</code>来自动处理log</li>
+<li><code>write_iops_log=str</code>,类似于<code>write_bw_log</code>,但是写的是IOPS.如果没有给定文件名的话，默认的文件名是jobname_type.log。</li>
+<li><code>log_avg_msec=int</code>,默认，fio每完成一个IO将会记录一个日志（iops,latency,bw log）。当向磁盘写日志的时候，将会很快变的很大。设置这个选项的话，fio将会在一定的时期内平均这些值，指少日志的数量，默认是0</li>
+<li><code>lockmem=int</code>,使用mlock可以指定特定的内存大小，用来访真少量内存</li>
+<li><code>exec_preren=str</code>,运行job之前，通过过system执行指定的命令</li>
+<li><code>exec_postrun=str</code>,job执行完成后，通过system执行指定的命令</li>
+<li><code>ioscheduler=str</code>,在运行之前，尝试将文件所在的设备切换到指定的调度器。</li>
+<li><code>cpuload=int</code>,如果job是非常占用CPU周期的，可以指定战胜CPU周期的百分比。</li>
+<li><code>cpuchunks=int</code>,如果job是非常战胜CPU周期的，将load分拆为时间的cycles，以毫秒为单位</li>
+<li><code>disk_util=bool</code>,产生磁盘利用率统计信息。默认是打开的</li>
+<li><code>disable_lat=bool</code>,延迟的有效数字。</li>
+<li><code>clat_percentiles=bool</code>,允许报告完成完成响应时间的百分比</li>
+<li><code>continue_on_error=str</code>,一般情况下，一旦检测到错误，fio将会退出这个job.如果这个选项设置的话，fio将会一直执行到有‘non-fatal错误‘（EIO或EILSEQ）或是执行时间耗完，或是指定的I/Osize完成。如果这个选项设置的话，将会添加两个状态，总的错误计数和第一个error。允许的值是<ul>
+<li><code>none</code> 全部IO或检验错误后，都会退出</li>
+<li><code>read</code> 读错误时会继续执行，其它的错误会退出</li>
+<li><code>write</code> 写错误时会继续执行，其它的错误会退出</li>
+<li><code>io</code> 任何IO error时会继续执行，其它的错误会退出</li>
+<li><code>verify</code> 校验错误时会继续执行，其它的错误会退出</li>
+<li><code>all</code> 遇到所有的错误都会继续执行</li>
+</ul>
+</li>
+<li><code>uid=int</code>,不是使用调用者的用户来执行，而是指定用户ID</li>
+<li><code>gid=int</code>,设置group id</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/30/linux/centos使用yum安装python3以及pip3/" rel="next" title="centos使用yum安装python3以及pip3">
+                <i class="fa fa-chevron-left"></i> centos使用yum安装python3以及pip3
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/03/pyqt5/pyqt5学习手册/" rel="prev" title="pyqt5学习手册">
+                pyqt5学习手册 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行模式"><span class="nav-number">2.</span> <span class="nav-text">命令行模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Job-file模式"><span class="nav-number">3.</span> <span class="nav-text">Job file模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试结果分析"><span class="nav-number">4.</span> <span class="nav-text">测试结果分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数说明"><span class="nav-number">5.</span> <span class="nav-text">参数说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IO类型"><span class="nav-number">5.1.</span> <span class="nav-text">IO类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单次IO的数据大小"><span class="nav-number">5.2.</span> <span class="nav-text">单次IO的数据大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO数据总量"><span class="nav-number">5.3.</span> <span class="nav-text">IO数据总量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO引擎"><span class="nav-number">5.4.</span> <span class="nav-text">IO引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO-depth"><span class="nav-number">5.5.</span> <span class="nav-text">IO depth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IO类型-1"><span class="nav-number">5.6.</span> <span class="nav-text">IO类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#job文件数量"><span class="nav-number">5.7.</span> <span class="nav-text">job文件数量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程数"><span class="nav-number">5.8.</span> <span class="nav-text">线程数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它"><span class="nav-number">5.9.</span> <span class="nav-text">其它</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

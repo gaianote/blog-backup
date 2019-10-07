@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="docker,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 管理Docker中的数据默认情况下，在容器内创建的所有文件都存储在可写容器层中。这意味着：  当该容器不再存在时，数据不会持久存在，并且如果另一个进程需要数据，则可能很难从容器中获取数据。 容器的可写层紧密耦合到运行容器的主机。您无法轻松地将数据移动到其他位置。 写入容器的可写层需要 存储驱动程序来管理文件系统。存储驱动程序使用Linux内核提供联合文件系统。与使用直接写入主机文件系统的数据">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker持久化存储">
+<meta property="og:url" content="http://gaianote.github.io/2019/02/12/docker/5.docker持久化存储/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="1. 管理Docker中的数据默认情况下，在容器内创建的所有文件都存储在可写容器层中。这意味着：  当该容器不再存在时，数据不会持久存在，并且如果另一个进程需要数据，则可能很难从容器中获取数据。 容器的可写层紧密耦合到运行容器的主机。您无法轻松地将数据移动到其他位置。 写入容器的可写层需要 存储驱动程序来管理文件系统。存储驱动程序使用Linux内核提供联合文件系统。与使用直接写入主机文件系统的数据">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://gaianote.github.io/images/types-of-mounts.png">
+<meta property="og:image" content="http://gaianote.github.io/images/types-of-mounts-volume.png">
+<meta property="og:image" content="http://gaianote.github.io/images/types-of-mounts-bind.png">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.428Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker持久化存储">
+<meta name="twitter:description" content="1. 管理Docker中的数据默认情况下，在容器内创建的所有文件都存储在可写容器层中。这意味着：  当该容器不再存在时，数据不会持久存在，并且如果另一个进程需要数据，则可能很难从容器中获取数据。 容器的可写层紧密耦合到运行容器的主机。您无法轻松地将数据移动到其他位置。 写入容器的可写层需要 存储驱动程序来管理文件系统。存储驱动程序使用Linux内核提供联合文件系统。与使用直接写入主机文件系统的数据">
+<meta name="twitter:image" content="http://gaianote.github.io/images/types-of-mounts.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2019/02/12/docker/5.docker持久化存储/">
+
+
+
+
+
+  <title>docker持久化存储 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2019/02/12/docker/5.docker持久化存储/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">docker持久化存储</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-12T15:05:37+00:00">
+                2019-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-管理Docker中的数据"><a href="#1-管理Docker中的数据" class="headerlink" title="1. 管理Docker中的数据"></a>1. 管理Docker中的数据</h2><p>默认情况下，在容器内创建的所有文件都存储在可写容器层中。这意味着：</p>
+<ul>
+<li>当该容器不再存在时，数据不会持久存在，并且如果另一个进程需要数据，则可能很难从容器中获取数据。</li>
+<li>容器的可写层紧密耦合到运行容器的主机。您无法轻松地将数据移动到其他位置。</li>
+<li>写入容器的可写层需要 <a href="https://docs.docker.com/storage/storagedriver/" target="_blank" rel="noopener">存储驱动程序</a>来管理文件系统。存储驱动程序使用Linux内核提供联合文件系统。与使用直接写入主机文件系统的<em>数据卷</em>相比，这种额外的抽象降低了性能 。</li>
+</ul>
+<p>Docker有两个容器选项可以在主机中存储文件，因此即使在容器停止之后文件仍然存在：<em>卷</em>和 <em>绑定挂载</em>。如果你在Linux上运行Docker，你也可以使用<em>tmpfs mount</em>。</p>
+<p>继续阅读有关这两种持久数据方式的更多信息。</p>
+<h2 id="2-选择正确的Mount类型"><a href="#2-选择正确的Mount类型" class="headerlink" title="2. 选择正确的Mount类型"></a>2. 选择正确的Mount类型</h2><p>无论您选择使用哪种类型的安装，数据在容器内看起来都是相同的。它作为目录或容器文件系统中的单个文件公开。</p>
+<p>可视化卷，绑定装载和<code>tmpfs</code> 装载之间差异的简单方法是考虑数据在Docker宿主主机上的位置。</p>
+<p><img src="/images/types-of-mounts.png" alt="img"></p>
+<h3 id="1-Volume"><a href="#1-Volume" class="headerlink" title="1. Volume"></a><strong>1. Volume</strong></h3><p><strong>存储在由Docker（/var/lib/docker/volumes/）管理的主机文件系统的一部分中。非Docker进程不应修改文件系统的这一部分。卷是在Docker中保留数据的最佳方式。</strong></p>
+<ul>
+<li>对于容器内非空目录的处理：第一次创建卷时 ，会将容器内的非空目录内容复制到docker-volume中</li>
+</ul>
+<h3 id="2-Mount-Points"><a href="#2-Mount-Points" class="headerlink" title="2. Mount Points"></a><strong>2. Mount Points</strong></h3><p>可以存储在主机系统的<em>任何位置</em>。它们甚至可能是重要的系统文件或目录。Docker主机或Docker容器上的非Docker进程可以随时修改它们。</p>
+<ul>
+<li>对于容器内非空目录的处理：如果容器非空目录挂载到宿主主机，容器内该目录就会隐藏，如果时/usr/bin等目录，则该容器就无法启动，所以，<strong>通常不应该使用Mount Points挂载容器的非空目录到宿主主机</strong></li>
+</ul>
+<h3 id="3-tmpfs挂载"><a href="#3-tmpfs挂载" class="headerlink" title="3. tmpfs挂载"></a><strong>3. tmpfs挂载</strong></h3><p>仅存储在主机系统的内存中，永远不会写入主机系统的文件系统。</p>
+<h2 id="3-Docker-Volume"><a href="#3-Docker-Volume" class="headerlink" title="3. Docker Volume"></a>3. Docker Volume</h2><p><strong>Docker Volume</strong> 是保存<code>Docker</code>容器生成和使用的数据的首选机制。虽然绑定挂载依赖于主机的目录结构，但卷完全由<code>Docker</code>管理。卷绑定安装有几个优点：</p>
+<ul>
+<li>与绑定装载相比，卷更易于备份或迁移。</li>
+<li>您可以使用Docker CLI命令或Docker API管理卷。</li>
+<li>卷适用于Linux和Windows容器。</li>
+<li>可以在多个容器之间更安全地共享卷。</li>
+<li>卷驱动程序允许您在远程主机或云提供程序上存储卷，加密卷的内容或添加其他功能。</li>
+<li>新卷的内容可以由容器预先填充。</li>
+</ul>
+<p><img src="/images/types-of-mounts-volume.png" alt="img"></p>
+<p>此外，卷通常是比容器的可写层中的持久数据更好的选择，因为使用卷不会增加使用它的容器的大小，并且卷的内容存在于给定容器的生命周期之外。</p>
+<h3 id="1-创建和管理volume"><a href="#1-创建和管理volume" class="headerlink" title="1. 创建和管理volume"></a>1. 创建和管理volume</h3><p><strong>1. 创建存储卷</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create $volume_name</span><br></pre></td></tr></table></figure>
+<p><strong>2. 列出已有存储卷</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume ls</span><br><span class="line"></span><br><span class="line">DRIVER              VOLUME NAME</span><br><span class="line">local               1aa54b00b05aaf521f93586afcae5c9f6a5e44eb6a84c0ab99222435f75b28f5</span><br><span class="line">local               9cf0504c3ac9b408837aa456e13c450b7b9a212f450910ccbee3cefde165027a</span><br></pre></td></tr></table></figure>
+<h3 id="2-删除存储卷"><a href="#2-删除存储卷" class="headerlink" title="2. 删除存储卷"></a>2. 删除存储卷</h3><p><strong>1. 删除卷</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume rm volume_name</span><br></pre></td></tr></table></figure>
+<p><strong>2. 删除所有未使用的卷并释放空间</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume prune</span><br></pre></td></tr></table></figure>
+<h3 id="3-检查卷："><a href="#3-检查卷：" class="headerlink" title="3. 检查卷："></a>3. 检查卷：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ docker volume inspect my-vol</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Driver&quot;: &quot;local&quot;,</span><br><span class="line">        &quot;Labels&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/my-vol/_data&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;my-vol&quot;,</span><br><span class="line">        &quot;Options&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Scope&quot;: &quot;local&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="4-使用docker卷"><a href="#4-使用docker卷" class="headerlink" title="4. 使用docker卷"></a>4. 使用docker卷</h3><p>我们还可以使用-v或–volume标志将Docker卷附加到容器。但是，我们不是像使用绑定挂载那样将路径放在主机上的目录中，而是简单地放置卷名。</p>
+<p>用法：-v 后面跟随  卷名 : docker容器路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-v volume_name:/docker_path</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name adonis \</span><br><span class="line">    -v volume_name:/docker_path \</span><br><span class="line">    ztest</span><br></pre></td></tr></table></figure>
+<h2 id="2-使用绑定挂载"><a href="#2-使用绑定挂载" class="headerlink" title="2. 使用绑定挂载"></a>2. 使用绑定挂载</h2><p>自Docker早期以来，Bind Mounts一直存在。与<a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener">卷</a>相比，绑定装载具有有限的功能。使用绑定装入时，<em>主机</em>上的文件或目录将装入容器中。文件或目录由其在主机上的完整路径或相对路径引用。相反，当您使用卷时，会在主机上的Docker存储目录中创建一个新目录，Docker会管理该目录的内容。</p>
+<p>该文件或目录不需要已存在于Docker主机上。如果它尚不存在，则按需创建。绑定安装非常高效，但它们依赖于具有特定目录结构的主机文件系统。<strong>如果您正在开发新的Docker应用程序，请考虑使用<a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener">命名卷</a>。</strong>您无法使用Docker CLI命令直接管理Bind Mount。</p>
+<p><img src="/images/types-of-mounts-bind.png" alt="img"></p>
+<h3 id="1-选择-v或–mount标志"><a href="#1-选择-v或–mount标志" class="headerlink" title="1. 选择-v或–mount标志"></a>1. 选择-v或–mount标志</h3><p>最初，<code>-v</code>或<code>--volume</code>标志用于独立容器，<code>--mount</code>标志用于群组服务。但是，从Docker 17.06开始，您还可以使用<code>--mount</code>独立容器。一般来说， <code>--mount</code>更明确和冗长。最大的区别在于-v 语法将所有选项组合在一个字段中，而<code>--mount</code>语法将它们分开。以下是每个标志的语法比较。</p>
+<blockquote>
+<p>提示：新用户应使用–mount语法。有经验的用户可能更熟悉-v或–volume语法，但鼓励使用–mount，因为研究表明它更容易使用。</p>
+</blockquote>
+<h4 id="1-–volume"><a href="#1-–volume" class="headerlink" title="1. –volume"></a>1. –volume</h4><p><code>-v</code>或<code>--volume</code>：由三个字段组成，用冒号字符（<code>:</code>）分隔。字段必须按正确的顺序排列，并且每个字段的含义不是很明显。</p>
+<p>对于Bind Mounts，第一个字段是主机上文件或目录的路径。<br>第二个字段是文件或目录在容器中安装的路径。<br>第三个字段是可选的，并且是用逗号分隔的选项，诸如列表ro，consistent，delegated，cached，z，和Z。这些选项将在下面讨论。</p>
+<h4 id="2-–mount"><a href="#2-–mount" class="headerlink" title="2.  –mount"></a>2.  –mount</h4><p><code>--mount</code>：由多个键值对组成，以逗号分隔，每个键<code>&lt;key&gt;=&lt;value&gt;</code>组由一个元组组成。该<code>--mount</code>语法比更详细的<code>-v</code>或<code>--volume</code>，但按键的顺序并不显著，并且标志的价值更容易理解。</p>
+<p>mount的<code>type</code>，其可以是bind，volume，或tmpfs。本主题讨论bind mounts，因此类型始终是bind。<br>mount的<code>source</code>。对于bind mounts,这是Docker宿主主机上的文件或目录的路径。可以指定为source或 src。<br><code>destination</code>文件或目录安装在容器中的路径作为其值。可以指定为<code>destination</code>，<code>dst</code>或<code>target</code>。<br><code>readonly</code>选项（如果存在）导致bind mounts以只读方式装入容器中。<br><code>bind-propagation</code> 选项（如果存在）会更改 绑定传播。可以是一个 <code>rprivate</code> ，<code>private</code>，<code>rshared</code>，<code>shared</code>，<code>rslave</code>，<code>slave</code>。<br><code>consistency</code>选项，如果存在，可以是一种consistent，delegated或cached。此设置仅适用于Docker Desktop for Mac，在所有其他平台上均被忽略。</p>
+<p>该–mount标志不支持z或Z修改selinux标签的选项。<br>下面的示例显示了可能的语法–mount和-v语法，并 –mount首先给出。</p>
+<h4 id="3-v和–mount行为之间的差异"><a href="#3-v和–mount行为之间的差异" class="headerlink" title="3. -v和–mount行为之间的差异"></a>3. -v和–mount行为之间的差异</h4><p>因为<code>-v</code>和<code>--volume</code> flags一直是Docker的一部分，所以它们的行为无法改变。这意味着在<code>-v</code>和<code>--mount</code>之间存在一种不同的行为。</p>
+<ul>
+<li><p>如果使用<code>-v</code>或<code>--volume</code>绑定装载Docker主机上尚不存在的文件或目录，请<code>-v</code>为您创建端点。它始终作为目录创建。</p>
+</li>
+<li><p>如果您使用<code>--mount</code>绑定Docker宿主主机上尚不存在的文件或目录，Docker也不会自动为您创建它，但会产生一个错误。</p>
+</li>
+</ul>
+<h3 id="2-使用绑定装载启动容器"><a href="#2-使用绑定装载启动容器" class="headerlink" title="2. 使用绑定装载启动容器"></a>2. 使用绑定装载启动容器</h3><p>考虑一个你有一个目录的情况<code>source</code>，当你构建源代码时，工件被保存到另一个目录中<code>source/target/</code>。您希望工件可用于容器<code>/app/</code>，并且您希望每次在开发主机上构建源时容器都可以访问新构建。使用以下命令将<code>target/</code> 目录绑定到容器中<code>/app/</code>。从<code>source</code>目录中运行该命令 。该<code>$(pwd)</code>子命令将扩展到Linux或者MacOS主机的当前工作目录。</p>
+<p>所述<code>--mount</code>和<code>-v</code>以下实施例产生相同的结果。除非<code>devtest</code>在运行第一个容器后删除容器，否则不能同时运行它们。</p>
+<ul>
+<li><code>--mount</code></li>
+<li><code>-v</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d \</span><br><span class="line">  -it \</span><br><span class="line">  --name devtest \</span><br><span class="line">  --mount type=bind,source=&quot;$(pwd)&quot;/target,target=/app \</span><br><span class="line">  nginx:latest</span><br></pre></td></tr></table></figure>
+<p>使用<code>docker inspect devtest</code>验证绑定安装正确创建。寻找<code>Mounts</code>部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&quot;Mounts&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Type&quot;: &quot;bind&quot;,</span><br><span class="line">        &quot;Source&quot;: &quot;/tmp/source/target&quot;,</span><br><span class="line">        &quot;Destination&quot;: &quot;/app&quot;,</span><br><span class="line">        &quot;Mode&quot;: &quot;&quot;,</span><br><span class="line">        &quot;RW&quot;: true,</span><br><span class="line">        &quot;Propagation&quot;: &quot;rprivate&quot;</span><br><span class="line">    &#125;</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+<p>这表明mount是一个<code>bind</code>mount，它显示了正确的源和目标，它表明mount是读写的，并且传播设置为<code>rprivate</code>。</p>
+<p>停止容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker container stop devtest</span><br><span class="line"></span><br><span class="line">$ docker container rm devtest</span><br></pre></td></tr></table></figure>
+<h3 id="3-配置绑定传播"><a href="#3-配置绑定传播" class="headerlink" title="3. 配置绑定传播"></a>3. 配置绑定传播</h3><p>对于bind mounts和volumes，绑定传播默认为<code>rprivate</code>。它仅可用于绑定装入，并且仅适用于Linux主机。绑定传播是一个高级主题，许多用户永远不需要配置它。<strong>绑定传播是指在给定的绑定装载或命名卷（比如宿主主机）中创建的装载是否可以传播到该装载的副本（比如Docker）</strong>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">传播设置</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>shared</code></td>
+<td style="text-align:left">原始挂载的子挂载将暴露给副本挂载，副挂载的子挂载也会传播到原始挂载。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>slave</code></td>
+<td style="text-align:left">类似于共享挂载，但只在一个方向上。如果原始挂载程序公开子挂载，则副本挂载程序可以看到它。而副本挂载的子挂载不会传播到原始挂载</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>private</code></td>
+<td style="text-align:left">挂载是私人的。其中的子挂载不会暴露给副本挂载，副挂载的子挂载也不会暴露给原始挂载。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>rshared</code></td>
+<td style="text-align:left">与共享相同，但传播也扩展到嵌套在任何原始或副本挂载点中的挂载点。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>rslave</code></td>
+<td style="text-align:left">与从属相同，但传播也延伸到嵌套在任何原始或副本挂载点内的挂载点。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>rprivate</code></td>
+<td style="text-align:left">默认。与private相同，意味着原始或副本装入点中任何位置的挂载点都不会沿任一方向传播。</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -v /foo:/bar:slave</span><br></pre></td></tr></table></figure>
+<h3 id="4-挂载到容器上的非空目录中"><a href="#4-挂载到容器上的非空目录中" class="headerlink" title="4. 挂载到容器上的非空目录中"></a>4. 挂载到容器上的非空目录中</h3><p><strong>如果将bind-mount绑定到容器上的非空目录中，则绑定装置会隐藏目录的现有内容。</strong>这可能是有益的，例如当您想要在不构建新图像的情况下测试新版本的应用程序时。但是，它也可能令人惊讶，并且此行为与<a href="https://docs.docker.com/storage/volumes/" target="_blank" rel="noopener">docker卷的</a>行为不同。</p>
+<p>此示例设计为极端，将容器<code>/usr/</code>目录的内容替换<code>/tmp/</code>为主机上的目录, 在大多数情况下，这会导致容器无法运行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -d \</span><br><span class="line">  -it \</span><br><span class="line">  --name broken-container \</span><br><span class="line">  --mount <span class="built_in">type</span>=<span class="built_in">bind</span>,<span class="built_in">source</span>=/tmp,target=/usr \</span><br><span class="line">  nginx:latest</span><br><span class="line"></span><br><span class="line">docker: Error response from daemon: oci runtime error: container_linux.go:262:</span><br><span class="line">starting container process caused <span class="string">"exec: \"nginx\": executable file not found in <span class="variable">$PATH</span>"</span>.</span><br></pre></td></tr></table></figure>
+<p>容器已创建但无法启动。去掉它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container rm broken-container</span><br></pre></td></tr></table></figure>
+<h2 id="5-NFS"><a href="#5-NFS" class="headerlink" title="5. NFS"></a>5. NFS</h2><pre><code>docker volume create \
+    --driver local \
+    --opt type=nfs \
+    --opt o=addr=192.168.71.104,rw  \
+    --opt device=:/tytest/workspace \
+    tytest
+  docker run -it -v tytest:/workspace --privileged 192.168.71.104:5000/tytest
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/08/docker/4.docker仓库的使用/" rel="next" title="docker仓库的使用">
+                <i class="fa fa-chevron-left"></i> docker仓库的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/17/linux/如何去掉Linux终端输出的颜色/" rel="prev" title="如何去掉Linux终端输出的颜色">
+                如何去掉Linux终端输出的颜色 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-管理Docker中的数据"><span class="nav-number">1.</span> <span class="nav-text">1. 管理Docker中的数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-选择正确的Mount类型"><span class="nav-number">2.</span> <span class="nav-text">2. 选择正确的Mount类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Volume"><span class="nav-number">2.1.</span> <span class="nav-text">1. Volume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Mount-Points"><span class="nav-number">2.2.</span> <span class="nav-text">2. Mount Points</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-tmpfs挂载"><span class="nav-number">2.3.</span> <span class="nav-text">3. tmpfs挂载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Docker-Volume"><span class="nav-number">3.</span> <span class="nav-text">3. Docker Volume</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建和管理volume"><span class="nav-number">3.1.</span> <span class="nav-text">1. 创建和管理volume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-删除存储卷"><span class="nav-number">3.2.</span> <span class="nav-text">2. 删除存储卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-检查卷："><span class="nav-number">3.3.</span> <span class="nav-text">3. 检查卷：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-使用docker卷"><span class="nav-number">3.4.</span> <span class="nav-text">4. 使用docker卷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用绑定挂载"><span class="nav-number">4.</span> <span class="nav-text">2. 使用绑定挂载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-选择-v或–mount标志"><span class="nav-number">4.1.</span> <span class="nav-text">1. 选择-v或–mount标志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-–volume"><span class="nav-number">4.1.1.</span> <span class="nav-text">1. –volume</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-–mount"><span class="nav-number">4.1.2.</span> <span class="nav-text">2.  –mount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-v和–mount行为之间的差异"><span class="nav-number">4.1.3.</span> <span class="nav-text">3. -v和–mount行为之间的差异</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用绑定装载启动容器"><span class="nav-number">4.2.</span> <span class="nav-text">2. 使用绑定装载启动容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-配置绑定传播"><span class="nav-number">4.3.</span> <span class="nav-text">3. 配置绑定传播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-挂载到容器上的非空目录中"><span class="nav-number">4.4.</span> <span class="nav-text">4. 挂载到容器上的非空目录中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-NFS"><span class="nav-number">5.</span> <span class="nav-text">5. NFS</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mysql,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="建立数据库连接1234567891011121314var sequelize = new Sequelize(    &apos;dbname&apos;, // 数据库名    &apos;username&apos;,   // 用户名    &apos;password&apos;,   // 用户密码    &amp;#123;        &apos;dialect&apos;: &apos;mysql&apos;,  // 数据库使用mysql        &apos;host&apos;: &apos;local">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sequelize和mysql对照">
+<meta property="og:url" content="http://gaianote.github.io/2017/05/04/前端/sequelize和mysql对照/index.html">
+<meta property="og:site_name" content="李云鹏的个人博客">
+<meta property="og:description" content="建立数据库连接1234567891011121314var sequelize = new Sequelize(    &apos;dbname&apos;, // 数据库名    &apos;username&apos;,   // 用户名    &apos;password&apos;,   // 用户密码    &amp;#123;        &apos;dialect&apos;: &apos;mysql&apos;,  // 数据库使用mysql        &apos;host&apos;: &apos;local">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-07T13:38:20.308Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sequelize和mysql对照">
+<meta name="twitter:description" content="建立数据库连接1234567891011121314var sequelize = new Sequelize(    &apos;dbname&apos;, // 数据库名    &apos;username&apos;,   // 用户名    &apos;password&apos;,   // 用户密码    &amp;#123;        &apos;dialect&apos;: &apos;mysql&apos;,  // 数据库使用mysql        &apos;host&apos;: &apos;local">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://gaianote.github.io/2017/05/04/前端/sequelize和mysql对照/">
+
+
+
+
+
+  <title>sequelize和mysql对照 | 李云鹏的个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">李云鹏的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://gaianote.github.io/2017/05/04/前端/sequelize和mysql对照/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="李云鹏">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/rem.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="李云鹏的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">sequelize和mysql对照</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-04T21:54:15+00:00">
+                2017-05-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="建立数据库连接"><a href="#建立数据库连接" class="headerlink" title="建立数据库连接"></a>建立数据库连接</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sequelize = <span class="keyword">new</span> Sequelize(</span><br><span class="line">    <span class="string">'dbname'</span>, <span class="comment">// 数据库名</span></span><br><span class="line">    <span class="string">'username'</span>,   <span class="comment">// 用户名</span></span><br><span class="line">    <span class="string">'password'</span>,   <span class="comment">// 用户密码</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'dialect'</span>: <span class="string">'mysql'</span>,  <span class="comment">// 数据库使用mysql</span></span><br><span class="line">        <span class="string">'host'</span>: <span class="string">'localhost'</span>, <span class="comment">// 数据库服务器ip</span></span><br><span class="line">        <span class="string">'port'</span>: <span class="number">3306</span>,        <span class="comment">// 数据库服务器端口</span></span><br><span class="line">        <span class="string">'define'</span>: &#123;</span><br><span class="line">            <span class="comment">// 字段以下划线（_）来分割（默认是驼峰命名风格）</span></span><br><span class="line">            <span class="string">'underscored'</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="定义单张表"><a href="#定义单张表" class="headerlink" title="定义单张表"></a>定义单张表</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> User = sequelize.define(</span><br><span class="line">    <span class="comment">// 默认表名（一般这里写单数），生成时会自动转换成复数形式</span></span><br><span class="line">    <span class="comment">// 这个值还会作为访问模型相关的模型时的属性名，所以建议用小写形式</span></span><br><span class="line">    <span class="string">'user'</span>,</span><br><span class="line">    <span class="comment">// 字段定义（主键、created_at、updated_at默认包含，不用特殊定义）</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'emp_id'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.CHAR(<span class="number">10</span>), <span class="comment">// 字段类型</span></span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span>,         <span class="comment">// 是否允许为NULL</span></span><br><span class="line">            <span class="string">'unique'</span>: <span class="literal">true</span>              <span class="comment">// 字段是否UNIQUE(唯一)</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">'nick'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.CHAR(<span class="number">10</span>),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">'department'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.STRING(<span class="number">64</span>),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h2 id="单表增删改查"><a href="#单表增删改查" class="headerlink" title="单表增删改查"></a>单表增删改查</h2><p>通过Sequelize获取的模型对象都是一个DAO（Data Access Object）对象，这些对象会拥有许多操作数据库表的实例对象方法（比如：save、update、destroy等），需要获取“干净”的JSON对象可以调用get({‘plain’: true})。</p>
+<p>通过模型的类方法可以获取模型对象（比如：findById、findAll等）。</p>
+<h3 id="增"><a href="#增" class="headerlink" title="增"></a>增</h3><p>Sequelize：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法1：build后对象只存在于内存中，调用save后才操作db</span></span><br><span class="line"><span class="keyword">var</span> user = User.build(&#123;</span><br><span class="line">    <span class="string">'emp_id'</span>: <span class="string">'1'</span>,</span><br><span class="line">    <span class="string">'nick'</span>: <span class="string">'小红'</span>,</span><br><span class="line">    <span class="string">'department'</span>: <span class="string">'技术部'</span></span><br><span class="line">&#125;);</span><br><span class="line">user = <span class="keyword">await</span> user.save();</span><br><span class="line"><span class="built_in">console</span>.log(user.get(&#123;<span class="string">'plain'</span>: <span class="literal">true</span>&#125;));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法2：直接操作db</span></span><br><span class="line"><span class="keyword">var</span> user = <span class="keyword">await</span>  User.create(&#123;</span><br><span class="line">    <span class="string">'emp_id'</span>: <span class="string">'2'</span>,</span><br><span class="line">    <span class="string">'nick'</span>: <span class="string">'小明'</span>,</span><br><span class="line">    <span class="string">'department'</span>: <span class="string">'技术部'</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(user.get(&#123;<span class="string">'plain'</span>: <span class="literal">true</span>&#125;));</span><br></pre></td></tr></table></figure>
+<p>Sequelize会为主键 <code>id</code> 设置 <code>DEFAULT</code> 值来让数据库产生自增值，还将当前时间设置成了 <code>created_at</code> 和 <code>updated_at</code> 字段，非常方便。</p>
+<h3 id="改"><a href="#改" class="headerlink" title="改"></a>改</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法1：操作对象属性（不会操作db），调用save后操作db</span></span><br><span class="line">user.nick = <span class="string">'小白'</span>;</span><br><span class="line">user = <span class="keyword">await</span> user.save();</span><br><span class="line"><span class="built_in">console</span>.log(user.get(&#123;<span class="string">'plain'</span>: <span class="literal">true</span>&#125;));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法2：直接update操作db</span></span><br><span class="line">user = <span class="keyword">await</span> user.update(&#123;</span><br><span class="line">    <span class="string">'nick'</span>: <span class="string">'小白白'</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(user.get(&#123;<span class="string">'plain'</span>: <span class="literal">true</span>&#125;));</span><br></pre></td></tr></table></figure>
+<p>更新操作时，Sequelize将将当前时间设置成了updated_at，非常方便。</p>
+<p>如果想限制更新属性的白名单，可以这样写：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法1</span></span><br><span class="line">user.emp_id = <span class="string">'33'</span>;</span><br><span class="line">user.nick = <span class="string">'小白'</span>;</span><br><span class="line">user = <span class="keyword">await</span> user.save(&#123;<span class="string">'fields'</span>: [<span class="string">'nick'</span>]&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法2</span></span><br><span class="line">user = <span class="keyword">await</span> user.update(</span><br><span class="line">    &#123;<span class="string">'emp_id'</span>: <span class="string">'33'</span>, <span class="string">'nick'</span>: <span class="string">'小白'</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'fields'</span>: [<span class="string">'nick'</span>]&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这样就只会更新nick字段，而emp_id会被忽略。这种方法在对表单提交过来的一大推数据中只更新某些属性的时候比较有用。</p>
+<h3 id="删"><a href="#删" class="headerlink" title="删"></a>删</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> user.destroy();</span><br></pre></td></tr></table></figure>
+<p>这里有个特殊的地方是，如果我们开启了paranoid（偏执）模式，destroy的时候不会执行DELETE语句，而是执行一个UPDATE语句将deleted_at字段设置为当前时间（一开始此字段值为NULL）。我们可以使用user.destroy({force: true})来强制删除，从而执行DELETE语句进行物理删除。</p>
+<h3 id="查"><a href="#查" class="headerlink" title="查"></a>查</h3><p><strong>查全部</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">await</span> User.findAll();</span><br><span class="line"><span class="built_in">console</span>.log(users);</span><br></pre></td></tr></table></figure>
+<p><strong>限制字段</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">await</span> User.findAll(&#123;</span><br><span class="line">    <span class="string">'attributes'</span>: [<span class="string">'emp_id'</span>, <span class="string">'nick'</span>]</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(users);</span><br></pre></td></tr></table></figure>
+<p><strong>字段重命名</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">await</span> User.findAll(&#123;</span><br><span class="line">    <span class="string">'attributes'</span>: [</span><br><span class="line">        <span class="string">'emp_id'</span>, [<span class="string">'nick'</span>, <span class="string">'user_nick'</span>]</span><br><span class="line">    ]</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(users);</span><br></pre></td></tr></table></figure>
+<h2 id="where子句"><a href="#where子句" class="headerlink" title="where子句"></a>where子句</h2><p>Sequelize的where配置项基本上完全支持了SQL的where子句的功能，非常强大。我们一步步来进行介绍。</p>
+<h3 id="基本条件"><a href="#基本条件" class="headerlink" title="基本条件"></a>基本条件</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">await</span> User.findAll(&#123;</span><br><span class="line">    <span class="string">'where'</span>: &#123;</span><br><span class="line">        <span class="string">'id'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        <span class="string">'nick'</span>: <span class="string">'a'</span>,</span><br><span class="line">        <span class="string">'department'</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(users);</span><br></pre></td></tr></table></figure>
+<h3 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h3><p>操作符是对某个字段的进一步约束，可以有多个（对同一个字段的多个操作符会被转化为AND）。</p>
+<p>Sequelize：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">await</span> User.findAll(&#123;</span><br><span class="line">    <span class="string">'where'</span>: &#123;</span><br><span class="line">        <span class="string">'id'</span>: &#123;</span><br><span class="line">            <span class="string">'$eq'</span>: <span class="number">1</span>,                <span class="comment">// id = 1</span></span><br><span class="line">            <span class="string">'$ne'</span>: <span class="number">2</span>,                <span class="comment">// id != 2</span></span><br><span class="line"></span><br><span class="line">            <span class="string">'$gt'</span>: <span class="number">6</span>,                <span class="comment">// id &gt; 6</span></span><br><span class="line">            <span class="string">'$gte'</span>: <span class="number">6</span>,               <span class="comment">// id &gt;= 6</span></span><br><span class="line"></span><br><span class="line">            <span class="string">'$lt'</span>: <span class="number">10</span>,               <span class="comment">// id &lt; 10</span></span><br><span class="line">            <span class="string">'$lte'</span>: <span class="number">10</span>,              <span class="comment">// id &lt;= 10</span></span><br><span class="line"></span><br><span class="line">            <span class="string">'$between'</span>: [<span class="number">6</span>, <span class="number">10</span>],     <span class="comment">// id BETWEEN 6 AND 10</span></span><br><span class="line">            <span class="string">'$notBetween'</span>: [<span class="number">11</span>, <span class="number">15</span>], <span class="comment">// id NOT BETWEEN 11 AND 15</span></span><br><span class="line"></span><br><span class="line">            <span class="string">'$in'</span>: [<span class="number">1</span>, <span class="number">2</span>],           <span class="comment">// id IN (1, 2)</span></span><br><span class="line">            <span class="string">'$notIn'</span>: [<span class="number">3</span>, <span class="number">4</span>]         <span class="comment">// id NOT IN (3, 4)</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">'nick'</span>: &#123;</span><br><span class="line">            <span class="string">'$like'</span>: <span class="string">'%a%'</span>,          <span class="comment">// nick LIKE '%a%'</span></span><br><span class="line">            <span class="string">'$notLike'</span>: <span class="string">'%a'</span>         <span class="comment">// nick NOT LIKE '%a'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">'updated_at'</span>: &#123;</span><br><span class="line">            <span class="string">'$eq'</span>: <span class="literal">null</span>,             <span class="comment">// updated_at IS NULL</span></span><br><span class="line">            <span class="string">'$ne'</span>: <span class="literal">null</span>              <span class="comment">// created_at IS NOT NULL</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h3><p>上面我们说的条件查询，都是AND查询，Sequelize同时也支持OR、NOT、甚至多种条件的联合查询。</p>
+<p><strong>AND条件</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">await</span> User.findAll(&#123;</span><br><span class="line">    <span class="string">'where'</span>: &#123;</span><br><span class="line">        <span class="string">'$and'</span>: [</span><br><span class="line">            &#123;<span class="string">'id'</span>: [<span class="number">1</span>, <span class="number">2</span>]&#125;,</span><br><span class="line">            &#123;<span class="string">'nick'</span>: <span class="literal">null</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>OR条件</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">await</span> User.findAll(&#123;</span><br><span class="line">    <span class="string">'where'</span>: &#123;</span><br><span class="line">        <span class="string">'$or'</span>: [</span><br><span class="line">            &#123;<span class="string">'id'</span>: [<span class="number">1</span>, <span class="number">2</span>]&#125;,</span><br><span class="line">            &#123;<span class="string">'nick'</span>: <span class="literal">null</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>NOT条件</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">await</span> User.findAll(&#123;</span><br><span class="line">    <span class="string">'where'</span>: &#123;</span><br><span class="line">        <span class="string">'$not'</span>: [</span><br><span class="line">            &#123;<span class="string">'id'</span>: [<span class="number">1</span>, <span class="number">2</span>]&#125;,</span><br><span class="line">            &#123;<span class="string">'nick'</span>: <span class="literal">null</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="批量操作"><a href="#批量操作" class="headerlink" title="批量操作"></a>批量操作</h3><p><strong>插入</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">yield</span> User.bulkCreate(</span><br><span class="line">    [</span><br><span class="line">        &#123;<span class="string">'emp_id'</span>: <span class="string">'a'</span>, <span class="string">'nick'</span>: <span class="string">'a'</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'emp_id'</span>: <span class="string">'b'</span>, <span class="string">'nick'</span>: <span class="string">'b'</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'emp_id'</span>: <span class="string">'c'</span>, <span class="string">'nick'</span>: <span class="string">'c'</span>&#125;</span><br><span class="line">    ]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>这里需要注意，返回的users数组里面每个对象的id值会是null。如果需要id值，可以重新取下数据。</p>
+<p><strong>更新</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> affectedRows = <span class="keyword">yield</span> User.update(</span><br><span class="line">    &#123;<span class="string">'nick'</span>: <span class="string">'hhhh'</span>&#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'where'</span>: &#123;</span><br><span class="line">            <span class="string">'id'</span>: [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><strong>删除</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> affectedRows = <span class="keyword">yield</span> User.destroy(&#123;</span><br><span class="line">    <span class="string">'where'</span>: &#123;<span class="string">'id'</span>: [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h2><p>关系一般有三种：一对一、一对多、多对多。Sequelize提供了清晰易用的接口来定义关系、进行表间的操作。</p>
+<h3 id="一对一"><a href="#一对一" class="headerlink" title="一对一"></a>一对一</h3><h4 id="模型定义"><a href="#模型定义" class="headerlink" title="模型定义"></a>模型定义</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> User = sequelize.define(<span class="string">'user'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'emp_id'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.CHAR(<span class="number">10</span>),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="string">'unique'</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"><span class="keyword">var</span> Account = sequelize.define(<span class="string">'account'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'email'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.CHAR(<span class="number">20</span>),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * User的实例对象将拥有getAccount、setAccount、addAccount方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">User.hasOne(Account);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Account的实例对象将拥有getUser、setUser、addUser方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Account.belongsTo(User);</span><br></pre></td></tr></table></figure>
+<p>可以看到，这种关系中外键user_id加在了Account上。另外，Sequelize还给我们生成了外键约束。</p>
+<p>一般来说，外键约束在有些自己定制的数据库系统里面是禁止的，因为会带来一些性能问题。所以，建表的SQL一般就去掉约束，同时给外键加一个索引（加速查询），数据的一致性就靠应用层来保证了。</p>
+<h4 id="关系操作"><a href="#关系操作" class="headerlink" title="关系操作"></a>关系操作</h4><p><strong>增</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> user = <span class="keyword">yield</span> User.create(&#123;<span class="string">'emp_id'</span>: <span class="string">'1'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> account = user.createAccount(&#123;<span class="string">'email'</span>: <span class="string">'a'</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(account.get(&#123;<span class="string">'plain'</span>: <span class="literal">true</span>&#125;));</span><br></pre></td></tr></table></figure>
+<p><strong>改</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> anotherAccount = <span class="keyword">yield</span> Account.create(&#123;<span class="string">'email'</span>: <span class="string">'b'</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(anotherAccount);</span><br><span class="line">anotherAccount = <span class="keyword">yield</span> user.setAccount(anotherAccount);</span><br><span class="line"><span class="built_in">console</span>.log(anotherAccount);</span><br></pre></td></tr></table></figure>
+<p><strong>删</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">yield</span> user.setAccount(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>查</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> account = <span class="keyword">yield</span> user.getAccount();</span><br><span class="line"><span class="built_in">console</span>.log(account);</span><br></pre></td></tr></table></figure>
+<p>这里就是调用user的getAccount方法，根据外键来获取对应的account。</p>
+<p>但是其实我们用面向对象的思维来思考应该是获取user的时候就能通过user.account的方式来访问account对象。这可以通过Sequelize的eager loading（急加载，和懒加载相反）来实现。</p>
+<p>eager loading的含义是说，取一个模型的时候，同时也把相关的模型数据也给我取过来（我很着急，不能按默认那种取一个模型就取一个模型的方式，我还要更多）。方法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> user = <span class="keyword">yield</span> User.findById(<span class="number">1</span>, &#123;</span><br><span class="line">    <span class="string">'include'</span>: [Account]</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(user.get(&#123;<span class="string">'plain'</span>: <span class="literal">true</span>&#125;));</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * 输出类似：</span></span><br><span class="line"><span class="comment"> &#123; id: 1,</span></span><br><span class="line"><span class="comment">  emp_id: '1',</span></span><br><span class="line"><span class="comment">  created_at: Tue Nov 03 2015 15:25:27 GMT+0800 (CST),</span></span><br><span class="line"><span class="comment">  updated_at: Tue Nov 03 2015 15:25:27 GMT+0800 (CST),</span></span><br><span class="line"><span class="comment">  account:</span></span><br><span class="line"><span class="comment">   &#123; id: 2,</span></span><br><span class="line"><span class="comment">     email: 'b',</span></span><br><span class="line"><span class="comment">     created_at: Tue Nov 03 2015 15:25:27 GMT+0800 (CST),</span></span><br><span class="line"><span class="comment">     updated_at: Tue Nov 03 2015 15:25:27 GMT+0800 (CST),</span></span><br><span class="line"><span class="comment">     user_id: 1 &#125; &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，我们对2个表进行了一个外联接，从而在取user的同时也获取到了account。</p>
+<p>其他补充说明</p>
+<p>如果我们重复调用user.createAccount方法，实际上会在数据库里面生成多条user_id一样的数据，并不是真正的一对一。</p>
+<p>所以，在应用层保证一致性时，就需要我们遵循良好的编码约定。新增就用user.createAccount，更改就用user.setAccount。</p>
+<p>也可以给user_id加一个UNIQUE约束，在数据库层面保证一致性，这时就需要做好try/catch，发生插入异常的时候能够知道是因为插入了多个account。</p>
+<p>另外，我们上面都是使用user来对account进行操作。实际上反向操作也是可以的，这是因为我们定义了Account.belongsTo(User)。在Sequelize里面定义关系时，关系的调用方会获得相关的“关系”方法，一般为了两边都能操作，会同时定义双向关系（这里双向关系指的是模型层面，并不会在数据库表中出现两个表都加上外键的情况，请放心）。</p>
+<h3 id="一对多"><a href="#一对多" class="headerlink" title="一对多"></a>一对多</h3><h4 id="模型定义-1"><a href="#模型定义-1" class="headerlink" title="模型定义"></a>模型定义</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> User = sequelize.define(<span class="string">'user'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'emp_id'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.CHAR(<span class="number">10</span>),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="string">'unique'</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"><span class="keyword">var</span> Note = sequelize.define(<span class="string">'note'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'title'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.CHAR(<span class="number">64</span>),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * User的实例对象将拥有getNotes、setNotes、addNote、createNote、removeNote、hasNote方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">User.hasMany(Note);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Note的实例对象将拥有getUser、setUser、createUser方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">Note.belongsTo(User);</span><br></pre></td></tr></table></figure>
+<h4 id="关系操作-1"><a href="#关系操作-1" class="headerlink" title="关系操作"></a>关系操作</h4><p><strong>增</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法1</span></span><br><span class="line"><span class="keyword">var</span> user = <span class="keyword">yield</span> User.create(&#123;<span class="string">'emp_id'</span>: <span class="string">'1'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> note = <span class="keyword">yield</span> user.createNote(&#123;<span class="string">'title'</span>: <span class="string">'a'</span>&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(note);</span><br><span class="line"><span class="comment">//方法2</span></span><br><span class="line"><span class="keyword">var</span> user = <span class="keyword">yield</span> User.create(&#123;<span class="string">'emp_id'</span>: <span class="string">'1'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> note = <span class="keyword">yield</span> Note.create(&#123;<span class="string">'title'</span>: <span class="string">'b'</span>&#125;);</span><br><span class="line"><span class="keyword">yield</span> user.addNote(note);</span><br></pre></td></tr></table></figure>
+<p><strong>改</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为user增加note1、note2</span></span><br><span class="line"><span class="keyword">var</span> user = <span class="keyword">yield</span> User.create(&#123;<span class="string">'emp_id'</span>: <span class="string">'1'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> note1 = <span class="keyword">yield</span> user.createNote(&#123;<span class="string">'title'</span>: <span class="string">'a'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> note2 = <span class="keyword">yield</span> user.createNote(&#123;<span class="string">'title'</span>: <span class="string">'b'</span>&#125;);</span><br><span class="line"><span class="comment">// 先创建note3、note4</span></span><br><span class="line"><span class="keyword">var</span> note3 = <span class="keyword">yield</span> Note.create(&#123;<span class="string">'title'</span>: <span class="string">'c'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> note4 = <span class="keyword">yield</span> Note.create(&#123;<span class="string">'title'</span>: <span class="string">'d'</span>&#125;);</span><br><span class="line"><span class="comment">// user拥有的note更改为note3、note4</span></span><br><span class="line"><span class="keyword">yield</span> user.setNotes([note3, note4]);</span><br></pre></td></tr></table></figure>
+<p><strong>删</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">yield</span> user.removeNote(note);</span><br></pre></td></tr></table></figure>
+<p><strong>查</strong></p>
+<p>情况1</p>
+<p>查询user的所有满足条件的note数据。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> notes = <span class="keyword">yield</span> user.getNotes(&#123;</span><br><span class="line">    <span class="string">'where'</span>: &#123;</span><br><span class="line">        <span class="string">'title'</span>: &#123;</span><br><span class="line">            <span class="string">'$like'</span>: <span class="string">'%css%'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">notes.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">note</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(note);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>情况2</p>
+<p>查询所有满足条件的note，同时获取note属于哪个user。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> notes = <span class="keyword">yield</span> Note.findAll(&#123;</span><br><span class="line">    <span class="string">'include'</span>: [User],</span><br><span class="line">    <span class="string">'where'</span>: &#123;</span><br><span class="line">        <span class="string">'title'</span>: &#123;</span><br><span class="line">            <span class="string">'$like'</span>: <span class="string">'%css%'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">notes.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">note</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// note属于哪个user可以通过note.user访问</span></span><br><span class="line">    <span class="built_in">console</span>.log(note);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>情况3</p>
+<p>查询所有满足条件的user，同时获取该user所有满足条件的note。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = <span class="keyword">yield</span> User.findAll(&#123;</span><br><span class="line">    <span class="string">'include'</span>: [Note],</span><br><span class="line">    <span class="string">'where'</span>: &#123;</span><br><span class="line">        <span class="string">'created_at'</span>: &#123;</span><br><span class="line">            <span class="string">'$lt'</span>: <span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">users.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">user</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// user的notes可以通过user.notes访问</span></span><br><span class="line">    <span class="built_in">console</span>.log(user);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="多对多关系"><a href="#多对多关系" class="headerlink" title="多对多关系"></a>多对多关系</h3><p>在多对多关系中，必须要额外一张关系表来将2个表进行关联，这张表可以是单纯的一个关系表，也可以是一个实际的模型（含有自己的额外属性来描述关系）。我比较喜欢用一个模型的方式，这样方便以后做扩展。</p>
+<h4 id="模型定义-2"><a href="#模型定义-2" class="headerlink" title="模型定义"></a>模型定义</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Note = sequelize.define(<span class="string">'note'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'title'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.CHAR(<span class="number">64</span>),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"><span class="keyword">var</span> Tag = sequelize.define(<span class="string">'tag'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.CHAR(<span class="number">64</span>),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="string">'unique'</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"><span class="keyword">var</span> Tagging = sequelize.define(<span class="string">'tagging'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'type'</span>: &#123;</span><br><span class="line">            <span class="string">'type'</span>: Sequelize.INTEGER(),</span><br><span class="line">            <span class="string">'allowNull'</span>: <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Note的实例拥有getTags、setTags、addTag、addTags、createTag、removeTag、hasTag方法</span></span><br><span class="line">Note.belongsToMany(Tag, &#123;<span class="string">'through'</span>: Tagging&#125;);</span><br><span class="line"><span class="comment">// Tag的实例拥有getNotes、setNotes、addNote、addNotes、createNote、removeNote、hasNote方法</span></span><br><span class="line">Tag.belongsToMany(Note, &#123;<span class="string">'through'</span>: Tagging&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>增</strong></p>
+<p>方法1</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> note = <span class="keyword">yield</span> Note.create(&#123;<span class="string">'title'</span>: <span class="string">'note'</span>&#125;);</span><br><span class="line"><span class="keyword">yield</span> note.createTag(&#123;<span class="string">'name'</span>: <span class="string">'tag'</span>&#125;, &#123;<span class="string">'type'</span>: <span class="number">0</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p>方法2</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> note = <span class="keyword">yield</span> Note.create(&#123;<span class="string">'title'</span>: <span class="string">'note'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag'</span>&#125;);</span><br><span class="line"><span class="keyword">yield</span> note.addTag(tag, &#123;<span class="string">'type'</span>: <span class="number">1</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p>方法3</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> note = <span class="keyword">yield</span> Note.create(&#123;<span class="string">'title'</span>: <span class="string">'note'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag1 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag1'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag2 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag2'</span>&#125;);</span><br><span class="line"><span class="keyword">yield</span> note.addTags([tag1, tag2], &#123;<span class="string">'type'</span>: <span class="number">2</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>改</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先添加几个tag</span></span><br><span class="line"><span class="keyword">var</span> note = <span class="keyword">yield</span> Note.create(&#123;<span class="string">'title'</span>: <span class="string">'note'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag1 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag1'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag2 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag2'</span>&#125;);</span><br><span class="line"><span class="keyword">yield</span> note.addTags([tag1, tag2], &#123;<span class="string">'type'</span>: <span class="number">2</span>&#125;);</span><br><span class="line"><span class="comment">// 将tag改掉</span></span><br><span class="line"><span class="keyword">var</span> tag3 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag3'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag4 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag4'</span>&#125;);</span><br><span class="line"><span class="keyword">yield</span> note.setTags([tag3, tag4], &#123;<span class="string">'type'</span>: <span class="number">3</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>删</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先添加几个tag</span></span><br><span class="line"><span class="keyword">var</span> note = <span class="keyword">yield</span> Note.create(&#123;<span class="string">'title'</span>: <span class="string">'note'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag1 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag1'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag2 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag2'</span>&#125;);</span><br><span class="line"><span class="keyword">var</span> tag3 = <span class="keyword">yield</span> Tag.create(&#123;<span class="string">'name'</span>: <span class="string">'tag2'</span>&#125;);</span><br><span class="line"><span class="keyword">yield</span> note.addTags([tag1, tag2, tag3], &#123;<span class="string">'type'</span>: <span class="number">2</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除一个</span></span><br><span class="line"><span class="keyword">yield</span> note.removeTag(tag1);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全部删除</span></span><br><span class="line"><span class="keyword">yield</span> note.setTags([]);</span><br></pre></td></tr></table></figure>
+<p>删除一个很简单，直接将关系表中的数据删除。</p>
+<p>全部删除时，首先需要查出关系表中note_id对应的所有数据，然后一次删掉。</p>
+<p><strong>查</strong></p>
+<p>情况1</p>
+<p>查询note所有满足条件的tag。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tags = <span class="keyword">yield</span> note.getTags(&#123;</span><br><span class="line">    <span class="comment">//这里可以对tags进行where</span></span><br><span class="line">&#125;);</span><br><span class="line">tags.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">tag</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 关系模型可以通过tag.tagging来访问</span></span><br><span class="line">    <span class="built_in">console</span>.log(tag);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>情况2</p>
+<p>查询所有满足条件的tag，同时获取每个tag所在的note。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tags = <span class="keyword">yield</span> Tag.findAll(&#123;</span><br><span class="line">    <span class="string">'include'</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'model'</span>: Note</span><br><span class="line">            <span class="comment">// 这里可以对notes进行where</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">    <span class="comment">// 这里可以对tags进行where</span></span><br><span class="line">&#125;);</span><br><span class="line">tags.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">tag</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// tag的notes可以通过tag.notes访问，关系模型可以通过tag.notes[0].tagging访问</span></span><br><span class="line">    <span class="built_in">console</span>.log(tag);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>情况3</p>
+<p>查询所有满足条件的note，同时获取每个note所有满足条件的tag。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> notes = <span class="keyword">yield</span> Note.findAll(&#123;</span><br><span class="line">    <span class="string">'include'</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'model'</span>: Tag</span><br><span class="line">            <span class="comment">// 这里可以对tags进行where</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">    <span class="comment">// 这里可以对notes进行where</span></span><br><span class="line">&#125;);</span><br><span class="line">notes.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">note</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// note的tags可以通过note.tags访问，关系模型通过note.tags[0].tagging访问</span></span><br><span class="line">    <span class="built_in">console</span>.log(note);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://segmentfault.com/a/1190000003987871" target="_blank" rel="noopener">sequelize和mysql对照</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/03/koa/koa2学习系列教程7koa与REST规范/" rel="next" title="koa2学习系列教程7 koa与REST规范">
+                <i class="fa fa-chevron-left"></i> koa2学习系列教程7 koa与REST规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/08/前端/HTTP代理原理及实现/" rel="prev" title="HTTP代理原理及实现">
+                HTTP代理原理及实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div id="gitalk-container"></div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/rem.png" alt="李云鹏">
+            
+              <p class="site-author-name" itemprop="name">李云鹏</p>
+              <p class="site-description motion-element" itemprop="description">萍水相逢也是前世之缘</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">220</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#建立数据库连接"><span class="nav-number">1.</span> <span class="nav-text">建立数据库连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义单张表"><span class="nav-number">2.</span> <span class="nav-text">定义单张表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单表增删改查"><span class="nav-number">3.</span> <span class="nav-text">单表增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#增"><span class="nav-number">3.1.</span> <span class="nav-text">增</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改"><span class="nav-number">3.2.</span> <span class="nav-text">改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删"><span class="nav-number">3.3.</span> <span class="nav-text">删</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查"><span class="nav-number">3.4.</span> <span class="nav-text">查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#where子句"><span class="nav-number">4.</span> <span class="nav-text">where子句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本条件"><span class="nav-number">4.1.</span> <span class="nav-text">基本条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">4.2.</span> <span class="nav-text">操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件"><span class="nav-number">4.3.</span> <span class="nav-text">条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量操作"><span class="nav-number">4.4.</span> <span class="nav-text">批量操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关系"><span class="nav-number">5.</span> <span class="nav-text">关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一对一"><span class="nav-number">5.1.</span> <span class="nav-text">一对一</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型定义"><span class="nav-number">5.1.1.</span> <span class="nav-text">模型定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关系操作"><span class="nav-number">5.1.2.</span> <span class="nav-text">关系操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一对多"><span class="nav-number">5.2.</span> <span class="nav-text">一对多</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型定义-1"><span class="nav-number">5.2.1.</span> <span class="nav-text">模型定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关系操作-1"><span class="nav-number">5.2.2.</span> <span class="nav-text">关系操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多对多关系"><span class="nav-number">5.3.</span> <span class="nav-text">多对多关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型定义-2"><span class="nav-number">5.3.1.</span> <span class="nav-text">模型定义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李云鹏</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    //这两句是调用作者的css和js文件
+    <script src="/js/src/md5.min.js"></script>
+    <script type="text/javascript">
+        var gitalk = new Gitalk({       //这里面的参数我们会在另一个文件中配置
+            clientID:  '5a3c5360539711069cd5',
+            clientSecret: '2c5c5bde68afec70aecc213b1d0e42bc929f3583',
+            repo: 'gaianote.github.io',
+            owner: 'gaianote',
+            admin: 'gaianote',
+            id: md5(location.pathname),
+            distractionFreeMode: '',
+          })
+          gitalk.render('gitalk-container')
+    </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
